@@ -5,10 +5,17 @@
   "name": "Eclipse's Tweakeroo Additions",
   "description": "Adds various things to Tweakeroo",
   "authors": [
-    "SystemNeutron"
+    {
+      "name": "eclipseisoffline",
+      "contact": {
+        "homepage": "https://github.com/eclipseisoffline"
+      }
+    }
   ],
   "contact": {
-    "homepage": "https://github.com/eclipseisoffline"
+    "homepage": "https://github.com/eclipseisoffline/eclipsestweakeroo",
+    "issues": "https://github.com/eclipseisoffline/eclipsestweakeroo/issues",
+    "sources": "https://github.com/eclipseisoffline/eclipsestweakeroo"
   },
   "license": "GPLv3",
   "environment": "client",
