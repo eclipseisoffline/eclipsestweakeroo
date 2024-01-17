@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "eclipsestweakeroo",
+  "version": "${version}",
+  "name": "Eclipse's Tweakeroo Additions",
+  "description": "Adds various things to Tweakeroo",
+  "authors": [
+    "SystemNeutron"
+  ],
+  "contact": {
+    "homepage": "https://github.com/eclipseisoffline"
+  },
+  "license": "GPLv3",
+  "environment": "client",
+  "entrypoints": {},
+  "mixins": [
+    "eclipsestweakeroo.mixin.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "${minecraft_version}",
+    "tweakeroo": "${tweakeroo_version}"
+  }
+}
