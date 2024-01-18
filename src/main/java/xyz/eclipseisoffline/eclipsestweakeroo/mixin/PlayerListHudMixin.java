@@ -4,8 +4,8 @@ import java.util.Map;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.scoreboard.Team;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.PlainTextContent.Literal;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -25,13 +25,13 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 public abstract class PlayerListHudMixin {
     @Unique
     private static final Map<GameMode, MutableText> GAMEMODE_TEXT = Map.of(
-            GameMode.SURVIVAL, MutableText.of(new Literal("S")).setStyle(Style.EMPTY.withColor(
+            GameMode.SURVIVAL, MutableText.of(new LiteralTextContent("S")).setStyle(Style.EMPTY.withColor(
                     Formatting.RED)),
-            GameMode.CREATIVE, MutableText.of(new Literal("C")).setStyle(Style.EMPTY.withColor(
+            GameMode.CREATIVE, MutableText.of(new LiteralTextContent("C")).setStyle(Style.EMPTY.withColor(
                     Formatting.GREEN)),
-            GameMode.ADVENTURE, MutableText.of(new Literal("A")).setStyle(Style.EMPTY.withColor(
+            GameMode.ADVENTURE, MutableText.of(new LiteralTextContent("A")).setStyle(Style.EMPTY.withColor(
                     Formatting.YELLOW)),
-            GameMode.SPECTATOR, MutableText.of(new Literal("SP")).setStyle(Style.EMPTY.withColor(
+            GameMode.SPECTATOR, MutableText.of(new LiteralTextContent("SP")).setStyle(Style.EMPTY.withColor(
                     Formatting.BLUE))
     );
 
@@ -47,7 +47,7 @@ public abstract class PlayerListHudMixin {
             playerName.append(Text.of(" - "));
             playerName.append(GAMEMODE_TEXT.get(playerListEntry.getGameMode()));
             playerName.append(Text.of(" - "));
-            playerName.append(MutableText.of(new Literal(playerListEntry.getLatency() + "ms"))
+            playerName.append(MutableText.of(new LiteralTextContent(playerListEntry.getLatency() + "ms"))
                     .setStyle(getPingStyle(playerListEntry.getLatency())));
             callbackInfoReturnable.setReturnValue(playerName);
         }
