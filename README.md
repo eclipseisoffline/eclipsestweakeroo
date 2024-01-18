@@ -21,3 +21,6 @@ directory, named `tweakeroo.jar` and `malilib.jar` respectively.
 At the moment, this mod makes the following modifications:
 
 - Added `disableEntityCollisions` yeet, which disables entity collisions. You can still push other entities, but they can't push you.
+- Added `disableTabHeader` yeet, which hides the header in the player list.
+- Added `disableTabFooter` yeet, which hides the footer in the player list.
+- Added `handRestockUnstackable` generic option, which toggles whether to restock unstackable items with `tweakHandRestock`.
