@@ -1,4 +1,4 @@
-package xyz.eclipseisoffline.eclipsestweakeroo.config;
+package xyz.eclipseisoffline.eclipsestweakeroo.util;
 
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IHotkeyTogglable;
@@ -8,9 +8,9 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TweakerooConfigMixinHelper {
+public class EclipsesTweakerooUtil {
 
-    private TweakerooConfigMixinHelper() {}
+    private EclipsesTweakerooUtil() {}
 
     public static List<IConfigBase> getDeclaredOptions(Class<?> clazz) {
         Field[] tweakerooFields = clazz.getDeclaredFields();
