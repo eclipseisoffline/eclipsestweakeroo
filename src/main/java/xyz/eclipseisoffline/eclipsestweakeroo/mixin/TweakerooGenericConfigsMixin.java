@@ -24,8 +24,7 @@ public class TweakerooGenericConfigsMixin {
 
     @Inject(method = "<clinit>()V", at = @At("TAIL"))
     private static void staticInit(CallbackInfo callbackInfo) {
-        List<IConfigBase> newOptions = new ArrayList<>();
-        newOptions.addAll(TweakerooConfigMixinHelper.getDeclaredOptions(Generic.class));
+        List<IConfigBase> newOptions = new ArrayList<>(OPTIONS);
         newOptions.addAll(TweakerooConfigMixinHelper.getDeclaredOptions(AdditionalGenericConfig.class));
         OPTIONS = ImmutableList.copyOf(newOptions);
     }
