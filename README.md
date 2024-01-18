@@ -14,7 +14,7 @@ All added config entries are integrated into Tweakeroo's config, the mod doesn't
 ## Developing
 
 Tweakeroo and the Malilib version it requires are to be downloaded manually and put in the `lib`
-directory, named `tweakeroo.jar` and `malilib.jar` respectively.
+directory, named `tweakeroo-{version}.jar` and `malilib-{version}.jar` respectively.
 
 ## Modifications
 
