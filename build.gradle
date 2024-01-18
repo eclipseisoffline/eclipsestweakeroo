@@ -13,6 +13,10 @@ repositories {
     maven {
         url "https://maven.terraformersmc.com/releases/"
     }
+    // Curseforge repository
+    maven {
+        url "https://cursemaven.com"
+    }
 }
 
 dependencies {
@@ -20,8 +24,8 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    modImplementation files("lib/malilib-${project.malilib_version}.jar")
-    modImplementation files("lib/tweakeroo-${project.tweakeroo_version}.jar")
+    modImplementation "curse.maven:malilib-303119:${project.malilib_version}"
+    modImplementation "curse.maven:tweakeroo-297344:${project.tweakeroo_version_cursemaven}"
 
     modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }

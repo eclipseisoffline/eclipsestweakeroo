@@ -13,11 +13,6 @@ Mod builds can be found [here](https://github.com/eclipseisoffline/eclipsestweak
 This mod is currently available for Minecraft 1.20.1 and 1.20.4, with Tweakeroo versions 0.17.1 and 0.19.1 respectively.
 All added config entries are integrated into Tweakeroo's config, the mod doesn't have a config itself.
 
-## Developing
-
-Tweakeroo and the Malilib version it requires are to be downloaded manually and put in the `lib`
-directory, named `tweakeroo-{version}.jar` and `malilib-{version}.jar` respectively.
-
 ## Modifications
 
 At the moment, this mod makes the following modifications:
