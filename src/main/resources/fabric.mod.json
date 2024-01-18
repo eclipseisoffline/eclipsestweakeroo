@@ -3,6 +3,7 @@
   "id": "eclipsestweakeroo",
   "version": "${version}",
   "name": "Eclipse's Tweakeroo Additions",
+  "icon": "assets/eclipsestweakeroo/icon.png",
   "description": "Adds various things to Tweakeroo",
   "authors": [
     {
