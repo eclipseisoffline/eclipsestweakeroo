@@ -5,8 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [],
   "client": [
+    "EntityMixin",
+    "PlayerListHudMixin",
     "TweakerooDisableConfigsMixin",
-    "EntityMixin"
+    "TweakerooGenericConfigsMixin",
+    "TweakerooInventoryUtilsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
