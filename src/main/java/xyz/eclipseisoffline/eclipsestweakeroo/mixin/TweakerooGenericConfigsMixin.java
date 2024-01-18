@@ -22,7 +22,7 @@ public class TweakerooGenericConfigsMixin {
     @Shadow(remap = false)
     public static ImmutableList<IConfigBase> OPTIONS;
 
-    @Inject(method = "Lfi/dy/masa/tweakeroo/config/Configs$Generic;<clinit>()V", at = @At("TAIL"))
+    @Inject(method = "<clinit>()V", at = @At("TAIL"))
     private static void staticInit(CallbackInfo callbackInfo) {
         List<IConfigBase> newOptions = new ArrayList<>();
         newOptions.addAll(TweakerooConfigMixinHelper.getDeclaredOptions(Generic.class));

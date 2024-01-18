@@ -22,7 +22,7 @@ public class TweakerooDisableConfigsMixin {
     @Shadow(remap = false)
     public static ImmutableList<IHotkeyTogglable> OPTIONS;
 
-    @Inject(method = "Lfi/dy/masa/tweakeroo/config/Configs$Disable;<clinit>()V", at = @At("TAIL"))
+    @Inject(method = "<clinit>()V", at = @At("TAIL"))
     private static void staticInit(CallbackInfo callbackInfo) {
         List<IHotkeyTogglable> newOptions = new ArrayList<>();
         newOptions.addAll(TweakerooConfigMixinHelper.getDeclaredHotkeyOptions(Disable.class));
