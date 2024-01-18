@@ -6,8 +6,10 @@
   "mixins": [],
   "client": [
     "EntityMixin",
+    "FeatureToggleCreator",
     "PlayerListHudMixin",
     "TweakerooDisableConfigsMixin",
+    "TweakerooFeatureToggleMixin",
     "TweakerooGenericConfigsMixin",
     "TweakerooInventoryUtilsMixin"
   ],

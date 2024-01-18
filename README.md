@@ -8,19 +8,18 @@ This mod is licensed under GNU GPLv3.
 
 ## Usage
 
+Mod builds can be found [here](https://github.com/eclipseisoffline/eclipsestweakeroo/packages/2043865/versions).
+
 This mod is currently available for Minecraft 1.20.1 and 1.20.4, with Tweakeroo versions 0.17.1 and 0.19.1 respectively.
 All added config entries are integrated into Tweakeroo's config, the mod doesn't have a config itself.
-
-## Developing
-
-Tweakeroo and the Malilib version it requires are to be downloaded manually and put in the `lib`
-directory, named `tweakeroo-{version}.jar` and `malilib-{version}.jar` respectively.
 
 ## Modifications
 
 At the moment, this mod makes the following modifications:
 
 - Added `disableEntityCollisions` yeet, which disables entity collisions. You can still push other entities, but they can't push you.
-- Added `disableTabHeader` yeet, which hides the header in the player list.
-- Added `disableTabFooter` yeet, which hides the footer in the player list.
+- Added `tweakPlayerList` tweak, which modifies the player (tab) list in various ways, depending on how configured in the `Generic` category:
+  - If `playerListHideHeader` is enabled, it hides the additional player list header some servers use.
+  - If `playerListHideFooter` is enabled, it hides the additional player list footer some servers use.
+  - If `playerListNames` is enabled, it modifies the way player names are displayed, and adds additional information, such as the player's gamemode and ping.
 - Added `handRestockUnstackable` generic option, which toggles whether to restock unstackable items with `tweakHandRestock`.
