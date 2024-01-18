@@ -18,6 +18,8 @@ All added config entries are integrated into Tweakeroo's config, the mod doesn't
 At the moment, this mod makes the following modifications:
 
 - Added `disableEntityCollisions` yeet, which disables entity collisions. You can still push other entities, but they can't push you.
-- Added `disableTabHeader` yeet, which hides the header in the player list.
-- Added `disableTabFooter` yeet, which hides the footer in the player list.
+- Added `tweakPlayerList` tweak, which modifies the player (tab) list in various ways, depending on how configured in the `Generic` category:
+  - If `playerListHideHeader` is enabled, it hides the additional player list header some servers use.
+  - If `playerListHideFooter` is enabled, it hides the additional player list footer some servers use.
+  - If `playerListNames` is enabled, it modifies the way player names are displayed, and adds additional information, such as the player's gamemode and ping.
 - Added `handRestockUnstackable` generic option, which toggles whether to restock unstackable items with `tweakHandRestock`.
