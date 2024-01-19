@@ -13,10 +13,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.TweakerooConfigMixinHelper;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(Disable.class)
 public class TweakerooDisableConfigsMixin {
+
     @Mutable
     @Final
     @Shadow(remap = false)
@@ -25,7 +26,8 @@ public class TweakerooDisableConfigsMixin {
     @Inject(method = "<clinit>()V", at = @At("TAIL"))
     private static void staticInit(CallbackInfo callbackInfo) {
         List<IHotkeyTogglable> newOptions = new ArrayList<>(OPTIONS);
-        newOptions.addAll(TweakerooConfigMixinHelper.getDeclaredHotkeyOptions(AdditionalDisableConfig.class));
+        newOptions.addAll(
+                EclipsesTweakerooUtil.getDeclaredHotkeyOptions(AdditionalDisableConfig.class));
         OPTIONS = ImmutableList.copyOf(newOptions);
     }
 }

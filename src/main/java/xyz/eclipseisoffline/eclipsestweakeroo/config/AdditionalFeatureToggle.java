@@ -4,8 +4,18 @@ import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.FeatureToggleCreator;
 
 public class AdditionalFeatureToggle {
+
     public static FeatureToggle TWEAK_PLAYER_LIST = newToggle("tweakPlayerList", false, false,
             "", "Makes various changes to the player list", "Tweak player list");
+    public static FeatureToggle TWEAK_PLAYER_NAME = newToggle("tweakPlayerNames", false, false,
+            "", "Changes the way player names are displayed, like with the player list",
+            "Tweak player names");
+    public static FeatureToggle TWEAK_MOB_NAMES = newToggle("tweakMobNames", false, false,
+            "", "Makes mob names always show, and shows health in mob names", "Tweak mob names");
+    public static FeatureToggle TWEAK_CHAT_MESSAGES = newToggle("tweakChatMessages", false, false,
+            "",
+            "Tries to disable all server chat formatting, to make chat messages display vanilla-like",
+            "Tweak chat messages");
 
     private static FeatureToggle newToggle(String name, boolean defaultValue, boolean singlePlayer,
             String defaultHotkey, String comment, String prettyName) {

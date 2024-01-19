@@ -12,10 +12,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.TweakerooConfigMixinHelper;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(FeatureToggle.class)
 public class TweakerooFeatureToggleMixin {
+
     @Mutable
     @Final
     @Shadow(remap = false)
@@ -24,7 +25,7 @@ public class TweakerooFeatureToggleMixin {
     @Inject(method = "<clinit>()V", at = @At("TAIL"))
     private static void staticInit(CallbackInfo callbackInfo) {
         List<FeatureToggle> newValues = new ArrayList<>(VALUES);
-        newValues.addAll(TweakerooConfigMixinHelper.getDeclaredFeatureToggles(
+        newValues.addAll(EclipsesTweakerooUtil.getDeclaredFeatureToggles(
                 AdditionalFeatureToggle.class));
         VALUES = ImmutableList.copyOf(newValues);
     }

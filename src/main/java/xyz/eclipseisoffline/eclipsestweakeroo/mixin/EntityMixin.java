@@ -14,7 +14,8 @@ public class EntityMixin {
     @Inject(method = "Lnet/minecraft/entity/Entity;pushAwayFrom(Lnet/minecraft/entity/Entity;)V", at = @At("HEAD"), cancellable = true)
     public void pushAwayFrom(Entity entity, CallbackInfo callbackInfo) {
         //noinspection ConstantValue
-        if (((Object) this instanceof PlayerEntity) && AdditionalDisableConfig.DISABLE_ENTITY_COLLISIONS.getBooleanValue()) {
+        if (((Object) this instanceof PlayerEntity)
+                && AdditionalDisableConfig.DISABLE_ENTITY_COLLISIONS.getBooleanValue()) {
             callbackInfo.cancel();
         }
     }

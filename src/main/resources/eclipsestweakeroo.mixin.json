@@ -6,12 +6,16 @@
   "mixins": [],
   "client": [
     "EntityMixin",
+    "EntityRendererMixin",
     "FeatureToggleCreator",
+    "LivingEntityMixin",
+    "MessageHandlerMixin",
     "PlayerListHudMixin",
     "TweakerooDisableConfigsMixin",
     "TweakerooFeatureToggleMixin",
     "TweakerooGenericConfigsMixin",
-    "TweakerooInventoryUtilsMixin"
+    "TweakerooInventoryUtilsMixin",
+    "TweakerooListsConfigsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
