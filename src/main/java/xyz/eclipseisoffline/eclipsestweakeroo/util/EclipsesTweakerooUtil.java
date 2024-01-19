@@ -7,10 +7,49 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.PlainTextContent.Literal;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.world.GameMode;
 
 public class EclipsesTweakerooUtil {
+    private static final Map<GameMode, MutableText> GAMEMODE_TEXT = Map.of(
+            GameMode.SURVIVAL, MutableText.of(new Literal("S")).setStyle(Style.EMPTY.withColor(
+                    Formatting.RED)),
+            GameMode.CREATIVE, MutableText.of(new Literal("C")).setStyle(Style.EMPTY.withColor(
+                    Formatting.GREEN)),
+            GameMode.ADVENTURE, MutableText.of(new Literal("A")).setStyle(Style.EMPTY.withColor(
+                    Formatting.YELLOW)),
+            GameMode.SPECTATOR, MutableText.of(new Literal("SP")).setStyle(Style.EMPTY.withColor(
+                    Formatting.BLUE))
+    );
 
     private EclipsesTweakerooUtil() {}
+
+    public static void getFancyPlayerName(PlayerListEntry playerListEntry,
+            MutableText playerNameStart) {
+        getFancyPlayerName(playerListEntry, -1, playerNameStart);
+    }
+
+    public static void getFancyPlayerName(PlayerListEntry playerListEntry, int health,
+            MutableText playerNameStart) {
+        if (playerListEntry != null) {
+            playerNameStart.append(Text.of(" - "));
+            playerNameStart.append(GAMEMODE_TEXT.get(playerListEntry.getGameMode()));
+            playerNameStart.append(Text.of(" - "));
+            playerNameStart.append(MutableText.of(new Literal(playerListEntry.getLatency() + "ms"))
+                    .setStyle(getPingStyle(playerListEntry.getLatency())));
+        }
+        if (health > 0) {
+            playerNameStart.append(Text.of(" - "));
+            playerNameStart.append(MutableText.of(new Literal(String.valueOf(health)))
+                    .setStyle(Style.EMPTY.withColor(Formatting.RED)));
+        }
+    }
 
     public static List<IConfigBase> getDeclaredOptions(Class<?> clazz) {
         Field[] tweakerooFields = clazz.getDeclaredFields();
@@ -67,5 +106,21 @@ public class EclipsesTweakerooUtil {
         }
 
         return options;
+    }
+
+    private static Style getPingStyle(int ping) {
+        if (ping <= 0) {
+            return Style.EMPTY.withColor(Formatting.DARK_GRAY);
+        } else if (ping <= 150) {
+            return Style.EMPTY.withColor(Formatting.GREEN);
+        } else if (ping <= 300) {
+            return Style.EMPTY.withColor(Formatting.YELLOW);
+        } else if (ping <= 600) {
+            return Style.EMPTY.withColor(Formatting.GOLD);
+        } else if (ping <= 1000) {
+            return Style.EMPTY.withColor(Formatting.RED);
+        }
+
+        return Style.EMPTY.withColor(Formatting.DARK_RED);
     }
 }
