@@ -1,14 +1,17 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
@@ -28,5 +31,16 @@ public class LivingEntityMixin {
         callbackInfoReturnable.setReturnValue(callbackInfoReturnable.getReturnValue()
                 || (AdditionalFeatureToggle.TWEAK_MOB_NAMES.getBooleanValue()
                 && ((Object) this instanceof LivingEntity)));
+    }
+
+    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getSlipperiness()F"))
+    public float getSlipperiness(Block block) {
+        //noinspection ConstantValue
+        if (AdditionalFeatureToggle.TWEAK_SLIPPERY.getBooleanValue()
+                && (Object) this instanceof PlayerEntity) {
+            return (float) AdditionalGenericConfig.TWEAK_SLIPPERY_SLIPPERINESS.getDoubleValue();
+        }
+
+        return block.getSlipperiness();
     }
 }

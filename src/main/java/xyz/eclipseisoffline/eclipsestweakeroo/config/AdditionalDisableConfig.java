@@ -9,4 +9,8 @@ public class AdditionalDisableConfig {
             "Disable entity collisions");
     public static final ConfigBooleanHotkeyed DISABLE_KNOCKBACK = new ConfigBooleanHotkeyed(
             "disableKnockback", false, "", "Disables taking knockback", "Disable knockback");
+    public static final ConfigBooleanHotkeyed DISABLE_FOG_MODIFIER = new ConfigBooleanHotkeyed(
+            "disableFogModifiers",
+            false, "", "Disables all fog modifiers (darkness, blindness, water, etc..)",
+            "Disable fog modifiers");
 }
