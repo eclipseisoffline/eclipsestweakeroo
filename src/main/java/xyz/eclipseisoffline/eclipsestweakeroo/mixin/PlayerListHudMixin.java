@@ -28,7 +28,7 @@ public abstract class PlayerListHudMixin {
     public void getPlayerName(PlayerListEntry playerListEntry, CallbackInfoReturnable<Text> callbackInfoReturnable) {
         if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue() && AdditionalGenericConfig.TWEAK_PLAYER_LIST_NAMES.getBooleanValue()) {
             MutableText playerName = Team.decorateName(playerListEntry.getScoreboardTeam(), Text.literal(playerListEntry.getProfile().getName()));
-            EclipsesTweakerooUtil.getFancyPlayerName(playerListEntry, playerName);
+            EclipsesTweakerooUtil.applyFancyName(playerListEntry, playerName);
             callbackInfoReturnable.setReturnValue(playerName);
         }
     }

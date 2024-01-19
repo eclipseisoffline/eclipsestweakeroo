@@ -7,6 +7,7 @@
   "client": [
     "EntityMixin",
     "FeatureToggleCreator",
+    "LivingEntityMixin",
     "PlayerEntityMixin",
     "PlayerListHudMixin",
     "TweakerooDisableConfigsMixin",

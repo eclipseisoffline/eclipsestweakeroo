@@ -30,23 +30,27 @@ public class EclipsesTweakerooUtil {
 
     private EclipsesTweakerooUtil() {}
 
-    public static void getFancyPlayerName(PlayerListEntry playerListEntry,
-            MutableText playerNameStart) {
-        getFancyPlayerName(playerListEntry, -1, playerNameStart);
+    public static void applyFancyName(PlayerListEntry playerListEntry,
+            MutableText nameStart) {
+        applyFancyName(playerListEntry, -1, nameStart);
     }
 
-    public static void getFancyPlayerName(PlayerListEntry playerListEntry, int health,
-            MutableText playerNameStart) {
+    public static void applyFancyName(int health, MutableText nameStart) {
+        applyFancyName(null, health, nameStart);
+    }
+
+    public static void applyFancyName(PlayerListEntry playerListEntry, int health,
+            MutableText nameStart) {
         if (playerListEntry != null) {
-            playerNameStart.append(Text.of(" - "));
-            playerNameStart.append(GAMEMODE_TEXT.get(playerListEntry.getGameMode()));
-            playerNameStart.append(Text.of(" - "));
-            playerNameStart.append(MutableText.of(new Literal(playerListEntry.getLatency() + "ms"))
+            nameStart.append(Text.of(" - "));
+            nameStart.append(GAMEMODE_TEXT.get(playerListEntry.getGameMode()));
+            nameStart.append(Text.of(" - "));
+            nameStart.append(MutableText.of(new Literal(playerListEntry.getLatency() + "ms"))
                     .setStyle(getPingStyle(playerListEntry.getLatency())));
         }
         if (health > 0) {
-            playerNameStart.append(Text.of(" - "));
-            playerNameStart.append(MutableText.of(new Literal(String.valueOf(health)))
+            nameStart.append(Text.of(" - "));
+            nameStart.append(MutableText.of(new Literal(String.valueOf(health)))
                     .setStyle(Style.EMPTY.withColor(Formatting.RED)));
         }
     }

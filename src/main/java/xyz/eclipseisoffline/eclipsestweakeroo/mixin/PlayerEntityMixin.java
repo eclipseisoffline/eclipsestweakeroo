@@ -24,7 +24,7 @@ public class PlayerEntityMixin {
 
             PlayerListEntry playerListEntry = MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(((PlayerEntity) (Object) this).getUuid());
             MutableText playerName = (MutableText) callbackInfoReturnable.getReturnValue();
-            EclipsesTweakerooUtil.getFancyPlayerName(playerListEntry,
+            EclipsesTweakerooUtil.applyFancyName(playerListEntry,
                     (int) ((PlayerEntity) (Object) this).getHealth(), playerName);
             callbackInfoReturnable.setReturnValue(playerName);
         }

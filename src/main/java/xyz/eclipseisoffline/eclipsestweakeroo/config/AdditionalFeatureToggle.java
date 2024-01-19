@@ -8,6 +8,8 @@ public class AdditionalFeatureToggle {
             "", "Makes various changes to the player list", "Tweak player list");
     public static FeatureToggle TWEAK_PLAYER_NAME = newToggle("tweakPlayerNames", false, false,
             "", "Changes the way player names are displayed, like with the player list", "Tweak player names");
+    public static FeatureToggle TWEAK_MOB_NAMES = newToggle("tweakMobNames", false, false,
+            "", "Makes mob names always show, and shows health in mob names", "Tweak mob names");
 
     private static FeatureToggle newToggle(String name, boolean defaultValue, boolean singlePlayer,
             String defaultHotkey, String comment, String prettyName) {
