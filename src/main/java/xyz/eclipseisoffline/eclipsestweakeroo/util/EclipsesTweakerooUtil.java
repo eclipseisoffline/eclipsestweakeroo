@@ -17,6 +17,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.GameMode;
 
 public class EclipsesTweakerooUtil {
+
     private static final Map<GameMode, MutableText> GAMEMODE_TEXT = Map.of(
             GameMode.SURVIVAL, MutableText.of(new Literal("S")).setStyle(Style.EMPTY.withColor(
                     Formatting.RED)),
@@ -28,7 +29,8 @@ public class EclipsesTweakerooUtil {
                     Formatting.BLUE))
     );
 
-    private EclipsesTweakerooUtil() {}
+    private EclipsesTweakerooUtil() {
+    }
 
     public static void applyFancyName(PlayerListEntry playerListEntry,
             MutableText nameStart) {
@@ -59,7 +61,8 @@ public class EclipsesTweakerooUtil {
         Field[] tweakerooFields = clazz.getDeclaredFields();
         List<IConfigBase> options = new ArrayList<>();
         for (Field field : tweakerooFields) {
-            if (Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers())) {
+            if (Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(
+                    field.getModifiers())) {
                 if (IConfigBase.class.isAssignableFrom(field.getType())) {
                     try {
                         options.add((IConfigBase) field.get(null));
@@ -78,7 +81,8 @@ public class EclipsesTweakerooUtil {
         Field[] tweakerooFields = clazz.getDeclaredFields();
         List<IHotkeyTogglable> options = new ArrayList<>();
         for (Field field : tweakerooFields) {
-            if (Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers())) {
+            if (Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(
+                    field.getModifiers())) {
                 if (IHotkeyTogglable.class.isAssignableFrom(field.getType())) {
                     try {
                         options.add((IHotkeyTogglable) field.get(null));
@@ -97,7 +101,8 @@ public class EclipsesTweakerooUtil {
         Field[] tweakerooFields = clazz.getDeclaredFields();
         List<FeatureToggle> options = new ArrayList<>();
         for (Field field : tweakerooFields) {
-            if (Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers())) {
+            if (Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(
+                    field.getModifiers())) {
                 if (FeatureToggle.class.isAssignableFrom(field.getType())) {
                     try {
                         options.add((FeatureToggle) field.get(null));

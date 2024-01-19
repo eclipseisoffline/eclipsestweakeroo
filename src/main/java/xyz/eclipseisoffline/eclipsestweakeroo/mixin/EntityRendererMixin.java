@@ -22,7 +22,8 @@ public class EntityRendererMixin {
     @ModifyArg(method = "render",
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/client/render/entity/EntityRenderer;renderLabelIfPresent(Lnet/minecraft/entity/Entity;Lnet/minecraft/text/Text;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"), index = 1)
-    public Text getDisplayName(Entity entity, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    public Text getDisplayName(Entity entity, Text text, MatrixStack matrices,
+            VertexConsumerProvider vertexConsumers, int light) {
         MutableText name = (MutableText) text;
 
         if (entity instanceof PlayerEntity) {
@@ -31,7 +32,8 @@ public class EntityRendererMixin {
                     return name;
                 }
 
-                PlayerListEntry playerListEntry = MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(entity.getUuid());
+                PlayerListEntry playerListEntry = MinecraftClient.getInstance().getNetworkHandler()
+                        .getPlayerListEntry(entity.getUuid());
                 EclipsesTweakerooUtil.applyFancyName(playerListEntry,
                         (int) ((PlayerEntity) entity).getHealth(), name);
             }

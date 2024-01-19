@@ -28,9 +28,12 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalListsConfig;
 @Mixin(MessageHandler.class)
 public abstract class MessageHandlerMixin {
 
-    @Shadow @Final private MinecraftClient client;
+    @Shadow
+    @Final
+    private MinecraftClient client;
 
-    @Shadow protected abstract MessageTrustStatus getStatus(SignedMessage message, Text decorated,
+    @Shadow
+    protected abstract MessageTrustStatus getStatus(SignedMessage message, Text decorated,
             Instant receptionTimestamp);
 
     @Inject(method = "processChatMessageInternal", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/client/gui/hud/MessageIndicator;)V"),
@@ -56,19 +59,24 @@ public abstract class MessageHandlerMixin {
             System.out.println("body: " + messageBody);
             System.out.println("full: " + full);
 
-            MessageTrustStatus messageTrustStatus = getStatus(message, decorated, receptionTimestamp);
+            MessageTrustStatus messageTrustStatus = getStatus(message, decorated,
+                    receptionTimestamp);
             MessageIndicator messageIndicator = messageTrustStatus.createIndicator(message);
             MessageSignatureData messageSignatureData = message.signature();
 
             assert client.getNetworkHandler() != null;
-            PlayerListEntry playerEntry = client.getNetworkHandler().getPlayerListEntry(sender.getId());
+            PlayerListEntry playerEntry = client.getNetworkHandler()
+                    .getPlayerListEntry(sender.getId());
             if (playerEntry != null) {
                 MutableText newMessage = (MutableText) Text.of("<");
-                newMessage.append(Team.decorateName(playerEntry.getScoreboardTeam(), Text.literal(sender.getName())));
+                newMessage.append(Team.decorateName(playerEntry.getScoreboardTeam(),
+                        Text.literal(sender.getName())));
                 newMessage.append(Text.of("> "));
                 newMessage.append(Text.of(messageBody));
 
-                client.inGameHud.getChatHud().addMessage(params.applyChatDecoration(newMessage), messageSignatureData, messageIndicator);
+                client.inGameHud.getChatHud()
+                        .addMessage(params.applyChatDecoration(newMessage), messageSignatureData,
+                                messageIndicator);
             }
         }
     }

@@ -2,6 +2,8 @@
 
 This mod contains some basic modifications/additions I made to [Tweakeroo](https://www.curseforge.com/minecraft/mc-mods/tweakeroo).
 
+Feel free to report any bugs, or suggest new features, such as Tweaks, yeets, or fixes, [here](https://github.com/eclipseisoffline/eclipsestweakeroo/issues/new/choose).
+
 ## License
 
 This mod is licensed under GNU GPLv3.
@@ -23,3 +25,7 @@ At the moment, this mod makes the following modifications:
   - If `playerListHideFooter` is enabled, it hides the additional player list footer some servers use.
   - If `playerListNames` is enabled, it modifies the way player names are displayed, and adds additional information, such as the player's gamemode and ping.
 - Added `handRestockUnstackable` generic option, which toggles whether to restock unstackable items with `tweakHandRestock`.
+- Added `tweakPlayerNames` tweak, which modifies the names rendered above players to include more information, such as their gamemode, ping, and health.
+- Added `tweakMobNames` tweak, which makes mob names always render, and includes health in them.
+- Added `disableKnockback` yeet, which disables taking knockback.
+- Added `tweakChatMessages` tweak, which tries to turn custom formatted chat messages into vanilla ones. It is a bit buggy at the moment, issues can occur.

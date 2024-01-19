@@ -17,6 +17,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(Generic.class)
 public class TweakerooGenericConfigsMixin {
+
     @Mutable
     @Final
     @Shadow(remap = false)

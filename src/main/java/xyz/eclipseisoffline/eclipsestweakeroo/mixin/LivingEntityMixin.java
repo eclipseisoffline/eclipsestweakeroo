@@ -16,7 +16,8 @@ public class LivingEntityMixin {
     @Inject(method = "takeKnockback", at = @At("HEAD"), cancellable = true)
     public void takeKnockback(CallbackInfo callbackInfo) {
         //noinspection ConstantValue
-        if (((Object) this instanceof PlayerEntity) && AdditionalDisableConfig.DISABLE_KNOCKBACK.getBooleanValue()) {
+        if (((Object) this instanceof PlayerEntity)
+                && AdditionalDisableConfig.DISABLE_KNOCKBACK.getBooleanValue()) {
             callbackInfo.cancel();
         }
     }

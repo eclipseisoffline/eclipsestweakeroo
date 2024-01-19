@@ -16,6 +16,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(FeatureToggle.class)
 public class TweakerooFeatureToggleMixin {
+
     @Mutable
     @Final
     @Shadow(remap = false)

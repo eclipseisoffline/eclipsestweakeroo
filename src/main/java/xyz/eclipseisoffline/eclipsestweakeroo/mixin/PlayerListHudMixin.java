@@ -19,15 +19,19 @@ import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(PlayerListHud.class)
 public abstract class PlayerListHudMixin {
+
     @Shadow
     private Text header;
     @Shadow
     private Text footer;
 
     @Inject(method = "getPlayerName", at = @At("HEAD"), cancellable = true)
-    public void getPlayerName(PlayerListEntry playerListEntry, CallbackInfoReturnable<Text> callbackInfoReturnable) {
-        if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue() && AdditionalGenericConfig.TWEAK_PLAYER_LIST_NAMES.getBooleanValue()) {
-            MutableText playerName = Team.decorateName(playerListEntry.getScoreboardTeam(), Text.literal(playerListEntry.getProfile().getName()));
+    public void getPlayerName(PlayerListEntry playerListEntry,
+            CallbackInfoReturnable<Text> callbackInfoReturnable) {
+        if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
+                && AdditionalGenericConfig.TWEAK_PLAYER_LIST_NAMES.getBooleanValue()) {
+            MutableText playerName = Team.decorateName(playerListEntry.getScoreboardTeam(),
+                    Text.literal(playerListEntry.getProfile().getName()));
             EclipsesTweakerooUtil.applyFancyName(playerListEntry, playerName);
             callbackInfoReturnable.setReturnValue(playerName);
         }
@@ -36,7 +40,8 @@ public abstract class PlayerListHudMixin {
     @Redirect(method = "render",
             at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/gui/hud/PlayerListHud;header:Lnet/minecraft/text/Text;"))
     private Text getHeader(PlayerListHud playerListHud) {
-        if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue() && AdditionalGenericConfig.TWEAK_PLAYER_LIST_HEADER.getBooleanValue()) {
+        if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
+                && AdditionalGenericConfig.TWEAK_PLAYER_LIST_HEADER.getBooleanValue()) {
             return null;
         }
 
@@ -46,7 +51,8 @@ public abstract class PlayerListHudMixin {
     @Redirect(method = "render",
             at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/gui/hud/PlayerListHud;footer:Lnet/minecraft/text/Text;"))
     private Text getFooter(PlayerListHud playerListHud) {
-        if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue() && AdditionalGenericConfig.TWEAK_PLAYER_LIST_FOOTER.getBooleanValue()) {
+        if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
+                && AdditionalGenericConfig.TWEAK_PLAYER_LIST_FOOTER.getBooleanValue()) {
             return null;
         }
         return footer;
