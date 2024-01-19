@@ -8,12 +8,14 @@
     "EntityMixin",
     "FeatureToggleCreator",
     "LivingEntityMixin",
+    "MessageHandlerMixin",
     "PlayerEntityMixin",
     "PlayerListHudMixin",
     "TweakerooDisableConfigsMixin",
     "TweakerooFeatureToggleMixin",
     "TweakerooGenericConfigsMixin",
-    "TweakerooInventoryUtilsMixin"
+    "TweakerooInventoryUtilsMixin",
+    "TweakerooListsConfigsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

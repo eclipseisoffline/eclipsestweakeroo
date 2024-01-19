@@ -13,7 +13,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 @Mixin(InventoryUtils.class)
 public class TweakerooInventoryUtilsMixin {
 
-    @Inject(method = "fi.dy.masa.tweakeroo.util.InventoryUtils.restockNewStackToHand", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "restockNewStackToHand", at = @At("HEAD"), cancellable = true)
     private static void preRestockHand(PlayerEntity player, Hand hand, ItemStack stackReference, boolean allowHotbar, CallbackInfo callbackInfo) {
         if (!AdditionalGenericConfig.HAND_RESTOCK_UNSTACKABLE.getBooleanValue() && stackReference.getMaxCount() <= 1) {
             callbackInfo.cancel();

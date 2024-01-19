@@ -15,6 +15,8 @@ import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
 
+    // TODO rewrite and merge with livingentity as a redirect for rendering name,
+    // to prevent showing up in other places
     @Inject(method = "getDisplayName", at = @At("TAIL"), cancellable = true)
     public void getDisplayName(CallbackInfoReturnable<Text> callbackInfoReturnable) {
         if (AdditionalFeatureToggle.TWEAK_PLAYER_NAME.getBooleanValue()) {
