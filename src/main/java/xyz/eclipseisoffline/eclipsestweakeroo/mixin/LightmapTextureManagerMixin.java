@@ -11,7 +11,8 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 public class LightmapTextureManagerMixin {
 
     @Inject(method = "getDarknessFactor", at = @At("HEAD"), cancellable = true)
-    public void getDarknessFactor(float delta, CallbackInfoReturnable<Float> callbackInfoReturnable) {
+    public void getDarknessFactor(float delta,
+            CallbackInfoReturnable<Float> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_FOG_MODIFIER.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(0.0F);
         }

@@ -22,7 +22,8 @@ public class AdditionalGenericConfig {
     public static final ConfigDouble TWEAK_SLIPPERY_SLIPPERINESS = new ConfigDouble("slipperiness",
             Blocks.ICE.getSlipperiness(), 0.6, 1.15,
             "Defines how slippery every block is when using tweakSlippery.");
-    public static final ConfigStringList FANCY_NAME_ELEMENTS = new ConfigStringList("fancyNameElements",
+    public static final ConfigStringList FANCY_NAME_ELEMENTS = new ConfigStringList(
+            "fancyNameElements",
             ImmutableList.of("{name}", "{gamemode}", "{ping}", "{health}"),
             "Defines how fancy names look. If a placeholder fails, the element will be omitted. Possible placeholders can be found in the README/Modrinth page");
 }

@@ -16,6 +16,7 @@ import net.minecraft.world.GameMode;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 
 public class FancyName {
+
     private static final Map<GameMode, MutableText> GAMEMODE_TEXT = Map.of(
             GameMode.SURVIVAL, MutableText.of(new Literal("S")).setStyle(Style.EMPTY.withColor(
                     Formatting.RED)),
@@ -28,7 +29,7 @@ public class FancyName {
     );
 
     private static final Map<String, BiFunction<LivingEntity, PlayerListEntry, Text>> PLACEHOLDERS = Map.of(
-            "name", ((livingEntity, playerListEntry) -> {
+            "name", (livingEntity, playerListEntry) -> {
                 if (livingEntity != null) {
                     return livingEntity.getDisplayName();
                 } else if (playerListEntry != null) {
@@ -36,19 +37,21 @@ public class FancyName {
                             Text.literal(playerListEntry.getProfile().getName()));
                 }
                 return null;
-            }),
-            "gamemode", ((livingEntity, playerListEntry) -> GAMEMODE_TEXT.get(playerListEntry.getGameMode())),
-            "ping", ((livingEntity, playerListEntry) -> getPingText(playerListEntry.getLatency())),
-            "health", ((livingEntity, playerListEntry) -> MutableText.of(new Literal(String.valueOf(Math.floor(livingEntity.getHealth()))))
-                    .setStyle(Style.EMPTY.withColor(Formatting.RED))),
-            "uuid", ((livingEntity, playerListEntry) -> {
+            },
+            "gamemode",
+            (livingEntity, playerListEntry) -> GAMEMODE_TEXT.get(playerListEntry.getGameMode()),
+            "ping", (livingEntity, playerListEntry) -> getPingText(playerListEntry.getLatency()),
+            "health", (livingEntity, playerListEntry) -> MutableText.of(
+                            new Literal(String.valueOf(Math.floor(livingEntity.getHealth()))))
+                    .setStyle(Style.EMPTY.withColor(Formatting.RED)),
+            "uuid", (livingEntity, playerListEntry) -> {
                 if (livingEntity != null) {
                     return Text.of(livingEntity.getUuidAsString());
                 } else if (playerListEntry != null) {
                     return Text.of(playerListEntry.getProfile().getId().toString());
                 }
                 return null;
-            })
+            }
     );
 
     public static Text applyFancyName(LivingEntity entity, PlayerListEntry player) {

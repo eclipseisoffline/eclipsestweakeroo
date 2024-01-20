@@ -23,9 +23,21 @@ At the moment, this mod makes the following modifications:
 - Added `tweakPlayerList` tweak, which modifies the player (tab) list in various ways, depending on how configured in the `Generic` category:
   - If `playerListHideHeader` is enabled, it hides the additional player list header some servers use.
   - If `playerListHideFooter` is enabled, it hides the additional player list footer some servers use.
-  - If `playerListNames` is enabled, it modifies the way player names are displayed, and adds additional information, such as the player's gamemode and ping.
+  - If `playerListNames` is enabled, it uses fancy names for the names that appear in the list.
 - Added `handRestockUnstackable` generic option, which toggles whether to restock unstackable items with `tweakHandRestock`.
-- Added `tweakPlayerNames` tweak, which modifies the names rendered above players to include more information, such as their gamemode, ping, and health.
-- Added `tweakMobNames` tweak, which makes mob names always render, and includes health in them.
+- Added `tweakPlayerNames` tweak, which enables using fancy names for the names rendered above players.
+- Added `tweakMobNames` tweak, which enables using fancy names for the names rendered above mobs, and makes these always render.
 - Added `disableKnockback` yeet, which disables taking knockback.
 - Added `tweakChatMessages` tweak, which tries to turn custom formatted chat messages into vanilla ones. It is a bit buggy at the moment, issues can occur.
+
+### Fancy names
+
+Fancy names are modifications to names to make them include more information. It can be configured
+using the `fancyNameElements` setting in the `Generic` category. Each element can either contain one placeholder, or a string to display.
+The following placeholders are available:
+
+- `{name}` - replaces with the name of the mob/player.
+- `{gamemode}` - replaces with the gamemode of the player.
+- `{ping}` - replaces with the ping/latency of the player.
+- `{health}` - replaces with the amount of HP of the mob/player.
+- `{uuid}` - replaces with the UUID of the player.

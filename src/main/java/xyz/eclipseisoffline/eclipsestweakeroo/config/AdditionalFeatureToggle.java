@@ -12,7 +12,8 @@ public class AdditionalFeatureToggle {
             "", "Uses fancy names for rending the player names",
             "Player names tweak");
     public static final FeatureToggle TWEAK_MOB_NAMES = newToggle("tweakMobNames", false, false,
-            "", "Uses fancy names for rendering mob names, and makes them always show", "Mob names tweak");
+            "", "Uses fancy names for rendering mob names, and makes them always show",
+            "Mob names tweak");
     public static final FeatureToggle TWEAK_CHAT_MESSAGES = newToggle("tweakChatMessages", false,
             false,
             "",
