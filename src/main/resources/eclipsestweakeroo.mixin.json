@@ -13,6 +13,7 @@
     "LivingEntityMixin",
     "MessageHandlerMixin",
     "PlayerListHudMixin",
+    "PlayerScreenHandlerEquipmentSlotMixin",
     "TweakerooDisableConfigsMixin",
     "TweakerooFeatureToggleMixin",
     "TweakerooFixesConfigsMixin",

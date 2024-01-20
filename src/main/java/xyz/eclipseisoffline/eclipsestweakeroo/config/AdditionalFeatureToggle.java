@@ -9,10 +9,10 @@ public class AdditionalFeatureToggle {
             "", "Makes various changes to the player list", "Player list tweak");
     public static final FeatureToggle TWEAK_PLAYER_NAME = newToggle("tweakPlayerNames", false,
             false,
-            "", "Changes the way player names are displayed, like with the player list",
+            "", "Uses fancy names for rending the player names",
             "Player names tweak");
     public static final FeatureToggle TWEAK_MOB_NAMES = newToggle("tweakMobNames", false, false,
-            "", "Makes mob names always show, and shows health in mob names", "Mob names tweak");
+            "", "Uses fancy names for rendering mob names, and makes them always show", "Mob names tweak");
     public static final FeatureToggle TWEAK_CHAT_MESSAGES = newToggle("tweakChatMessages", false,
             false,
             "",
