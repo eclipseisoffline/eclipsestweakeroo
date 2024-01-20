@@ -7,8 +7,8 @@ import java.util.function.BiFunction;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.scoreboard.Team;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.PlainTextContent.Literal;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -18,13 +18,13 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 public class FancyName {
 
     private static final Map<GameMode, MutableText> GAMEMODE_TEXT = Map.of(
-            GameMode.SURVIVAL, MutableText.of(new Literal("S")).setStyle(Style.EMPTY.withColor(
+            GameMode.SURVIVAL, MutableText.of(new LiteralTextContent("S")).setStyle(Style.EMPTY.withColor(
                     Formatting.RED)),
-            GameMode.CREATIVE, MutableText.of(new Literal("C")).setStyle(Style.EMPTY.withColor(
+            GameMode.CREATIVE, MutableText.of(new LiteralTextContent("C")).setStyle(Style.EMPTY.withColor(
                     Formatting.GREEN)),
-            GameMode.ADVENTURE, MutableText.of(new Literal("A")).setStyle(Style.EMPTY.withColor(
+            GameMode.ADVENTURE, MutableText.of(new LiteralTextContent("A")).setStyle(Style.EMPTY.withColor(
                     Formatting.YELLOW)),
-            GameMode.SPECTATOR, MutableText.of(new Literal("SP")).setStyle(Style.EMPTY.withColor(
+            GameMode.SPECTATOR, MutableText.of(new LiteralTextContent("SP")).setStyle(Style.EMPTY.withColor(
                     Formatting.BLUE))
     );
 
@@ -42,7 +42,7 @@ public class FancyName {
             (livingEntity, playerListEntry) -> GAMEMODE_TEXT.get(playerListEntry.getGameMode()),
             "ping", (livingEntity, playerListEntry) -> getPingText(playerListEntry.getLatency()),
             "health", (livingEntity, playerListEntry) -> MutableText.of(
-                            new Literal(String.valueOf(Math.floor(livingEntity.getHealth()))))
+                            new LiteralTextContent(String.valueOf(Math.floor(livingEntity.getHealth()))))
                     .setStyle(Style.EMPTY.withColor(Formatting.RED)),
             "uuid", (livingEntity, playerListEntry) -> {
                 if (livingEntity != null) {
@@ -55,7 +55,7 @@ public class FancyName {
     );
 
     public static Text applyFancyName(LivingEntity entity, PlayerListEntry player) {
-        MutableText fancyName = MutableText.of(Literal.EMPTY);
+        MutableText fancyName = MutableText.of(LiteralTextContent.EMPTY);
         List<Text> elements = new ArrayList<>();
 
         for (String element : AdditionalGenericConfig.FANCY_NAME_ELEMENTS.getStrings()) {
@@ -82,7 +82,7 @@ public class FancyName {
     }
 
     private static Text getPingText(int ping) {
-        return MutableText.of(new Literal(ping + "ms")).setStyle(getPingStyle(ping));
+        return MutableText.of(new LiteralTextContent(ping + "ms")).setStyle(getPingStyle(ping));
     }
 
     private static Style getPingStyle(int ping) {
