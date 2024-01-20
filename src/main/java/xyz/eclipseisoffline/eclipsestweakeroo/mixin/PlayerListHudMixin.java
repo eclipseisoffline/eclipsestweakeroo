@@ -2,6 +2,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
 import org.objectweb.asm.Opcodes;
@@ -9,6 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.FancyName;
@@ -63,5 +65,15 @@ public abstract class PlayerListHudMixin {
         }
 
         return playerListEntry.getGameMode();
+    }
+
+    @ModifyVariable(method = "render", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+    private ScoreboardObjective modifyScoreboardObjective(ScoreboardObjective scoreboardObjective) {
+        if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
+                && AdditionalGenericConfig.TWEAK_PLAYER_LIST_OBJECTIVE.getBooleanValue()) {
+            return null;
+        }
+
+        return scoreboardObjective;
     }
 }
