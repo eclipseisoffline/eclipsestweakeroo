@@ -8,11 +8,9 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.PlainTextContent.Literal;
 import net.minecraft.text.Style;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.GameMode;
 
@@ -30,31 +28,6 @@ public class EclipsesTweakerooUtil {
     );
 
     private EclipsesTweakerooUtil() {
-    }
-
-    public static void applyFancyName(PlayerListEntry playerListEntry,
-            MutableText nameStart) {
-        applyFancyName(playerListEntry, -1, nameStart);
-    }
-
-    public static void applyFancyName(int health, MutableText nameStart) {
-        applyFancyName(null, health, nameStart);
-    }
-
-    public static void applyFancyName(PlayerListEntry playerListEntry, int health,
-            MutableText nameStart) {
-        if (playerListEntry != null) {
-            nameStart.append(Text.of(" - "));
-            nameStart.append(GAMEMODE_TEXT.get(playerListEntry.getGameMode()));
-            nameStart.append(Text.of(" - "));
-            nameStart.append(MutableText.of(new Literal(playerListEntry.getLatency() + "ms"))
-                    .setStyle(getPingStyle(playerListEntry.getLatency())));
-        }
-        if (health > 0) {
-            nameStart.append(Text.of(" - "));
-            nameStart.append(MutableText.of(new Literal(String.valueOf(health)))
-                    .setStyle(Style.EMPTY.withColor(Formatting.RED)));
-        }
     }
 
     public static List<IConfigBase> getDeclaredOptions(Class<?> clazz) {
@@ -115,21 +88,5 @@ public class EclipsesTweakerooUtil {
         }
 
         return options;
-    }
-
-    private static Style getPingStyle(int ping) {
-        if (ping <= 0) {
-            return Style.EMPTY.withColor(Formatting.DARK_GRAY);
-        } else if (ping <= 150) {
-            return Style.EMPTY.withColor(Formatting.GREEN);
-        } else if (ping <= 300) {
-            return Style.EMPTY.withColor(Formatting.YELLOW);
-        } else if (ping <= 600) {
-            return Style.EMPTY.withColor(Formatting.GOLD);
-        } else if (ping <= 1000) {
-            return Style.EMPTY.withColor(Formatting.RED);
-        }
-
-        return Style.EMPTY.withColor(Formatting.DARK_RED);
     }
 }

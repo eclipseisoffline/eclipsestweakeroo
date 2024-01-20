@@ -13,8 +13,8 @@ import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import xyz.eclipseisoffline.eclipsestweakeroo.FancyName;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
-import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(EntityRenderer.class)
 public class EntityRendererMixin {
@@ -34,13 +34,11 @@ public class EntityRendererMixin {
 
                 PlayerListEntry playerListEntry = MinecraftClient.getInstance().getNetworkHandler()
                         .getPlayerListEntry(entity.getUuid());
-                EclipsesTweakerooUtil.applyFancyName(playerListEntry,
-                        (int) ((PlayerEntity) entity).getHealth(), name);
+                return FancyName.applyFancyName((LivingEntity) entity, playerListEntry);
             }
         } else if (AdditionalFeatureToggle.TWEAK_MOB_NAMES.getBooleanValue()
                 && (entity instanceof LivingEntity)) {
-            EclipsesTweakerooUtil.applyFancyName(
-                    (int) ((LivingEntity) entity).getHealth(), name);
+            return FancyName.applyFancyName((LivingEntity) entity, null);
         }
 
         return name;

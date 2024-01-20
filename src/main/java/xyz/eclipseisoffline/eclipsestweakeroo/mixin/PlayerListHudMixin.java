@@ -2,8 +2,6 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.scoreboard.Team;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
 import org.objectweb.asm.Opcodes;
@@ -13,9 +11,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import xyz.eclipseisoffline.eclipsestweakeroo.FancyName;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(PlayerListHud.class)
 public abstract class PlayerListHudMixin {
@@ -30,9 +28,7 @@ public abstract class PlayerListHudMixin {
             CallbackInfoReturnable<Text> callbackInfoReturnable) {
         if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
                 && AdditionalGenericConfig.TWEAK_PLAYER_LIST_NAMES.getBooleanValue()) {
-            MutableText playerName = Team.decorateName(playerListEntry.getScoreboardTeam(),
-                    Text.literal(playerListEntry.getProfile().getName()));
-            EclipsesTweakerooUtil.applyFancyName(playerListEntry, playerName);
+            Text playerName = FancyName.applyFancyName(null, playerListEntry);
             callbackInfoReturnable.setReturnValue(playerName);
         }
     }
