@@ -15,6 +15,7 @@
     "PlayerListHudMixin",
     "TweakerooDisableConfigsMixin",
     "TweakerooFeatureToggleMixin",
+    "TweakerooFixesConfigsMixin",
     "TweakerooGenericConfigsMixin",
     "TweakerooInventoryUtilsMixin",
     "TweakerooListsConfigsMixin"

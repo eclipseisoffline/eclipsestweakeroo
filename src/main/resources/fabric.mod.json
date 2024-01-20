@@ -20,13 +20,18 @@
   },
   "license": "GPLv3",
   "environment": "client",
-  "entrypoints": {},
+  "entrypoints": {
+    "client": [
+      "xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo"
+    ]
+  },
   "mixins": [
     "eclipsestweakeroo.mixin.json"
   ],
   "accessWidener": "eclipsestweakeroo.accesswidener",
   "depends": {
     "fabricloader": ">=${loader_version}",
+    "fabric": "${fabric_version}",
     "minecraft": "${minecraft_version}",
     "tweakeroo": "${tweakeroo_version}"
   }
