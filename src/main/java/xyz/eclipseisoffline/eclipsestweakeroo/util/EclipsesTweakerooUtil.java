@@ -7,25 +7,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.PlainTextContent.Literal;
-import net.minecraft.text.Style;
-import net.minecraft.util.Formatting;
-import net.minecraft.world.GameMode;
 
 public class EclipsesTweakerooUtil {
-
-    private static final Map<GameMode, MutableText> GAMEMODE_TEXT = Map.of(
-            GameMode.SURVIVAL, MutableText.of(new Literal("S")).setStyle(Style.EMPTY.withColor(
-                    Formatting.RED)),
-            GameMode.CREATIVE, MutableText.of(new Literal("C")).setStyle(Style.EMPTY.withColor(
-                    Formatting.GREEN)),
-            GameMode.ADVENTURE, MutableText.of(new Literal("A")).setStyle(Style.EMPTY.withColor(
-                    Formatting.YELLOW)),
-            GameMode.SPECTATOR, MutableText.of(new Literal("SP")).setStyle(Style.EMPTY.withColor(
-                    Formatting.BLUE))
-    );
 
     private EclipsesTweakerooUtil() {
     }

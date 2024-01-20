@@ -2,7 +2,7 @@
 
 This mod contains some basic modifications/additions I made to [Tweakeroo](https://www.curseforge.com/minecraft/mc-mods/tweakeroo).
 
-Feel free to report any bugs, or suggest new features, such as Tweaks, yeets, or fixes, [here](https://github.com/eclipseisoffline/eclipsestweakeroo/issues/new/choose).
+Feel free to report any bugs, or suggest new features, such as tweaks, yeets, or fixes, [here](https://github.com/eclipseisoffline/eclipsestweakeroo/issues/new/choose).
 
 ## License
 
@@ -29,6 +29,11 @@ At the moment, this mod makes the following modifications:
 - Added `tweakMobNames` tweak, which enables using fancy names for the names rendered above mobs, and makes these always render.
 - Added `disableKnockback` yeet, which disables taking knockback.
 - Added `tweakChatMessages` tweak, which tries to turn custom formatted chat messages into vanilla ones. It is a bit buggy at the moment, issues can occur.
+- Added `tweakSlippery` tweak, mostly for fun, which overrides the slipperiness of every block, can be configured using the `slipperiness` option in `Generic`.
+- Added `disableFogModifiers` yeet, which disables all fog modifiers (water, lava, powdered snow, darkness, etc.).
+- Added `gammaOverrideFix` fix, which fixes gamma override not applying when relaunching the game.
+- Added `disableArmorRestriction` yeet, which disables the restriction of armour slots in the inventory. May not work on servers.
+- Added `disableBindingCurse` yeet, which disables Curse of Binding. May not work on servers.
 
 ### Fancy names
 
