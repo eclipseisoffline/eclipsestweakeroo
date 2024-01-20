@@ -9,6 +9,7 @@
     "EntityMixin",
     "EntityRendererMixin",
     "FeatureToggleCreator",
+    "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "MessageHandlerMixin",
     "PlayerListHudMixin",
