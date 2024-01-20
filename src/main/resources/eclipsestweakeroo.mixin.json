@@ -5,14 +5,18 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [],
   "client": [
+    "BackgroundRendererMixin",
     "EntityMixin",
     "EntityRendererMixin",
     "FeatureToggleCreator",
+    "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "MessageHandlerMixin",
     "PlayerListHudMixin",
+    "PlayerScreenHandlerEquipmentSlotMixin",
     "TweakerooDisableConfigsMixin",
     "TweakerooFeatureToggleMixin",
+    "TweakerooFixesConfigsMixin",
     "TweakerooGenericConfigsMixin",
     "TweakerooInventoryUtilsMixin",
     "TweakerooListsConfigsMixin"

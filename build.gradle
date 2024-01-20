@@ -30,6 +30,10 @@ dependencies {
     modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/eclipsestweakeroo.accesswidener")
+}
+
 processResources {
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
@@ -39,6 +43,7 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
+                "fabric_version": project.fabric_version,
                 "loader_version": project.loader_version,
                 "tweakeroo_version": project.tweakeroo_version
     }
