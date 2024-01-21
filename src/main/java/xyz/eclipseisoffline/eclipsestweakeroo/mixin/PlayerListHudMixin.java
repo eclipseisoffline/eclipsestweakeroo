@@ -33,7 +33,8 @@ public abstract class PlayerListHudMixin {
         if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
                 && AdditionalGenericConfig.TWEAK_PLAYER_LIST_NAMES.getBooleanValue()) {
             assert MinecraftClient.getInstance().world != null;
-            PlayerEntity entity = MinecraftClient.getInstance().world.getPlayerByUuid(playerListEntry.getProfile().getId());
+            PlayerEntity entity = MinecraftClient.getInstance().world.getPlayerByUuid(
+                    playerListEntry.getProfile().getId());
             Text playerName = FancyName.applyFancyName(entity, playerListEntry);
             callbackInfoReturnable.setReturnValue(playerName);
         }

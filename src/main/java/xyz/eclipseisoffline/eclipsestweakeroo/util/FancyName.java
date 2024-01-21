@@ -74,10 +74,14 @@ public class FancyName {
                             .setStyle(Style.EMPTY.withColor(Formatting.RED)),
             "attack", (livingEntity, playerListEntry) -> {
                 try {
-                    EntityAttributeInstance attributeInstance = new EntityAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE, (instance) -> {});
-                    attributeInstance.setBaseValue(livingEntity.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_DAMAGE));
+                    EntityAttributeInstance attributeInstance = new EntityAttributeInstance(
+                            EntityAttributes.GENERIC_ATTACK_DAMAGE, (instance) -> {
+                    });
+                    attributeInstance.setBaseValue(livingEntity.getAttributeBaseValue(
+                            EntityAttributes.GENERIC_ATTACK_DAMAGE));
                     livingEntity.getStackInHand(Hand.MAIN_HAND)
-                            .getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_DAMAGE)
+                            .getAttributeModifiers(EquipmentSlot.MAINHAND)
+                            .get(EntityAttributes.GENERIC_ATTACK_DAMAGE)
                             .forEach((attributeInstance::addTemporaryModifier));
 
                     return MutableText.of(new Literal(String.valueOf(attributeInstance.getValue())))
@@ -88,7 +92,8 @@ public class FancyName {
             },
             "armor", (livingEntity, playerListEntry) -> {
                 try {
-                    return MutableText.of(new Literal(String.valueOf(livingEntity.getAttributeValue(EntityAttributes.GENERIC_ARMOR))))
+                    return MutableText.of(new Literal(String.valueOf(
+                                    livingEntity.getAttributeValue(EntityAttributes.GENERIC_ARMOR))))
                             .setStyle(Style.EMPTY.withColor(Formatting.RED));
                 } catch (IllegalArgumentException exception) {
                     return null;

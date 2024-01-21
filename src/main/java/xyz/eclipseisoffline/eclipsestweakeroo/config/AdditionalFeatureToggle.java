@@ -23,6 +23,11 @@ public class AdditionalFeatureToggle {
             "",
             "Overrides every block's slipperiness. Can be configured in General. Mostly for fun",
             "Slippery tweak");
+    public static final FeatureToggle TWEAK_JUMP_VELOCITY = newToggle("tweakJumpVelocity", false,
+            false,
+            "",
+            "Overrides every block's jump velocity. Can be configured in General. Also mostly for fun",
+            "Jump velocity tweak");
 
     private static FeatureToggle newToggle(String name, boolean defaultValue, boolean singlePlayer,
             String defaultHotkey, String comment, String prettyName) {
