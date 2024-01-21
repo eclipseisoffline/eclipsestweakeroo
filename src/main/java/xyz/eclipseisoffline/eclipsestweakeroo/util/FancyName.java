@@ -6,13 +6,17 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
 import net.minecraft.world.GameMode;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 
@@ -63,7 +67,29 @@ public class FancyName {
             },
             "key", (livingEntity, playerListEntry) -> playerListEntry.hasPublicKey()
                     ? MutableText.of(new LiteralTextContent("KEY")).setStyle(Style.EMPTY.withColor(Formatting.GREEN))
-                    : MutableText.of(new LiteralTextContent("NO KEY")).setStyle(Style.EMPTY.withColor(Formatting.RED))
+                    : MutableText.of(new LiteralTextContent("NO KEY")).setStyle(Style.EMPTY.withColor(Formatting.RED)),
+            "attack", (livingEntity, playerListEntry) -> {
+                try {
+                    EntityAttributeInstance attributeInstance = new EntityAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE, (instance) -> {});
+                    attributeInstance.setBaseValue(livingEntity.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_DAMAGE));
+                    livingEntity.getStackInHand(Hand.MAIN_HAND)
+                            .getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_DAMAGE)
+                            .forEach((attributeInstance::addTemporaryModifier));
+
+                    return MutableText.of(new LiteralTextContent(String.valueOf(attributeInstance.getValue())))
+                            .setStyle(Style.EMPTY.withColor(Formatting.RED));
+                } catch (IllegalArgumentException exception) {
+                    return null;
+                }
+            },
+            "armor", (livingEntity, playerListEntry) -> {
+                try {
+                    return MutableText.of(new LiteralTextContent(String.valueOf(livingEntity.getAttributeValue(EntityAttributes.GENERIC_ARMOR))))
+                            .setStyle(Style.EMPTY.withColor(Formatting.RED));
+                } catch (IllegalArgumentException exception) {
+                    return null;
+                }
+            }
     );
 
     public static Text applyFancyName(LivingEntity entity, PlayerListEntry player) {
@@ -76,6 +102,9 @@ public class FancyName {
                 String placeholder = element.replace("{", "").replace("}", "");
                 try {
                     elementValue = PLACEHOLDERS.get(placeholder).apply(entity, player);
+                    if (elementValue == null) {
+                        continue;
+                    }
                 } catch (NullPointerException exception) {
                     continue;
                 }
