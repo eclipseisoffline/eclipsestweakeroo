@@ -56,8 +56,6 @@ public abstract class MessageHandlerMixin {
                     messageBody = potentialMessageBody;
                 }
             }
-            System.out.println("body: " + messageBody);
-            System.out.println("full: " + full);
 
             MessageTrustStatus messageTrustStatus = getStatus(message, decorated,
                     receptionTimestamp);
