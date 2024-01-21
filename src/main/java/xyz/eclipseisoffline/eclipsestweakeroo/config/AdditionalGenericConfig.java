@@ -16,6 +16,8 @@ public class AdditionalGenericConfig {
     public static final ConfigBoolean TWEAK_PLAYER_LIST_FOOTER = new ConfigBoolean(
             "playerListHideFooter", false,
             "Hides the player list footer when the player list tweak is enabled");
+    public static final ConfigBoolean TWEAK_PLAYER_LIST_OBJECTIVE = new ConfigBoolean("playerListHideObjective",
+            false, "Hides the scoreboard objectives in the player list when the player list tweak is enabled");
     public static final ConfigBoolean TWEAK_PLAYER_LIST_NAMES = new ConfigBoolean("playerListNames",
             true,
             "Changes player names in the player list to use fancy names when the player list tweak is enabled");

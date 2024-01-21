@@ -1,8 +1,9 @@
-package xyz.eclipseisoffline.eclipsestweakeroo;
+package xyz.eclipseisoffline.eclipsestweakeroo.util;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.LivingEntity;
@@ -51,7 +52,18 @@ public class FancyName {
                     return Text.of(playerListEntry.getProfile().getId().toString());
                 }
                 return null;
-            }
+            },
+            "team", (livingEntity, playerListEntry) -> {
+                if (livingEntity != null) {
+                    return Objects.requireNonNull(livingEntity.getScoreboardTeam()).getDisplayName();
+                } else if (playerListEntry != null) {
+                    return Objects.requireNonNull(playerListEntry.getScoreboardTeam()).getDisplayName();
+                }
+                return null;
+            },
+            "key", (livingEntity, playerListEntry) -> playerListEntry.hasPublicKey()
+                    ? MutableText.of(new Literal("KEY")).setStyle(Style.EMPTY.withColor(Formatting.GREEN))
+                    : MutableText.of(new Literal("NO KEY")).setStyle(Style.EMPTY.withColor(Formatting.RED))
     );
 
     public static Text applyFancyName(LivingEntity entity, PlayerListEntry player) {
