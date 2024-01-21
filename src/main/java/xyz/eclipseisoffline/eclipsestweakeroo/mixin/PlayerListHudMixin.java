@@ -13,9 +13,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.eclipseisoffline.eclipsestweakeroo.FancyName;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.FancyName;
 
 @Mixin(PlayerListHud.class)
 public abstract class PlayerListHudMixin {
