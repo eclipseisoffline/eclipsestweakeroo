@@ -55,15 +55,15 @@ public class FancyName {
             },
             "team", (livingEntity, playerListEntry) -> {
                 if (livingEntity != null) {
-                    return Objects.requireNonNull(livingEntity.getScoreboardTeam()).getDisplayName();
+                    return Text.of(Objects.requireNonNull(livingEntity.getScoreboardTeam()).getName());
                 } else if (playerListEntry != null) {
                     return Objects.requireNonNull(playerListEntry.getScoreboardTeam()).getDisplayName();
                 }
                 return null;
             },
             "key", (livingEntity, playerListEntry) -> playerListEntry.hasPublicKey()
-                    ? MutableText.of(new Literal("KEY")).setStyle(Style.EMPTY.withColor(Formatting.GREEN))
-                    : MutableText.of(new Literal("NO KEY")).setStyle(Style.EMPTY.withColor(Formatting.RED))
+                    ? MutableText.of(new LiteralTextContent("KEY")).setStyle(Style.EMPTY.withColor(Formatting.GREEN))
+                    : MutableText.of(new LiteralTextContent("NO KEY")).setStyle(Style.EMPTY.withColor(Formatting.RED))
     );
 
     public static Text applyFancyName(LivingEntity entity, PlayerListEntry player) {
