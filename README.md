@@ -13,8 +13,9 @@ This mod is licensed under GNU GPLv3.
 Mod builds can be found [here](https://github.com/eclipseisoffline/eclipsestweakeroo/packages/2043865/versions)
 and on [Modrinth](https://modrinth.com/mod/eclipses-tweakeroo-additions).
 
-This mod is currently available for Minecraft 1.20.1 and 1.20.4, with Tweakeroo versions 0.17.1 and 0.19.1 respectively.
-All added config entries are integrated into Tweakeroo's config, the mod doesn't have a config itself.
+This mod is currently available for Minecraft 1.19.4, 1.20.1 and 1.20.4, with Tweakeroo versions 0.16.0,
+0.17.1 and 0.19.1 respectively.  All added config entries are integrated into Tweakeroo's config,
+the mod doesn't have a config itself.
 
 ## Modifications
 
