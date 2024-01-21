@@ -1,7 +1,9 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
@@ -30,7 +32,9 @@ public abstract class PlayerListHudMixin {
             CallbackInfoReturnable<Text> callbackInfoReturnable) {
         if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
                 && AdditionalGenericConfig.TWEAK_PLAYER_LIST_NAMES.getBooleanValue()) {
-            Text playerName = FancyName.applyFancyName(null, playerListEntry);
+            assert MinecraftClient.getInstance().world != null;
+            PlayerEntity entity = MinecraftClient.getInstance().world.getPlayerByUuid(playerListEntry.getProfile().getId());
+            Text playerName = FancyName.applyFancyName(entity, playerListEntry);
             callbackInfoReturnable.setReturnValue(playerName);
         }
     }
