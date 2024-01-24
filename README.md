@@ -8,6 +8,11 @@ Feel free to report any bugs, or suggest new features, such as tweaks, yeets, or
 
 This mod is licensed under GNU GPLv3.
 
+## Donating
+
+If you like this mod, consider [donating](https://ko-fi.com/eclipseisoffline)!
+It really helps me a ton!
+
 ## Usage
 
 Mod builds can be found [here](https://github.com/eclipseisoffline/eclipsestweakeroo/packages/2043865/versions)
@@ -33,6 +38,8 @@ At the moment, this mod makes the following modifications:
 - Added `tweakChatMessages` tweak, which tries to turn custom formatted chat messages into vanilla ones. It is a bit buggy at the moment, issues can occur.
 - Added `tweakSlippery` tweak, mostly for fun, which overrides the slipperiness of every block, can be configured using the `slipperiness` option in `Generic`.
   - Can also be used to disable slipperiness altogether (including for ice blocks and such), by setting to the minimal value.
+- Added `tweakJumpVelocity` tweak, also mostly for fun, which overrides the jump velocity setting of every block. Can be configured using the `jumpVelocity` option in `Generic`.
+  - This option is set to `1.15` by default, which is just enough to allow jumping over fences, walls, etc.
 - Added `disableEntityCollisions` yeet, which disables entity collisions. You can still push other entities, but they can't push you.
 - Added `disableKnockback` yeet, which disables taking knockback. May not work on servers.
 - Added `disableFogModifiers` yeet, which disables all fog modifiers (water, lava, powdered snow, darkness, etc.).
