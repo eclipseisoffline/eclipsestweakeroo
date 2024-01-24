@@ -28,6 +28,9 @@ public class AdditionalFeatureToggle {
             "",
             "Overrides every block's jump velocity. Can be configured in General. Also mostly for fun",
             "Jump velocity tweak");
+    public static final FeatureToggle TWEAK_DURABILITY_CHECK = newToggle("tweakDurabilityCheck", false,
+            false, "", "Adds a durability check, which displays a message when your armor or the item you're currently using is low on durability. Can also disable using items low on durability by configuring in General",
+            "Durability check tweak");
 
     private static FeatureToggle newToggle(String name, boolean defaultValue, boolean singlePlayer,
             String defaultHotkey, String comment, String prettyName) {

@@ -10,6 +10,7 @@
     "EntityRendererMixin",
     "FeatureToggleCreator",
     "InputHandlerMixin",
+    "ItemStackMixin",
     "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "MessageHandlerMixin",
