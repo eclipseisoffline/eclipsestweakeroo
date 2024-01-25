@@ -47,7 +47,7 @@ public class FancyName {
             (livingEntity, playerListEntry) -> GAMEMODE_TEXT.get(playerListEntry.getGameMode()),
             "ping", (livingEntity, playerListEntry) -> getPingText(playerListEntry.getLatency()),
             "health", (livingEntity, playerListEntry) -> MutableText.of(
-                            new LiteralTextContent(String.valueOf(Math.floor(livingEntity.getHealth()))))
+                            new LiteralTextContent(String.valueOf(Math.ceil(livingEntity.getHealth()))))
                     .setStyle(Style.EMPTY.withColor(Formatting.RED)),
             "uuid", (livingEntity, playerListEntry) -> {
                 if (livingEntity != null) {
