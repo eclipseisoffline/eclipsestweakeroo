@@ -9,9 +9,52 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffectUtil;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 public class EclipsesTweakerooUtil {
+    private static final Map<StatusEffect, Formatting> EFFECT_COLOURS = Map.ofEntries(
+            Map.entry(StatusEffects.SPEED, Formatting.WHITE),
+            Map.entry(StatusEffects.SLOWNESS, Formatting.DARK_GRAY),
+            Map.entry(StatusEffects.HASTE, Formatting.GOLD),
+            Map.entry(StatusEffects.MINING_FATIGUE, Formatting.GRAY),
+            Map.entry(StatusEffects.STRENGTH, Formatting.DARK_RED),
+            Map.entry(StatusEffects.JUMP_BOOST, Formatting.DARK_AQUA),
+            Map.entry(StatusEffects.NAUSEA, Formatting.DARK_GREEN),
+            Map.entry(StatusEffects.REGENERATION, Formatting.RED),
+            Map.entry(StatusEffects.RESISTANCE, Formatting.GRAY),
+            Map.entry(StatusEffects.FIRE_RESISTANCE, Formatting.GOLD),
+            Map.entry(StatusEffects.WATER_BREATHING, Formatting.BLUE),
+            Map.entry(StatusEffects.INVISIBILITY, Formatting.WHITE),
+            Map.entry(StatusEffects.BLINDNESS, Formatting.DARK_GRAY),
+            Map.entry(StatusEffects.NIGHT_VISION, Formatting.BLUE),
+            Map.entry(StatusEffects.HUNGER, Formatting.YELLOW),
+            Map.entry(StatusEffects.WEAKNESS, Formatting.GRAY),
+            Map.entry(StatusEffects.POISON, Formatting.GREEN),
+            Map.entry(StatusEffects.WITHER, Formatting.DARK_GRAY),
+            Map.entry(StatusEffects.HEALTH_BOOST, Formatting.RED),
+            Map.entry(StatusEffects.ABSORPTION, Formatting.AQUA),
+            Map.entry(StatusEffects.SATURATION, Formatting.RED),
+            Map.entry(StatusEffects.GLOWING, Formatting.WHITE),
+            Map.entry(StatusEffects.LEVITATION, Formatting.WHITE),
+            Map.entry(StatusEffects.LUCK, Formatting.GREEN),
+            Map.entry(StatusEffects.UNLUCK, Formatting.DARK_RED),
+            Map.entry(StatusEffects.SLOW_FALLING, Formatting.GRAY),
+            Map.entry(StatusEffects.CONDUIT_POWER, Formatting.BLUE),
+            Map.entry(StatusEffects.DOLPHINS_GRACE, Formatting.BLUE),
+            Map.entry(StatusEffects.BAD_OMEN, Formatting.GRAY),
+            Map.entry(StatusEffects.HERO_OF_THE_VILLAGE, Formatting.GREEN),
+            Map.entry(StatusEffects.DARKNESS, Formatting.DARK_GRAY)
+    );
 
     private EclipsesTweakerooUtil() {
     }
@@ -84,5 +127,13 @@ public class EclipsesTweakerooUtil {
         }
         InfoUtils.showGuiOrInGameMessage(MessageType.WARNING, itemStack.getName().getString() + " is at low durability! "
                 + (itemStack.getMaxDamage() - itemStack.getDamage()) + "/" + itemStack.getMaxDamage());
+    }
+
+    public static Text getDurationTextWithStyle(StatusEffectInstance effect) {
+        assert MinecraftClient.getInstance().world != null;
+        MutableText durationText = (MutableText) StatusEffectUtil.getDurationText(effect,
+                1, MinecraftClient.getInstance().world.getTickManager().getTickRate());
+        durationText.setStyle(Style.EMPTY.withColor(EFFECT_COLOURS.getOrDefault(effect.getEffectType(), Formatting.WHITE)));
+        return durationText;
     }
 }
