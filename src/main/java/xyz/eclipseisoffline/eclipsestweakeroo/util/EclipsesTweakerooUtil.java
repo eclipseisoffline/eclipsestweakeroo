@@ -2,11 +2,14 @@ package xyz.eclipseisoffline.eclipsestweakeroo.util;
 
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IHotkeyTogglable;
+import fi.dy.masa.malilib.gui.Message.MessageType;
+import fi.dy.masa.malilib.util.InfoUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.item.ItemStack;
 
 public class EclipsesTweakerooUtil {
 
@@ -71,5 +74,15 @@ public class EclipsesTweakerooUtil {
         }
 
         return options;
+    }
+
+    public static void showLowDurabilityWarning(ItemStack itemStack, boolean actionBar) {
+        if (actionBar) {
+            InfoUtils.showGuiOrActionBarMessage(MessageType.WARNING, itemStack.getName().getString() + " is at low durability! "
+                    + (itemStack.getMaxDamage() - itemStack.getDamage()) + "/" + itemStack.getMaxDamage());
+            return;
+        }
+        InfoUtils.showGuiOrInGameMessage(MessageType.WARNING, itemStack.getName().getString() + " is at low durability! "
+                + (itemStack.getMaxDamage() - itemStack.getDamage()) + "/" + itemStack.getMaxDamage());
     }
 }
