@@ -34,4 +34,6 @@ public class AdditionalGenericConfig {
             1.15, 0.5, 5.0, "Defines the jump velocity override when using tweakJumpVelocity");
     public static final ConfigBoolean TWEAK_DURABILITY_PREVENT_USE = new ConfigBoolean("durabilityCheckPreventUse",
             false, "Prevents using items when they're about to run out if tweakDurabilityCheck is enabled");
+    public static final ConfigBoolean COMMAND_ONLY_ADULT_PETS = new ConfigBoolean("commandOnlyAdultPets", false,
+            "Target only adult pets with sitDownNearbyPets and standUpNearbyPets hotkeys");
 }
