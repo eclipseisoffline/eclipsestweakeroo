@@ -22,6 +22,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class EclipsesTweakerooUtil {
+
     private static final Map<StatusEffect, Formatting> EFFECT_COLOURS = Map.ofEntries(
             Map.entry(StatusEffects.SPEED, Formatting.WHITE),
             Map.entry(StatusEffects.SLOWNESS, Formatting.DARK_GRAY),
@@ -121,19 +122,24 @@ public class EclipsesTweakerooUtil {
 
     public static void showLowDurabilityWarning(ItemStack itemStack, boolean actionBar) {
         if (actionBar) {
-            InfoUtils.showGuiOrActionBarMessage(MessageType.WARNING, itemStack.getName().getString() + " is at low durability! "
-                    + (itemStack.getMaxDamage() - itemStack.getDamage()) + "/" + itemStack.getMaxDamage());
+            InfoUtils.showGuiOrActionBarMessage(MessageType.WARNING,
+                    itemStack.getName().getString() + " is at low durability! "
+                            + (itemStack.getMaxDamage() - itemStack.getDamage()) + "/"
+                            + itemStack.getMaxDamage());
             return;
         }
-        InfoUtils.showGuiOrInGameMessage(MessageType.WARNING, itemStack.getName().getString() + " is at low durability! "
-                + (itemStack.getMaxDamage() - itemStack.getDamage()) + "/" + itemStack.getMaxDamage());
+        InfoUtils.showGuiOrInGameMessage(MessageType.WARNING,
+                itemStack.getName().getString() + " is at low durability! "
+                        + (itemStack.getMaxDamage() - itemStack.getDamage()) + "/"
+                        + itemStack.getMaxDamage());
     }
 
     public static Text getDurationTextWithStyle(StatusEffectInstance effect) {
         assert MinecraftClient.getInstance().world != null;
         MutableText durationText = (MutableText) StatusEffectUtil.getDurationText(effect,
                 1, MinecraftClient.getInstance().world.getTickManager().getTickRate());
-        durationText.setStyle(Style.EMPTY.withColor(EFFECT_COLOURS.getOrDefault(effect.getEffectType(), Formatting.WHITE)));
+        durationText.setStyle(Style.EMPTY.withColor(
+                EFFECT_COLOURS.getOrDefault(effect.getEffectType(), Formatting.WHITE)));
         return durationText;
     }
 }

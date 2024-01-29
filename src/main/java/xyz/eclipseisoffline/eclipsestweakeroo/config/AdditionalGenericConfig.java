@@ -32,8 +32,11 @@ public class AdditionalGenericConfig {
             "Defines how fancy names look. If a placeholder fails, the element will be omitted. Possible placeholders can be found in the README/Modrinth page");
     public static final ConfigDouble TWEAK_JUMP_VELOCITY = new ConfigDouble("jumpVelocity",
             1.15, 0.5, 5.0, "Defines the jump velocity override when using tweakJumpVelocity");
-    public static final ConfigBoolean TWEAK_DURABILITY_PREVENT_USE = new ConfigBoolean("durabilityCheckPreventUse",
-            false, "Prevents using items when they're about to run out if tweakDurabilityCheck is enabled");
-    public static final ConfigBoolean COMMAND_ONLY_ADULT_PETS = new ConfigBoolean("commandOnlyAdultPets", false,
+    public static final ConfigBoolean TWEAK_DURABILITY_PREVENT_USE = new ConfigBoolean(
+            "durabilityCheckPreventUse",
+            false,
+            "Prevents using items when they're about to run out if tweakDurabilityCheck is enabled");
+    public static final ConfigBoolean COMMAND_ONLY_ADULT_PETS = new ConfigBoolean(
+            "commandOnlyAdultPets", false,
             "Target only adult pets with sitDownNearbyPets and standUpNearbyPets hotkeys");
 }

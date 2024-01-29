@@ -13,12 +13,15 @@ import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
+
     @Unique
     private final double[] WARNINGS = {0.85, 0.9, 0.95};
 
-    @Shadow public abstract boolean isDamageable();
+    @Shadow
+    public abstract boolean isDamageable();
 
-    @Shadow public abstract int getDamage();
+    @Shadow
+    public abstract int getDamage();
 
     @Inject(method = "setDamage", at = @At("HEAD"))
     public void damage(int damage, CallbackInfo callbackInfo) {

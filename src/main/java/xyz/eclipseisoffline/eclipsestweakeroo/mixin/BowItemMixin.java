@@ -11,7 +11,8 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 public class BowItemMixin {
 
     @Inject(method = "getPullProgress", at = @At("HEAD"), cancellable = true)
-    private static void getPullProgress(int useTicks, CallbackInfoReturnable<Float> callbackInfoReturnable) {
+    private static void getPullProgress(int useTicks,
+            CallbackInfoReturnable<Float> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_BOW_DRAW_TIME.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(1.0F);
         }

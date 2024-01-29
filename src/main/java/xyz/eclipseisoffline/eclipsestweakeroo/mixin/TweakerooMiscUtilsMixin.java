@@ -16,7 +16,8 @@ public class TweakerooMiscUtilsMixin {
     @Redirect(method = "commandNearbyPets", at = @At(value = "INVOKE", target = "Lfi/dy/masa/tweakeroo/util/MiscUtils;rightClickEntity(Lnet/minecraft/entity/Entity;Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/entity/player/PlayerEntity;)V"))
     private static void rightClickEntity(Entity entity, MinecraftClient mc, PlayerEntity player) {
         assert entity instanceof TameableEntity;
-        if (((TameableEntity) entity).isBaby() && AdditionalGenericConfig.COMMAND_ONLY_ADULT_PETS.getBooleanValue()) {
+        if (((TameableEntity) entity).isBaby()
+                && AdditionalGenericConfig.COMMAND_ONLY_ADULT_PETS.getBooleanValue()) {
             return;
         }
         MiscUtils.rightClickEntity(entity, mc, player);
