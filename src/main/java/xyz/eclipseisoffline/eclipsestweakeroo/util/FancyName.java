@@ -10,8 +10,10 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.AttributeModifierCreator;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.PlainTextContent.Literal;
@@ -85,10 +87,24 @@ public class FancyName {
                             .getAttributeModifiers(EquipmentSlot.MAINHAND)
                             .get(EntityAttributes.GENERIC_ATTACK_DAMAGE)
                             .forEach((attributeInstance::addTemporaryModifier));
+                    livingEntity.getActiveStatusEffects().forEach((statusEffect, instance) -> {
+                        AttributeModifierCreator attackModifier = statusEffect.getAttributeModifiers().get(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+                        if (attackModifier != null) {
+                            attributeInstance.addTemporaryModifier(attackModifier.createAttributeModifier(instance.getAmplifier()));
+                        }
+                    });
 
-                    float attackDamage = (float) (attributeInstance.getValue() + EnchantmentHelper.getAttackDamage(livingEntity.getStackInHand(Hand.MAIN_HAND), EntityGroup.DEFAULT));
-                    return MutableText.of(new Literal(String.valueOf(attackDamage)))
-                            .setStyle(Style.EMPTY.withColor(Formatting.RED));
+                    float base = (float) attributeInstance.getValue();
+                    float enchantments = EnchantmentHelper.getAttackDamage(livingEntity.getStackInHand(Hand.MAIN_HAND), EntityGroup.DEFAULT);
+                    float criticalDamage = (float) (base * 1.5) + enchantments;
+                    float attackDamage = base + enchantments;
+
+                    MutableText attack = MutableText.of(new Literal(String.valueOf(attackDamage)))
+                            .setStyle(Style.EMPTY.withColor(Formatting.YELLOW));
+                    if (livingEntity instanceof PlayerEntity && AdditionalGenericConfig.ATTACK_PLACEHOLDER_CRITICAL.getBooleanValue()) {
+                        attack.append(MutableText.of(new Literal("+" + (criticalDamage - attackDamage))).setStyle(Style.EMPTY.withColor(Formatting.RED)));
+                    }
+                    return attack;
                 } catch (IllegalArgumentException exception) {
                     return null;
                 }
@@ -97,7 +113,7 @@ public class FancyName {
                 try {
                     return MutableText.of(new Literal(String.valueOf(
                                     livingEntity.getAttributeValue(EntityAttributes.GENERIC_ARMOR))))
-                            .setStyle(Style.EMPTY.withColor(Formatting.RED));
+                            .setStyle(Style.EMPTY.withColor(Formatting.YELLOW));
                 } catch (IllegalArgumentException exception) {
                     return null;
                 }

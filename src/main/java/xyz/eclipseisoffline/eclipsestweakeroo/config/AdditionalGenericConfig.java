@@ -39,4 +39,6 @@ public class AdditionalGenericConfig {
     public static final ConfigBoolean COMMAND_ONLY_ADULT_PETS = new ConfigBoolean(
             "commandOnlyAdultPets", false,
             "Target only adult pets with sitDownNearbyPets and standUpNearbyPets hotkeys");
+    public static final ConfigBoolean ATTACK_PLACEHOLDER_CRITICAL = new ConfigBoolean("attackPlaceholderShowCritical",
+            true, "Show critical hit damage values for players\nin the attack fany name placeholder");
 }
