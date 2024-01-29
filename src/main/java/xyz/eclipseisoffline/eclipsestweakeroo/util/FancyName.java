@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityGroup;
@@ -122,6 +123,14 @@ public class FancyName {
                     return MutableText.of(new Literal(String.valueOf(player.experienceLevel))).setStyle(Style.EMPTY.withColor(Formatting.GREEN));
                 }
                 return null;
+            }),
+            Map.entry("distance", (livingEntity, playerListEntry) -> {
+                PlayerEntity player = MinecraftClient.getInstance().player;
+                assert player != null;
+                if (player.equals(livingEntity)) {
+                    return null;
+                }
+                return MutableText.of(new Literal(String.valueOf(Math.ceil(livingEntity.distanceTo(player))))).setStyle(Style.EMPTY.withColor(Formatting.RED));
             })
     );
 
