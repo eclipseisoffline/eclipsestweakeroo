@@ -37,8 +37,8 @@ public class FancyName {
                     Formatting.BLUE))
     );
 
-    private static final Map<String, BiFunction<LivingEntity, PlayerListEntry, Text>> PLACEHOLDERS = Map.of(
-            "name", (livingEntity, playerListEntry) -> {
+    private static final Map<String, BiFunction<LivingEntity, PlayerListEntry, Text>> PLACEHOLDERS = Map.ofEntries(
+            Map.entry("name", (livingEntity, playerListEntry) -> {
                 if (livingEntity != null) {
                     return livingEntity.getDisplayName();
                 } else if (playerListEntry != null) {
@@ -46,22 +46,21 @@ public class FancyName {
                             Text.literal(playerListEntry.getProfile().getName()));
                 }
                 return null;
-            },
-            "gamemode",
-            (livingEntity, playerListEntry) -> GAMEMODE_TEXT.get(playerListEntry.getGameMode()),
-            "ping", (livingEntity, playerListEntry) -> getPingText(playerListEntry.getLatency()),
-            "health", (livingEntity, playerListEntry) -> MutableText.of(
+            }),
+            Map.entry("gamemode", (livingEntity, playerListEntry) -> GAMEMODE_TEXT.get(playerListEntry.getGameMode())),
+            Map.entry("ping", (livingEntity, playerListEntry) -> getPingText(playerListEntry.getLatency())),
+            Map.entry("health", (livingEntity, playerListEntry) -> MutableText.of(
                             new Literal(String.valueOf(Math.ceil(livingEntity.getHealth()))))
-                    .setStyle(Style.EMPTY.withColor(Formatting.RED)),
-            "uuid", (livingEntity, playerListEntry) -> {
+                    .setStyle(Style.EMPTY.withColor(Formatting.RED))),
+            Map.entry("uuid", (livingEntity, playerListEntry) -> {
                 if (livingEntity != null) {
                     return Text.of(livingEntity.getUuidAsString());
                 } else if (playerListEntry != null) {
                     return Text.of(playerListEntry.getProfile().getId().toString());
                 }
                 return null;
-            },
-            "team", (livingEntity, playerListEntry) -> {
+            }),
+            Map.entry("team", (livingEntity, playerListEntry) -> {
                 if (livingEntity != null) {
                     return Objects.requireNonNull(livingEntity.getScoreboardTeam())
                             .getDisplayName();
@@ -70,13 +69,13 @@ public class FancyName {
                             .getDisplayName();
                 }
                 return null;
-            },
-            "key", (livingEntity, playerListEntry) -> playerListEntry.hasPublicKey()
+            }),
+            Map.entry("key", (livingEntity, playerListEntry) -> playerListEntry.hasPublicKey()
                     ? MutableText.of(new Literal("KEY"))
                     .setStyle(Style.EMPTY.withColor(Formatting.GREEN))
                     : MutableText.of(new Literal("NO KEY"))
-                            .setStyle(Style.EMPTY.withColor(Formatting.RED)),
-            "attack", (livingEntity, playerListEntry) -> {
+                            .setStyle(Style.EMPTY.withColor(Formatting.RED))),
+            Map.entry("attack", (livingEntity, playerListEntry) -> {
                 try {
                     EntityAttributeInstance attributeInstance = new EntityAttributeInstance(
                             EntityAttributes.GENERIC_ATTACK_DAMAGE, (instance) -> {
@@ -108,8 +107,8 @@ public class FancyName {
                 } catch (IllegalArgumentException exception) {
                     return null;
                 }
-            },
-            "armor", (livingEntity, playerListEntry) -> {
+            }),
+            Map.entry("armor", (livingEntity, playerListEntry) -> {
                 try {
                     return MutableText.of(new Literal(String.valueOf(
                                     livingEntity.getAttributeValue(EntityAttributes.GENERIC_ARMOR))))
@@ -117,7 +116,13 @@ public class FancyName {
                 } catch (IllegalArgumentException exception) {
                     return null;
                 }
-            }
+            }),
+            Map.entry("xp", (livingEntity, playerListEntry) -> {
+                if (livingEntity instanceof PlayerEntity player) {
+                    return MutableText.of(new Literal(String.valueOf(player.experienceLevel))).setStyle(Style.EMPTY.withColor(Formatting.GREEN));
+                }
+                return null;
+            })
     );
 
     public static Text applyFancyName(LivingEntity entity, PlayerListEntry player) {
