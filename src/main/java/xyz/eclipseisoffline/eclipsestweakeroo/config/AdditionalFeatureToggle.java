@@ -37,6 +37,9 @@ public class AdditionalFeatureToggle {
     public static final FeatureToggle TWEAK_STATUS_EFFECT = newToggle("tweakStatusEffectHud", false,
             false, "", "Modifies the status effect HUD to show effect duration.",
             "Status effect HUD tweak");
+    public static final FeatureToggle TWEAK_AUTO_RECONNECT = newToggle("tweakAutoReconnect", false,
+            false, "",
+            "Automatically reconnects on server disconnect", "Auto reconnect tweak");
 
     private static FeatureToggle newToggle(String name, boolean defaultValue, boolean singlePlayer,
             String defaultHotkey, String comment, String prettyName) {

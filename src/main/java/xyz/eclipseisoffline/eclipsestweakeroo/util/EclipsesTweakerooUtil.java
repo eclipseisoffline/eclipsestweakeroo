@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ServerAddress;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectUtil;
@@ -55,6 +57,8 @@ public class EclipsesTweakerooUtil {
             Map.entry(StatusEffects.HERO_OF_THE_VILLAGE, Formatting.GREEN),
             Map.entry(StatusEffects.DARKNESS, Formatting.DARK_GRAY)
     );
+    private static ServerAddress lastConnection = null;
+    private static ServerInfo lastConnectionInfo = null;
 
     private EclipsesTweakerooUtil() {
     }
@@ -140,5 +144,21 @@ public class EclipsesTweakerooUtil {
         durationText.formatted(
                 EFFECT_COLOURS.getOrDefault(effect.getEffectType(), Formatting.WHITE));
         return durationText;
+    }
+
+    public static ServerAddress getLastConnection() {
+        return lastConnection;
+    }
+
+    public static void setLastConnection(ServerAddress lastConnection) {
+        EclipsesTweakerooUtil.lastConnection = lastConnection;
+    }
+
+    public static ServerInfo getLastConnectionInfo() {
+        return lastConnectionInfo;
+    }
+
+    public static void setLastConnectionInfo(ServerInfo lastConnectionInfo) {
+        EclipsesTweakerooUtil.lastConnectionInfo = lastConnectionInfo;
     }
 }

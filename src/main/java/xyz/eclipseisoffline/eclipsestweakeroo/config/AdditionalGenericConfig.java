@@ -3,6 +3,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.config;
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.config.options.ConfigDouble;
+import fi.dy.masa.malilib.config.options.ConfigInteger;
 import fi.dy.masa.malilib.config.options.ConfigStringList;
 import net.minecraft.block.Blocks;
 
@@ -39,6 +40,11 @@ public class AdditionalGenericConfig {
     public static final ConfigBoolean COMMAND_ONLY_ADULT_PETS = new ConfigBoolean(
             "commandOnlyAdultPets", false,
             "Target only adult pets with sitDownNearbyPets and standUpNearbyPets hotkeys");
-    public static final ConfigBoolean ATTACK_PLACEHOLDER_CRITICAL = new ConfigBoolean("attackPlaceholderShowCritical",
-            true, "Show critical hit damage values for players\nin the attack fany name placeholder");
+    public static final ConfigBoolean ATTACK_PLACEHOLDER_CRITICAL = new ConfigBoolean(
+            "attackPlaceholderShowCritical",
+            true,
+            "Show critical hit damage values for players\nin the attack fany name placeholder");
+    public static final ConfigInteger RECONNECT_TIME = new ConfigInteger("autoReconnectTime", 5000,
+            100, 15000,
+            "The time to wait before reconnecting with tweakAutoReconnect, in milliseconds");
 }
