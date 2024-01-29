@@ -17,7 +17,6 @@ import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -138,8 +137,8 @@ public class EclipsesTweakerooUtil {
         assert MinecraftClient.getInstance().world != null;
         MutableText durationText = (MutableText) StatusEffectUtil.getDurationText(effect,
                 1, MinecraftClient.getInstance().world.getTickManager().getTickRate());
-        durationText.setStyle(Style.EMPTY.withColor(
-                EFFECT_COLOURS.getOrDefault(effect.getEffectType(), Formatting.WHITE)));
+        durationText.formatted(
+                EFFECT_COLOURS.getOrDefault(effect.getEffectType(), Formatting.WHITE));
         return durationText;
     }
 }

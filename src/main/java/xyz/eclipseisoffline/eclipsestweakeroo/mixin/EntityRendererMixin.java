@@ -8,7 +8,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,12 +23,10 @@ public class EntityRendererMixin {
                     target = "Lnet/minecraft/client/render/entity/EntityRenderer;renderLabelIfPresent(Lnet/minecraft/entity/Entity;Lnet/minecraft/text/Text;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"), index = 1)
     public Text getDisplayName(Entity entity, Text text, MatrixStack matrices,
             VertexConsumerProvider vertexConsumers, int light) {
-        MutableText name = (MutableText) text;
-
         if (entity instanceof PlayerEntity) {
             if (AdditionalFeatureToggle.TWEAK_PLAYER_NAME.getBooleanValue()) {
                 if (MinecraftClient.getInstance().getNetworkHandler() == null) {
-                    return name;
+                    return text;
                 }
 
                 PlayerListEntry playerListEntry = MinecraftClient.getInstance().getNetworkHandler()
@@ -41,6 +38,6 @@ public class EntityRendererMixin {
             return FancyName.applyFancyName((LivingEntity) entity, null);
         }
 
-        return name;
+        return text;
     }
 }

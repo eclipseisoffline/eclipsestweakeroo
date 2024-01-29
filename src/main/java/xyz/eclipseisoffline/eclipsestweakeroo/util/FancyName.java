@@ -18,7 +18,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.PlainTextContent.Literal;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -28,14 +27,10 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 public class FancyName {
 
     private static final Map<GameMode, MutableText> GAMEMODE_TEXT = Map.of(
-            GameMode.SURVIVAL, MutableText.of(new Literal("S")).setStyle(Style.EMPTY.withColor(
-                    Formatting.RED)),
-            GameMode.CREATIVE, MutableText.of(new Literal("C")).setStyle(Style.EMPTY.withColor(
-                    Formatting.GREEN)),
-            GameMode.ADVENTURE, MutableText.of(new Literal("A")).setStyle(Style.EMPTY.withColor(
-                    Formatting.YELLOW)),
-            GameMode.SPECTATOR, MutableText.of(new Literal("SP")).setStyle(Style.EMPTY.withColor(
-                    Formatting.BLUE))
+            GameMode.SURVIVAL, Text.literal("S").formatted(Formatting.RED),
+            GameMode.CREATIVE, Text.literal("C").formatted(Formatting.GREEN),
+            GameMode.ADVENTURE, Text.literal("A").formatted(Formatting.YELLOW),
+            GameMode.SPECTATOR, Text.literal("SP").formatted(Formatting.BLUE)
     );
 
     private static final Map<String, BiFunction<LivingEntity, PlayerListEntry, Text>> PLACEHOLDERS = Map.ofEntries(
@@ -44,15 +39,17 @@ public class FancyName {
                     return livingEntity.getDisplayName();
                 } else if (playerListEntry != null) {
                     return Team.decorateName(playerListEntry.getScoreboardTeam(),
-                            Text.literal(playerListEntry.getProfile().getName()));
+                            Text.of(playerListEntry.getProfile().getName()));
                 }
                 return null;
             }),
-            Map.entry("gamemode", (livingEntity, playerListEntry) -> GAMEMODE_TEXT.get(playerListEntry.getGameMode())),
-            Map.entry("ping", (livingEntity, playerListEntry) -> getPingText(playerListEntry.getLatency())),
-            Map.entry("health", (livingEntity, playerListEntry) -> MutableText.of(
-                            new Literal(String.valueOf(Math.ceil(livingEntity.getHealth()))))
-                    .setStyle(Style.EMPTY.withColor(Formatting.RED))),
+            Map.entry("gamemode", (livingEntity, playerListEntry) -> GAMEMODE_TEXT.get(
+                    playerListEntry.getGameMode())),
+            Map.entry("ping",
+                    (livingEntity, playerListEntry) -> getPingText(playerListEntry.getLatency())),
+            Map.entry("health", (livingEntity, playerListEntry) -> Text.literal(
+                            String.valueOf(Math.ceil(livingEntity.getHealth())))
+                    .formatted(Formatting.RED)),
             Map.entry("uuid", (livingEntity, playerListEntry) -> {
                 if (livingEntity != null) {
                     return Text.of(livingEntity.getUuidAsString());
@@ -72,10 +69,8 @@ public class FancyName {
                 return null;
             }),
             Map.entry("key", (livingEntity, playerListEntry) -> playerListEntry.hasPublicKey()
-                    ? MutableText.of(new Literal("KEY"))
-                    .setStyle(Style.EMPTY.withColor(Formatting.GREEN))
-                    : MutableText.of(new Literal("NO KEY"))
-                            .setStyle(Style.EMPTY.withColor(Formatting.RED))),
+                    ? Text.literal("KEY").formatted(Formatting.GREEN)
+                    : Text.literal("NO KEY").formatted(Formatting.RED)),
             Map.entry("attack", (livingEntity, playerListEntry) -> {
                 try {
                     EntityAttributeInstance attributeInstance = new EntityAttributeInstance(
@@ -88,21 +83,27 @@ public class FancyName {
                             .get(EntityAttributes.GENERIC_ATTACK_DAMAGE)
                             .forEach((attributeInstance::addTemporaryModifier));
                     livingEntity.getActiveStatusEffects().forEach((statusEffect, instance) -> {
-                        AttributeModifierCreator attackModifier = statusEffect.getAttributeModifiers().get(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+                        AttributeModifierCreator attackModifier = statusEffect.getAttributeModifiers()
+                                .get(EntityAttributes.GENERIC_ATTACK_DAMAGE);
                         if (attackModifier != null) {
-                            attributeInstance.addTemporaryModifier(attackModifier.createAttributeModifier(instance.getAmplifier()));
+                            attributeInstance.addTemporaryModifier(
+                                    attackModifier.createAttributeModifier(
+                                            instance.getAmplifier()));
                         }
                     });
 
                     float base = (float) attributeInstance.getValue();
-                    float enchantments = EnchantmentHelper.getAttackDamage(livingEntity.getStackInHand(Hand.MAIN_HAND), EntityGroup.DEFAULT);
+                    float enchantments = EnchantmentHelper.getAttackDamage(
+                            livingEntity.getStackInHand(Hand.MAIN_HAND), EntityGroup.DEFAULT);
                     float criticalDamage = (float) (base * 1.5) + enchantments;
                     float attackDamage = base + enchantments;
 
-                    MutableText attack = MutableText.of(new Literal(String.valueOf(attackDamage)))
-                            .setStyle(Style.EMPTY.withColor(Formatting.YELLOW));
-                    if (livingEntity instanceof PlayerEntity && AdditionalGenericConfig.ATTACK_PLACEHOLDER_CRITICAL.getBooleanValue()) {
-                        attack.append(MutableText.of(new Literal("+" + (criticalDamage - attackDamage))).setStyle(Style.EMPTY.withColor(Formatting.RED)));
+                    MutableText attack = Text.literal(String.valueOf(attackDamage))
+                            .formatted(Formatting.YELLOW);
+                    if (livingEntity instanceof PlayerEntity
+                            && AdditionalGenericConfig.ATTACK_PLACEHOLDER_CRITICAL.getBooleanValue()) {
+                        attack.append(Text.literal("+" + (criticalDamage - attackDamage))
+                                .formatted(Formatting.RED));
                     }
                     return attack;
                 } catch (IllegalArgumentException exception) {
@@ -111,16 +112,17 @@ public class FancyName {
             }),
             Map.entry("armor", (livingEntity, playerListEntry) -> {
                 try {
-                    return MutableText.of(new Literal(String.valueOf(
-                                    livingEntity.getAttributeValue(EntityAttributes.GENERIC_ARMOR))))
-                            .setStyle(Style.EMPTY.withColor(Formatting.YELLOW));
+                    return Text.literal(String.valueOf(
+                                    livingEntity.getAttributeValue(EntityAttributes.GENERIC_ARMOR)))
+                            .formatted(Formatting.YELLOW);
                 } catch (IllegalArgumentException exception) {
                     return null;
                 }
             }),
             Map.entry("xp", (livingEntity, playerListEntry) -> {
                 if (livingEntity instanceof PlayerEntity player) {
-                    return MutableText.of(new Literal(String.valueOf(player.experienceLevel))).setStyle(Style.EMPTY.withColor(Formatting.GREEN));
+                    return Text.literal(String.valueOf(player.experienceLevel))
+                            .formatted(Formatting.GREEN);
                 }
                 return null;
             }),
@@ -130,7 +132,8 @@ public class FancyName {
                 if (player.equals(livingEntity)) {
                     return null;
                 }
-                return MutableText.of(new Literal(String.valueOf(Math.ceil(livingEntity.distanceTo(player))))).setStyle(Style.EMPTY.withColor(Formatting.RED));
+                return Text.literal(String.valueOf(Math.ceil(livingEntity.distanceTo(player))))
+                        .formatted(Formatting.RED);
             })
     );
 
@@ -168,22 +171,22 @@ public class FancyName {
     }
 
     private static Text getPingText(int ping) {
-        return MutableText.of(new Literal(ping + "ms")).setStyle(getPingStyle(ping));
+        return Text.literal(ping + "ms").formatted(getPingColor(ping));
     }
 
-    private static Style getPingStyle(int ping) {
+    private static Formatting getPingColor(int ping) {
         if (ping <= 0) {
-            return Style.EMPTY.withColor(Formatting.DARK_GRAY);
+            return Formatting.DARK_GRAY;
         } else if (ping <= 150) {
-            return Style.EMPTY.withColor(Formatting.GREEN);
+            return Formatting.GREEN;
         } else if (ping <= 300) {
-            return Style.EMPTY.withColor(Formatting.YELLOW);
+            return Formatting.YELLOW;
         } else if (ping <= 600) {
-            return Style.EMPTY.withColor(Formatting.GOLD);
+            return Formatting.GOLD;
         } else if (ping <= 1000) {
-            return Style.EMPTY.withColor(Formatting.RED);
+            return Formatting.RED;
         }
 
-        return Style.EMPTY.withColor(Formatting.DARK_RED);
+        return Formatting.DARK_RED;
     }
 }
