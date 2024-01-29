@@ -130,6 +130,9 @@ public class FancyName {
         List<Text> elements = new ArrayList<>();
 
         for (String element : AdditionalGenericConfig.FANCY_NAME_ELEMENTS.getStrings()) {
+            if (element.isEmpty()) {
+                continue;
+            }
             Text elementValue = Text.of(element);
             if (element.startsWith("{")) {
                 String placeholder = element.replace("{", "").replace("}", "");
