@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
@@ -84,7 +86,8 @@ public class FancyName {
                             .get(EntityAttributes.GENERIC_ATTACK_DAMAGE)
                             .forEach((attributeInstance::addTemporaryModifier));
 
-                    return MutableText.of(new Literal(String.valueOf(attributeInstance.getValue())))
+                    float attackDamage = (float) (attributeInstance.getValue() + EnchantmentHelper.getAttackDamage(livingEntity.getStackInHand(Hand.MAIN_HAND), EntityGroup.DEFAULT));
+                    return MutableText.of(new Literal(String.valueOf(attackDamage)))
                             .setStyle(Style.EMPTY.withColor(Formatting.RED));
                 } catch (IllegalArgumentException exception) {
                     return null;
