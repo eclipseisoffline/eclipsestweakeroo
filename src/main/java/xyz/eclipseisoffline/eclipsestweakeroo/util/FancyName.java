@@ -114,7 +114,7 @@ public class FancyName {
                 try {
                     return Text.literal(String.valueOf(
                                     livingEntity.getAttributeValue(EntityAttributes.GENERIC_ARMOR)))
-                            .formatted(Formatting.YELLOW);
+                            .formatted(Formatting.GOLD);
                 } catch (IllegalArgumentException exception) {
                     return null;
                 }
@@ -126,7 +126,7 @@ public class FancyName {
                     return null;
                 }
                 return Text.literal(String.valueOf(Math.ceil(livingEntity.distanceTo(player))))
-                        .formatted(Formatting.RED);
+                        .formatted(Formatting.BLUE);
             })
     );
 
