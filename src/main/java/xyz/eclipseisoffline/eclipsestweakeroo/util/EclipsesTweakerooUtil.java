@@ -140,7 +140,7 @@ public class EclipsesTweakerooUtil {
 
     public static Text getDurationTextWithStyle(StatusEffectInstance effect) {
         assert MinecraftClient.getInstance().world != null;
-        MutableText durationText = (MutableText) StatusEffectUtil.getDurationText(effect, 1);
+        MutableText durationText = (MutableText) StatusEffectUtil.durationToString(effect, 1);
         durationText.formatted(
                 EFFECT_COLOURS.getOrDefault(effect.getEffectType(), Formatting.WHITE));
         return durationText;

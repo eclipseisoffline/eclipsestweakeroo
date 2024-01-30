@@ -7,11 +7,10 @@ import net.minecraft.client.gui.screen.DisconnectedScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget.Builder;
-import net.minecraft.client.gui.widget.GridWidget;
+import net.minecraft.client.gui.widget.ButtonWidget.PressAction;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,20 +24,14 @@ import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 @Mixin(DisconnectedScreen.class)
 public abstract class DisconnectedScreenMixin extends Screen {
 
-    @Shadow
-    @Final
-    private static Text TO_MENU_TEXT;
-    @Shadow
-    @Mutable
-    @Final
-    private Text buttonLabel;
-    @Shadow
-    @Mutable
-    @Final
-    private GridWidget grid;
+    @Unique
+    private static final Text TO_MENU_TEXT = Text.translatable("gui.toMenu");
+
     @Shadow
     @Final
     private Screen parent;
+    @Unique
+    private Text buttonLabel = TO_MENU_TEXT;
     @Unique
     private int start;
     @Unique
@@ -51,18 +44,25 @@ public abstract class DisconnectedScreenMixin extends Screen {
     @Shadow
     protected abstract void init();
 
-    @Inject(method = "<init>(Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/text/Text;Lnet/minecraft/text/Text;Lnet/minecraft/text/Text;)V", at = @At("TAIL"))
-    public void constructor(Screen parent, Text title, Text reason, Text buttonLabel,
-            CallbackInfo callbackInfo) {
+    @Inject(method = "<init>", at = @At("TAIL"))
+    public void constructor(Screen parent, Text title, Text reason, CallbackInfo callbackInfo) {
         start = EclipsesTweakerooUtil.milliTime();
     }
 
-    @Redirect(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ButtonWidget$Builder;build()Lnet/minecraft/client/gui/widget/ButtonWidget;"))
-    public ButtonWidget setWidthAndBuild(Builder instance) {
+    @Redirect(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ButtonWidget;builder(Lnet/minecraft/text/Text;Lnet/minecraft/client/gui/widget/ButtonWidget$PressAction;)Lnet/minecraft/client/gui/widget/ButtonWidget$Builder;"))
+    public Builder createBuilderWithCustomMessage(Text message, PressAction onPress) {
         if (AdditionalFeatureToggle.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
-            return instance.width(300).build();
+            return ButtonWidget.builder(buttonLabel, onPress);
         }
-        return instance.build();
+        return ButtonWidget.builder(message, onPress);
+    }
+
+    @Redirect(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ButtonWidget$Builder;dimensions(IIII)Lnet/minecraft/client/gui/widget/ButtonWidget$Builder;"))
+    public Builder expandButtonWidth(Builder instance, int x, int y, int width, int height) {
+        if (AdditionalFeatureToggle.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
+            return instance.dimensions(this.width / 2 - 150, y, 300, height);
+        }
+        return instance.dimensions(x, y, width, height);
     }
 
     @Inject(method = "init", at = @At("TAIL"))
@@ -76,12 +76,10 @@ public abstract class DisconnectedScreenMixin extends Screen {
             if (passed > wait) {
                 ConnectScreen.connect(parent, MinecraftClient.getInstance(),
                         EclipsesTweakerooUtil.getLastConnection(),
-                        EclipsesTweakerooUtil.getLastConnectionInfo(),
-                        false);
+                        EclipsesTweakerooUtil.getLastConnectionInfo());
             }
             DisconnectedScreenMixin.this.buttonLabel = TO_MENU_TEXT.copy()
                     .append(Text.of(" (reconnecting in " + (wait - passed) + "ms)"));
-            grid = new GridWidget();
             clearAndInit();
         }));
         registeredAfterRender = true;
