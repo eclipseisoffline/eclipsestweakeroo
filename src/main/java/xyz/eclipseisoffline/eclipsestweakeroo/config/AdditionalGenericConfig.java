@@ -50,5 +50,5 @@ public class AdditionalGenericConfig {
     public static final ConfigInteger DURABILITY_WARNING_COOLDOWN = new ConfigInteger(
             "durabilityWarningCooldown", 300,
             10, 900,
-            "The time to wait before reshowing a durability warning with tweakDurabilityCheck");
+            "The time to wait before reshowing a durability warning with tweakDurabilityCheck, in seconds");
 }

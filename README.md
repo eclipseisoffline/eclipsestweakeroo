@@ -71,6 +71,6 @@ The following placeholders are available:
 - `{attack}` - replaces with the current value of the `generic.attack_damage` attribute of the mob/player.
   - Shows critical damage addition (players only) as well by default, but can be disabled using the `attackPlaceholderShowCritical` generic option.
 - `{armor}` - replaces with the current value of the `generic.armor` attribute of the mob/player.
-- `{distance}` - shows the distance to the mob/player.
+- `{distance}` - replaces with the distance to the mob/player.
 
 Certain placeholders, like `{healh}`, `{attack}`, etc., may only work in the player list when the player is in render distance range.
