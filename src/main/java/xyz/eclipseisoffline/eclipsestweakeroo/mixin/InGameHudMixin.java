@@ -18,6 +18,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(InGameHud.class)
 public class InGameHudMixin {
+
     @Unique
     private static final int SPACE = 2;
     @Unique
@@ -25,7 +26,8 @@ public class InGameHudMixin {
 
     @Inject(method = "renderStatusEffectOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectInstance;isAmbient()Z"))
     public void drawStatusText(DrawContext context, CallbackInfo callbackInfo,
-            @Local StatusEffectInstance statusEffectInstance, @Local(ordinal = 2) int k, @Local(ordinal = 3) LocalIntRef l) {
+            @Local StatusEffectInstance statusEffectInstance, @Local(ordinal = 2) int k,
+            @Local(ordinal = 3) LocalIntRef l) {
         if (AdditionalFeatureToggle.TWEAK_STATUS_EFFECT.getBooleanValue()) {
             TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
             // Second row
@@ -33,7 +35,8 @@ public class InGameHudMixin {
                 l.set(l.get() + SPACE + renderer.fontHeight);
             }
 
-            Text durationText = EclipsesTweakerooUtil.getDurationTextWithStyle(statusEffectInstance);
+            Text durationText = EclipsesTweakerooUtil.getDurationTextWithStyle(
+                    statusEffectInstance);
             int textWidth = renderer.getWidth(durationText);
             context.drawTextWithShadow(renderer, durationText,
                     k + (SPRITE_SIZE / 2) - (textWidth / 2), l.get() + SPRITE_SIZE + SPACE, -1);
