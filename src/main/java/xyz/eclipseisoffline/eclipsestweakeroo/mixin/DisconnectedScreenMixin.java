@@ -1,7 +1,7 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.DisconnectedScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
@@ -36,11 +36,13 @@ public abstract class DisconnectedScreenMixin extends Screen {
     @Mutable
     @Final
     private DirectionalLayoutWidget grid;
-    @Unique
-    private int start;
     @Shadow
     @Final
     private Screen parent;
+    @Unique
+    private int start;
+    @Unique
+    private boolean registeredAfterRender = false;
 
     protected DisconnectedScreenMixin(Text title) {
         super(title);
@@ -63,12 +65,12 @@ public abstract class DisconnectedScreenMixin extends Screen {
         return instance.build();
     }
 
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-        //noinspection ConstantValue
-        if ((Object) this instanceof DisconnectedScreen
-                && AdditionalFeatureToggle.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
+    @Inject(method = "init", at = @At("TAIL"))
+    public void registerAfterRender(CallbackInfo callbackInfo) {
+        if (registeredAfterRender) {
+            return;
+        }
+        ScreenEvents.afterRender(this).register(((screen, drawContext, mouseX, mouseY, tickDelta) -> {
             int passed = EclipsesTweakerooUtil.milliTime() - start;
             int wait = AdditionalGenericConfig.RECONNECT_TIME.getIntegerValue();
             if (passed > wait) {
@@ -77,10 +79,11 @@ public abstract class DisconnectedScreenMixin extends Screen {
                         EclipsesTweakerooUtil.getLastConnectionInfo(),
                         false);
             }
-            buttonLabel = TO_MENU_TEXT.copy()
+            DisconnectedScreenMixin.this.buttonLabel = TO_MENU_TEXT.copy()
                     .append(Text.of(" (reconnecting in " + (wait - passed) + "ms)"));
             grid = DirectionalLayoutWidget.vertical();
             clearAndInit();
-        }
+        }));
+        registeredAfterRender = true;
     }
 }
