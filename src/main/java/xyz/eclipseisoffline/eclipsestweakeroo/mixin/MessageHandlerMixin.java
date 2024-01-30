@@ -17,6 +17,7 @@ import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -43,19 +44,7 @@ public abstract class MessageHandlerMixin {
             GameProfile sender, boolean onlyShowSecureChat, Instant receptionTimestamp,
             CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         if (AdditionalFeatureToggle.TWEAK_CHAT_MESSAGES.getBooleanValue()) {
-            String full = decorated.getString();
-            String messageBody = "";
-            for (String separator : AdditionalListsConfig.CHAT_MESSAGE_SEPARATORS.getStrings()) {
-                String[] split = full.split(separator);
-                if (split.length == 1) {
-                    continue;
-                }
-
-                String potentialMessageBody = split[split.length - 1];
-                if (potentialMessageBody.length() > messageBody.length()) {
-                    messageBody = potentialMessageBody;
-                }
-            }
+            String messageBody = getMessageBody(decorated);
 
             MessageTrustStatus messageTrustStatus = getStatus(message, decorated,
                     receptionTimestamp);
@@ -66,9 +55,9 @@ public abstract class MessageHandlerMixin {
             PlayerListEntry playerEntry = client.getNetworkHandler()
                     .getPlayerListEntry(sender.getId());
             if (playerEntry != null) {
-                MutableText newMessage = (MutableText) Text.of("<");
+                MutableText newMessage = Text.literal("<");
                 newMessage.append(Team.decorateName(playerEntry.getScoreboardTeam(),
-                        Text.literal(sender.getName())));
+                        Text.of(sender.getName())));
                 newMessage.append(Text.of("> "));
                 newMessage.append(Text.of(messageBody));
 
@@ -88,5 +77,23 @@ public abstract class MessageHandlerMixin {
             return;
         }
         instance.addMessage(message, signature, indicator);
+    }
+
+    @Unique
+    private static String getMessageBody(Text decorated) {
+        String full = decorated.getString();
+        String messageBody = "";
+        for (String separator : AdditionalListsConfig.CHAT_MESSAGE_SEPARATORS.getStrings()) {
+            String[] split = full.split(separator);
+            if (split.length == 1) {
+                continue;
+            }
+
+            String potentialMessageBody = split[split.length - 1];
+            if (potentialMessageBody.length() > messageBody.length()) {
+                messageBody = potentialMessageBody;
+            }
+        }
+        return messageBody;
     }
 }

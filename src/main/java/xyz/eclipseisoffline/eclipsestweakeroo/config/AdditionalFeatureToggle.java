@@ -6,7 +6,8 @@ import xyz.eclipseisoffline.eclipsestweakeroo.mixin.FeatureToggleCreator;
 public class AdditionalFeatureToggle {
 
     public static final FeatureToggle TWEAK_PLAYER_LIST = newToggle("tweakPlayerList", false, false,
-            "", "Makes various changes to the player list.\nCan be configured in General", "Player list tweak");
+            "", "Makes various changes to the player list.\nCan be configured in General",
+            "Player list tweak");
     public static final FeatureToggle TWEAK_PLAYER_NAME = newToggle("tweakPlayerNames", false,
             false,
             "", "Uses fancy names for rending the player names",
@@ -28,11 +29,17 @@ public class AdditionalFeatureToggle {
             "",
             "Overrides every block's jump velocity. Can be configured in General. Also mostly for fun",
             "Jump velocity tweak");
-    public static final FeatureToggle TWEAK_DURABILITY_CHECK = newToggle("tweakDurabilityCheck", false,
-            false, "", "Adds a durability check, which displays a message when\nyour armor or the item you're currently using is low on durability.\nCan also disable using items low on durability by configuring in General",
+    public static final FeatureToggle TWEAK_DURABILITY_CHECK = newToggle("tweakDurabilityCheck",
+            false,
+            false, "",
+            "Adds a durability check, which displays a message when\nyour armor or the item you're currently using is low on durability.\nCan also disable using items low on durability by configuring in General",
             "Durability check tweak");
     public static final FeatureToggle TWEAK_STATUS_EFFECT = newToggle("tweakStatusEffectHud", false,
-            false, "", "Modifies the status effect HUD to show effect duration.", "Status effect HUD tweak");
+            false, "", "Modifies the status effect HUD to show effect duration.",
+            "Status effect HUD tweak");
+    public static final FeatureToggle TWEAK_AUTO_RECONNECT = newToggle("tweakAutoReconnect", false,
+            false, "",
+            "Automatically reconnects on server disconnect", "Auto reconnect tweak");
 
     private static FeatureToggle newToggle(String name, boolean defaultValue, boolean singlePlayer,
             String defaultHotkey, String comment, String prettyName) {

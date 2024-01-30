@@ -23,6 +23,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 FeatureToggle.TWEAK_GAMMA_OVERRIDE.onValueChanged();
             }
         }));
+
         AttackBlockCallback.EVENT.register(((player, world, hand, pos, direction) ->
                 useCheck(player, hand) ? ActionResult.PASS : ActionResult.FAIL));
         AttackEntityCallback.EVENT.register(((player, world, hand, entity, hitResult) ->
