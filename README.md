@@ -27,6 +27,7 @@ the mod doesn't have a config itself.
 At the moment, this mod makes the following modifications:
 
 - Added `handRestockUnstackable` generic option, which toggles whether to restock unstackable items with `tweakHandRestock`.
+- Added `commandOnlyAdultPets` generic option, which toggles whether to only select adult pets with `sitDownNearbyPets` and `standUpNearbyPets` hotkeys.
 - Added `gammaOverrideFix` fix, which fixes gamma override not applying when relaunching the game.
 - Added `tweakPlayerList` tweak, which modifies the player (tab) list in various ways, depending on how configured in the `Generic` category:
   - If `playerListHideHeader` is enabled, it hides the additional player list header some servers use.
@@ -36,18 +37,23 @@ At the moment, this mod makes the following modifications:
 - Added `tweakPlayerNames` tweak, which enables using fancy names for the names rendered above players.
 - Added `tweakMobNames` tweak, which enables using fancy names for the names rendered above mobs, and makes these always render.
 - Added `tweakChatMessages` tweak, which tries to turn custom formatted chat messages into vanilla ones. It is a bit buggy at the moment, issues can occur.
-- Added `tweakSlippery` tweak, mostly for fun, which overrides the slipperiness of every block, can be configured using the `slipperiness` option in `Generic`.
+- Added `tweakSlippery` tweak, mostly for fun, which overrides the slipperiness of every block, can be configured using the `slipperiness` generic option.
   - Can also be used to disable slipperiness altogether (including for ice blocks and such), by setting to the minimal value.
-- Added `tweakJumpVelocity` tweak, also mostly for fun, which overrides the jump velocity setting of every block. Can be configured using the `jumpVelocity` option in `Generic`.
+- Added `tweakJumpVelocity` tweak, also mostly for fun, which overrides the jump velocity setting of every block. Can be configured using the `jumpVelocity` generic option.
   - This option is set to `1.15` by default, which is just enough to allow jumping over fences, walls, etc.
 - Added `tweakDurabilityCheck` tweak, which displays a message when an item you're using, or a piece of armour you're wearing, is close to breaking.
-  - Can also disable using items that are close to breaking by setting `durabilityCheckPreventUse` to `true` in `Generic`.
+  - Can also disable using items that are close to breaking by setting the generic option `durabilityCheckPreventUse` to `true`.
+  - Displays a message whenever an item's durability is 10% of it's maximum durability, with a cooldown that can be configured using the `durabilityWarningCooldown` option.
 - Added `tweakStatusEffectHud` tweak, which modifies the way status effect icons are rendered to include duration time.
+- Added `tweakAutoReconnect` tweak, which automatically reconnects to a server after being disconnected from it (with a small delay, can be configured using the `autoReconnectTime` generic option).
 - Added `disableEntityCollisions` yeet, which disables entity collisions. You can still push other entities, but they can't push you.
-- Added `disableKnockback` yeet, which disables taking knockback. May not work on servers.
+- Added `disableKnockback` yeet, which disables taking knockback.
 - Added `disableFogModifiers` yeet, which disables all fog modifiers (water, lava, powdered snow, darkness, etc.).
 - Added `disableArmorRestriction` yeet, which disables the restriction of armour slots in the inventory. May not work on servers.
 - Added `disableBindingCurse` yeet, which disables Curse of Binding. May not work on servers.
+- Added `disableItemCooldown` yeet, which disables the cooldown on ender pearls, goat horns, and more. May not work on servers.
+- Added `disableIllegalCharacterCheck` yeet, which allows using special characters as U+00A7 (§), U+007F and more in all text boxes. May not work on servers.
+- Added `disableWorldBorder` yeet, which disables all world border restrictions. May not work on servers.
 
 ### Fancy names
 
@@ -63,6 +69,8 @@ The following placeholders are available:
 - `{team}` - replaces with the name of the team the mob/player is in, or is omitted if they aren't in any team.
 - `{key}` - replaces with `KEY` or `NO KEY`, depending on whether the player has sent their public key used for signing chat messages to the server.
 - `{attack}` - replaces with the current value of the `generic.attack_damage` attribute of the mob/player.
+  - Shows critical damage addition (players only) as well by default, but can be disabled using the `attackPlaceholderShowCritical` generic option.
 - `{armor}` - replaces with the current value of the `generic.armor` attribute of the mob/player.
+- `{distance}` - shows the distance to the mob/player.
 
 Certain placeholders, like `{healh}`, `{attack}`, etc., may only work in the player list when the player is in render distance range.
