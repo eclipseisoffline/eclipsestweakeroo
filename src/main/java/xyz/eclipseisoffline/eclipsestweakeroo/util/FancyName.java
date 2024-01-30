@@ -119,13 +119,6 @@ public class FancyName {
                     return null;
                 }
             }),
-            Map.entry("xp", (livingEntity, playerListEntry) -> {
-                if (livingEntity instanceof PlayerEntity player) {
-                    return Text.literal(String.valueOf(player.experienceLevel))
-                            .formatted(Formatting.GREEN);
-                }
-                return null;
-            }),
             Map.entry("distance", (livingEntity, playerListEntry) -> {
                 PlayerEntity player = MinecraftClient.getInstance().player;
                 assert player != null;
