@@ -2,12 +2,12 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.screen.DisconnectedScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget.Builder;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
+import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +35,7 @@ public abstract class DisconnectedScreenMixin extends Screen {
     @Shadow
     @Mutable
     @Final
-    private DirectionalLayoutWidget grid;
+    private GridWidget grid;
     @Shadow
     @Final
     private Screen parent;
@@ -81,7 +81,7 @@ public abstract class DisconnectedScreenMixin extends Screen {
             }
             DisconnectedScreenMixin.this.buttonLabel = TO_MENU_TEXT.copy()
                     .append(Text.of(" (reconnecting in " + (wait - passed) + "ms)"));
-            grid = DirectionalLayoutWidget.vertical();
+            grid = new GridWidget();
             clearAndInit();
         }));
         registeredAfterRender = true;

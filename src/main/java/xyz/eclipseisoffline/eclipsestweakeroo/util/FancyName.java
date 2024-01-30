@@ -11,14 +11,14 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.AttributeModifierCreator;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.PlainTextContent.Literal;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.world.GameMode;
@@ -60,8 +60,8 @@ public class FancyName {
             }),
             Map.entry("team", (livingEntity, playerListEntry) -> {
                 if (livingEntity != null) {
-                    return Objects.requireNonNull(livingEntity.getScoreboardTeam())
-                            .getDisplayName();
+                    return Text.of(Objects.requireNonNull(livingEntity.getScoreboardTeam())
+                            .getName());
                 } else if (playerListEntry != null) {
                     return Objects.requireNonNull(playerListEntry.getScoreboardTeam())
                             .getDisplayName();
@@ -83,12 +83,12 @@ public class FancyName {
                             .get(EntityAttributes.GENERIC_ATTACK_DAMAGE)
                             .forEach((attributeInstance::addTemporaryModifier));
                     livingEntity.getActiveStatusEffects().forEach((statusEffect, instance) -> {
-                        AttributeModifierCreator attackModifier = statusEffect.getAttributeModifiers()
+                        EntityAttributeModifier baseModifier = statusEffect.getAttributeModifiers()
                                 .get(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-                        if (attackModifier != null) {
-                            attributeInstance.addTemporaryModifier(
-                                    attackModifier.createAttributeModifier(
-                                            instance.getAmplifier()));
+                        if (baseModifier != null) {
+                            EntityAttributeModifier attackModifier = new EntityAttributeModifier(baseModifier.getName(),
+                                    statusEffect.adjustModifierAmount(instance.getAmplifier(), baseModifier), baseModifier.getOperation());
+                            attributeInstance.addTemporaryModifier(attackModifier);
                         }
                     });
 
@@ -131,7 +131,7 @@ public class FancyName {
     );
 
     public static Text applyFancyName(LivingEntity entity, PlayerListEntry player) {
-        MutableText fancyName = MutableText.of(Literal.EMPTY);
+        MutableText fancyName = MutableText.of(TextContent.EMPTY);
         List<Text> elements = new ArrayList<>();
 
         for (String element : AdditionalGenericConfig.FANCY_NAME_ELEMENTS.getStrings()) {
