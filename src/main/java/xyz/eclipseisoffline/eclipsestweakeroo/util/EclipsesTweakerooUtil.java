@@ -24,6 +24,7 @@ import net.minecraft.util.Formatting;
 
 public class EclipsesTweakerooUtil {
 
+    private static final double NANO_MILLI = 0.000001;
     private static final Map<StatusEffect, Formatting> EFFECT_COLOURS = Map.ofEntries(
             Map.entry(StatusEffects.SPEED, Formatting.WHITE),
             Map.entry(StatusEffects.SLOWNESS, Formatting.DARK_GRAY),
@@ -160,5 +161,9 @@ public class EclipsesTweakerooUtil {
 
     public static void setLastConnectionInfo(ServerInfo lastConnectionInfo) {
         EclipsesTweakerooUtil.lastConnectionInfo = lastConnectionInfo;
+    }
+
+    public static int milliTime() {
+        return (int) (System.nanoTime() * NANO_MILLI);
     }
 }

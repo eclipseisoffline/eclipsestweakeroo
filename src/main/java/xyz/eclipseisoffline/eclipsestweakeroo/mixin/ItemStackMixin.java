@@ -9,13 +9,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
 
     @Unique
-    private final double[] WARNINGS = {0.85, 0.9, 0.95};
+    private static final double WARNING = 0.9;
+    @Unique
+    private int lastWarning = 0;
 
     @Shadow
     public abstract boolean isDamageable();
@@ -34,10 +37,13 @@ public abstract class ItemStackMixin {
 
         MinecraftClient.getInstance().player.getItemsEquipped().forEach(itemStack -> {
             if (ItemStack.areItemsEqual(itemStack, (ItemStack) (Object) this)) {
-                for (double warning : WARNINGS) {
-                    int requiredDamage = (int) (warning * itemStack.getMaxDamage());
-                    if (itemStack.getDamage() == requiredDamage) {
+                int requiredDamage = (int) (WARNING * itemStack.getMaxDamage());
+                if (itemStack.getDamage() > requiredDamage) {
+                    int time = EclipsesTweakerooUtil.milliTime();
+                    if ((time - lastWarning) / 1000
+                            > AdditionalGenericConfig.DURABILITY_WARNING_COOLDOWN.getIntegerValue()) {
                         EclipsesTweakerooUtil.showLowDurabilityWarning(itemStack, false);
+                        lastWarning = time;
                     }
                 }
             }

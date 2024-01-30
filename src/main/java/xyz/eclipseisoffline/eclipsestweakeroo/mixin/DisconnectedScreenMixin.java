@@ -52,7 +52,7 @@ public abstract class DisconnectedScreenMixin extends Screen {
     @Inject(method = "<init>(Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/text/Text;Lnet/minecraft/text/Text;Lnet/minecraft/text/Text;)V", at = @At("TAIL"))
     public void constructor(Screen parent, Text title, Text reason, Text buttonLabel,
             CallbackInfo callbackInfo) {
-        start = (int) (System.nanoTime() * 0.000001);
+        start = EclipsesTweakerooUtil.milliTime();
     }
 
     @Redirect(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ButtonWidget$Builder;build()Lnet/minecraft/client/gui/widget/ButtonWidget;"))
@@ -69,7 +69,7 @@ public abstract class DisconnectedScreenMixin extends Screen {
         //noinspection ConstantValue
         if ((Object) this instanceof DisconnectedScreen
                 && AdditionalFeatureToggle.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
-            int passed = (int) (System.nanoTime() * 0.000001) - start;
+            int passed = EclipsesTweakerooUtil.milliTime() - start;
             int wait = AdditionalGenericConfig.RECONNECT_TIME.getIntegerValue();
             if (passed > wait) {
                 ConnectScreen.connect(parent, MinecraftClient.getInstance(),

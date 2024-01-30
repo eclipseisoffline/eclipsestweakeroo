@@ -47,4 +47,8 @@ public class AdditionalGenericConfig {
     public static final ConfigInteger RECONNECT_TIME = new ConfigInteger("autoReconnectTime", 5000,
             100, 15000,
             "The time to wait before reconnecting with tweakAutoReconnect, in milliseconds");
+    public static final ConfigInteger DURABILITY_WARNING_COOLDOWN = new ConfigInteger(
+            "durabilityWarningCooldown", 300,
+            10, 900,
+            "The time to wait before reshowing a durability warning with tweakDurabilityCheck");
 }
