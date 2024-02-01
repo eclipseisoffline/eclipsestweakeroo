@@ -34,6 +34,8 @@ At the moment, this mod makes the following modifications:
   - If `playerListHideFooter` is enabled, it hides the additional player list footer some servers use.
   - If `playerListHideObjective` is enabled, it hides the scoreboard objective from the player list.
   - If `playerListNames` is enabled, it uses fancy names for the names that appear in the list.
+  - If `playerListChangeMessages` is enabled, messages will be displayed in the chat when an addition/removal is made to the player list.
+    - Useful for servers that hide join/leave messages, but do update the player list.
 - Added `tweakPlayerNames` tweak, which enables using fancy names for the names rendered above players.
 - Added `tweakMobNames` tweak, which enables using fancy names for the names rendered above mobs, and makes these always render.
 - Added `tweakChatMessages` tweak, which tries to turn custom formatted chat messages into vanilla ones. It is a bit buggy at the moment, issues can occur.
