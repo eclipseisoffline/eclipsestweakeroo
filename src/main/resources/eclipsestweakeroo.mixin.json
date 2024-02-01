@@ -10,7 +10,7 @@
     "ClientPlayNetworkHandlerMixin",
     "ConnectScreenMixin",
     "CrossbowItemMixin",
-    "DisconnectedScreenMixin",
+    "DisconnectedScreenAccessor",
     "EntityMixin",
     "EntityRendererMixin",
     "FeatureToggleCreator",

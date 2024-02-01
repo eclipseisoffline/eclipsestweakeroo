@@ -6,25 +6,38 @@ import java.util.Map;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.DisconnectedScreen;
+import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.network.ServerAddress;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFixesConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.mixin.DisconnectedScreenAccessor;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 public class EclipsesTweakeroo implements ClientModInitializer {
     private static final double DURABILITY_WARNING = 0.9;
+    private static final Text TO_MENU_TEXT = Text.translatable("gui.toMenu");
+    private static ServerAddress lastConnection = null;
+    private static ServerInfo lastConnectionInfo = null;
+
     private final Map<EquipmentSlot, Item> registeredItems = new HashMap<>();
     private final Map<EquipmentSlot, Integer> registeredWarningTimes = new HashMap<>();
 
@@ -70,6 +83,43 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 EclipsesTweakerooUtil.showLowDurabilityWarning(itemStack, false);
             }
         }));
+
+        ScreenEvents.AFTER_INIT.register(((client, screen, scaledWidth, scaledHeight) -> {
+            if (screen instanceof DisconnectedScreen disconnectedScreen && AdditionalFeatureToggle.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
+                int disconnectedTime = EclipsesTweakerooUtil.milliTime();
+                ButtonWidget backButton = (ButtonWidget) disconnectedScreen.children().stream().filter(child -> child instanceof ButtonWidget).findFirst().orElseThrow();
+                int originalWidth = backButton.getWidth();
+                if (originalWidth < 300) {
+                    backButton.setWidth(300);
+                    backButton.setX(backButton.getX() - (backButton.getWidth() - originalWidth) / 2);
+                }
+
+                ScreenEvents.afterRender(screen).register(((screenInstance, drawContext,
+                        mouseX, mouseY, tickDelta) -> {
+                    int passed = EclipsesTweakerooUtil.milliTime() - disconnectedTime;
+                    int wait = AdditionalGenericConfig.RECONNECT_TIME.getIntegerValue();
+                    if (passed > wait) {
+                        ConnectScreen.connect(
+                                ((DisconnectedScreenAccessor) disconnectedScreen).getParent(),
+                                MinecraftClient.getInstance(),
+                                lastConnection, lastConnectionInfo,
+                                false);
+                    }
+                    backButton.setMessage(TO_MENU_TEXT.copy()
+                            .append(Text.of(" (reconnecting in "))
+                            .append(Text.literal((wait - passed) + "ms").formatted(Formatting.GREEN))
+                            .append(Text.of(")")));
+                }));
+            }
+        }));
+    }
+
+    public static void setLastConnection(ServerAddress lastConnection) {
+        EclipsesTweakeroo.lastConnection = lastConnection;
+    }
+
+    public static void setLastConnectionInfo(ServerInfo lastConnectionInfo) {
+        EclipsesTweakeroo.lastConnectionInfo = lastConnectionInfo;
     }
 
     private static boolean useCheck(PlayerEntity player, Hand hand) {
