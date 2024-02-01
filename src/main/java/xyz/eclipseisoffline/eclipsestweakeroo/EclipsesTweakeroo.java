@@ -94,7 +94,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                     backButton.setX(backButton.getX() - (backButton.getWidth() - originalWidth) / 2);
                 }
 
-                ScreenEvents.afterRender(screen).register(((screenInstance, drawContext,
+                ScreenEvents.afterRender(screen).register(((screenInstance, matrixStack,
                         mouseX, mouseY, tickDelta) -> {
                     int passed = EclipsesTweakerooUtil.milliTime() - disconnectedTime;
                     int wait = AdditionalGenericConfig.RECONNECT_TIME.getIntegerValue();
@@ -102,8 +102,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                         ConnectScreen.connect(
                                 ((DisconnectedScreenAccessor) disconnectedScreen).getParent(),
                                 MinecraftClient.getInstance(),
-                                lastConnection, lastConnectionInfo,
-                                false);
+                                lastConnection, lastConnectionInfo);
                     }
                     backButton.setMessage(TO_MENU_TEXT.copy()
                             .append(Text.of(" (reconnecting in "))

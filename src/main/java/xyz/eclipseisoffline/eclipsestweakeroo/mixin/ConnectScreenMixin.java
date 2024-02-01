@@ -14,9 +14,9 @@ import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 @Mixin(ConnectScreen.class)
 public class ConnectScreenMixin {
 
-    @Inject(method = "connect(Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/network/ServerAddress;Lnet/minecraft/client/network/ServerInfo;Z)V", at = @At("HEAD"))
+    @Inject(method = "connect(Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/network/ServerAddress;Lnet/minecraft/client/network/ServerInfo;)V", at = @At("HEAD"))
     private static void registerNewConnection(Screen screen, MinecraftClient client,
-            ServerAddress address, ServerInfo info, boolean quickPlay, CallbackInfo callbackInfo) {
+            ServerAddress address, ServerInfo info, CallbackInfo callbackInfo) {
         EclipsesTweakeroo.setLastConnection(address);
         EclipsesTweakeroo.setLastConnectionInfo(info);
     }
