@@ -24,6 +24,8 @@ public class AdditionalGenericConfig {
     public static final ConfigBoolean TWEAK_PLAYER_LIST_NAMES = new ConfigBoolean("playerListNames",
             true,
             "Changes player names in the player list to use fancy names when the player list tweak is enabled");
+    public static final ConfigBoolean TWEAK_PLAYER_LIST_CHANGE_MESSAGES = new ConfigBoolean("playerListChangeMessages", false,
+            "Displays join and leave messages in the chat when additions/removals to the player list are made.\nUseful for servers that hide join/leave messages, but do update the player list");
     public static final ConfigDouble TWEAK_SLIPPERY_SLIPPERINESS = new ConfigDouble("slipperiness",
             Blocks.ICE.getSlipperiness(), 0.6, 1.15,
             "Defines how slippery every block is when using tweakSlippery.");
@@ -50,5 +52,5 @@ public class AdditionalGenericConfig {
     public static final ConfigInteger DURABILITY_WARNING_COOLDOWN = new ConfigInteger(
             "durabilityWarningCooldown", 300,
             10, 900,
-            "The time to wait before reshowing a durability warning with tweakDurabilityCheck");
+            "The time to wait before reshowing a durability warning with tweakDurabilityCheck, in seconds");
 }
