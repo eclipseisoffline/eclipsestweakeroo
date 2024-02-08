@@ -65,6 +65,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
 
                 int requiredDamage = (int) (DURABILITY_WARNING * itemStack.getMaxDamage());
                 if (!itemStack.isDamageable() || itemStack.getDamage() < requiredDamage) {
+                    registeredWarningTimes.put(equipmentSlot, 0);
                     continue;
                 }
 
