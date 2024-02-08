@@ -38,11 +38,25 @@ public class FancyName {
                 if (livingEntity != null) {
                     return livingEntity.getDisplayName();
                 } else if (playerListEntry != null) {
+                    if (playerListEntry.getDisplayName() != null) {
+                        return playerListEntry.getDisplayName().copy();
+                    }
                     return Team.decorateName(playerListEntry.getScoreboardTeam(),
                             Text.of(playerListEntry.getProfile().getName()));
                 }
                 return null;
             }),
+            Map.entry("rawname", ((livingEntity, playerListEntry) -> {
+                if (livingEntity != null) {
+                    if (livingEntity instanceof PlayerEntity player) {
+                        return Text.of(player.getGameProfile().getName());
+                    }
+                    return livingEntity.getName();
+                } else if (playerListEntry != null) {
+                    return Text.of(playerListEntry.getProfile().getName());
+                }
+                return null;
+            })),
             Map.entry("gamemode", (livingEntity, playerListEntry) -> GAMEMODE_TEXT.get(
                     playerListEntry.getGameMode())),
             Map.entry("ping",
