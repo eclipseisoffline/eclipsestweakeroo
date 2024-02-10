@@ -34,8 +34,6 @@ At the moment, this mod makes the following modifications:
   - If `playerListHideFooter` is enabled, it hides the additional player list footer some servers use.
   - If `playerListHideObjective` is enabled, it hides the scoreboard objective from the player list.
   - If `playerListNames` is enabled, it uses fancy names for the names that appear in the list.
-  - If `playerListChangeMessages` is enabled, messages will be displayed in the chat when an addition/removal is made to the player list.
-    - Useful for servers that hide join/leave messages, but do update the player list.
 - Added `tweakPlayerNames` tweak, which enables using fancy names for the names rendered above players.
 - Added `tweakMobNames` tweak, which enables using fancy names for the names rendered above mobs, and makes these always render.
 - Added `tweakChatMessages` tweak, which tries to turn custom formatted chat messages into vanilla ones. It is a bit buggy at the moment, issues can occur.
@@ -48,6 +46,11 @@ At the moment, this mod makes the following modifications:
   - Displays a message whenever an item's durability is 10% of it's maximum durability, with a cooldown that can be configured using the `durabilityWarningCooldown` option.
 - Added `tweakStatusEffectHud` tweak, which modifies the way status effect icons are rendered to include duration time.
 - Added `tweakAutoReconnect` tweak, which automatically reconnects to a server after being disconnected from it (with a small delay, can be configured using the `autoReconnectTime` generic option).
+- Added `tweakPlayerInfoNotifications` tweak, which posts notifications in chat when the client receives a [Player Info Update](https://wiki.vg/Protocol#Player_Info_Update) or a [Player Info Remove](https://wiki.vg/Protocol#Player_Info_Remove) packet. Can be configured in `Generic`:
+  - If `playerAddRemoveNotification` is enabled, notifications will be posted in chat when a player info entry is added or removed.
+  - If `playerGamemodeNotification` is enabled, notifications will be posted in chat when a player info entry changes gamemode.
+  - If `playerListedNotification` is enabled, notifications will be posted in chat when a player info entry is added or removed from the player list.
+  - If `playerDisplayNameNotification` is enabled, notifications will be posted in chat when a player info entry changes display name.
 - Added `disableEntityCollisions` yeet, which disables entity collisions. You can still push other entities, but they can't push you.
 - Added `disableKnockback` yeet, which disables taking knockback.
 - Added `disableFogModifiers` yeet, which disables all fog modifiers (water, lava, powdered snow, darkness, etc.).
@@ -56,6 +59,7 @@ At the moment, this mod makes the following modifications:
 - Added `disableItemCooldown` yeet, which disables the cooldown on ender pearls, goat horns, and more. May not work on servers.
 - Added `disableIllegalCharacterCheck` yeet, which allows using special characters as U+00A7 (§), U+007F and more in all text boxes. May not work on servers.
 - Added `disableWorldBorder` yeet, which disables all world border restrictions. May not work on servers.
+- Added `disableBedExplosions` yeet, which disables bed explosions in dimensions where beds don't work, by disabling clicking on them.
 
 ### Fancy names
 
@@ -63,7 +67,8 @@ Fancy names are modifications to names to make them include more information. Th
 using the `fancyNameElements` setting in the `Generic` category. Each element can either contain one placeholder, or a string to display.
 The following placeholders are available:
 
-- `{name}` - replaces with the name of the mob/player.
+- `{name}` - replaces with the (display)name of the mob/player.
+- `{rawname}` - replaces with the raw, unformatted name/IGN of the mob/player.
 - `{gamemode}` - replaces with the gamemode of the player.
 - `{ping}` - replaces with the ping/latency of the player.
 - `{health}` - replaces with the amount of HP of the mob/player.

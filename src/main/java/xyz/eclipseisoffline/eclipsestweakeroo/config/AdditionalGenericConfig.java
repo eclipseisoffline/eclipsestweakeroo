@@ -54,5 +54,5 @@ public class AdditionalGenericConfig {
     public static final ConfigBoolean PLAYER_ADD_REMOVE_NOTIFICATION = new ConfigBoolean("playerAddRemoveNotification", true, "Notifies player info additions and removals with tweakPlayerInfoNotifications");
     public static final ConfigBoolean PLAYER_GAMEMODE_NOTIFICATION = new ConfigBoolean("playerGamemodeNotification", true, "Notifies player info gamemode changes with tweakPlayerInfoNotifications");
     public static final ConfigBoolean PLAYER_LISTED_NOTIFICATION = new ConfigBoolean("playerListedNotification", true, "Notifies listed players changes with tweakPlayerInfoNotifications");
-    public static final ConfigBoolean PLAYER_DISPLAY_NAME_NOTIFICATION = new ConfigBoolean("playerGamemodeNotification", true, "Notifies player info display name changes with tweakPlayerInfoNotifications");
+    public static final ConfigBoolean PLAYER_DISPLAY_NAME_NOTIFICATION = new ConfigBoolean("playerDisplayNameNotification", true, "Notifies player info display name changes with tweakPlayerInfoNotifications");
 }
