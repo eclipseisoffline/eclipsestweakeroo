@@ -35,7 +35,9 @@ public class FancyName {
 
     private static final Map<String, BiFunction<LivingEntity, PlayerListEntry, Text>> PLACEHOLDERS = Map.ofEntries(
             Map.entry("name", (livingEntity, playerListEntry) -> {
-                if (livingEntity != null) {
+                if (playerListEntry != null && playerListEntry.getDisplayName() != null) {
+                    return playerListEntry.getDisplayName();
+                } else if (livingEntity != null) {
                     return livingEntity.getDisplayName();
                 } else if (playerListEntry != null) {
                     return Team.decorateName(playerListEntry.getScoreboardTeam(),
@@ -43,6 +45,17 @@ public class FancyName {
                 }
                 return null;
             }),
+            Map.entry("rawname", ((livingEntity, playerListEntry) -> {
+                if (livingEntity != null) {
+                    if (livingEntity instanceof PlayerEntity player) {
+                        return Text.of(player.getGameProfile().getName());
+                    }
+                    return livingEntity.getName();
+                } else if (playerListEntry != null) {
+                    return Text.of(playerListEntry.getProfile().getName());
+                }
+                return null;
+            })),
             Map.entry("gamemode", (livingEntity, playerListEntry) -> GAMEMODE_TEXT.get(
                     playerListEntry.getGameMode())),
             Map.entry("ping",

@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.block.BedBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.screen.DisconnectedScreen;
@@ -26,6 +27,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFixesConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
@@ -50,8 +52,19 @@ public class EclipsesTweakeroo implements ClientModInitializer {
         }));
 
         ClientPreAttackCallback.EVENT.register(((client, player, clickCount) -> !useCheck(player, Hand.MAIN_HAND)));
-        UseBlockCallback.EVENT.register(((player, world, hand, hitResult) -> useCheck(player, hand)
-                ? ActionResult.PASS : ActionResult.FAIL));
+        UseBlockCallback.EVENT.register(((player, world, hand, hitResult) -> {
+            if(!useCheck(player, hand)) {
+                return ActionResult.FAIL;
+            }
+
+            if (AdditionalDisableConfig.DISABLE_BED_EXPLOSION.getBooleanValue()
+                    && !world.getDimension().bedWorks()
+                    && world.getBlockState(hitResult.getBlockPos()).getBlock() instanceof BedBlock) {
+                return ActionResult.FAIL;
+            }
+
+            return ActionResult.PASS;
+        }));
         UseEntityCallback.EVENT.register(((player, world, hand, entity, hitResult) -> useCheck(player, hand)
                 ? ActionResult.PASS : ActionResult.FAIL));
         UseItemCallback.EVENT.register(((player, world, hand) -> useCheck(player, hand)
@@ -65,6 +78,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
 
                 int requiredDamage = (int) (DURABILITY_WARNING * itemStack.getMaxDamage());
                 if (!itemStack.isDamageable() || itemStack.getDamage() < requiredDamage) {
+                    registeredWarningTimes.put(equipmentSlot, 0);
                     continue;
                 }
 
