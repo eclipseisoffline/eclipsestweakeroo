@@ -24,8 +24,6 @@ public class AdditionalGenericConfig {
     public static final ConfigBoolean TWEAK_PLAYER_LIST_NAMES = new ConfigBoolean("playerListNames",
             true,
             "Changes player names in the player list to use fancy names when the player list tweak is enabled");
-    public static final ConfigBoolean TWEAK_PLAYER_LIST_CHANGE_MESSAGES = new ConfigBoolean("playerListChangeMessages", false,
-            "Displays join and leave messages in the chat when additions/removals to the player list are made.\nUseful for servers that hide join/leave messages, but do update the player list");
     public static final ConfigDouble TWEAK_SLIPPERY_SLIPPERINESS = new ConfigDouble("slipperiness",
             Blocks.ICE.getSlipperiness(), 0.6, 1.15,
             "Defines how slippery every block is when using tweakSlippery.");
@@ -53,4 +51,8 @@ public class AdditionalGenericConfig {
             "durabilityWarningCooldown", 300,
             10, 900,
             "The time to wait before reshowing a durability warning with tweakDurabilityCheck, in seconds");
+    public static final ConfigBoolean PLAYER_ADD_REMOVE_NOTIFICATION = new ConfigBoolean("playerAddRemoveNotification", true, "Notifies player info additions and removals with tweakPlayerInfoNotifications");
+    public static final ConfigBoolean PLAYER_GAMEMODE_NOTIFICATION = new ConfigBoolean("playerGamemodeNotification", true, "Notifies player info gamemode changes with tweakPlayerInfoNotifications");
+    public static final ConfigBoolean PLAYER_LISTED_NOTIFICATION = new ConfigBoolean("playerListedNotification", true, "Notifies listed players changes with tweakPlayerInfoNotifications");
+    public static final ConfigBoolean PLAYER_DISPLAY_NAME_NOTIFICATION = new ConfigBoolean("playerDisplayNameNotification", true, "Notifies player info display name changes with tweakPlayerInfoNotifications");
 }
