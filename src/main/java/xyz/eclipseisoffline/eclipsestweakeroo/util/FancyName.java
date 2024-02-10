@@ -35,12 +35,11 @@ public class FancyName {
 
     private static final Map<String, BiFunction<LivingEntity, PlayerListEntry, Text>> PLACEHOLDERS = Map.ofEntries(
             Map.entry("name", (livingEntity, playerListEntry) -> {
-                if (livingEntity != null) {
+                if (playerListEntry != null && playerListEntry.getDisplayName() != null) {
+                    return playerListEntry.getDisplayName();
+                } else if (livingEntity != null) {
                     return livingEntity.getDisplayName();
                 } else if (playerListEntry != null) {
-                    if (playerListEntry.getDisplayName() != null) {
-                        return playerListEntry.getDisplayName().copy();
-                    }
                     return Team.decorateName(playerListEntry.getScoreboardTeam(),
                             Text.of(playerListEntry.getProfile().getName()));
                 }
