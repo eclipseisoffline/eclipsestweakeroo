@@ -31,7 +31,7 @@ public class AdditionalDisableConfig {
             "Disables the check for section characters in all text boxes");
     public static final ConfigBooleanHotkeyed DISABLE_BOW_DRAW_TIME = new ConfigBooleanClient(
             "disableBowDrawTime", false, "", "Disables the draw time for (cross)bows");
-    public static final ConfigBooleanHotkeyed DISABLE_WORLD_BORDER = new ConfigBooleanClient(
+    public static final ConfigBooleanHotkeyed DISABLE_WORLD_BORDER = new ConfigBooleanHotkeyed(
             "disableWorldBorder", false, "", "Removes all world border restrictions");
     public static final ConfigBooleanHotkeyed DISABLE_BED_EXPLOSION = new ConfigBooleanHotkeyed(
             "disableBedExplosions", false, "", "Disables bed explosions in dimensions where beds explode, by cancelling bed clicks.");
