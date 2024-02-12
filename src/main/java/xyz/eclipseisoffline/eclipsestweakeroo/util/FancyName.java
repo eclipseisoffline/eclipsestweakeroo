@@ -1,6 +1,7 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.util;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -14,6 +15,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeModifierCreator;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.MutableText;
@@ -22,6 +24,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.world.GameMode;
+import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 
 public class FancyName {
@@ -140,6 +143,22 @@ public class FancyName {
                 }
                 return Text.literal(String.valueOf(Math.ceil(livingEntity.distanceTo(player))))
                         .formatted(Formatting.BLUE);
+            }),
+            Map.entry("status_effect", (livingEntity, playerListEntry) -> {
+                List<StatusEffect> statusEffects = livingEntity.getActiveStatusEffects().keySet().stream().sorted(
+                        Comparator.comparingInt((statusEffect -> statusEffect.isBeneficial() ? 0 : 1))).toList();
+                if (statusEffects.isEmpty()) {
+                    return null;
+                }
+                StringBuilder statusEffectString = new StringBuilder();
+                for (StatusEffect statusEffect : statusEffects) {
+                    String statusEffectIconString = EclipsesTweakeroo.STATUS_EFFECT_CHARACTER_MAP.get(statusEffect);
+                    if (statusEffectIconString != null) {
+                        statusEffectString.append(statusEffectIconString);
+                    }
+                }
+
+                return Text.of(statusEffectString.toString());
             })
     );
 
