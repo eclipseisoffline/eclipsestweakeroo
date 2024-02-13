@@ -144,7 +144,7 @@ public class FancyName {
                 return Text.literal(String.valueOf(Math.ceil(livingEntity.distanceTo(player))))
                         .formatted(Formatting.BLUE);
             }),
-            Map.entry("status_effect", (livingEntity, playerListEntry) -> {
+            Map.entry("statuseffect", (livingEntity, playerListEntry) -> {
                 List<StatusEffect> statusEffects = livingEntity.getActiveStatusEffects().keySet().stream().sorted(
                         Comparator.comparingInt((statusEffect -> statusEffect.isBeneficial() ? 0 : 1))).toList();
                 if (statusEffects.isEmpty()) {
