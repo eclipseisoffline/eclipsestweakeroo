@@ -190,7 +190,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 && AdditionalFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()
                 && player.getStackInHand(hand).isDamageable()) {
             if (player.getStackInHand(hand).getDamage()
-                    < player.getStackInHand(hand).getMaxDamage() - 1) {
+                    < player.getStackInHand(hand).getMaxDamage() - AdditionalGenericConfig.DURABILITY_PREVENT_USE_THRESHOLD.getIntegerValue()) {
                 return true;
             }
             EclipsesTweakerooUtil.showLowDurabilityWarning(player.getStackInHand(hand), true);

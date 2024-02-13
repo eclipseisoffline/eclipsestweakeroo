@@ -37,6 +37,13 @@ public class AdditionalGenericConfig {
             "durabilityCheckPreventUse",
             false,
             "Prevents using items when they're about to run out if tweakDurabilityCheck is enabled");
+    public static ConfigInteger DURABILITY_PREVENT_USE_THRESHOLD = new ConfigInteger(
+            "durabilityCheckPreventUseThreshold", 10, 1, 50,
+            "The threshold to start preventing the use of items low on durability.");
+    public static final ConfigInteger DURABILITY_WARNING_COOLDOWN = new ConfigInteger(
+            "durabilityWarningCooldown", 300,
+            10, 900,
+            "The time to wait before reshowing a durability warning with tweakDurabilityCheck, in seconds");
     public static final ConfigBoolean COMMAND_ONLY_ADULT_PETS = new ConfigBoolean(
             "commandOnlyAdultPets", false,
             "Target only adult pets with sitDownNearbyPets and standUpNearbyPets hotkeys");
@@ -47,10 +54,6 @@ public class AdditionalGenericConfig {
     public static final ConfigInteger RECONNECT_TIME = new ConfigInteger("autoReconnectTime", 5000,
             100, 15000,
             "The time to wait before reconnecting with tweakAutoReconnect, in milliseconds");
-    public static final ConfigInteger DURABILITY_WARNING_COOLDOWN = new ConfigInteger(
-            "durabilityWarningCooldown", 300,
-            10, 900,
-            "The time to wait before reshowing a durability warning with tweakDurabilityCheck, in seconds");
     public static final ConfigBoolean PLAYER_ADD_REMOVE_NOTIFICATION = new ConfigBoolean("playerAddRemoveNotification", true, "Notifies player info additions and removals with tweakPlayerInfoNotifications");
     public static final ConfigBoolean PLAYER_GAMEMODE_NOTIFICATION = new ConfigBoolean("playerGamemodeNotification", true, "Notifies player info gamemode changes with tweakPlayerInfoNotifications");
     public static final ConfigBoolean PLAYER_LISTED_NOTIFICATION = new ConfigBoolean("playerListedNotification", true, "Notifies listed players changes with tweakPlayerInfoNotifications");
