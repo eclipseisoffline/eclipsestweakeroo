@@ -27,6 +27,7 @@ public class AdditionalGenericConfig {
     public static final ConfigDouble TWEAK_SLIPPERY_SLIPPERINESS = new ConfigDouble("slipperiness",
             Blocks.ICE.getSlipperiness(), 0.6, 1.15,
             "Defines how slippery every block is when using tweakSlippery.");
+    public static final ConfigBoolean TWEAK_SLIPPERY_VEHICLES = new ConfigBoolean("slipperinessAffectVehicles", false, "When true, tweakSlippery affects vehicles you're riding as well");
     public static final ConfigStringList FANCY_NAME_ELEMENTS = new ConfigStringList(
             "fancyNameElements",
             ImmutableList.of("{name}", "{gamemode}", "{ping}", "{health}"),
@@ -39,7 +40,7 @@ public class AdditionalGenericConfig {
             "Prevents using items when they're about to run out if tweakDurabilityCheck is enabled");
     public static ConfigInteger DURABILITY_PREVENT_USE_THRESHOLD = new ConfigInteger(
             "durabilityCheckPreventUseThreshold", 10, 1, 50,
-            "The threshold to start preventing the use of items low on durability.");
+            "The threshold to start preventing the use of items low on durability");
     public static final ConfigInteger DURABILITY_WARNING_COOLDOWN = new ConfigInteger(
             "durabilityWarningCooldown", 300,
             10, 900,

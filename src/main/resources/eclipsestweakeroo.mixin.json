@@ -6,6 +6,7 @@
   "mixins": [],
   "client": [
     "BackgroundRendererMixin",
+    "BoatEntityMixin",
     "BowItemMixin",
     "ClientPlayNetworkHandlerMixin",
     "ConnectScreenMixin",
