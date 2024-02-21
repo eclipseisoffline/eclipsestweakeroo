@@ -23,6 +23,7 @@ import net.minecraft.text.PlainTextContent.Literal;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
@@ -141,7 +142,8 @@ public class FancyName {
                 if (player.equals(livingEntity)) {
                     return null;
                 }
-                return Text.literal(String.valueOf(Math.ceil(livingEntity.distanceTo(player))))
+                Vec3d cameraPos = MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
+                return Text.literal(String.valueOf(Math.floor(cameraPos.distanceTo(livingEntity.getPos()))))
                         .formatted(Formatting.BLUE);
             }),
             Map.entry("statuseffect", (livingEntity, playerListEntry) -> {
