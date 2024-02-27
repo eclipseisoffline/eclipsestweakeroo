@@ -2,10 +2,10 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
@@ -21,7 +21,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 
 @Mixin(BoatEntity.class)
-public abstract class BoatEntityMixin extends VehicleEntity {
+public abstract class BoatEntityMixin extends Entity {
 
     @Shadow
     private float yawVelocity;
