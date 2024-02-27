@@ -8,7 +8,6 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntityStatusEffectS2CPacket;
 import net.minecraft.server.network.EntityTrackerEntry;
-import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,8 +23,7 @@ public class EntityTrackerEntryMixin {
     private Entity entity;
 
     @Inject(method = "sendPackets", at = @At("TAIL"))
-    public void sendStatusEffectPackets(ServerPlayerEntity player,
-            Consumer<Packet<ClientPlayPacketListener>> sender, CallbackInfo callbackInfo) {
+    public void sendStatusEffectPackets(Consumer<Packet<ClientPlayPacketListener>> sender, CallbackInfo callbackInfo) {
         if (entity instanceof LivingEntity livingEntity) {
             for (StatusEffectInstance effect : livingEntity.getStatusEffects()) {
                 sender.accept(new EntityStatusEffectS2CPacket(entity.getId(), effect));
