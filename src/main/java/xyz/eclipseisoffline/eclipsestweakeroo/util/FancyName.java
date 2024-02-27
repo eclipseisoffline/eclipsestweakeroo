@@ -16,7 +16,7 @@ import net.minecraft.entity.attribute.AttributeModifierCreator;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.passive.HorseEntity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.MutableText;
@@ -164,7 +164,7 @@ public class FancyName {
                 return Text.of(statusEffectString.toString());
             }),
             Map.entry("horsestats", (livingEntity, playerListEntry) -> {
-                if (livingEntity instanceof HorseEntity horse) {
+                if (livingEntity instanceof AbstractHorseEntity horse) {
                     double movementSpeed = horse.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED);
                     double jumpStrength = horse.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH);
 
@@ -177,7 +177,7 @@ public class FancyName {
                 return null;
             }),
             Map.entry("rawhorsestats", (livingEntity, playerListEntry) -> {
-                if (livingEntity instanceof HorseEntity horse) {
+                if (livingEntity instanceof AbstractHorseEntity horse) {
                     double movementSpeed = horse.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED);
                     double jumpStrength = horse.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH);
 
