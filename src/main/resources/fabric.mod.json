@@ -31,7 +31,7 @@
   "accessWidener": "eclipsestweakeroo.accesswidener",
   "depends": {
     "fabricloader": ">=${loader_version}",
-    "fabric": ">=${fabric_version}",
+    "fabric": "*",
     "minecraft": "${minecraft_version}",
     "tweakeroo": "${tweakeroo_version}"
   }
