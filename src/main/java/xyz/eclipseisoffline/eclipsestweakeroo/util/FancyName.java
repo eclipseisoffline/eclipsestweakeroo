@@ -16,6 +16,7 @@ import net.minecraft.entity.attribute.AttributeModifierCreator;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.MutableText;
@@ -161,6 +162,32 @@ public class FancyName {
                 }
 
                 return Text.of(statusEffectString.toString());
+            }),
+            Map.entry("horsestats", (livingEntity, playerListEntry) -> {
+                if (livingEntity instanceof HorseEntity horse) {
+                    double movementSpeed = horse.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+                    double jumpStrength = horse.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH);
+
+                    movementSpeed *= 42.16;
+                    MutableText text = Text.literal(Math.round(movementSpeed * 100D) / 100D + "m/s").formatted(Formatting.GOLD);
+                    text.append(Text.literal("-").formatted(Formatting.RESET));
+                    text.append(Text.literal(String.valueOf(Math.round(jumpStrength * 100D) / 100D)).formatted(Formatting.GREEN));
+                    return text;
+                }
+                return null;
+            }),
+            Map.entry("rawhorsestats", (livingEntity, playerListEntry) -> {
+                if (livingEntity instanceof HorseEntity horse) {
+                    double movementSpeed = horse.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+                    double jumpStrength = horse.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH);
+
+                    MutableText text = Text.literal(
+                            String.valueOf(Math.round(movementSpeed * 100D) / 100D)).formatted(Formatting.GOLD);
+                    text.append(Text.literal("-").formatted(Formatting.RESET));
+                    text.append(Text.literal(String.valueOf(Math.round(jumpStrength * 100D) / 100D)).formatted(Formatting.GREEN));
+                    return text;
+                }
+                return null;
             })
     );
 
