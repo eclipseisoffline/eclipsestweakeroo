@@ -19,7 +19,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityTrackerEntry.class)
 public class EntityTrackerEntryMixin {
 
-    @Shadow @Final private Entity entity;
+    @Shadow
+    @Final
+    private Entity entity;
 
     @Inject(method = "sendPackets", at = @At("TAIL"))
     public void sendStatusEffectPackets(ServerPlayerEntity player,

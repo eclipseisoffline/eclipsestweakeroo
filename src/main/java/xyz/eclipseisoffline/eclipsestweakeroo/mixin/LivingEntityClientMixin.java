@@ -34,7 +34,8 @@ public abstract class LivingEntityClientMixin extends Entity {
         //noinspection ConstantValue
         if (AdditionalFeatureToggle.TWEAK_SLIPPERY.getBooleanValue()
                 && ((Object) this instanceof PlayerEntity
-                || (getFirstPassenger() instanceof PlayerEntity && AdditionalGenericConfig.TWEAK_SLIPPERY_VEHICLES.getBooleanValue()))) {
+                || (getFirstPassenger() instanceof PlayerEntity
+                && AdditionalGenericConfig.TWEAK_SLIPPERY_VEHICLES.getBooleanValue()))) {
             return (float) AdditionalGenericConfig.TWEAK_SLIPPERY_SLIPPERINESS.getDoubleValue();
         }
 

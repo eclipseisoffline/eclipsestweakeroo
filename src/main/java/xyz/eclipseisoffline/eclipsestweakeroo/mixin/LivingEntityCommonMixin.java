@@ -26,7 +26,8 @@ public abstract class LivingEntityCommonMixin extends Entity {
             CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         if (!getWorld().isClient && callbackInfoReturnable.getReturnValue()) {
             assert getWorld().getServer() != null;
-            getWorld().getServer().getPlayerManager().sendToAll(new EntityStatusEffectS2CPacket(getId(), effect));
+            getWorld().getServer().getPlayerManager()
+                    .sendToAll(new EntityStatusEffectS2CPacket(getId(), effect));
         }
     }
 
@@ -34,7 +35,8 @@ public abstract class LivingEntityCommonMixin extends Entity {
     public void sendStatusEffectRemovalToPlayers(StatusEffectInstance effect, CallbackInfo ci) {
         if (!getWorld().isClient) {
             assert getWorld().getServer() != null;
-            getWorld().getServer().getPlayerManager().sendToAll(new RemoveEntityStatusEffectS2CPacket(getId(), effect.getEffectType()));
+            getWorld().getServer().getPlayerManager().sendToAll(
+                    new RemoveEntityStatusEffectS2CPacket(getId(), effect.getEffectType()));
         }
     }
 }

@@ -1,6 +1,5 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
-import java.util.Comparator;
 import java.util.List;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.PlayerListHud;
@@ -31,9 +30,9 @@ public abstract class PlayerListHudMixin {
     @Shadow
     private Text footer;
 
-    @Shadow @Final private static Comparator<PlayerListEntry> ENTRY_ORDERING;
-
-    @Shadow @Final private MinecraftClient client;
+    @Shadow
+    @Final
+    private MinecraftClient client;
 
     @Inject(method = "getPlayerName", at = @At("HEAD"), cancellable = true)
     public void getPlayerName(PlayerListEntry playerListEntry,
@@ -49,13 +48,17 @@ public abstract class PlayerListHudMixin {
     }
 
     @Inject(method = "collectPlayerEntries", at = @At("HEAD"), cancellable = true)
-    public void getCustomOrder(CallbackInfoReturnable<List<PlayerListEntry>> callbackInfoReturnable) {
+    public void getCustomOrder(
+            CallbackInfoReturnable<List<PlayerListEntry>> callbackInfoReturnable) {
         PlayerListOrder order = (PlayerListOrder) AdditionalGenericConfig.TWEAK_PLAYER_LIST_ORDER.getOptionListValue();
         if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
                 && order.getComparator() != null) {
             assert client.getNetworkHandler() != null;
-            callbackInfoReturnable.setReturnValue(client.getNetworkHandler().getListedPlayerListEntries()
-                    .stream().sorted(order.getComparator().thenComparing(entry -> entry.getProfile().getName(), String::compareTo)).toList());
+            callbackInfoReturnable.setReturnValue(
+                    client.getNetworkHandler().getListedPlayerListEntries()
+                            .stream().sorted(order.getComparator()
+                                    .thenComparing(entry -> entry.getProfile().getName(),
+                                            String::compareTo)).toList());
         }
     }
 

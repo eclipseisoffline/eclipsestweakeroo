@@ -40,8 +40,10 @@ public class AdditionalFeatureToggle {
     public static final FeatureToggle TWEAK_AUTO_RECONNECT = newToggle("tweakAutoReconnect", false,
             false, "",
             "Automatically reconnects on server disconnect", "Auto reconnect tweak");
-    public static final FeatureToggle TWEAK_PLAYER_INFO_NOTIFICATIONS = newToggle("tweakPlayerInfoNotifications", false, false, "",
-            "Puts notifications in chat for player info changes.\nCan be configured in General", "Player info notifications tweak");
+    public static final FeatureToggle TWEAK_PLAYER_INFO_NOTIFICATIONS = newToggle(
+            "tweakPlayerInfoNotifications", false, false, "",
+            "Puts notifications in chat for player info changes.\nCan be configured in General",
+            "Player info notifications tweak");
     public static final FeatureToggle TWEAK_BOATS = newToggle("tweakBoats", false, false, "",
             "Disables boat drift on turning and allows boats to jump 1 block high", "Boat tweak");
 

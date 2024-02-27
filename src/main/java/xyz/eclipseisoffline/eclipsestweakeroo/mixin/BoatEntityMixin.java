@@ -23,20 +23,24 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 @Mixin(BoatEntity.class)
 public abstract class BoatEntityMixin extends VehicleEntity {
 
-    @Shadow private float yawVelocity;
+    @Shadow
+    private float yawVelocity;
 
-    @Shadow private boolean pressingLeft;
+    @Shadow
+    private boolean pressingLeft;
 
-    @Shadow private boolean pressingRight;
-
-    @Shadow public abstract Direction getMovementDirection();
-
-    @Shadow private boolean pressingForward;
+    @Shadow
+    private boolean pressingRight;
+    @Shadow
+    private boolean pressingForward;
 
     protected BoatEntityMixin(EntityType<?> entityType,
             World world) {
         super(entityType, world);
     }
+
+    @Shadow
+    public abstract Direction getMovementDirection();
 
     @Redirect(method = "getNearbySlipperiness", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getSlipperiness()F"))
     public float getSlipperiness(Block block) {
@@ -58,9 +62,12 @@ public abstract class BoatEntityMixin extends VehicleEntity {
             if (pressingForward) {
                 BlockPos inFrontPos = getBlockPos().offset(getHorizontalFacing(), 1);
 
-                if (!getWorld().getBlockState(inFrontPos.up()).isSolidSurface(getWorld(), inFrontPos.up(), this, getHorizontalFacing().getOpposite())) {
+                if (!getWorld().getBlockState(inFrontPos.up())
+                        .isSolidSurface(getWorld(), inFrontPos.up(), this,
+                                getHorizontalFacing().getOpposite())) {
                     BlockState block = getWorld().getBlockState(inFrontPos);
-                    VoxelShape inFrontShape = block.getCollisionShape(getWorld(), inFrontPos).offset(inFrontPos.getX(), inFrontPos.getY(), inFrontPos.getZ());
+                    VoxelShape inFrontShape = block.getCollisionShape(getWorld(), inFrontPos)
+                            .offset(inFrontPos.getX(), inFrontPos.getY(), inFrontPos.getZ());
 
                     double y = inFrontShape.getMax(Axis.Y);
                     if (y > getPos().y && (y - getPos().y) <= 1) {

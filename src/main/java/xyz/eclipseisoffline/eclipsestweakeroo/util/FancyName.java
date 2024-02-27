@@ -144,18 +144,23 @@ public class FancyName {
                     return null;
                 }
                 Vec3d cameraPos = MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
-                return Text.literal(String.valueOf(Math.floor(cameraPos.distanceTo(livingEntity.getPos()))))
+                return Text.literal(
+                                String.valueOf(Math.floor(cameraPos.distanceTo(livingEntity.getPos()))))
                         .formatted(Formatting.BLUE);
             }),
             Map.entry("statuseffect", (livingEntity, playerListEntry) -> {
-                List<StatusEffect> statusEffects = livingEntity.getActiveStatusEffects().keySet().stream().sorted(
-                        Comparator.comparingInt((statusEffect -> statusEffect.isBeneficial() ? 0 : 1))).toList();
+                List<StatusEffect> statusEffects = livingEntity.getActiveStatusEffects().keySet()
+                        .stream().sorted(
+                                Comparator.comparingInt(
+                                        (statusEffect -> statusEffect.isBeneficial() ? 0 : 1)))
+                        .toList();
                 if (statusEffects.isEmpty()) {
                     return null;
                 }
                 StringBuilder statusEffectString = new StringBuilder();
                 for (StatusEffect statusEffect : statusEffects) {
-                    String statusEffectIconString = EclipsesTweakeroo.STATUS_EFFECT_CHARACTER_MAP.get(statusEffect);
+                    String statusEffectIconString = EclipsesTweakeroo.STATUS_EFFECT_CHARACTER_MAP.get(
+                            statusEffect);
                     if (statusEffectIconString != null) {
                         statusEffectString.append(statusEffectIconString);
                     }
@@ -165,26 +170,34 @@ public class FancyName {
             }),
             Map.entry("horsestats", (livingEntity, playerListEntry) -> {
                 if (livingEntity instanceof AbstractHorseEntity horse) {
-                    double movementSpeed = horse.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED);
-                    double jumpStrength = horse.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH);
+                    double movementSpeed = horse.getAttributeValue(
+                            EntityAttributes.GENERIC_MOVEMENT_SPEED);
+                    double jumpStrength = horse.getAttributeValue(
+                            EntityAttributes.HORSE_JUMP_STRENGTH);
 
                     movementSpeed *= 42.16;
-                    MutableText text = Text.literal(Math.round(movementSpeed * 100D) / 100D + "m/s").formatted(Formatting.GOLD);
+                    MutableText text = Text.literal(Math.round(movementSpeed * 100D) / 100D + "m/s")
+                            .formatted(Formatting.GOLD);
                     text.append(Text.literal("-").formatted(Formatting.RESET));
-                    text.append(Text.literal(String.valueOf(Math.round(jumpStrength * 100D) / 100D)).formatted(Formatting.GREEN));
+                    text.append(Text.literal(String.valueOf(Math.round(jumpStrength * 100D) / 100D))
+                            .formatted(Formatting.GREEN));
                     return text;
                 }
                 return null;
             }),
             Map.entry("rawhorsestats", (livingEntity, playerListEntry) -> {
                 if (livingEntity instanceof AbstractHorseEntity horse) {
-                    double movementSpeed = horse.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED);
-                    double jumpStrength = horse.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH);
+                    double movementSpeed = horse.getAttributeValue(
+                            EntityAttributes.GENERIC_MOVEMENT_SPEED);
+                    double jumpStrength = horse.getAttributeValue(
+                            EntityAttributes.HORSE_JUMP_STRENGTH);
 
                     MutableText text = Text.literal(
-                            String.valueOf(Math.round(movementSpeed * 100D) / 100D)).formatted(Formatting.GOLD);
+                                    String.valueOf(Math.round(movementSpeed * 100D) / 100D))
+                            .formatted(Formatting.GOLD);
                     text.append(Text.literal("-").formatted(Formatting.RESET));
-                    text.append(Text.literal(String.valueOf(Math.round(jumpStrength * 100D) / 100D)).formatted(Formatting.GREEN));
+                    text.append(Text.literal(String.valueOf(Math.round(jumpStrength * 100D) / 100D))
+                            .formatted(Formatting.GREEN));
                     return text;
                 }
                 return null;

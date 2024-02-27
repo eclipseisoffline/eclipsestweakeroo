@@ -9,11 +9,13 @@ public enum PlayerListOrder implements IConfigOptionListEntry {
     DEFAULT("default", "Default", null),
     PING("ping", "Ping", Comparator.comparingInt(PlayerListEntry::getLatency)),
     GAMEMODE("gamemode", "Gamemode", Comparator.comparingInt(entry -> entry.getGameMode().getId())),
-    NAME("name", "Name", Comparator.comparing(entry -> entry.getProfile().getName(), String::compareTo));
+    NAME("name", "Name",
+            Comparator.comparing(entry -> entry.getProfile().getName(), String::compareTo));
 
     private final String stringName;
     private final String displayName;
     private final Comparator<PlayerListEntry> comparator;
+
     PlayerListOrder(String stringName, String displayName,
             Comparator<PlayerListEntry> comparator) {
         this.stringName = stringName;
@@ -55,6 +57,7 @@ public enum PlayerListOrder implements IConfigOptionListEntry {
 
     @Override
     public IConfigOptionListEntry fromString(String name) {
-        return Arrays.stream(values()).filter(orderType -> orderType.stringName.equals(name)).findFirst().orElse(null);
+        return Arrays.stream(values()).filter(orderType -> orderType.stringName.equals(name))
+                .findFirst().orElse(null);
     }
 }

@@ -47,8 +47,10 @@ public class ClientPlayNetworkHandlerMixin {
 
         if (AdditionalFeatureToggle.TWEAK_PLAYER_INFO_NOTIFICATIONS.getBooleanValue()
                 && AdditionalGenericConfig.PLAYER_ADD_REMOVE_NOTIFICATION.getBooleanValue()) {
-            MutableText notification = Text.literal("Player info entry " + entry.getProfile().getName() + " was removed");
-            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(notification.formatted(Formatting.GOLD));
+            MutableText notification = Text.literal(
+                    "Player info entry " + entry.getProfile().getName() + " was removed");
+            MinecraftClient.getInstance().inGameHud.getChatHud()
+                    .addMessage(notification.formatted(Formatting.GOLD));
         }
 
         return instance.remove(entry);
@@ -70,29 +72,35 @@ public class ClientPlayNetworkHandlerMixin {
         switch (action) {
             case ADD_PLAYER -> {
                 if (AdditionalGenericConfig.PLAYER_ADD_REMOVE_NOTIFICATION.getBooleanValue()) {
-                    notification = Text.literal("Player info entry " + gameProfile.getName() + " was added");
+                    notification = Text.literal(
+                            "Player info entry " + gameProfile.getName() + " was added");
                 }
             }
             case UPDATE_GAME_MODE -> {
                 if (AdditionalGenericConfig.PLAYER_GAMEMODE_NOTIFICATION.getBooleanValue()) {
-                    notification = Text.literal(gameProfile.getName() + " changed gamemode to " + receivedEntry.gameMode().getName());
+                    notification = Text.literal(gameProfile.getName() + " changed gamemode to "
+                            + receivedEntry.gameMode().getName());
                 }
             }
             case UPDATE_LISTED -> {
                 if (AdditionalGenericConfig.PLAYER_LISTED_NOTIFICATION.getBooleanValue()) {
-                    notification = Text.literal(gameProfile.getName() + " is now " + (receivedEntry.listed() ? "listed" : "unlisted"));
+                    notification = Text.literal(
+                            gameProfile.getName() + " is now " + (receivedEntry.listed() ? "listed"
+                                    : "unlisted"));
                 }
             }
             case UPDATE_DISPLAY_NAME -> {
                 if (AdditionalGenericConfig.PLAYER_DISPLAY_NAME_NOTIFICATION.getBooleanValue()) {
                     notification = Text.literal(gameProfile.getName() + "'s display name is now ")
-                            .append(receivedEntry.displayName() == null ? Text.literal("unset") : receivedEntry.displayName());
+                            .append(receivedEntry.displayName() == null ? Text.literal("unset")
+                                    : receivedEntry.displayName());
                 }
             }
         }
 
         if (notification != null) {
-            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(notification.formatted(Formatting.GOLD));
+            MinecraftClient.getInstance().inGameHud.getChatHud()
+                    .addMessage(notification.formatted(Formatting.GOLD));
         }
     }
 }

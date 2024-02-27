@@ -34,5 +34,6 @@ public class AdditionalDisableConfig {
     public static final ConfigBooleanHotkeyed DISABLE_WORLD_BORDER = new ConfigBooleanHotkeyed(
             "disableWorldBorder", false, "", "Removes all world border restrictions");
     public static final ConfigBooleanHotkeyed DISABLE_BED_EXPLOSION = new ConfigBooleanHotkeyed(
-            "disableBedExplosions", false, "", "Disables bed explosions in dimensions where beds explode, by cancelling bed clicks.");
+            "disableBedExplosions", false, "",
+            "Disables bed explosions in dimensions where beds explode, by cancelling bed clicks.");
 }

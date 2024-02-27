@@ -48,17 +48,17 @@ import xyz.eclipseisoffline.eclipsestweakeroo.mixin.DisconnectedScreenAccessor;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 public class EclipsesTweakeroo implements ClientModInitializer {
+
     public static final String MOD_ID = "eclipsestweakeroo";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final Map<StatusEffect, String> STATUS_EFFECT_CHARACTER_MAP = new HashMap<>();
 
     private static final double DURABILITY_WARNING = 0.9;
     private static final Text TO_MENU_TEXT = Text.translatable("gui.toMenu");
-    private static ServerAddress lastConnection = null;
-    private static ServerInfo lastConnectionInfo = null;
     private static final String FANCYNAME_EFFECT_MAP_PATH = "fancyname";
     private static final String FANCYNAME_EFFECT_MAP_NAME = "effect_map.json";
-
+    private static ServerAddress lastConnection = null;
+    private static ServerInfo lastConnectionInfo = null;
     private final Map<EquipmentSlot, Item> registeredItems = new HashMap<>();
     private final Map<EquipmentSlot, Integer> registeredWarningTimes = new HashMap<>();
 
@@ -70,30 +70,35 @@ public class EclipsesTweakeroo implements ClientModInitializer {
             }
         }));
 
-        ClientPreAttackCallback.EVENT.register(((client, player, clickCount) -> !useCheck(player, Hand.MAIN_HAND)));
+        ClientPreAttackCallback.EVENT.register(
+                ((client, player, clickCount) -> !useCheck(player, Hand.MAIN_HAND)));
         UseBlockCallback.EVENT.register(((player, world, hand, hitResult) -> {
-            if(!useCheck(player, hand)) {
+            if (!useCheck(player, hand)) {
                 return ActionResult.FAIL;
             }
 
             if (AdditionalDisableConfig.DISABLE_BED_EXPLOSION.getBooleanValue()
                     && !world.getDimension().bedWorks()
-                    && world.getBlockState(hitResult.getBlockPos()).getBlock() instanceof BedBlock) {
+                    && world.getBlockState(hitResult.getBlockPos())
+                    .getBlock() instanceof BedBlock) {
                 return ActionResult.FAIL;
             }
 
             return ActionResult.PASS;
         }));
-        UseEntityCallback.EVENT.register(((player, world, hand, entity, hitResult) -> useCheck(player, hand)
-                ? ActionResult.PASS : ActionResult.FAIL));
+        UseEntityCallback.EVENT.register(
+                ((player, world, hand, entity, hitResult) -> useCheck(player, hand)
+                        ? ActionResult.PASS : ActionResult.FAIL));
         UseItemCallback.EVENT.register(((player, world, hand) -> useCheck(player, hand)
-                ? TypedActionResult.pass(player.getStackInHand(hand)) : TypedActionResult.fail(player.getStackInHand(hand))));
+                ? TypedActionResult.pass(player.getStackInHand(hand))
+                : TypedActionResult.fail(player.getStackInHand(hand))));
 
         ClientTickEvents.START_WORLD_TICK.register((world -> {
             assert MinecraftClient.getInstance().player != null;
             int time = EclipsesTweakerooUtil.milliTime();
             for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
-                ItemStack itemStack = MinecraftClient.getInstance().player.getEquippedStack(equipmentSlot);
+                ItemStack itemStack = MinecraftClient.getInstance().player.getEquippedStack(
+                        equipmentSlot);
 
                 int requiredDamage = (int) (DURABILITY_WARNING * itemStack.getMaxDamage());
                 if (!itemStack.isDamageable() || itemStack.getDamage() < requiredDamage) {
@@ -105,7 +110,8 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 boolean check = false;
                 if (!itemStack.getItem().equals(registeredItems.get(equipmentSlot))) {
                     check = true;
-                } else if ((time - warningTime) / 1000 > AdditionalGenericConfig.DURABILITY_WARNING_COOLDOWN.getIntegerValue()) {
+                } else if ((time - warningTime) / 1000
+                        > AdditionalGenericConfig.DURABILITY_WARNING_COOLDOWN.getIntegerValue()) {
                     check = true;
                 }
                 if (!check) {
@@ -118,13 +124,16 @@ public class EclipsesTweakeroo implements ClientModInitializer {
         }));
 
         ScreenEvents.AFTER_INIT.register(((client, screen, scaledWidth, scaledHeight) -> {
-            if (screen instanceof DisconnectedScreen disconnectedScreen && AdditionalFeatureToggle.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
+            if (screen instanceof DisconnectedScreen disconnectedScreen
+                    && AdditionalFeatureToggle.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
                 int disconnectedTime = EclipsesTweakerooUtil.milliTime();
-                ButtonWidget backButton = (ButtonWidget) disconnectedScreen.children().stream().filter(child -> child instanceof ButtonWidget).findFirst().orElseThrow();
+                ButtonWidget backButton = (ButtonWidget) disconnectedScreen.children().stream()
+                        .filter(child -> child instanceof ButtonWidget).findFirst().orElseThrow();
                 int originalWidth = backButton.getWidth();
                 if (originalWidth < 300) {
                     backButton.setWidth(300);
-                    backButton.setX(backButton.getX() - (backButton.getWidth() - originalWidth) / 2);
+                    backButton.setX(
+                            backButton.getX() - (backButton.getWidth() - originalWidth) / 2);
                 }
 
                 ScreenEvents.afterRender(screen).register(((screenInstance, drawContext,
@@ -140,7 +149,8 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                     }
                     backButton.setMessage(TO_MENU_TEXT.copy()
                             .append(Text.of(" (reconnecting in "))
-                            .append(Text.literal((wait - passed) + "ms").formatted(Formatting.GREEN))
+                            .append(Text.literal((wait - passed) + "ms")
+                                    .formatted(Formatting.GREEN))
                             .append(Text.of(")")));
                 }));
             }
@@ -157,15 +167,21 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                     public void reload(ResourceManager manager) {
                         STATUS_EFFECT_CHARACTER_MAP.clear();
                         try {
-                            Resource effectMapResource = manager.findResources(FANCYNAME_EFFECT_MAP_PATH, path -> path.getPath().endsWith(FANCYNAME_EFFECT_MAP_NAME)).values().stream().findFirst().orElseThrow();
-                            try(InputStream effectMapInputStream = effectMapResource.getInputStream()) {
-                                String effectMapJson = new String(effectMapInputStream.readAllBytes());
+                            Resource effectMapResource = manager.findResources(
+                                            FANCYNAME_EFFECT_MAP_PATH,
+                                            path -> path.getPath().endsWith(FANCYNAME_EFFECT_MAP_NAME))
+                                    .values().stream().findFirst().orElseThrow();
+                            try (InputStream effectMapInputStream = effectMapResource.getInputStream()) {
+                                String effectMapJson = new String(
+                                        effectMapInputStream.readAllBytes());
                                 JsonObject effectMap = JsonParser.parseString(effectMapJson)
                                         .getAsJsonObject();
                                 for (String statusEffectString : effectMap.keySet()) {
-                                    StatusEffect statusEffect = Registries.STATUS_EFFECT.get(new Identifier(statusEffectString));
+                                    StatusEffect statusEffect = Registries.STATUS_EFFECT.get(
+                                            new Identifier(statusEffectString));
                                     if (statusEffect != null) {
-                                        STATUS_EFFECT_CHARACTER_MAP.put(statusEffect, effectMap.get(statusEffectString).getAsString());
+                                        STATUS_EFFECT_CHARACTER_MAP.put(statusEffect,
+                                                effectMap.get(statusEffectString).getAsString());
                                     }
                                 }
                             }
@@ -190,7 +206,8 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 && AdditionalFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()
                 && player.getStackInHand(hand).isDamageable()) {
             if (player.getStackInHand(hand).getDamage()
-                    < player.getStackInHand(hand).getMaxDamage() - AdditionalGenericConfig.DURABILITY_PREVENT_USE_THRESHOLD.getIntegerValue()) {
+                    < player.getStackInHand(hand).getMaxDamage()
+                    - AdditionalGenericConfig.DURABILITY_PREVENT_USE_THRESHOLD.getIntegerValue()) {
                 return true;
             }
             EclipsesTweakerooUtil.showLowDurabilityWarning(player.getStackInHand(hand), true);
