@@ -38,12 +38,12 @@ processResources {
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
     inputs.property "loader_version", project.loader_version
+    inputs.property "tweakeroo_version", project.tweakeroo_version
     filteringCharset "UTF-8"
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
-                "fabric_version": project.fabric_version,
                 "loader_version": project.loader_version,
                 "tweakeroo_version": project.tweakeroo_version
     }

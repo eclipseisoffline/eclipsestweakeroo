@@ -1,5 +1,6 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
+import java.util.List;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
@@ -8,6 +9,7 @@ import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
 import org.objectweb.asm.Opcodes;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.PlayerListOrder;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.FancyName;
 
 @Mixin(PlayerListHud.class)
@@ -26,6 +29,10 @@ public abstract class PlayerListHudMixin {
     private Text header;
     @Shadow
     private Text footer;
+
+    @Shadow
+    @Final
+    private MinecraftClient client;
 
     @Inject(method = "getPlayerName", at = @At("HEAD"), cancellable = true)
     public void getPlayerName(PlayerListEntry playerListEntry,
@@ -37,6 +44,21 @@ public abstract class PlayerListHudMixin {
                     playerListEntry.getProfile().getId());
             Text playerName = FancyName.applyFancyName(entity, playerListEntry);
             callbackInfoReturnable.setReturnValue(playerName);
+        }
+    }
+
+    @Inject(method = "collectPlayerEntries", at = @At("HEAD"), cancellable = true)
+    public void getCustomOrder(
+            CallbackInfoReturnable<List<PlayerListEntry>> callbackInfoReturnable) {
+        PlayerListOrder order = (PlayerListOrder) AdditionalGenericConfig.TWEAK_PLAYER_LIST_ORDER.getOptionListValue();
+        if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
+                && order.getComparator() != null) {
+            assert client.getNetworkHandler() != null;
+            callbackInfoReturnable.setReturnValue(
+                    client.getNetworkHandler().getListedPlayerListEntries()
+                            .stream().sorted(order.getComparator()
+                                    .thenComparing(entry -> entry.getProfile().getName(),
+                                            String::compareTo)).toList());
         }
     }
 

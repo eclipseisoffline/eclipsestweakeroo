@@ -3,9 +3,13 @@
   "minVersion": "0.8",
   "package": "xyz.eclipseisoffline.eclipsestweakeroo.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+    "EntityTrackerEntryMixin",
+    "LivingEntityCommonMixin"
+  ],
   "client": [
     "BackgroundRendererMixin",
+    "BoatEntityMixin",
     "BowItemMixin",
     "ClientPlayNetworkHandlerMixin",
     "ConnectScreenMixin",
@@ -18,7 +22,7 @@
     "InputHandlerMixin",
     "ItemCooldownManagerMixin",
     "LightmapTextureManagerMixin",
-    "LivingEntityMixin",
+    "LivingEntityClientMixin",
     "MessageHandlerMixin",
     "PlayerEntityMixin",
     "PlayerListHudMixin",

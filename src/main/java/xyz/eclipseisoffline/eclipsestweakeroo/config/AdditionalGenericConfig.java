@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.config.options.ConfigDouble;
 import fi.dy.masa.malilib.config.options.ConfigInteger;
+import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import fi.dy.masa.malilib.config.options.ConfigStringList;
 import net.minecraft.block.Blocks;
 
@@ -24,9 +25,15 @@ public class AdditionalGenericConfig {
     public static final ConfigBoolean TWEAK_PLAYER_LIST_NAMES = new ConfigBoolean("playerListNames",
             true,
             "Changes player names in the player list to use fancy names when the player list tweak is enabled");
+    public static final ConfigOptionList TWEAK_PLAYER_LIST_ORDER = new ConfigOptionList(
+            "playerListOrder", PlayerListOrder.DEFAULT,
+            "Changes the order of players in the player list when the player list tweak is enabled");
     public static final ConfigDouble TWEAK_SLIPPERY_SLIPPERINESS = new ConfigDouble("slipperiness",
             Blocks.ICE.getSlipperiness(), 0.6, 1.15,
             "Defines how slippery every block is when using tweakSlippery.");
+    public static final ConfigBoolean TWEAK_SLIPPERY_VEHICLES = new ConfigBoolean(
+            "slipperinessAffectVehicles", false,
+            "When true, tweakSlippery affects vehicles you're riding as well");
     public static final ConfigStringList FANCY_NAME_ELEMENTS = new ConfigStringList(
             "fancyNameElements",
             ImmutableList.of("{name}", "{gamemode}", "{ping}", "{health}"),
@@ -37,6 +44,10 @@ public class AdditionalGenericConfig {
             "durabilityCheckPreventUse",
             false,
             "Prevents using items when they're about to run out if tweakDurabilityCheck is enabled");
+    public static final ConfigInteger DURABILITY_WARNING_COOLDOWN = new ConfigInteger(
+            "durabilityWarningCooldown", 300,
+            10, 900,
+            "The time to wait before reshowing a durability warning with tweakDurabilityCheck, in seconds");
     public static final ConfigBoolean COMMAND_ONLY_ADULT_PETS = new ConfigBoolean(
             "commandOnlyAdultPets", false,
             "Target only adult pets with sitDownNearbyPets and standUpNearbyPets hotkeys");
@@ -47,12 +58,19 @@ public class AdditionalGenericConfig {
     public static final ConfigInteger RECONNECT_TIME = new ConfigInteger("autoReconnectTime", 5000,
             100, 15000,
             "The time to wait before reconnecting with tweakAutoReconnect, in milliseconds");
-    public static final ConfigInteger DURABILITY_WARNING_COOLDOWN = new ConfigInteger(
-            "durabilityWarningCooldown", 300,
-            10, 900,
-            "The time to wait before reshowing a durability warning with tweakDurabilityCheck, in seconds");
-    public static final ConfigBoolean PLAYER_ADD_REMOVE_NOTIFICATION = new ConfigBoolean("playerAddRemoveNotification", true, "Notifies player info additions and removals with tweakPlayerInfoNotifications");
-    public static final ConfigBoolean PLAYER_GAMEMODE_NOTIFICATION = new ConfigBoolean("playerGamemodeNotification", true, "Notifies player info gamemode changes with tweakPlayerInfoNotifications");
-    public static final ConfigBoolean PLAYER_LISTED_NOTIFICATION = new ConfigBoolean("playerListedNotification", true, "Notifies listed players changes with tweakPlayerInfoNotifications");
-    public static final ConfigBoolean PLAYER_DISPLAY_NAME_NOTIFICATION = new ConfigBoolean("playerDisplayNameNotification", true, "Notifies player info display name changes with tweakPlayerInfoNotifications");
+    public static final ConfigBoolean PLAYER_ADD_REMOVE_NOTIFICATION = new ConfigBoolean(
+            "playerAddRemoveNotification", true,
+            "Notifies player info additions and removals with tweakPlayerInfoNotifications");
+    public static final ConfigBoolean PLAYER_GAMEMODE_NOTIFICATION = new ConfigBoolean(
+            "playerGamemodeNotification", true,
+            "Notifies player info gamemode changes with tweakPlayerInfoNotifications");
+    public static final ConfigBoolean PLAYER_LISTED_NOTIFICATION = new ConfigBoolean(
+            "playerListedNotification", true,
+            "Notifies listed players changes with tweakPlayerInfoNotifications");
+    public static final ConfigBoolean PLAYER_DISPLAY_NAME_NOTIFICATION = new ConfigBoolean(
+            "playerDisplayNameNotification", true,
+            "Notifies player info display name changes with tweakPlayerInfoNotifications");
+    public static ConfigInteger DURABILITY_PREVENT_USE_THRESHOLD = new ConfigInteger(
+            "durabilityCheckPreventUseThreshold", 10, 1, 50,
+            "The threshold to start preventing the use of items low on durability");
 }
