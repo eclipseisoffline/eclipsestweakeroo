@@ -46,6 +46,8 @@ public class AdditionalFeatureToggle {
             "Player info notifications tweak");
     public static final FeatureToggle TWEAK_BOATS = newToggle("tweakBoats", false, false, "",
             "Disables boat drift on turning and allows boats to jump 1 block high", "Boat tweak");
+    public static final FeatureToggle TWEAK_CREATIVE_ELYTRA_FLIGHT = newToggle("tweakCreativeElytraFlight", false, false, "",
+            "Enables creative flight when using elytra. Use at your own risk", "Creative elytra flight tweak");
 
     private static FeatureToggle newToggle(String name, boolean defaultValue, boolean singlePlayer,
             String defaultHotkey, String comment, String prettyName) {

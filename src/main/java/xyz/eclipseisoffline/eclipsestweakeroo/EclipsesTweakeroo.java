@@ -25,9 +25,11 @@ import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.passive.AllayEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -44,6 +46,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFixesConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.mixin.AllayEntityInvoker;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.DisconnectedScreenAccessor;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
@@ -68,6 +71,19 @@ public class EclipsesTweakeroo implements ClientModInitializer {
             if (AdditionalFixesConfig.GAMMA_OVERRIDE_FIX.getBooleanValue()) {
                 FeatureToggle.TWEAK_GAMMA_OVERRIDE.onValueChanged();
             }
+
+            AdditionalFeatureToggle.TWEAK_CREATIVE_ELYTRA_FLIGHT.setValueChangeCallback(value -> {
+                if (MinecraftClient.getInstance().player == null) {
+                    return;
+                }
+                if (value.getBooleanValue()) {
+                    if (MinecraftClient.getInstance().player.isFallFlying()) {
+                        MinecraftClient.getInstance().player.startFallFlying();
+                    }
+                } else {
+                    MinecraftClient.getInstance().player.stopFallFlying();
+                }
+            });
         }));
 
         ClientPreAttackCallback.EVENT.register(
@@ -87,13 +103,33 @@ public class EclipsesTweakeroo implements ClientModInitializer {
             return ActionResult.PASS;
         }));
         UseEntityCallback.EVENT.register(
-                ((player, world, hand, entity, hitResult) -> useCheck(player, hand)
-                        ? ActionResult.PASS : ActionResult.FAIL));
+                ((player, world, hand, entity, hitResult) -> {
+                    if(!useCheck(player, hand)) {
+                        return ActionResult.FAIL;
+                    }
+
+                    if (AdditionalDisableConfig.DISABLE_ALLAY_USE.getBooleanValue()
+                            && entity instanceof AllayEntity allay) {
+                        if (!player.getStackInHand(hand).isEmpty()) {
+                            Item item = player.getStackInHand(hand).getItem();
+                            if (((AllayEntityInvoker) allay).invokeCanDuplicate() && item == Items.AMETHYST_SHARD) {
+                                return ActionResult.PASS;
+                            }
+                            return ActionResult.FAIL;
+                        }
+                    }
+
+                    return ActionResult.PASS;
+                }));
         UseItemCallback.EVENT.register(((player, world, hand) -> useCheck(player, hand)
                 ? TypedActionResult.pass(player.getStackInHand(hand))
                 : TypedActionResult.fail(player.getStackInHand(hand))));
 
         ClientTickEvents.START_WORLD_TICK.register((world -> {
+            if (!AdditionalFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()) {
+                return;
+            }
+
             assert MinecraftClient.getInstance().player != null;
             int time = EclipsesTweakerooUtil.milliTime();
             for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {

@@ -8,6 +8,7 @@
     "LivingEntityCommonMixin"
   ],
   "client": [
+    "AllayEntityInvoker",
     "BackgroundRendererMixin",
     "BoatEntityMixin",
     "BowItemMixin",

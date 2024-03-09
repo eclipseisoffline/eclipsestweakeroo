@@ -73,4 +73,8 @@ public class AdditionalGenericConfig {
     public static ConfigInteger DURABILITY_PREVENT_USE_THRESHOLD = new ConfigInteger(
             "durabilityCheckPreventUseThreshold", 10, 1, 50,
             "The threshold to start preventing the use of items low on durability");
+    public static ConfigBoolean TWEAK_BOAT_SPIDER = new ConfigBoolean("spiderBoat", false,
+            "Boats can jump infinitely high when tweakBoats is enabled");
+    public static ConfigBoolean TWEAK_BOAT_PLAYER_YAW = new ConfigBoolean("boatPlayerYaw", false,
+            "Boats follow the yaw of the controlling player when tweakBoats is enabled");
 }
