@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
@@ -17,17 +18,22 @@ import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.block.BedBlock;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.screen.DisconnectedScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.passive.AllayEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -44,6 +50,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFixesConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.mixin.AllayEntityInvoker;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.DisconnectedScreenAccessor;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
@@ -64,10 +71,34 @@ public class EclipsesTweakeroo implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.BARRIER, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LIGHT, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.STRUCTURE_VOID, RenderLayer.getTranslucent());
+
         ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
             if (AdditionalFixesConfig.GAMMA_OVERRIDE_FIX.getBooleanValue()) {
                 FeatureToggle.TWEAK_GAMMA_OVERRIDE.onValueChanged();
             }
+
+            AdditionalFeatureToggle.TWEAK_CREATIVE_ELYTRA_FLIGHT.setValueChangeCallback(value -> {
+                if (client.player == null) {
+                    return;
+                }
+                if (value.getBooleanValue()) {
+                    if (client.player.isFallFlying()) {
+                        client.player.startFallFlying();
+                    }
+                } else {
+                    client.player.stopFallFlying();
+                }
+            });
+
+            AdditionalFeatureToggle.TWEAK_RENDER_OPERATOR_BLOCKS.setValueChangeCallback(value -> {
+                WorldRenderer worldRenderer = client.worldRenderer;
+                if (worldRenderer != null) {
+                    worldRenderer.reload();
+                }
+            });
         }));
 
         ClientPreAttackCallback.EVENT.register(
@@ -87,13 +118,34 @@ public class EclipsesTweakeroo implements ClientModInitializer {
             return ActionResult.PASS;
         }));
         UseEntityCallback.EVENT.register(
-                ((player, world, hand, entity, hitResult) -> useCheck(player, hand)
-                        ? ActionResult.PASS : ActionResult.FAIL));
+                ((player, world, hand, entity, hitResult) -> {
+                    if (!useCheck(player, hand)) {
+                        return ActionResult.FAIL;
+                    }
+
+                    if (AdditionalDisableConfig.DISABLE_ALLAY_USE.getBooleanValue()
+                            && entity instanceof AllayEntity allay) {
+                        if (!player.getStackInHand(hand).isEmpty()) {
+                            Item item = player.getStackInHand(hand).getItem();
+                            if (((AllayEntityInvoker) allay).invokeCanDuplicate()
+                                    && item == Items.AMETHYST_SHARD) {
+                                return ActionResult.PASS;
+                            }
+                            return ActionResult.FAIL;
+                        }
+                    }
+
+                    return ActionResult.PASS;
+                }));
         UseItemCallback.EVENT.register(((player, world, hand) -> useCheck(player, hand)
                 ? TypedActionResult.pass(player.getStackInHand(hand))
                 : TypedActionResult.fail(player.getStackInHand(hand))));
 
         ClientTickEvents.START_WORLD_TICK.register((world -> {
+            if (!AdditionalFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()) {
+                return;
+            }
+
             assert MinecraftClient.getInstance().player != null;
             int time = EclipsesTweakerooUtil.milliTime();
             for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {

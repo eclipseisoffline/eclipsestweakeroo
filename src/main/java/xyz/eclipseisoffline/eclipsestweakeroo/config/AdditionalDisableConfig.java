@@ -36,4 +36,7 @@ public class AdditionalDisableConfig {
     public static final ConfigBooleanHotkeyed DISABLE_BED_EXPLOSION = new ConfigBooleanHotkeyed(
             "disableBedExplosions", false, "",
             "Disables bed explosions in dimensions where beds explode, by cancelling bed clicks.");
+    public static final ConfigBooleanHotkeyed DISABLE_ALLAY_USE = new ConfigBooleanHotkeyed(
+            "disableAllayItemUse", false, "",
+            "Disables giving items to allays");
 }
