@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
@@ -17,12 +18,15 @@ import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.block.BedBlock;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DisconnectedScreen;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.passive.AllayEntity;
@@ -67,21 +71,32 @@ public class EclipsesTweakeroo implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.BARRIER, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LIGHT, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.STRUCTURE_VOID, RenderLayer.getTranslucent());
+
         ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
             if (AdditionalFixesConfig.GAMMA_OVERRIDE_FIX.getBooleanValue()) {
                 FeatureToggle.TWEAK_GAMMA_OVERRIDE.onValueChanged();
             }
 
             AdditionalFeatureToggle.TWEAK_CREATIVE_ELYTRA_FLIGHT.setValueChangeCallback(value -> {
-                if (MinecraftClient.getInstance().player == null) {
+                if (client.player == null) {
                     return;
                 }
                 if (value.getBooleanValue()) {
-                    if (MinecraftClient.getInstance().player.isFallFlying()) {
-                        MinecraftClient.getInstance().player.startFallFlying();
+                    if (client.player.isFallFlying()) {
+                        client.player.startFallFlying();
                     }
                 } else {
-                    MinecraftClient.getInstance().player.stopFallFlying();
+                    client.player.stopFallFlying();
+                }
+            });
+
+            AdditionalFeatureToggle.TWEAK_RENDER_OPERATOR_BLOCKS.setValueChangeCallback(value -> {
+                WorldRenderer worldRenderer = client.worldRenderer;
+                if (worldRenderer != null) {
+                    worldRenderer.reload();
                 }
             });
         }));
