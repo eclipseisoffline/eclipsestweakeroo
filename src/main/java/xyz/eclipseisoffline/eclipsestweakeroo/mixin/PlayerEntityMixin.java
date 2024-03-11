@@ -25,10 +25,9 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
 
-    @Shadow @Final private PlayerAbilities abilities;
-
-    @Shadow public abstract void stopFallFlying();
-
+    @Shadow
+    @Final
+    private PlayerAbilities abilities;
     @Unique
     private boolean creativeFallFlying = false;
 
@@ -36,6 +35,9 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             World world) {
         super(entityType, world);
     }
+
+    @Shadow
+    public abstract void stopFallFlying();
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setPosition(DDD)V"))
     public void ignoreWorldBorderBlock(PlayerEntity instance, double x, double y, double z) {
@@ -67,7 +69,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         // Stop creative flying when the server no longer thinks we're using an elytra
         for (SerializedEntry<?> entry : dataEntries) {
             if (entry.id() == Entity.FLAGS.getId()) {
-                if (!getFlag(Entity.FALL_FLYING_FLAG_INDEX) && !MinecraftClient.getInstance().isInSingleplayer()) {
+                if (!getFlag(Entity.FALL_FLYING_FLAG_INDEX) && !MinecraftClient.getInstance()
+                        .isInSingleplayer()) {
                     stopFallFlying();
                 }
                 break;
@@ -92,7 +95,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
         assert MinecraftClient.getInstance().getNetworkHandler() != null;
 
-        PlayerListEntry thisPlayer = MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(getUuid());
+        PlayerListEntry thisPlayer = MinecraftClient.getInstance().getNetworkHandler()
+                .getPlayerListEntry(getUuid());
         if (thisPlayer == null) {
             throw new AssertionError();
         }

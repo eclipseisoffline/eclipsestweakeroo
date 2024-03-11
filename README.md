@@ -54,7 +54,12 @@ At the moment, this mod makes the following modifications:
   - If `playerGamemodeNotification` is enabled, notifications will be posted in chat when a player info entry changes gamemode.
   - If `playerListedNotification` is enabled, notifications will be posted in chat when a player info entry is added or removed from the player list.
   - If `playerDisplayNameNotification` is enabled, notifications will be posted in chat when a player info entry changes display name.
-- Added `tweakBoats`, which disables the momentum boats gain on turning and allows boats to jump 1 block high.
+- Added `tweakBoats`, which disables the momentum boats gain on turning and allows boats to jump 1 block high. Can be further configured in `Generic`:
+  - If `spiderBoat` is enabled, boats can climb walls like spiders. This is a bit buggy, and was mostly added for fun.
+  - If `boatPlayerYaw` is enabled, boats follow the crosshair of the player controlling them.
+- Added `tweakCreativeElytraFlight`, which allows creative elytra flight in survival while using an elytra.
+  - May be considered cheating on some servers, use at your own risk.
+- Added `tweakRenderOperatorBlocks`, which makes operator blocks (barrier, light and structure void blocks) have a texture.
 - Added `disableEntityCollisions` yeet, which disables entity collisions. You can still push other entities, but they can't push you.
 - Added `disableKnockback` yeet, which disables taking knockback.
 - Added `disableFogModifiers` yeet, which disables all fog modifiers (water, lava, powdered snow, darkness, etc.).
@@ -64,6 +69,8 @@ At the moment, this mod makes the following modifications:
 - Added `disableIllegalCharacterCheck` yeet, which allows using special characters as U+00A7 (§), U+007F and more in all text boxes. May not work on servers.
 - Added `disableWorldBorder` yeet, which disables all world border restrictions.
 - Added `disableBedExplosions` yeet, which disables bed explosions in dimensions where beds don't work, by disabling clicking on them.
+- Added `disableAllayItemUse` yeet, which disables giving items to allays.
+  - When allays are dancing, you can still give them amethyst shards to duplicate them.
 
 ### Fancy names
 

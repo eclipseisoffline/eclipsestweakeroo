@@ -46,10 +46,14 @@ public class AdditionalFeatureToggle {
             "Player info notifications tweak");
     public static final FeatureToggle TWEAK_BOATS = newToggle("tweakBoats", false, false, "",
             "Disables boat drift on turning and allows boats to jump 1 block high", "Boat tweak");
-    public static final FeatureToggle TWEAK_CREATIVE_ELYTRA_FLIGHT = newToggle("tweakCreativeElytraFlight", false, false, "",
-            "Enables creative flight when using elytra.\nMay be considered cheating on some servers, use at your own risk", "Creative elytra flight tweak");
-    public static final FeatureToggle TWEAK_RENDER_OPERATOR_BLOCKS = newToggle("tweakRenderOperatorBlocks", false, false, "",
-            "Makes operator blocks like barrier and light blocks have a texture", "Operator blocks render tweak");
+    public static final FeatureToggle TWEAK_CREATIVE_ELYTRA_FLIGHT = newToggle(
+            "tweakCreativeElytraFlight", false, false, "",
+            "Enables creative flight when using elytra.\nMay be considered cheating on some servers, use at your own risk",
+            "Creative elytra flight tweak");
+    public static final FeatureToggle TWEAK_RENDER_OPERATOR_BLOCKS = newToggle(
+            "tweakRenderOperatorBlocks", false, false, "",
+            "Makes operator blocks like barrier and light blocks have a texture",
+            "Operator blocks render tweak");
 
     private static FeatureToggle newToggle(String name, boolean defaultValue, boolean singlePlayer,
             String defaultHotkey, String comment, String prettyName) {

@@ -119,7 +119,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
         }));
         UseEntityCallback.EVENT.register(
                 ((player, world, hand, entity, hitResult) -> {
-                    if(!useCheck(player, hand)) {
+                    if (!useCheck(player, hand)) {
                         return ActionResult.FAIL;
                     }
 
@@ -127,7 +127,8 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                             && entity instanceof AllayEntity allay) {
                         if (!player.getStackInHand(hand).isEmpty()) {
                             Item item = player.getStackInHand(hand).getItem();
-                            if (((AllayEntityInvoker) allay).invokeCanDuplicate() && item == Items.AMETHYST_SHARD) {
+                            if (((AllayEntityInvoker) allay).invokeCanDuplicate()
+                                    && item == Items.AMETHYST_SHARD) {
                                 return ActionResult.PASS;
                             }
                             return ActionResult.FAIL;
