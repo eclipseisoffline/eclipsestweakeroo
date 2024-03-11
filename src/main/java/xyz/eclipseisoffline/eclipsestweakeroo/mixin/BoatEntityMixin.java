@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.util.math.BlockPos;
@@ -11,6 +12,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,14 +27,14 @@ public abstract class BoatEntityMixin extends Entity {
 
     @Shadow
     private float yawVelocity;
-
     @Shadow
     private boolean pressingLeft;
-
     @Shadow
     private boolean pressingRight;
     @Shadow
     private boolean pressingForward;
+    @Shadow
+    private double boatYaw;
 
     protected BoatEntityMixin(EntityType<?> entityType,
             World world) {
@@ -41,6 +43,10 @@ public abstract class BoatEntityMixin extends Entity {
 
     @Shadow
     public abstract Direction getMovementDirection();
+
+    @Shadow
+    @Nullable
+    public abstract LivingEntity getControllingPassenger();
 
     @Redirect(method = "getNearbySlipperiness", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getSlipperiness()F"))
     public float getSlipperiness(Block block) {
@@ -54,7 +60,7 @@ public abstract class BoatEntityMixin extends Entity {
     }
 
     @Inject(method = "updateVelocity", at = @At("TAIL"))
-    public void clearYawVelocity(CallbackInfo callbackInfo) {
+    public void clearYawVelocityAndJump(CallbackInfo callbackInfo) {
         if (AdditionalFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
             if (!pressingLeft && !pressingRight) {
                 yawVelocity = 0;
@@ -62,7 +68,8 @@ public abstract class BoatEntityMixin extends Entity {
             if (pressingForward) {
                 BlockPos inFrontPos = getBlockPos().offset(getHorizontalFacing(), 1);
 
-                if (!getWorld().getBlockState(inFrontPos.up())
+                if (AdditionalGenericConfig.TWEAK_BOAT_SPIDER.getBooleanValue()
+                        || !getWorld().getBlockState(inFrontPos.up())
                         .isSolidSurface(getWorld(), inFrontPos.up(), this,
                                 getHorizontalFacing().getOpposite())) {
                     BlockState block = getWorld().getBlockState(inFrontPos);
@@ -76,5 +83,36 @@ public abstract class BoatEntityMixin extends Entity {
                 }
             }
         }
+    }
+
+    @Inject(method = "updatePositionAndRotation", at = @At("HEAD"))
+    public void setPlayerYaw(CallbackInfo callbackInfo) {
+        if (isLogicalSideForUpdatingMovement()
+                && getControllingPassenger() != null
+                && AdditionalGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
+                && AdditionalFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
+            if (Math.abs(getYaw() - getControllingPassenger().getYaw()) > 1) {
+                setYaw(getControllingPassenger().getYaw());
+                boatYaw = getControllingPassenger().getYaw();
+            }
+        }
+    }
+
+    @Redirect(method = "updatePaddles", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/vehicle/BoatEntity;pressingLeft:Z"))
+    public boolean notPressingLeftWhenControllingYaw(BoatEntity instance) {
+        if (AdditionalGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
+                && AdditionalFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
+            return false;
+        }
+        return pressingLeft;
+    }
+
+    @Redirect(method = "updatePaddles", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/vehicle/BoatEntity;pressingRight:Z"))
+    public boolean notPressingRightWhenControllingYaw(BoatEntity instance) {
+        if (AdditionalGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
+                && AdditionalFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
+            return false;
+        }
+        return pressingRight;
     }
 }

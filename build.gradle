@@ -73,24 +73,22 @@ jar {
 }
 
 publishing {
-    publishing {
-        repositories {
-            maven {
-                name = "GithubPackages"
-                url = uri("https://maven.pkg.github.com/eclipseisoffline/eclipsestweakeroo")
-                credentials {
-                    username = "eclipseisoffline"
-                    password = Files.readString(java.nio.file.Path.of("./github_auth"))
-                }
+    repositories {
+        maven {
+            name = "GithubPackages"
+            url = uri("https://maven.pkg.github.com/eclipseisoffline/eclipsestweakeroo")
+            credentials {
+                username = "eclipseisoffline"
+                password = Files.readString(java.nio.file.Path.of("./github_auth"))
             }
         }
+    }
 
-        publications {
-            gpr(MavenPublication) {
-                artifactId project.archives_base_name
+    publications {
+        gpr(MavenPublication) {
+            artifactId project.archives_base_name
 
-                from components.java
-            }
+            from components.java
         }
     }
 }
