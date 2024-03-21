@@ -26,7 +26,8 @@ public class InGameHudMixin {
 
     @Inject(method = "renderStatusEffectOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectInstance;isAmbient()Z"))
     public void drawStatusText(DrawContext context, CallbackInfo callbackInfo,
-            @Local StatusEffectInstance statusEffectInstance, @Local(ordinal = 2) int k,
+            @Local StatusEffectInstance statusEffectInstance,
+            @Local(ordinal = 2) int k,
             @Local(ordinal = 3) LocalIntRef l) {
         if (AdditionalFeatureToggle.TWEAK_STATUS_EFFECT.getBooleanValue()) {
             TextRenderer renderer = MinecraftClient.getInstance().textRenderer;

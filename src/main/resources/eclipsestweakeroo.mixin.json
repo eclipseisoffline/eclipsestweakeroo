@@ -12,6 +12,7 @@
     "BackgroundRendererMixin",
     "BarrierBlockMixin",
     "BoatEntityMixin",
+    "BossBarHudAccessor",
     "BowItemMixin",
     "ClientPlayNetworkHandlerMixin",
     "ClientWorldMixin",
