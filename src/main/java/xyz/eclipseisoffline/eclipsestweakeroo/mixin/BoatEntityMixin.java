@@ -49,7 +49,7 @@ public abstract class BoatEntityMixin extends VehicleEntity {
     public abstract LivingEntity getControllingPassenger();
 
     @Redirect(method = "getNearbySlipperiness", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getSlipperiness()F"))
-    public float getSlipperiness(Block block) {
+    public float getTweakedSlipperiness(Block block) {
         if (AdditionalFeatureToggle.TWEAK_SLIPPERY.getBooleanValue()
                 && getFirstPassenger() instanceof PlayerEntity
                 && AdditionalGenericConfig.TWEAK_SLIPPERY_VEHICLES.getBooleanValue()) {
@@ -86,7 +86,7 @@ public abstract class BoatEntityMixin extends VehicleEntity {
     }
 
     @Inject(method = "updatePositionAndRotation", at = @At("HEAD"))
-    public void setPlayerYaw(CallbackInfo callbackInfo) {
+    public void copyPlayerYaw(CallbackInfo callbackInfo) {
         if (isLogicalSideForUpdatingMovement()
                 && getControllingPassenger() != null
                 && AdditionalGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
@@ -99,7 +99,7 @@ public abstract class BoatEntityMixin extends VehicleEntity {
     }
 
     @Redirect(method = "updatePaddles", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/vehicle/BoatEntity;pressingLeft:Z"))
-    public boolean notPressingLeftWhenControllingYaw(BoatEntity instance) {
+    public boolean notPressingLeftWhenUsingPlayerYaw(BoatEntity instance) {
         if (AdditionalGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
                 && AdditionalFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
             return false;
@@ -108,7 +108,7 @@ public abstract class BoatEntityMixin extends VehicleEntity {
     }
 
     @Redirect(method = "updatePaddles", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/vehicle/BoatEntity;pressingRight:Z"))
-    public boolean notPressingRightWhenControllingYaw(BoatEntity instance) {
+    public boolean notPressingRightWhenUsingPlayerYaw(BoatEntity instance) {
         if (AdditionalGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
                 && AdditionalFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
             return false;

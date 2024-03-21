@@ -11,10 +11,11 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 
 @Mixin(MiscUtils.class)
-public class TweakerooMiscUtilsMixin {
+public abstract class TweakerooMiscUtilsMixin {
 
     @Redirect(method = "commandNearbyPets", at = @At(value = "INVOKE", target = "Lfi/dy/masa/tweakeroo/util/MiscUtils;rightClickEntity(Lnet/minecraft/entity/Entity;Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/entity/player/PlayerEntity;)V"))
-    private static void rightClickEntity(Entity entity, MinecraftClient mc, PlayerEntity player) {
+    private static void commandOnlyAdultPets(Entity entity, MinecraftClient mc,
+            PlayerEntity player) {
         assert entity instanceof TameableEntity;
         if (((TameableEntity) entity).isBaby()
                 && AdditionalGenericConfig.COMMAND_ONLY_ADULT_PETS.getBooleanValue()) {

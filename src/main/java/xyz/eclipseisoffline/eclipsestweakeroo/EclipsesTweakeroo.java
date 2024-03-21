@@ -254,7 +254,8 @@ public class EclipsesTweakeroo implements ClientModInitializer {
     }
 
     private static boolean useCheck(PlayerEntity player, Hand hand) {
-        if (AdditionalDisableConfig.DISABLE_OFFHAND_USE.getBooleanValue() && hand == Hand.OFF_HAND) {
+        if (AdditionalDisableConfig.DISABLE_OFFHAND_USE.getBooleanValue()
+                && hand == Hand.OFF_HAND) {
             return false;
         }
 

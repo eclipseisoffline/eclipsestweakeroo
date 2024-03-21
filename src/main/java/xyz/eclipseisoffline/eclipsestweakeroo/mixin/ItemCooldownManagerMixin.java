@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 
 @Mixin(ItemCooldownManager.class)
-public class ItemCooldownManagerMixin {
+public abstract class ItemCooldownManagerMixin {
 
     @Inject(method = "set", at = @At("HEAD"), cancellable = true)
-    public void set(Item item, int duration, CallbackInfo callbackInfo) {
+    public void disableItemCooldown(Item item, int duration, CallbackInfo callbackInfo) {
         if (AdditionalDisableConfig.DISABLE_ITEM_COOLDOWN.getBooleanValue()) {
             callbackInfo.cancel();
         }

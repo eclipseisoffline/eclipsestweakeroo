@@ -16,7 +16,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(Disable.class)
-public class TweakerooDisableConfigsMixin {
+public abstract class TweakerooDisableConfigsMixin {
 
     @Mutable
     @Final
@@ -24,7 +24,7 @@ public class TweakerooDisableConfigsMixin {
     public static ImmutableList<IHotkeyTogglable> OPTIONS;
 
     @Inject(method = "<clinit>()V", at = @At("TAIL"))
-    private static void staticInit(CallbackInfo callbackInfo) {
+    private static void addAdditionalEntries(CallbackInfo callbackInfo) {
         List<IHotkeyTogglable> newOptions = new ArrayList<>(OPTIONS);
         newOptions.addAll(
                 EclipsesTweakerooUtil.getDeclaredHotkeyOptions(AdditionalDisableConfig.class));

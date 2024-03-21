@@ -8,10 +8,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 
 @Mixin(LightmapTextureManager.class)
-public class LightmapTextureManagerMixin {
+public abstract class LightmapTextureManagerMixin implements AutoCloseable {
 
     @Inject(method = "getDarknessFactor", at = @At("HEAD"), cancellable = true)
-    public void getDarknessFactor(float delta,
+    public void disableDarknessEffect(float delta,
             CallbackInfoReturnable<Float> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_FOG_MODIFIER.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(0.0F);

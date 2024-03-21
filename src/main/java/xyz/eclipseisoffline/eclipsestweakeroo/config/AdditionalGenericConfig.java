@@ -28,7 +28,8 @@ public class AdditionalGenericConfig {
     public static final ConfigOptionList TWEAK_PLAYER_LIST_ORDER = new ConfigOptionList(
             "playerListOrder", PlayerListOrder.DEFAULT,
             "Changes the order of players in the player list when the player list tweak is enabled");
-    public static final ConfigBoolean TWEAK_PLAYER_LIST_BOSSBAR = new ConfigBoolean("playerListBelowBossbar",
+    public static final ConfigBoolean TWEAK_PLAYER_LIST_BOSSBAR = new ConfigBoolean(
+            "playerListBelowBossbar",
             false, "Moves the player list below any bossbars that are rendering");
     public static final ConfigDouble TWEAK_SLIPPERY_SLIPPERINESS = new ConfigDouble("slipperiness",
             Blocks.ICE.getSlipperiness(), 0.6, 1.15,

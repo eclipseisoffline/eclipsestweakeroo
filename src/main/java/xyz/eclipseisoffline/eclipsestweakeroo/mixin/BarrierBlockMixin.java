@@ -19,7 +19,7 @@ public abstract class BarrierBlockMixin extends Block implements Waterloggable {
     }
 
     @Inject(method = "getRenderType", at = @At("HEAD"), cancellable = true)
-    public void modelRenderType(BlockState state,
+    public void setModelRenderType(BlockState state,
             CallbackInfoReturnable<BlockRenderType> callbackInfoReturnable) {
         if (AdditionalFeatureToggle.TWEAK_RENDER_OPERATOR_BLOCKS.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(BlockRenderType.MODEL);

@@ -11,10 +11,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 
 @Mixin(InventoryUtils.class)
-public class TweakerooInventoryUtilsMixin {
+public abstract class TweakerooInventoryUtilsMixin {
 
     @Inject(method = "restockNewStackToHand", at = @At("HEAD"), cancellable = true)
-    private static void restockNewStackToHand(PlayerEntity player, Hand hand,
+    private static void disableUnstackableRestocking(PlayerEntity player, Hand hand,
             ItemStack stackReference,
             boolean allowHotbar, CallbackInfo callbackInfo) {
         if (!AdditionalGenericConfig.HAND_RESTOCK_UNSTACKABLE.getBooleanValue()

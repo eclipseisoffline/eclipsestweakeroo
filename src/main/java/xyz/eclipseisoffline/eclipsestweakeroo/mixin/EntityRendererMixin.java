@@ -16,12 +16,12 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.FancyName;
 
 @Mixin(EntityRenderer.class)
-public class EntityRendererMixin {
+public abstract class EntityRendererMixin {
 
     @ModifyArg(method = "render",
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/client/render/entity/EntityRenderer;renderLabelIfPresent(Lnet/minecraft/entity/Entity;Lnet/minecraft/text/Text;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"), index = 1)
-    public Text getDisplayName(Entity entity, Text text, MatrixStack matrices,
+    public Text getFancyDisplayName(Entity entity, Text text, MatrixStack matrices,
             VertexConsumerProvider vertexConsumers, int light) {
         if (entity instanceof PlayerEntity) {
             if (AdditionalFeatureToggle.TWEAK_PLAYER_NAME.getBooleanValue()) {
