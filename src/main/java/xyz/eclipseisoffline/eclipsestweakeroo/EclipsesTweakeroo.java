@@ -254,6 +254,10 @@ public class EclipsesTweakeroo implements ClientModInitializer {
     }
 
     private static boolean useCheck(PlayerEntity player, Hand hand) {
+        if (AdditionalDisableConfig.DISABLE_OFFHAND_USE.getBooleanValue() && hand == Hand.OFF_HAND) {
+            return false;
+        }
+
         if (AdditionalGenericConfig.TWEAK_DURABILITY_PREVENT_USE.getBooleanValue()
                 && AdditionalFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()
                 && player.getStackInHand(hand).isDamageable()) {
