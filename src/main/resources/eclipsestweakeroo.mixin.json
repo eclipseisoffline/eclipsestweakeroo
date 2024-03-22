@@ -42,6 +42,7 @@
     "TweakerooInventoryUtilsMixin",
     "TweakerooListsConfigsMixin",
     "TweakerooMiscUtilsMixin",
+    "TweakerooPlacementTweaksMixin",
     "WorldBorderMixin"
   ],
   "injectors": {
