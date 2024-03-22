@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFixesConfig;
 
 @Mixin(PlacementTweaks.class)
-public class TweakerooPlacementTweaksMixin {
+public abstract class TweakerooPlacementTweaksMixin {
 
     @Unique
     private static final List<Item> ITEMS_TO_PATCH = List.of(Items.PISTON, Items.STICKY_PISTON,

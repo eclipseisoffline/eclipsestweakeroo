@@ -91,7 +91,9 @@ public class FancyName {
                     return null;
                 }
             }),
-            Map.entry("armor", (livingEntity, playerListEntry) -> EclipsesTweakerooUtil.getArmorText(livingEntity)),
+            Map.entry("armor",
+                    (livingEntity, playerListEntry) -> EclipsesTweakerooUtil.getArmorText(
+                            livingEntity)),
             Map.entry("distance", (livingEntity, playerListEntry) -> {
                 PlayerEntity player = MinecraftClient.getInstance().player;
                 assert player != null;

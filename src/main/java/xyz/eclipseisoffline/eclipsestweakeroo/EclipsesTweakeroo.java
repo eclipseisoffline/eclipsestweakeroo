@@ -50,6 +50,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFixesConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.event.AttemptConnectionCallback;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.AllayEntityInvoker;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.DisconnectedScreenAccessor;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
@@ -60,14 +61,13 @@ public class EclipsesTweakeroo implements ClientModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final Map<StatusEffect, String> STATUS_EFFECT_CHARACTER_MAP = new HashMap<>();
 
-    private static final double DURABILITY_WARNING = 0.9;
     private static final Text TO_MENU_TEXT = Text.translatable("gui.toMenu");
     private static final String FANCYNAME_EFFECT_MAP_PATH = "fancyname";
     private static final String FANCYNAME_EFFECT_MAP_NAME = "effect_map.json";
-    private static ServerAddress lastConnection = null;
-    private static ServerInfo lastConnectionInfo = null;
     private final Map<EquipmentSlot, Item> registeredItems = new HashMap<>();
     private final Map<EquipmentSlot, Integer> registeredWarningTimes = new HashMap<>();
+    private ServerAddress lastConnection = null;
+    private ServerInfo lastConnectionInfo = null;
 
     @Override
     public void onInitializeClient() {
@@ -174,6 +174,10 @@ public class EclipsesTweakeroo implements ClientModInitializer {
             }
         }));
 
+        AttemptConnectionCallback.EVENT.register((address, connectionInfo) -> {
+            lastConnection = address;
+            lastConnectionInfo = connectionInfo;
+        });
         ScreenEvents.AFTER_INIT.register(((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof DisconnectedScreen disconnectedScreen
                     && AdditionalFeatureToggle.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
@@ -241,15 +245,6 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                         }
                     }
                 });
-    }
-
-    // TODO: implement with a custom event?
-    public static void setLastConnection(ServerAddress lastConnection) {
-        EclipsesTweakeroo.lastConnection = lastConnection;
-    }
-
-    public static void setLastConnectionInfo(ServerInfo lastConnectionInfo) {
-        EclipsesTweakeroo.lastConnectionInfo = lastConnectionInfo;
     }
 
     private static boolean useCheck(PlayerEntity player, Hand hand) {

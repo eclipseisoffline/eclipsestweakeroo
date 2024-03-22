@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
+import xyz.eclipseisoffline.eclipsestweakeroo.event.AttemptConnectionCallback;
 
 @Mixin(ConnectScreen.class)
 public abstract class ConnectScreenMixin extends Screen {
@@ -22,7 +22,6 @@ public abstract class ConnectScreenMixin extends Screen {
     @Inject(method = "connect(Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/network/ServerAddress;Lnet/minecraft/client/network/ServerInfo;Z)V", at = @At("HEAD"))
     private static void registerNewConnection(Screen screen, MinecraftClient client,
             ServerAddress address, ServerInfo info, boolean quickPlay, CallbackInfo callbackInfo) {
-        EclipsesTweakeroo.setLastConnection(address);
-        EclipsesTweakeroo.setLastConnectionInfo(info);
+        AttemptConnectionCallback.EVENT.invoker().connect(address, info);
     }
 }
