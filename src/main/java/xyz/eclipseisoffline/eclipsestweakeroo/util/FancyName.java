@@ -91,15 +91,7 @@ public class FancyName {
                     return null;
                 }
             }),
-            Map.entry("armor", (livingEntity, playerListEntry) -> {
-                try {
-                    return Text.literal(String.valueOf(
-                                    livingEntity.getAttributeValue(EntityAttributes.GENERIC_ARMOR)))
-                            .formatted(Formatting.GOLD);
-                } catch (IllegalArgumentException exception) {
-                    return null;
-                }
-            }),
+            Map.entry("armor", (livingEntity, playerListEntry) -> EclipsesTweakerooUtil.getArmorText(livingEntity)),
             Map.entry("distance", (livingEntity, playerListEntry) -> {
                 PlayerEntity player = MinecraftClient.getInstance().player;
                 assert player != null;
