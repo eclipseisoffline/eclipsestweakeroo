@@ -152,8 +152,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 ItemStack itemStack = MinecraftClient.getInstance().player.getEquippedStack(
                         equipmentSlot);
 
-                int requiredDamage = (int) (DURABILITY_WARNING * itemStack.getMaxDamage());
-                if (!itemStack.isDamageable() || itemStack.getDamage() < requiredDamage) {
+                if (!EclipsesTweakerooUtil.shouldWarnDurability(itemStack)) {
                     registeredWarningTimes.put(equipmentSlot, 0);
                     continue;
                 }

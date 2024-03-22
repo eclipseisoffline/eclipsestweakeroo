@@ -54,6 +54,10 @@ public class AdditionalFeatureToggle {
             "tweakRenderOperatorBlocks", false, false, "",
             "Makes operator blocks like barrier and light blocks have a texture",
             "Operator blocks render tweak");
+    public static final FeatureToggle TWEAK_NUMBER_HUD = newToggle(
+            "tweakNumberHud", false, false, "",
+            "Replaces part of the HUD with number/text-based rendering to be more informative",
+            "Number HUD tweak");
 
     private static FeatureToggle newToggle(String name, boolean defaultValue, boolean singlePlayer,
             String defaultHotkey, String comment, String prettyName) {

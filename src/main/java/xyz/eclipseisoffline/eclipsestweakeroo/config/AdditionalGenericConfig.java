@@ -80,4 +80,16 @@ public class AdditionalGenericConfig {
             "Boats can jump infinitely high when tweakBoats is enabled");
     public static ConfigBoolean TWEAK_BOAT_PLAYER_YAW = new ConfigBoolean("boatPlayerYaw", false,
             "Boats follow the yaw of the controlling player when tweakBoats is enabled");
+    public static ConfigInteger TWEAK_NUMBER_HUD_HEALTH_WARNING_THRESHOLD = new ConfigInteger(
+            "healthWarningThreshold", 5, 0, 20,
+            "Determines when to start flashing the HP text when tweakNumberHud is used");
+    public static ConfigInteger TWEAK_NUMBER_HUD_HUNGER_WARNING_THRESHOLD = new ConfigInteger(
+            "hungerWarningThreshold", 15, 0, 20,
+            "Determines when to start flashing the hunger text when tweakNumberHud is used");
+    public static ConfigInteger TWEAK_NUMBER_HUD_AIR_WARNING_THRESHOLD = new ConfigInteger(
+            "airWarningThreshold", 75, -20, 300,
+            "Determines when to start flashing the air text when tweakNumberHud is used");
+    public static ConfigBoolean TWEAK_NUMBER_HUD_SHOW_DURABILITY_WARNING = new ConfigBoolean(
+            "numberHudDurabilityWarning", true,
+            "Shows durability warnings for equipment slots when tweakNumberHud is used");
 }

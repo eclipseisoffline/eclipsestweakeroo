@@ -8,12 +8,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityGroup;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.AttributeModifierCreator;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.passive.AbstractHorseEntity;
@@ -23,7 +18,6 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.PlainTextContent.Literal;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
@@ -91,39 +85,8 @@ public class FancyName {
                     : Text.literal("NO KEY").formatted(Formatting.RED)),
             Map.entry("attack", (livingEntity, playerListEntry) -> {
                 try {
-                    EntityAttributeInstance attributeInstance = new EntityAttributeInstance(
-                            EntityAttributes.GENERIC_ATTACK_DAMAGE, (instance) -> {
-                    });
-                    attributeInstance.setBaseValue(livingEntity.getAttributeBaseValue(
-                            EntityAttributes.GENERIC_ATTACK_DAMAGE));
-                    livingEntity.getStackInHand(Hand.MAIN_HAND)
-                            .getAttributeModifiers(EquipmentSlot.MAINHAND)
-                            .get(EntityAttributes.GENERIC_ATTACK_DAMAGE)
-                            .forEach((attributeInstance::addTemporaryModifier));
-                    livingEntity.getActiveStatusEffects().forEach((statusEffect, instance) -> {
-                        AttributeModifierCreator attackModifier = statusEffect.getAttributeModifiers()
-                                .get(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-                        if (attackModifier != null) {
-                            attributeInstance.addTemporaryModifier(
-                                    attackModifier.createAttributeModifier(
-                                            instance.getAmplifier()));
-                        }
-                    });
-
-                    float base = (float) attributeInstance.getValue();
-                    float enchantments = EnchantmentHelper.getAttackDamage(
-                            livingEntity.getStackInHand(Hand.MAIN_HAND), EntityGroup.DEFAULT);
-                    float criticalDamage = (float) (base * 1.5) + enchantments;
-                    float attackDamage = base + enchantments;
-
-                    MutableText attack = Text.literal(String.valueOf(attackDamage))
-                            .formatted(Formatting.YELLOW);
-                    if (livingEntity instanceof PlayerEntity
-                            && AdditionalGenericConfig.ATTACK_PLACEHOLDER_CRITICAL.getBooleanValue()) {
-                        attack.append(Text.literal("+" + (criticalDamage - attackDamage))
-                                .formatted(Formatting.RED));
-                    }
-                    return attack;
+                    return EclipsesTweakerooUtil.getAttackDamageText(livingEntity,
+                            AdditionalGenericConfig.ATTACK_PLACEHOLDER_CRITICAL.getBooleanValue());
                 } catch (IllegalArgumentException exception) {
                     return null;
                 }
