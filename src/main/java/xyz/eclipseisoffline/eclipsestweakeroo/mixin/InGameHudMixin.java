@@ -70,8 +70,7 @@ public abstract class InGameHudMixin {
                 l.set(l.get() + STATUS_EFFECT_SPACE + renderer.fontHeight);
             }
 
-            Text durationText = EclipsesTweakerooUtil.getDurationTextWithStyle(
-                    statusEffectInstance);
+            Text durationText = EclipsesTweakerooUtil.getDurationTextWithStyle(statusEffectInstance);
             int textWidth = renderer.getWidth(durationText);
             context.drawTextWithShadow(renderer, durationText,
                     k + (STATUS_EFFECT_SPRITE_SIZE / 2) - (textWidth / 2),

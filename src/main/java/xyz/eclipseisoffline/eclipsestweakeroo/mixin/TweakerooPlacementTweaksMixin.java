@@ -29,7 +29,7 @@ public abstract class TweakerooPlacementTweaksMixin {
     private static final List<Item> ITEMS_TO_PATCH = List.of(Items.PISTON, Items.STICKY_PISTON,
             Items.DISPENSER, Items.DROPPER);
 
-    @Inject(method = "tryPlaceBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getStackInHand(Lnet/minecraft/util/Hand;)Lnet/minecraft/item/ItemStack;", ordinal = 0), remap = false)
+    @Inject(method = "tryPlaceBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getStackInHand(Lnet/minecraft/util/Hand;)Lnet/minecraft/item/ItemStack;", ordinal = 0))
     private static void fixPistonFlexiblePlacement(ClientPlayerInteractionManager controller,
             ClientPlayerEntity player, ClientWorld world, BlockPos posIn, Direction sideIn,
             Direction sideRotatedIn, float playerYaw, Vec3d hitVec, Hand hand, HitPart hitPart,

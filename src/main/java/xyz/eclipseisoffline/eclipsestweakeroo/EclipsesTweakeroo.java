@@ -80,6 +80,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 FeatureToggle.TWEAK_GAMMA_OVERRIDE.onValueChanged();
             }
 
+            // Registering value change callbacks here to prevent crashes
             AdditionalFeatureToggle.TWEAK_CREATIVE_ELYTRA_FLIGHT.setValueChangeCallback(value -> {
                 if (client.player == null) {
                     return;

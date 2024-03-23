@@ -33,6 +33,7 @@ import net.minecraft.util.math.MathHelper;
 public class EclipsesTweakerooUtil {
 
     private static final double NANO_MILLI = 0.000001;
+    private static final int MAX_DURATION_SECONDS_EFFECT_TEXT = 3600;
     private static final double DURABILITY_WARNING = 0.9;
     private static final Map<StatusEffect, Formatting> EFFECT_COLOURS = Map.ofEntries(
             Map.entry(StatusEffects.SPEED, Formatting.WHITE),
@@ -147,8 +148,17 @@ public class EclipsesTweakerooUtil {
 
     public static Text getDurationTextWithStyle(StatusEffectInstance effect) {
         assert MinecraftClient.getInstance().world != null;
-        MutableText durationText = (MutableText) StatusEffectUtil.getDurationText(effect,
-                1, MinecraftClient.getInstance().world.getTickManager().getTickRate());
+        int durationSeconds = (int) ((MinecraftClient.getInstance().world.getTickManager()
+                .getMillisPerTick() * effect.getDuration()) / 1000);
+
+        MutableText durationText;
+        if (durationSeconds >= MAX_DURATION_SECONDS_EFFECT_TEXT) {
+            durationText = Text.literal("**:**");
+        } else {
+            durationText = (MutableText) StatusEffectUtil.getDurationText(effect,
+                    1, MinecraftClient.getInstance().world.getTickManager().getTickRate());
+        }
+
         durationText.formatted(
                 EFFECT_COLOURS.getOrDefault(effect.getEffectType(), Formatting.WHITE));
         return durationText;
