@@ -10,17 +10,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 
 @Mixin(targets = "net.minecraft.screen.PlayerScreenHandler$1")
-public class PlayerScreenHandlerEquipmentSlotMixin {
+public abstract class PlayerScreenHandlerEquipmentSlotMixin {
 
     @Inject(method = "canInsert", at = @At("HEAD"), cancellable = true)
-    public void canInsert(ItemStack stack, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+    public void canAlwaysInsert(ItemStack stack,
+            CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_EQUIPMENT_RESTRICTION.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(true);
         }
     }
 
     @Redirect(method = "canTakeItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;hasBindingCurse(Lnet/minecraft/item/ItemStack;)Z"))
-    public boolean hasBindingCurse(ItemStack stack) {
+    public boolean disableBindingCurse(ItemStack stack) {
         if (AdditionalDisableConfig.DISABLE_BINDING_CURSE.getBooleanValue()) {
             return false;
         }

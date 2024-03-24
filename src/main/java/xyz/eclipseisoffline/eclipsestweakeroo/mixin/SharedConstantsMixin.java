@@ -8,10 +8,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 
 @Mixin(SharedConstants.class)
-public class SharedConstantsMixin {
+public abstract class SharedConstantsMixin {
 
     @Inject(method = "isValidChar", at = @At("HEAD"), cancellable = true)
-    private static void isValidChar(char chr,
+    private static void allowAllCharacters(char chr,
             CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_ILLEGAL_CHARACTER_CHECK.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(true);

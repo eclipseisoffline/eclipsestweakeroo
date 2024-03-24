@@ -8,38 +8,38 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 
 @Mixin(WorldBorder.class)
-public class WorldBorderMixin {
+public abstract class WorldBorderMixin {
 
     @Inject(method = "getBoundWest", at = @At("HEAD"), cancellable = true)
-    public void getBoundWest(CallbackInfoReturnable<Double> callbackInfoReturnable) {
+    public void disableWestBound(CallbackInfoReturnable<Double> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_WORLD_BORDER.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(-Double.MAX_VALUE);
         }
     }
 
     @Inject(method = "getBoundEast", at = @At("HEAD"), cancellable = true)
-    public void getBoundEast(CallbackInfoReturnable<Double> callbackInfoReturnable) {
+    public void disableEastBound(CallbackInfoReturnable<Double> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_WORLD_BORDER.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(Double.MAX_VALUE);
         }
     }
 
     @Inject(method = "getBoundNorth", at = @At("HEAD"), cancellable = true)
-    public void getBoundNorth(CallbackInfoReturnable<Double> callbackInfoReturnable) {
+    public void disableNorthBound(CallbackInfoReturnable<Double> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_WORLD_BORDER.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(-Double.MAX_VALUE);
         }
     }
 
     @Inject(method = "getBoundSouth", at = @At("HEAD"), cancellable = true)
-    public void getBoundSouth(CallbackInfoReturnable<Double> callbackInfoReturnable) {
+    public void disableSouthBound(CallbackInfoReturnable<Double> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_WORLD_BORDER.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(Double.MAX_VALUE);
         }
     }
 
     @Inject(method = "getSize", at = @At("HEAD"), cancellable = true)
-    public void getSize(CallbackInfoReturnable<Double> callbackInfoReturnable) {
+    public void disableBorder(CallbackInfoReturnable<Double> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_WORLD_BORDER.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(Double.MAX_VALUE);
         }

@@ -22,7 +22,7 @@ public abstract class LivingEntityClientMixin extends Entity {
     }
 
     @Inject(method = "shouldRenderName", at = @At("TAIL"), cancellable = true)
-    public void shouldRenderName(CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+    public void alwaysRenderName(CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         //noinspection ConstantValue
         callbackInfoReturnable.setReturnValue(callbackInfoReturnable.getReturnValue()
                 || (AdditionalFeatureToggle.TWEAK_MOB_NAMES.getBooleanValue()
@@ -30,7 +30,7 @@ public abstract class LivingEntityClientMixin extends Entity {
     }
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getSlipperiness()F"))
-    public float getSlipperiness(Block block) {
+    public float getTweakedSlipperiness(Block block) {
         //noinspection ConstantValue
         if (AdditionalFeatureToggle.TWEAK_SLIPPERY.getBooleanValue()
                 && ((Object) this instanceof PlayerEntity

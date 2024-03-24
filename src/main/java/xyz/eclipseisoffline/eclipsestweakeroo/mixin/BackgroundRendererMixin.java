@@ -16,9 +16,8 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 public abstract class BackgroundRendererMixin {
 
     @Redirect(method = "applyFog",
-            at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/client/render/Camera;getSubmersionType()Lnet/minecraft/client/render/CameraSubmersionType;"))
-    private static CameraSubmersionType getCameraSubmersionType(Camera instance) {
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;getSubmersionType()Lnet/minecraft/client/render/CameraSubmersionType;"))
+    private static CameraSubmersionType disableSubmersionFogModifiers(Camera instance) {
         if (AdditionalDisableConfig.DISABLE_FOG_MODIFIER.getBooleanValue()) {
             return CameraSubmersionType.NONE;
         }
@@ -27,7 +26,7 @@ public abstract class BackgroundRendererMixin {
     }
 
     @Inject(method = "getFogModifier", at = @At("HEAD"), cancellable = true)
-    private static void getFogModifier(Entity entity, float tickDelta,
+    private static void disableFogModifiers(Entity entity, float tickDelta,
             CallbackInfoReturnable<StatusEffectFogModifier> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_FOG_MODIFIER.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(null);

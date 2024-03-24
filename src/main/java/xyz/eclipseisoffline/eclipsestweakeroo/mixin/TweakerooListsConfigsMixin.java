@@ -16,7 +16,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalListsConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(Lists.class)
-public class TweakerooListsConfigsMixin {
+public abstract class TweakerooListsConfigsMixin {
 
     @Mutable
     @Final
@@ -24,7 +24,7 @@ public class TweakerooListsConfigsMixin {
     public static ImmutableList<IConfigBase> OPTIONS;
 
     @Inject(method = "<clinit>()V", at = @At("TAIL"))
-    private static void staticInit(CallbackInfo callbackInfo) {
+    private static void addAdditionalEntries(CallbackInfo callbackInfo) {
         List<IConfigBase> newOptions = new ArrayList<>(OPTIONS);
         newOptions.addAll(EclipsesTweakerooUtil.getDeclaredOptions(AdditionalListsConfig.class));
         OPTIONS = ImmutableList.copyOf(newOptions);

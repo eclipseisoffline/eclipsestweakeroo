@@ -27,6 +27,9 @@ dependencies {
     modImplementation "curse.maven:malilib-303119:${project.malilib_version}"
     modImplementation "curse.maven:tweakeroo-297344:${project.tweakeroo_version_cursemaven}"
 
+    // Used during compiling
+    modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    // Used during testing
     modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 

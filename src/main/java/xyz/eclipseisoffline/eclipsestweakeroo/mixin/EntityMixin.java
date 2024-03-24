@@ -12,10 +12,10 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 
 @Mixin(Entity.class)
-public class EntityMixin {
+public abstract class EntityMixin {
 
     @Inject(method = "Lnet/minecraft/entity/Entity;pushAwayFrom(Lnet/minecraft/entity/Entity;)V", at = @At("HEAD"), cancellable = true)
-    public void pushAwayFrom(Entity entity, CallbackInfo callbackInfo) {
+    public void cancelPushAway(Entity entity, CallbackInfo callbackInfo) {
         //noinspection ConstantValue
         if (((Object) this instanceof PlayerEntity)
                 && AdditionalDisableConfig.DISABLE_ENTITY_COLLISIONS.getBooleanValue()) {
@@ -24,7 +24,8 @@ public class EntityMixin {
     }
 
     @Inject(method = "getJumpVelocityMultiplier", at = @At("HEAD"), cancellable = true)
-    public void getJumpVelocityMultiplier(CallbackInfoReturnable<Float> callbackInfoReturnable) {
+    public void getTweakedJumpVelocityMultiplier(
+            CallbackInfoReturnable<Float> callbackInfoReturnable) {
         if (AdditionalFeatureToggle.TWEAK_JUMP_VELOCITY.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(
                     (float) AdditionalGenericConfig.TWEAK_JUMP_VELOCITY.getDoubleValue());
