@@ -70,7 +70,8 @@ public abstract class InGameHudMixin {
                 l.set(l.get() + STATUS_EFFECT_SPACE + renderer.fontHeight);
             }
 
-            Text durationText = EclipsesTweakerooUtil.getDurationTextWithStyle(statusEffectInstance);
+            Text durationText = EclipsesTweakerooUtil.getDurationTextWithStyle(
+                    statusEffectInstance);
             int textWidth = renderer.getWidth(durationText);
             context.drawTextWithShadow(renderer, durationText,
                     k + (STATUS_EFFECT_SPRITE_SIZE / 2) - (textWidth / 2),
@@ -137,7 +138,17 @@ public abstract class InGameHudMixin {
 
         if (AdditionalGenericConfig.TWEAK_NUMBER_HUD_SHOW_DURABILITY_WARNING.getBooleanValue()) {
             StringBuilder durabilityWarnString = new StringBuilder();
+            for (int hotbarSlot = 0; hotbarSlot < 8; hotbarSlot++) {
+                if (EclipsesTweakerooUtil.shouldWarnDurability(
+                        player.getInventory().getStack(hotbarSlot))) {
+                    durabilityWarnString.append(hotbarSlot + 1);
+                    durabilityWarnString.append("+");
+                }
+            }
             for (EquipmentSlot slot : EquipmentSlot.values()) {
+                if (slot == EquipmentSlot.MAINHAND) {
+                    continue;
+                }
                 if (EclipsesTweakerooUtil.shouldWarnDurability(player.getEquippedStack(slot))) {
                     durabilityWarnString.append(slot.asString().substring(0, 1).toUpperCase());
                     durabilityWarnString.append("+");

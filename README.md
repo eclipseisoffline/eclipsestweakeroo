@@ -29,11 +29,13 @@ At the moment, this mod makes the following modifications:
 - Added `handRestockUnstackable` generic option, which toggles whether to restock unstackable items with `tweakHandRestock`.
 - Added `commandOnlyAdultPets` generic option, which toggles whether to only select adult pets with `sitDownNearbyPets` and `standUpNearbyPets` hotkeys.
 - Added `gammaOverrideFix` fix, which fixes gamma override not applying when relaunching the game.
+- Added `pistonFlexiblePlacementFix` fix, which fixes inverse rotation placement of pistons, dispensers and droppers with `tweakFlexibleBlockPlacement` (allows placing these blocks facing away from you).
 - Added `tweakPlayerList` tweak, which modifies the player (tab) list in various ways, depending on how configured in the `Generic` category:
   - If `playerListHideHeader` is enabled, it hides the additional player list header some servers use.
   - If `playerListHideFooter` is enabled, it hides the additional player list footer some servers use.
   - If `playerListHideObjective` is enabled, it hides the scoreboard objective from the player list.
   - If `playerListNames` is enabled, it uses fancy names for the names that appear in the list.
+  - If `playerListBelowBossbar` is enabled, the player list will be moved below all bossbars rendering.
   - `playerListOrder` configures the order in which players appear in the player list.
 - Added `tweakPlayerNames` tweak, which enables using fancy names for the names rendered above players.
 - Added `tweakMobNames` tweak, which enables using fancy names for the names rendered above mobs, and makes these always render.
@@ -60,6 +62,11 @@ At the moment, this mod makes the following modifications:
 - Added `tweakCreativeElytraFlight`, which allows creative elytra flight in survival while using an elytra.
   - May be considered cheating on some servers, use at your own risk.
 - Added `tweakRenderOperatorBlocks`, which makes operator blocks (barrier, light and structure void blocks) have a texture.
+- Added `tweakNumberHud`, which replaces parts of the HUD with a number-based design. Can be further configured in `Generic`:
+  - `healthWarningThreshold` determines when to start flashing the health value.
+  - `hungerWarningThreshold` determines when to start flashing the hunger value.
+  - `airWarningThreshold` determines when to start flashing the air value.
+  - If `numberHudDurabilityWarning` is enabled, a flashing text is shown when items in your hotbar or armour slots are at low durability.
 - Added `disableEntityCollisions` yeet, which disables entity collisions. You can still push other entities, but they can't push you.
 - Added `disableKnockback` yeet, which disables taking knockback.
 - Added `disableFogModifiers` yeet, which disables all fog modifiers (water, lava, powdered snow, darkness, etc.).
@@ -71,6 +78,8 @@ At the moment, this mod makes the following modifications:
 - Added `disableBedExplosions` yeet, which disables bed explosions in dimensions where beds don't work, by disabling clicking on them.
 - Added `disableAllayItemUse` yeet, which disables giving items to allays.
   - When allays are dancing, you can still give them amethyst shards to duplicate them.
+- Added `disableOffhandUse` yeet, which disables being able to use items in the offhand.
+- Added `disableHorseJumpCharge` yeet, which disables the horse jump charge (pressing space once immediately uses the maximum horse jump height).
 
 ### Fancy names
 
@@ -88,7 +97,7 @@ The following placeholders are available:
 - `{key}` - replaces with `KEY` or `NO KEY`, depending on whether the player has sent their public key used for signing chat messages to the server.
 - `{attack}` - replaces with the current value of the `generic.attack_damage` attribute of the mob/player.
   - Shows critical damage addition (players only) as well by default, but can be disabled using the `attackPlaceholderShowCritical` generic option.
-- `{armor}` - replaces with the current value of the `generic.armor` attribute of the mob/player.
+- `{armor}` - replaces with the current value of the `generic.armor` attribute, the `generic.armor_toughness` attribute, and the EPF value of the mob/player.
 - `{distance}` - replaces with the distance to the mob/player.
 - `{statuseffect}` - replaces with the status effects of a player/entity.
   - As of right now, only works in singleplayer.
