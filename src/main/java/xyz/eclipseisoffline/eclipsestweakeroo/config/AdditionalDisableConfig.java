@@ -39,4 +39,9 @@ public class AdditionalDisableConfig {
     public static final ConfigBooleanHotkeyed DISABLE_ALLAY_USE = new ConfigBooleanHotkeyed(
             "disableAllayItemUse", false, "",
             "Disables giving items to allays");
+    public static final ConfigBooleanHotkeyed DISABLE_OFFHAND_USE = new ConfigBooleanHotkeyed(
+            "disableOffhandUse", false, "", "Disables using items in your offhand");
+    public static final ConfigBooleanHotkeyed DISABLE_HORSE_JUMP_CHARGE = new ConfigBooleanHotkeyed(
+            "disableHorseJumpCharge", false, "",
+            "Disables (always maximises) the jump charge on horses and similar entities");
 }

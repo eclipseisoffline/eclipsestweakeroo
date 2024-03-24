@@ -43,6 +43,7 @@ public abstract class MessageHandlerMixin {
     public void modifyMessage(Parameters params, SignedMessage message, Text decorated,
             GameProfile sender, boolean onlyShowSecureChat, Instant receptionTimestamp,
             CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+        // TODO - redo - further customise - combine with cancelMessage method? investigate
         if (AdditionalFeatureToggle.TWEAK_CHAT_MESSAGES.getBooleanValue()) {
             String messageBody = getMessageBody(decorated);
 

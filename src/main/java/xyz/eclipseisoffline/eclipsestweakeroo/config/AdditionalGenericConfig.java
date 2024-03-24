@@ -25,6 +25,9 @@ public class AdditionalGenericConfig {
     public static final ConfigBoolean TWEAK_PLAYER_LIST_NAMES = new ConfigBoolean("playerListNames",
             true,
             "Changes player names in the player list to use fancy names when the player list tweak is enabled");
+    public static final ConfigBoolean TWEAK_PLAYER_LIST_BOSSBAR = new ConfigBoolean(
+            "playerListBelowBossbar",
+            false, "Moves the player list below any bossbars that are rendering");
     public static final ConfigOptionList TWEAK_PLAYER_LIST_ORDER = new ConfigOptionList(
             "playerListOrder", PlayerListOrder.DEFAULT,
             "Changes the order of players in the player list when the player list tweak is enabled");
@@ -77,4 +80,16 @@ public class AdditionalGenericConfig {
             "Boats can jump infinitely high when tweakBoats is enabled");
     public static ConfigBoolean TWEAK_BOAT_PLAYER_YAW = new ConfigBoolean("boatPlayerYaw", false,
             "Boats follow the yaw of the controlling player when tweakBoats is enabled");
+    public static ConfigInteger TWEAK_NUMBER_HUD_HEALTH_WARNING_THRESHOLD = new ConfigInteger(
+            "healthWarningThreshold", 5, -1, 20,
+            "Determines when to start flashing the HP text when tweakNumberHud is used");
+    public static ConfigInteger TWEAK_NUMBER_HUD_HUNGER_WARNING_THRESHOLD = new ConfigInteger(
+            "hungerWarningThreshold", 15, -1, 20,
+            "Determines when to start flashing the hunger text when tweakNumberHud is used");
+    public static ConfigInteger TWEAK_NUMBER_HUD_AIR_WARNING_THRESHOLD = new ConfigInteger(
+            "airWarningThreshold", 75, -21, 300,
+            "Determines when to start flashing the air text when tweakNumberHud is used");
+    public static ConfigBoolean TWEAK_NUMBER_HUD_SHOW_DURABILITY_WARNING = new ConfigBoolean(
+            "numberHudDurabilityWarning", true,
+            "Shows durability warnings for equipment slots when tweakNumberHud is used");
 }

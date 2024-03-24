@@ -4,7 +4,7 @@
   "version": "${version}",
   "name": "Eclipse's Tweakeroo Additions",
   "icon": "assets/eclipsestweakeroo/icon.png",
-  "description": "Adds various things to Tweakeroo",
+  "description": "Adds various tweaks, fixes and yeets to Tweakeroo.\nIf you enjoy this mod, consider donating.",
   "authors": [
     {
       "name": "eclipseisoffline",
@@ -23,6 +23,9 @@
   "entrypoints": {
     "client": [
       "xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo"
+    ],
+    "modmenu": [
+      "xyz.eclipseisoffline.eclipsestweakeroo.compat.ModMenuCompat"
     ]
   },
   "mixins": [
@@ -34,5 +37,14 @@
     "fabric": "*",
     "minecraft": "${minecraft_version}",
     "tweakeroo": "${tweakeroo_version}"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.donate": "https://ko-fi.com/eclipseisoffline",
+        "modmenu.kofi": "https://ko-fi.com/eclipseisoffline",
+        "modmenu.modrinth": "https://modrinth.com/mod/eclipses-tweakeroo-additions"
+      }
+    }
   }
 }

@@ -1,6 +1,9 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
 import com.google.common.collect.ImmutableList;
+import fi.dy.masa.malilib.config.IConfigBoolean;
+import fi.dy.masa.malilib.config.IConfigNotifiable;
+import fi.dy.masa.malilib.config.IHotkeyTogglable;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +18,8 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(FeatureToggle.class)
-public class TweakerooFeatureToggleMixin {
+public abstract class TweakerooFeatureToggleMixin implements IHotkeyTogglable,
+        IConfigNotifiable<IConfigBoolean> {
 
     @Mutable
     @Final
@@ -23,7 +27,7 @@ public class TweakerooFeatureToggleMixin {
     public static ImmutableList<FeatureToggle> VALUES;
 
     @Inject(method = "<clinit>()V", at = @At("TAIL"))
-    private static void staticInit(CallbackInfo callbackInfo) {
+    private static void addAdditionalEntries(CallbackInfo callbackInfo) {
         List<FeatureToggle> newValues = new ArrayList<>(VALUES);
         newValues.addAll(EclipsesTweakerooUtil.getDeclaredFeatureToggles(
                 AdditionalFeatureToggle.class));
