@@ -150,7 +150,7 @@ public abstract class InGameHudMixin {
                     continue;
                 }
                 if (EclipsesTweakerooUtil.shouldWarnDurability(player.getEquippedStack(slot))) {
-                    durabilityWarnString.append(slot.asString().substring(0, 1).toUpperCase());
+                    durabilityWarnString.append(slot.toString().substring(0, 1).toUpperCase());
                     durabilityWarnString.append("+");
                 }
             }

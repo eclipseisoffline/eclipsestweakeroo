@@ -15,8 +15,8 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.AttributeModifierCreator;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -69,8 +69,7 @@ public class EclipsesTweakerooUtil {
             Map.entry(StatusEffects.DARKNESS, Formatting.DARK_GRAY)
     );
 
-    private EclipsesTweakerooUtil() {
-    }
+    private EclipsesTweakerooUtil() {}
 
     public static List<IConfigBase> getDeclaredOptions(Class<?> clazz) {
         Field[] tweakerooFields = clazz.getDeclaredFields();
@@ -148,8 +147,7 @@ public class EclipsesTweakerooUtil {
 
     public static Text getDurationTextWithStyle(StatusEffectInstance effect) {
         assert MinecraftClient.getInstance().world != null;
-        int durationSeconds = (int) ((MinecraftClient.getInstance().world.getTickManager()
-                .getMillisPerTick() * effect.getDuration()) / 1000);
+        int durationSeconds = (50 * effect.getDuration()) / 1000;
 
         MutableText durationText;
         if (durationSeconds >= MAX_DURATION_SECONDS_EFFECT_TEXT) {
@@ -174,11 +172,12 @@ public class EclipsesTweakerooUtil {
                 .get(EntityAttributes.GENERIC_ATTACK_DAMAGE)
                 .forEach((attributeInstance::addTemporaryModifier));
         entity.getActiveStatusEffects().forEach((statusEffect, instance) -> {
-            AttributeModifierCreator attackModifier = statusEffect.getAttributeModifiers()
+            EntityAttributeModifier baseModifier = statusEffect.getAttributeModifiers()
                     .get(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-            if (attackModifier != null) {
-                attributeInstance.addTemporaryModifier(attackModifier
-                        .createAttributeModifier(instance.getAmplifier()));
+            if (baseModifier != null) {
+                EntityAttributeModifier attackModifier = new EntityAttributeModifier(baseModifier.getName(),
+                        statusEffect.adjustModifierAmount(instance.getAmplifier(), baseModifier), baseModifier.getOperation());
+                attributeInstance.addTemporaryModifier(attackModifier);
             }
         });
 

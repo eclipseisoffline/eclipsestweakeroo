@@ -113,7 +113,7 @@ public abstract class PlayerListHudMixin {
     @Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/PlayerListHud;header:Lnet/minecraft/text/Text;", opcode = Opcodes.GETFIELD, ordinal = 0))
     public void moveBelowBossbar(DrawContext context, int scaledWindowWidth, Scoreboard scoreboard,
             ScoreboardObjective objective, CallbackInfo callbackInfo,
-            @Local(ordinal = 10) LocalIntRef renderYStart) {
+            @Local(ordinal = 9) LocalIntRef renderYStart) {
         if (!AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
                 || !AdditionalGenericConfig.TWEAK_PLAYER_LIST_BOSSBAR.getBooleanValue()
                 || Disable.DISABLE_BOSS_BAR.getBooleanValue()) {
