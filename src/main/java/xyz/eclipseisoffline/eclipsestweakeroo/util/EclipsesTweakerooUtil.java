@@ -153,7 +153,7 @@ public class EclipsesTweakerooUtil {
         if (durationSeconds >= MAX_DURATION_SECONDS_EFFECT_TEXT) {
             durationText = Text.literal("**:**");
         } else {
-            durationText = (MutableText) StatusEffectUtil.getDurationText(effect, 1);
+            durationText = (MutableText) StatusEffectUtil.durationToString(effect, 1);
         }
 
         durationText.formatted(

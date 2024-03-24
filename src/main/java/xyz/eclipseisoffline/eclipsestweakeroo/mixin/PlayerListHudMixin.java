@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.BossBarHud;
 import net.minecraft.client.gui.hud.ClientBossBar;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardObjective;
@@ -111,7 +111,7 @@ public abstract class PlayerListHudMixin {
     }
 
     @Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/PlayerListHud;header:Lnet/minecraft/text/Text;", opcode = Opcodes.GETFIELD, ordinal = 0))
-    public void moveBelowBossbar(DrawContext context, int scaledWindowWidth, Scoreboard scoreboard,
+    public void moveBelowBossbar(MatrixStack matrices, int scaledWindowWidth, Scoreboard scoreboard,
             ScoreboardObjective objective, CallbackInfo callbackInfo,
             @Local(ordinal = 9) LocalIntRef renderYStart) {
         if (!AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
@@ -127,8 +127,9 @@ public abstract class PlayerListHudMixin {
         }
 
         int bossBarHeight = BOSSBAR_START + BOSSBAR_HEIGHT * (bossBars.size() - 1);
-        if (bossBarHeight > context.getScaledWindowHeight() / 3) {
-            bossBarHeight = context.getScaledWindowHeight() / 3;
+        int scaledWindowHeight = MinecraftClient.getInstance().getWindow().getScaledHeight();
+        if (bossBarHeight > scaledWindowHeight / 3) {
+            bossBarHeight = scaledWindowHeight / 3;
         }
         renderYStart.set(renderYStart.get() + bossBarHeight);
     }

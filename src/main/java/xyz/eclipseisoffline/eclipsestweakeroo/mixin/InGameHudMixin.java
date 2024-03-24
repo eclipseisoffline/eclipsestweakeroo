@@ -2,10 +2,11 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
-import net.minecraft.client.MinecraftClient;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -44,6 +45,10 @@ public abstract class InGameHudMixin {
     private static final int STATUS_EFFECT_SPACE = 2;
     @Unique
     private static final int STATUS_EFFECT_SPRITE_SIZE = 24;
+    @Unique
+    private static final int SPACE = 2;
+    @Unique
+    private static final int SPRITE_SIZE = 24;
     @Shadow
     private int scaledWidth;
     @Shadow
@@ -59,35 +64,33 @@ public abstract class InGameHudMixin {
     public abstract TextRenderer getTextRenderer();
 
     @Inject(method = "renderStatusEffectOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectInstance;isAmbient()Z"))
-    public void drawStatusText(DrawContext context, CallbackInfo callbackInfo,
-            @Local StatusEffectInstance statusEffectInstance,
-            @Local(ordinal = 2) int k,
-            @Local(ordinal = 3) LocalIntRef l) {
+    public void drawStatusText(MatrixStack matrices, CallbackInfo callbackInfo,
+            @Local StatusEffectInstance statusEffectInstance, @Local(ordinal = 2) int k, @Local(ordinal = 3) LocalIntRef l) {
         if (AdditionalFeatureToggle.TWEAK_STATUS_EFFECT.getBooleanValue()) {
-            TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
+            TextRenderer renderer = getTextRenderer();
             // Second row
             if (l.get() > 20) {
-                l.set(l.get() + STATUS_EFFECT_SPACE + renderer.fontHeight);
+                l.set(l.get() + SPACE + renderer.fontHeight);
             }
 
-            Text durationText = EclipsesTweakerooUtil.getDurationTextWithStyle(
-                    statusEffectInstance);
+            Text durationText = EclipsesTweakerooUtil.getDurationTextWithStyle(statusEffectInstance);
             int textWidth = renderer.getWidth(durationText);
-            context.drawTextWithShadow(renderer, durationText,
-                    k + (STATUS_EFFECT_SPRITE_SIZE / 2) - (textWidth / 2),
-                    l.get() + STATUS_EFFECT_SPRITE_SIZE + STATUS_EFFECT_SPACE, -1);
+            renderer.drawWithShadow(matrices, durationText,
+                    k + ((float) SPRITE_SIZE / 2) - ((float) textWidth / 2),
+                    l.get() + SPRITE_SIZE + SPACE, -1);
+            RenderSystem.setShaderTexture(0, HandledScreen.BACKGROUND_TEXTURE);
         }
     }
 
     @Inject(method = "renderMountHealth", at = @At("HEAD"), cancellable = true)
-    public void cancelMountHealthBarWithNumberHud(DrawContext context, CallbackInfo callbackInfo) {
+    public void cancelMountHealthBarWithNumberHud(MatrixStack matrices, CallbackInfo callbackInfo) {
         if (AdditionalFeatureToggle.TWEAK_NUMBER_HUD.getBooleanValue()) {
             callbackInfo.cancel();
         }
     }
 
     @Inject(method = "renderStatusBars", at = @At("HEAD"), cancellable = true)
-    public void useNumberHud(DrawContext context, CallbackInfo callbackInfo) {
+    public void useNumberHud(MatrixStack matrices, CallbackInfo callbackInfo) {
         if (!AdditionalFeatureToggle.TWEAK_NUMBER_HUD.getBooleanValue()) {
             return;
         }
@@ -98,6 +101,7 @@ public abstract class InGameHudMixin {
             return;
         }
 
+        TextRenderer renderer = getTextRenderer();
         Text healthText = getHealthText(player);
 
         HungerManager hungerManager = player.getHungerManager();
@@ -115,10 +119,10 @@ public abstract class InGameHudMixin {
         airHungerText.append(Text.literal(hunger + "/20 (" + saturation + ")")
                 .formatted(getHungerTextColour(player)));
 
-        context.drawTextWithShadow(getTextRenderer(), healthText,
+        renderer.drawWithShadow(matrices, healthText,
                 calculateHudLineX(healthText, false),
                 calculateHudLineY(0), 0);
-        context.drawTextWithShadow(getTextRenderer(), airHungerText,
+        renderer.drawWithShadow(matrices, airHungerText,
                 calculateHudLineX(airHungerText, true),
                 calculateHudLineY(0), 0);
 
@@ -126,13 +130,13 @@ public abstract class InGameHudMixin {
         Text armorText = EclipsesTweakerooUtil.getArmorText(player);
         if (armorText != null) {
             shownArmorText = true;
-            context.drawTextWithShadow(getTextRenderer(), armorText,
+            renderer.drawWithShadow(matrices, armorText,
                     calculateHudLineX(armorText, false),
                     calculateHudLineY(1), 0);
         }
 
         Text attackDamageText = EclipsesTweakerooUtil.getAttackDamageText(player, true);
-        context.drawTextWithShadow(getTextRenderer(), attackDamageText,
+        renderer.drawWithShadow(matrices, attackDamageText,
                 calculateHudLineX(attackDamageText, true),
                 calculateHudLineY(1), 0);
 
@@ -159,7 +163,7 @@ public abstract class InGameHudMixin {
                 durabilityWarnString.deleteCharAt(durabilityWarnString.length() - 1);
                 Text durabilityWarnText = Text.literal(durabilityWarnString.toString())
                         .formatted(getWarnTextColour());
-                context.drawTextWithShadow(getTextRenderer(), durabilityWarnText,
+                renderer.drawWithShadow(matrices, durabilityWarnText,
                         calculateHudLineX(durabilityWarnText, true),
                         calculateHudLineY(2), 0);
             }
@@ -167,7 +171,7 @@ public abstract class InGameHudMixin {
 
         if (player.hasVehicle() && player.getVehicle() instanceof LivingEntity vehicle) {
             Text vehicleHealthText = getHealthText(vehicle);
-            context.drawTextWithShadow(getTextRenderer(), vehicleHealthText,
+            renderer.drawWithShadow(matrices, vehicleHealthText,
                     calculateHudLineX(vehicleHealthText, false),
                     calculateHudLineY(shownArmorText ? 2 : 1), 0);
         }
