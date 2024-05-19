@@ -20,9 +20,9 @@ public abstract class EntityRendererMixin {
 
     @ModifyArg(method = "render",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/client/render/entity/EntityRenderer;renderLabelIfPresent(Lnet/minecraft/entity/Entity;Lnet/minecraft/text/Text;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"), index = 1)
+                    target = "Lnet/minecraft/client/render/entity/EntityRenderer;renderLabelIfPresent(Lnet/minecraft/entity/Entity;Lnet/minecraft/text/Text;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IF)V"), index = 1)
     public Text getFancyDisplayName(Entity entity, Text text, MatrixStack matrices,
-            VertexConsumerProvider vertexConsumers, int light) {
+            VertexConsumerProvider vertexConsumers, int light, float tickDelta) {
         if (entity instanceof PlayerEntity) {
             if (AdditionalFeatureToggle.TWEAK_PLAYER_NAME.getBooleanValue()) {
                 if (MinecraftClient.getInstance().getNetworkHandler() == null) {

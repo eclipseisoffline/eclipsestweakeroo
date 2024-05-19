@@ -2,7 +2,6 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
 import net.minecraft.item.BowItem;
 import net.minecraft.item.RangedWeaponItem;
-import net.minecraft.item.Vanishable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -10,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 
 @Mixin(BowItem.class)
-public abstract class BowItemMixin extends RangedWeaponItem implements Vanishable {
+public abstract class BowItemMixin extends RangedWeaponItem {
 
     public BowItemMixin(Settings settings) {
         super(settings);

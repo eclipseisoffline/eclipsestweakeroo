@@ -13,6 +13,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.PlainTextContent.Literal;
@@ -106,14 +107,19 @@ public class FancyName {
                         .formatted(Formatting.BLUE);
             }),
             Map.entry("statuseffect", (livingEntity, playerListEntry) -> {
-                List<StatusEffect> statusEffects = livingEntity.getActiveStatusEffects().keySet()
-                        .stream().sorted(
-                                Comparator.comparingInt(
-                                        (statusEffect -> statusEffect.isBeneficial() ? 0 : 1)))
-                        .toList();
+                List<StatusEffect> statusEffects = new ArrayList<>(
+                        livingEntity.getActiveStatusEffects().keySet()
+                                .stream().map(RegistryEntry::value).toList());
+
                 if (statusEffects.isEmpty()) {
-                    return null;
+                    statusEffects.addAll(EclipsesTweakerooUtil.getStatusEffectsFromParticles(livingEntity));
+                    if (statusEffects.isEmpty()) {
+                        return null;
+                    }
                 }
+
+                statusEffects.sort(Comparator.comparingInt(
+                        (statusEffect -> statusEffect.isBeneficial() ? 0 : 1)));
                 StringBuilder statusEffectString = new StringBuilder();
                 for (StatusEffect statusEffect : statusEffects) {
                     String statusEffectIconString = EclipsesTweakeroo.STATUS_EFFECT_CHARACTER_MAP.get(
@@ -130,7 +136,7 @@ public class FancyName {
                     double movementSpeed = horse.getAttributeValue(
                             EntityAttributes.GENERIC_MOVEMENT_SPEED);
                     double jumpStrength = horse.getAttributeValue(
-                            EntityAttributes.HORSE_JUMP_STRENGTH);
+                            EntityAttributes.GENERIC_JUMP_STRENGTH);
 
                     movementSpeed *= 42.16;
                     MutableText text = Text.literal(Math.round(movementSpeed * 100D) / 100D + "m/s")
@@ -147,7 +153,7 @@ public class FancyName {
                     double movementSpeed = horse.getAttributeValue(
                             EntityAttributes.GENERIC_MOVEMENT_SPEED);
                     double jumpStrength = horse.getAttributeValue(
-                            EntityAttributes.HORSE_JUMP_STRENGTH);
+                            EntityAttributes.GENERIC_JUMP_STRENGTH);
 
                     MutableText text = Text.literal(
                                     String.valueOf(Math.round(movementSpeed * 100D) / 100D))

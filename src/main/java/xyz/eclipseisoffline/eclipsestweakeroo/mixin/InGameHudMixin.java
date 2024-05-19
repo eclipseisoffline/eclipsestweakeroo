@@ -45,10 +45,6 @@ public abstract class InGameHudMixin {
     @Unique
     private static final int STATUS_EFFECT_SPRITE_SIZE = 24;
     @Shadow
-    private int scaledWidth;
-    @Shadow
-    private int scaledHeight;
-    @Shadow
     private int ticks;
 
     @Shadow
@@ -59,7 +55,7 @@ public abstract class InGameHudMixin {
     public abstract TextRenderer getTextRenderer();
 
     @Inject(method = "renderStatusEffectOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectInstance;isAmbient()Z"))
-    public void drawStatusText(DrawContext context, CallbackInfo callbackInfo,
+    public void drawStatusText(DrawContext context, float tickDelta, CallbackInfo callbackInfo,
             @Local StatusEffectInstance statusEffectInstance,
             @Local(ordinal = 2) int k,
             @Local(ordinal = 3) LocalIntRef l) {
@@ -116,25 +112,25 @@ public abstract class InGameHudMixin {
                 .formatted(getHungerTextColour(player)));
 
         context.drawTextWithShadow(getTextRenderer(), healthText,
-                calculateHudLineX(healthText, false),
-                calculateHudLineY(0), 0);
+                calculateHudLineX(context, healthText, false),
+                calculateHudLineY(context, 0), 0);
         context.drawTextWithShadow(getTextRenderer(), airHungerText,
-                calculateHudLineX(airHungerText, true),
-                calculateHudLineY(0), 0);
+                calculateHudLineX(context, airHungerText, true),
+                calculateHudLineY(context, 0), 0);
 
         boolean shownArmorText = false;
         Text armorText = EclipsesTweakerooUtil.getArmorText(player);
         if (armorText != null) {
             shownArmorText = true;
             context.drawTextWithShadow(getTextRenderer(), armorText,
-                    calculateHudLineX(armorText, false),
-                    calculateHudLineY(1), 0);
+                    calculateHudLineX(context, armorText, false),
+                    calculateHudLineY(context, 1), 0);
         }
 
         Text attackDamageText = EclipsesTweakerooUtil.getAttackDamageText(player, true);
         context.drawTextWithShadow(getTextRenderer(), attackDamageText,
-                calculateHudLineX(attackDamageText, true),
-                calculateHudLineY(1), 0);
+                calculateHudLineX(context, attackDamageText, true),
+                calculateHudLineY(context, 1), 0);
 
         if (AdditionalGenericConfig.TWEAK_NUMBER_HUD_SHOW_DURABILITY_WARNING.getBooleanValue()) {
             StringBuilder durabilityWarnString = new StringBuilder();
@@ -160,38 +156,38 @@ public abstract class InGameHudMixin {
                 Text durabilityWarnText = Text.literal(durabilityWarnString.toString())
                         .formatted(getWarnTextColour());
                 context.drawTextWithShadow(getTextRenderer(), durabilityWarnText,
-                        calculateHudLineX(durabilityWarnText, true),
-                        calculateHudLineY(2), 0);
+                        calculateHudLineX(context, durabilityWarnText, true),
+                        calculateHudLineY(context, 2), 0);
             }
         }
 
         if (player.hasVehicle() && player.getVehicle() instanceof LivingEntity vehicle) {
             Text vehicleHealthText = getHealthText(vehicle);
             context.drawTextWithShadow(getTextRenderer(), vehicleHealthText,
-                    calculateHudLineX(vehicleHealthText, false),
-                    calculateHudLineY(shownArmorText ? 2 : 1), 0);
+                    calculateHudLineX(context, vehicleHealthText, false),
+                    calculateHudLineY(context, shownArmorText ? 2 : 1), 0);
         }
     }
 
     @Unique
-    private int calculateHudLineX(Text text, boolean right) {
+    private int calculateHudLineX(DrawContext drawContext, Text text, boolean right) {
         if (right) {
-            int hotbarRight = scaledWidth / 2 + HOTBAR_WIDTH / 2;
+            int hotbarRight = drawContext.getScaledWindowWidth() / 2 + HOTBAR_WIDTH / 2;
             return hotbarRight - getTextRenderer().getWidth(text);
         }
         // hotbarLeft
-        return scaledWidth / 2 - HOTBAR_WIDTH / 2;
+        return drawContext.getScaledWindowWidth() / 2 - HOTBAR_WIDTH / 2;
     }
 
     @Unique
-    private int calculateHudLineY(int line) {
+    private int calculateHudLineY(DrawContext drawContext, int line) {
         int experienceBarHeight = EXPERIENCE_BAR_HEIGHT;
 
         assert getCameraPlayer() != null;
         if (getCameraPlayer().getAir() < getCameraPlayer().getMaxAir()) {
             experienceBarHeight = EXPERIENCE_BAR_HEIGHT_UNDERWATER;
         }
-        int bottomY = scaledHeight - HOTBAR_HEIGHT - experienceBarHeight;
+        int bottomY = drawContext.getScaledWindowHeight() - HOTBAR_HEIGHT - experienceBarHeight;
         return bottomY - (getTextRenderer().fontHeight + TEXT_MARGIN) * (line + 1);
     }
 

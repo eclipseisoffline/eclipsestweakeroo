@@ -15,9 +15,9 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityClientMixin extends Entity {
+public abstract class LivingEntityMixin extends Entity {
 
-    public LivingEntityClientMixin(EntityType<?> type, World world) {
+    public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
 

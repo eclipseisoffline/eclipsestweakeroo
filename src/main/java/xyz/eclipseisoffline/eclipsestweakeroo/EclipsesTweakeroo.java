@@ -75,6 +75,8 @@ public class EclipsesTweakeroo implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LIGHT, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.STRUCTURE_VOID, RenderLayer.getTranslucent());
 
+        EclipsesTweakerooUtil.populateStatusEffectColorMap();
+
         ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
             if (AdditionalFixesConfig.GAMMA_OVERRIDE_FIX.getBooleanValue()) {
                 FeatureToggle.TWEAK_GAMMA_OVERRIDE.onValueChanged();
@@ -201,7 +203,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                                 ((DisconnectedScreenAccessor) disconnectedScreen).getParent(),
                                 MinecraftClient.getInstance(),
                                 lastConnection, lastConnectionInfo,
-                                false);
+                                false, null);
                     }
                     backButton.setMessage(TO_MENU_TEXT.copy()
                             .append(Text.of(" (reconnecting in "))

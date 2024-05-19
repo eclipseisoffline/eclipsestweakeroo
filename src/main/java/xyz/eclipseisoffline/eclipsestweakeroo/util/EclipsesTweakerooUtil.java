@@ -5,18 +5,23 @@ import fi.dy.masa.malilib.config.IHotkeyTogglable;
 import fi.dy.masa.malilib.gui.Message.MessageType;
 import fi.dy.masa.malilib.util.InfoUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.AttributeModifierCreator;
+import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -24,18 +29,25 @@ import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleType;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
+import xyz.eclipseisoffline.eclipsestweakeroo.mixin.EntityEffectParticleEffectAccessor;
+import xyz.eclipseisoffline.eclipsestweakeroo.mixin.LivingEntityAccessor;
 
 public class EclipsesTweakerooUtil {
 
     private static final double NANO_MILLI = 0.000001;
     private static final int MAX_DURATION_SECONDS_EFFECT_TEXT = 3600;
     private static final double DURABILITY_WARNING = 0.9;
-    private static final Map<StatusEffect, Formatting> EFFECT_COLOURS = Map.ofEntries(
+    private static final Map<RegistryEntry<StatusEffect>, Formatting> EFFECT_COLOURS = Map.ofEntries(
             Map.entry(StatusEffects.SPEED, Formatting.WHITE),
             Map.entry(StatusEffects.SLOWNESS, Formatting.DARK_GRAY),
             Map.entry(StatusEffects.HASTE, Formatting.GOLD),
@@ -68,6 +80,7 @@ public class EclipsesTweakerooUtil {
             Map.entry(StatusEffects.HERO_OF_THE_VILLAGE, Formatting.GREEN),
             Map.entry(StatusEffects.DARKNESS, Formatting.DARK_GRAY)
     );
+    private static final Int2ObjectMap<StatusEffect> STATUS_EFFECT_PARTICLE_COLORS = new Int2ObjectOpenHashMap<>();
 
     private EclipsesTweakerooUtil() {
     }
@@ -132,6 +145,11 @@ public class EclipsesTweakerooUtil {
         return options;
     }
 
+    public static boolean shouldWarnDurability(ItemStack itemStack) {
+        return itemStack.isDamageable() && itemStack.getDamage() >= (DURABILITY_WARNING
+                * itemStack.getMaxDamage());
+    }
+
     public static void showLowDurabilityWarning(ItemStack itemStack, boolean actionBar) {
         if (actionBar) {
             InfoUtils.showGuiOrActionBarMessage(MessageType.WARNING,
@@ -165,27 +183,39 @@ public class EclipsesTweakerooUtil {
     }
 
     public static Text getAttackDamageText(LivingEntity entity, boolean critical) {
-        EntityAttributeInstance attributeInstance = new EntityAttributeInstance(
-                EntityAttributes.GENERIC_ATTACK_DAMAGE, (instance) -> {
-        });
-        attributeInstance.setBaseValue(entity.getAttributeBaseValue(
-                EntityAttributes.GENERIC_ATTACK_DAMAGE));
-        entity.getStackInHand(Hand.MAIN_HAND)
-                .getAttributeModifiers(EquipmentSlot.MAINHAND)
-                .get(EntityAttributes.GENERIC_ATTACK_DAMAGE)
-                .forEach((attributeInstance::addTemporaryModifier));
-        entity.getActiveStatusEffects().forEach((statusEffect, instance) -> {
-            AttributeModifierCreator attackModifier = statusEffect.getAttributeModifiers()
-                    .get(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-            if (attackModifier != null) {
-                attributeInstance.addTemporaryModifier(attackModifier
-                        .createAttributeModifier(instance.getAmplifier()));
-            }
-        });
+        // TODO cache?
+        EntityAttributeInstance temporaryInstance = new EntityAttributeInstance(
+                EntityAttributes.GENERIC_ATTACK_DAMAGE, (instance) -> {});
 
-        float base = (float) attributeInstance.getValue();
-        float enchantments = EnchantmentHelper.getAttackDamage(
-                entity.getStackInHand(Hand.MAIN_HAND), EntityGroup.DEFAULT);
+        temporaryInstance.setBaseValue(entity.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_DAMAGE));
+
+        BiConsumer<RegistryEntry<EntityAttribute>, EntityAttributeModifier> modifierApplier =
+                (attribute, modifier) -> {
+            if (attribute == EntityAttributes.GENERIC_ATTACK_DAMAGE) {
+                temporaryInstance.addTemporaryModifier(modifier);
+            }
+        };
+
+        AttributeModifiersComponent attributeModifiers = entity
+                .getStackInHand(Hand.MAIN_HAND)
+                .get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
+        if (attributeModifiers != null) {
+            attributeModifiers.applyModifiers(EquipmentSlot.MAINHAND, modifierApplier);
+        }
+
+        if (!entity.getActiveStatusEffects().isEmpty()) {
+            entity.getActiveStatusEffects().forEach((effect, instance) -> {
+                effect.value().forEachAttributeModifier(instance.getAmplifier(), modifierApplier);
+            });
+        } else {
+            List<StatusEffect> activeParticleEffects = getStatusEffectsFromParticles(entity);
+            for (StatusEffect activeEffect : activeParticleEffects) {
+                activeEffect.forEachAttributeModifier(0, modifierApplier);
+            }
+        }
+
+        float base = (float) temporaryInstance.getValue();
+        float enchantments = EnchantmentHelper.getAttackDamage(entity.getStackInHand(Hand.MAIN_HAND), null);
         float attackDamage = base + enchantments;
         float criticalDamage = entity instanceof PlayerEntity
                 ? (float) ((base * 1.5) + enchantments) - attackDamage : 0;
@@ -221,9 +251,48 @@ public class EclipsesTweakerooUtil {
         return null;
     }
 
-    public static boolean shouldWarnDurability(ItemStack itemStack) {
-        return itemStack.isDamageable() && itemStack.getDamage() >= (DURABILITY_WARNING
-                * itemStack.getMaxDamage());
+    public static List<StatusEffect> getStatusEffectsFromParticles(LivingEntity livingEntity) {
+        List<ParticleEffect> potionParticles = livingEntity.getDataTracker().get(LivingEntityAccessor.getTrackedPotionSwirls());
+        if (potionParticles.isEmpty()) {
+            return List.of();
+        }
+
+        List<StatusEffect> statusEffects = new ArrayList<>();
+        for (ParticleEffect particleEffect : potionParticles) {
+            StatusEffect statusEffect = getStatusEffectFromParticle(particleEffect);
+            if (statusEffect != null) {
+                statusEffects.add(statusEffect);
+            }
+        }
+        return List.copyOf(statusEffects);
+    }
+
+    public static StatusEffect getStatusEffectFromParticle(ParticleEffect particle) {
+        ParticleType<?> type = particle.getType();
+
+        if (type == ParticleTypes.TRIAL_OMEN) {
+            return StatusEffects.TRIAL_OMEN.value();
+        } else if (type == ParticleTypes.INFESTED) {
+            return StatusEffects.INFESTED.value();
+        } else if (type == ParticleTypes.ITEM_SLIME) {
+            return StatusEffects.OOZING.value();
+        } else if (type == ParticleTypes.RAID_OMEN) {
+            return StatusEffects.RAID_OMEN.value();
+        } else if (type == ParticleTypes.ITEM_COBWEB) {
+            return StatusEffects.WEAVING.value();
+        } else if (type == ParticleTypes.SMALL_GUST) {
+            return StatusEffects.WIND_CHARGED.value();
+        } else if (type == ParticleTypes.ENTITY_EFFECT) {
+            int argb = ((EntityEffectParticleEffectAccessor) particle).getColor();
+            int rgb = argb & 0x00FFFFFF;
+            return STATUS_EFFECT_PARTICLE_COLORS.get(rgb);
+        }
+
+        return null;
+    }
+
+    public static void populateStatusEffectColorMap() {
+        Registries.STATUS_EFFECT.forEach(statusEffect -> STATUS_EFFECT_PARTICLE_COLORS.put(statusEffect.getColor(), statusEffect));
     }
 
     public static int milliTime() {

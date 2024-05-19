@@ -24,8 +24,11 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    modImplementation "curse.maven:malilib-303119:${project.malilib_version}"
-    modImplementation "curse.maven:tweakeroo-297344:${project.tweakeroo_version_cursemaven}"
+
+    // Change back to mod implementation when tweakeroo/malilib releases for 1.20.5
+    // Also update fabric.mod.json when 1.20.5 release
+    modCompileOnly "curse.maven:malilib-303119:${project.malilib_version}"
+    modCompileOnly "curse.maven:tweakeroo-297344:${project.tweakeroo_version_cursemaven}"
 
     // Used during compiling
     modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
@@ -39,20 +42,20 @@ loom {
 
 processResources {
     inputs.property "version", project.version
-    inputs.property "minecraft_version", project.minecraft_version
+    inputs.property "supported_versions", project.supported_versions
     inputs.property "loader_version", project.loader_version
     inputs.property "tweakeroo_version", project.tweakeroo_version
     filteringCharset "UTF-8"
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
-                "minecraft_version": project.minecraft_version,
+                "supported_versions": project.supported_versions,
                 "loader_version": project.loader_version,
                 "tweakeroo_version": project.tweakeroo_version
     }
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {

@@ -68,7 +68,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
         // Stop creative flying when the server no longer thinks we're using an elytra
         for (SerializedEntry<?> entry : dataEntries) {
-            if (entry.id() == Entity.FLAGS.getId()) {
+            if (entry.id() == Entity.FLAGS.id()) {
                 if (!getFlag(Entity.FALL_FLYING_FLAG_INDEX) && !MinecraftClient.getInstance()
                         .isInSingleplayer()) {
                     stopFallFlying();

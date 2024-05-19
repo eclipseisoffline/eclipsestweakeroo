@@ -35,8 +35,8 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
-    "minecraft": "${minecraft_version}",
-    "tweakeroo": "${tweakeroo_version}"
+    "minecraft": "${supported_versions}",
+    "tweakeroo": "*"
   },
   "custom": {
     "modmenu": {
