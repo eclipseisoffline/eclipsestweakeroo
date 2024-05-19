@@ -232,8 +232,7 @@ public class EclipsesTweakerooUtil {
         int armorToughness = MathHelper.ceil(entity
                 .getAttributeValue(EntityAttributes.GENERIC_ARMOR_TOUGHNESS));
         int enchantmentProtectionFactor = EnchantmentHelper
-                .getProtectionAmount(entity.getArmorItems(),
-                        entity.getWorld().getDamageSources().generic());
+                .getProtectionAmount(entity.getArmorItems(), entity.getDamageSources().generic());
 
         if (baseArmor > 0) {
             MutableText armorText = Text.literal(String.valueOf(baseArmor))
