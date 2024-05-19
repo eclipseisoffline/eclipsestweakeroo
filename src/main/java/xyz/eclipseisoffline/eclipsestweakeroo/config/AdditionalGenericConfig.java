@@ -27,7 +27,7 @@ public class AdditionalGenericConfig {
             "Changes player names in the player list to use fancy names when the player list tweak is enabled");
     public static final ConfigBoolean TWEAK_PLAYER_LIST_BOSSBAR = new ConfigBoolean(
             "playerListBelowBossbar",
-            false, "Moves the player list below any bossbars that are rendering");
+            false, "Moves the player list below any bossbars that are rendering\nwhen the player list tweak is enabled");
     public static final ConfigOptionList TWEAK_PLAYER_LIST_ORDER = new ConfigOptionList(
             "playerListOrder", PlayerListOrder.DEFAULT,
             "Changes the order of players in the player list when the player list tweak is enabled");
