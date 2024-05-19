@@ -80,6 +80,12 @@ public abstract class InGameHudMixin {
         if (AdditionalFeatureToggle.TWEAK_NUMBER_HUD.getBooleanValue()) {
             callbackInfo.cancel();
         }
+        if (getCameraPlayer() != null && getCameraPlayer().isCreative()) {
+            if (getCameraPlayer().hasVehicle()
+                    && getCameraPlayer().getVehicle() instanceof LivingEntity vehicle) {
+                drawVehicleHealthText(vehicle, context, 0);
+            }
+        }
     }
 
     @Inject(method = "renderStatusBars", at = @At("HEAD"), cancellable = true)
@@ -162,11 +168,16 @@ public abstract class InGameHudMixin {
         }
 
         if (player.hasVehicle() && player.getVehicle() instanceof LivingEntity vehicle) {
-            Text vehicleHealthText = getHealthText(vehicle);
-            context.drawTextWithShadow(getTextRenderer(), vehicleHealthText,
-                    calculateHudLineX(context, vehicleHealthText, false),
-                    calculateHudLineY(context, shownArmorText ? 2 : 1), 0);
+            drawVehicleHealthText(vehicle, context, shownArmorText ? 2 : 1);
         }
+    }
+
+    @Unique
+    private void drawVehicleHealthText(LivingEntity vehicle, DrawContext context, int line) {
+        Text vehicleHealthText = getHealthText(vehicle);
+        context.drawTextWithShadow(getTextRenderer(), vehicleHealthText,
+                calculateHudLineX(context, vehicleHealthText, false),
+                calculateHudLineY(context, line), 0);
     }
 
     @Unique
