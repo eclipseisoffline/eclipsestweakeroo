@@ -2,7 +2,6 @@ package xyz.eclipseisoffline.eclipsestweakeroo;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +47,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFixesConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.event.AttemptConnectionCallback;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.AllayEntityInvoker;
@@ -78,10 +76,6 @@ public class EclipsesTweakeroo implements ClientModInitializer {
         EclipsesTweakerooUtil.populateStatusEffectColorMap();
 
         ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
-            if (AdditionalFixesConfig.GAMMA_OVERRIDE_FIX.getBooleanValue()) {
-                FeatureToggle.TWEAK_GAMMA_OVERRIDE.onValueChanged();
-            }
-
             // Registering value change callbacks here to prevent crashes
             AdditionalFeatureToggle.TWEAK_CREATIVE_ELYTRA_FLIGHT.setValueChangeCallback(value -> {
                 if (client.player == null) {

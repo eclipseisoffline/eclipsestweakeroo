@@ -184,8 +184,7 @@ public class EclipsesTweakerooUtil {
 
     public static Text getAttackDamageText(LivingEntity entity, boolean critical) {
         // TODO cache?
-        EntityAttributeInstance temporaryInstance = new EntityAttributeInstance(
-                EntityAttributes.GENERIC_ATTACK_DAMAGE, (instance) -> {});
+        EntityAttributeInstance temporaryInstance = new EntityAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE, (instance) -> {});
 
         temporaryInstance.setBaseValue(entity.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_DAMAGE));
 
