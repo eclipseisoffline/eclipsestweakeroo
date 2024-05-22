@@ -21,6 +21,7 @@
     "EntityMixin",
     "EntityRendererMixin",
     "FeatureToggleCreator",
+    "GuiConfigsMixin",
     "InGameHudMixin",
     "ItemCooldownManagerMixin",
     "LightBlockMixin",
