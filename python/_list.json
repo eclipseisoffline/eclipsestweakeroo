@@ -13,6 +13,7 @@
     "health_boost.png",
     "hero_of_the_village.png",
     "hunger.png",
+    "infested.png",
     "instant_damage.png",
     "instant_health.png",
     "invisibility.png",
@@ -22,7 +23,9 @@
     "mining_fatigue.png",
     "nausea.png",
     "night_vision.png",
+    "oozing.png",
     "poison.png",
+    "raid_omen.png",
     "regeneration.png",
     "resistance.png",
     "saturation.png",
@@ -30,9 +33,12 @@
     "slowness.png",
     "speed.png",
     "strength.png",
+    "trial_omen.png",
     "unluck.png",
     "water_breathing.png",
     "weakness.png",
+    "weaving.png",
+    "wind_charged.png",
     "wither.png"
   ]
 }

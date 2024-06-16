@@ -6,6 +6,7 @@
   "mixins": [],
   "client": [
     "AllayEntityInvoker",
+    "ArmorSlotMixin",
     "BackgroundRendererMixin",
     "BarrierBlockMixin",
     "BoatEntityMixin",
@@ -31,7 +32,6 @@
     "MessageHandlerMixin",
     "PlayerEntityMixin",
     "PlayerListHudMixin",
-    "PlayerScreenHandlerEquipmentSlotMixin",
     "StringHelperMixin",
     "StructureVoidBlockMixin",
     "TweakerooDisableConfigsMixin",

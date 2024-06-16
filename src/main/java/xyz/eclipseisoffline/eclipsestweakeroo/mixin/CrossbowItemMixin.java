@@ -1,5 +1,6 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.RangedWeaponItem;
@@ -17,8 +18,7 @@ public abstract class CrossbowItemMixin extends RangedWeaponItem {
     }
 
     @Inject(method = "getPullProgress", at = @At("HEAD"), cancellable = true)
-    private static void isAlwaysCharged(int useTicks, ItemStack stack,
-            CallbackInfoReturnable<Float> callbackInfoReturnable) {
+    private static void isAlwaysCharged(int useTicks, ItemStack stack, LivingEntity user, CallbackInfoReturnable<Float> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_BOW_DRAW_TIME.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(1.0F);
         }

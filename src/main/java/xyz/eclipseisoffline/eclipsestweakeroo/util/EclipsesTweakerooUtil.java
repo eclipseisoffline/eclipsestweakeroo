@@ -7,6 +7,7 @@ import fi.dy.masa.malilib.util.InfoUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -15,30 +16,40 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.component.type.AttributeModifiersComponent;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.effect.EnchantmentEffectEntry;
+import net.minecraft.enchantment.effect.EnchantmentValueEffect;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.predicate.TagPredicate;
+import net.minecraft.predicate.entity.DamageSourcePredicate;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
+import org.apache.commons.lang3.mutable.MutableFloat;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.EntityEffectParticleEffectAccessor;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.LivingEntityAccessor;
 
@@ -78,7 +89,13 @@ public class EclipsesTweakerooUtil {
             Map.entry(StatusEffects.DOLPHINS_GRACE, Formatting.BLUE),
             Map.entry(StatusEffects.BAD_OMEN, Formatting.GRAY),
             Map.entry(StatusEffects.HERO_OF_THE_VILLAGE, Formatting.GREEN),
-            Map.entry(StatusEffects.DARKNESS, Formatting.DARK_GRAY)
+            Map.entry(StatusEffects.DARKNESS, Formatting.DARK_GRAY),
+            Map.entry(StatusEffects.INFESTED, Formatting.GRAY),
+            Map.entry(StatusEffects.OOZING, Formatting.GREEN),
+            Map.entry(StatusEffects.RAID_OMEN, Formatting.DARK_GRAY),
+            Map.entry(StatusEffects.TRIAL_OMEN, Formatting.AQUA),
+            Map.entry(StatusEffects.WEAVING, Formatting.WHITE),
+            Map.entry(StatusEffects.WIND_CHARGED, Formatting.BLUE)
     );
     private static final Int2ObjectMap<StatusEffect> STATUS_EFFECT_PARTICLE_COLORS = new Int2ObjectOpenHashMap<>();
 
@@ -213,11 +230,20 @@ public class EclipsesTweakerooUtil {
             }
         }
 
-        float base = (float) temporaryInstance.getValue();
-        float enchantments = EnchantmentHelper.getAttackDamage(entity.getStackInHand(Hand.MAIN_HAND), null);
-        float attackDamage = base + enchantments;
+        MutableFloat attackDamage = new MutableFloat(temporaryInstance.getValue());
+        float criticalBase = attackDamage.floatValue();
+
+        forEachEnchantment(entity, (enchantment, level) -> {
+            List<EnchantmentEffectEntry<EnchantmentValueEffect>> damageEffects = enchantment.value().getEffect(EnchantmentEffectComponentTypes.DAMAGE);
+            for (EnchantmentEffectEntry<EnchantmentValueEffect> effectEntry : damageEffects) {
+                if (effectEntry.requirements().isEmpty()) {
+                    attackDamage.setValue(effectEntry.effect().apply(level, entity.getRandom(), attackDamage.getValue()));
+                }
+            }
+        });
+
         float criticalDamage = entity instanceof PlayerEntity
-                ? (float) ((base * 1.5) + enchantments) - attackDamage : 0;
+                ? (float) ((criticalBase * 1.5) + (attackDamage.floatValue() - criticalBase)) - attackDamage.floatValue() : 0;
 
         MutableText attack = Text.literal(String.valueOf(attackDamage))
                 .formatted(Formatting.YELLOW);
@@ -231,8 +257,43 @@ public class EclipsesTweakerooUtil {
         int baseArmor = entity.getArmor();
         int armorToughness = MathHelper.ceil(entity
                 .getAttributeValue(EntityAttributes.GENERIC_ARMOR_TOUGHNESS));
-        int enchantmentProtectionFactor = EnchantmentHelper
-                .getProtectionAmount(entity.getArmorItems(), entity.getDamageSources().generic());
+
+        MutableFloat mutableProtectionFactor = new MutableFloat();
+        forEachEnchantment(entity, (enchantment, level) -> {
+            List<EnchantmentEffectEntry<EnchantmentValueEffect>> damageProtectionEffects = enchantment.value().getEffect(EnchantmentEffectComponentTypes.DAMAGE_PROTECTION);
+            for (EnchantmentEffectEntry<EnchantmentValueEffect> effectEntry : damageProtectionEffects) {
+                boolean emptyRequirements = effectEntry.requirements().isEmpty();
+                if (!emptyRequirements && effectEntry.requirements().get() instanceof DamageSourcePropertiesLootCondition damageSourceProperties) {
+                    if (damageSourceProperties.predicate().isEmpty()) {
+                        emptyRequirements = true;
+                    } else {
+                        DamageSourcePredicate sourcePredicate = damageSourceProperties.predicate().get();
+                        if (sourcePredicate.directEntity().isEmpty() && sourcePredicate.sourceEntity().isEmpty() && sourcePredicate.isDirect().isEmpty()) {
+                            List<TagPredicate<DamageType>> tags = sourcePredicate.tags();
+                            if (tags.isEmpty()) {
+                                emptyRequirements = true;
+                            } else {
+                                boolean onlyInvulnerable = true;
+                                for (TagPredicate<DamageType> tag : tags) {
+                                    if (tag.tag() != DamageTypeTags.BYPASSES_INVULNERABILITY) {
+                                        onlyInvulnerable = false;
+                                        break;
+                                    }
+                                }
+                                if (onlyInvulnerable) {
+                                    emptyRequirements = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (emptyRequirements) {
+                    mutableProtectionFactor.setValue(effectEntry.effect().apply(level, entity.getRandom(), mutableProtectionFactor.getValue()));
+                }
+            }
+        });
+        int enchantmentProtectionFactor = mutableProtectionFactor.intValue();
 
         if (baseArmor > 0) {
             MutableText armorText = Text.literal(String.valueOf(baseArmor))
@@ -295,5 +356,28 @@ public class EclipsesTweakerooUtil {
 
     public static int milliTime() {
         return (int) (System.nanoTime() * NANO_MILLI);
+    }
+
+    private static void forEachEnchantment(ItemStack stack, EquipmentSlot slot, BiConsumer<RegistryEntry<Enchantment>, Integer> enchantmentConsumer) {
+        if (stack.isEmpty()) {
+            return;
+        }
+        ItemEnchantmentsComponent enchantments = stack.get(DataComponentTypes.ENCHANTMENTS);
+        if (enchantments == null || enchantments.isEmpty()) {
+            return;
+        }
+        for (Object2IntMap.Entry<RegistryEntry<Enchantment>> entry : enchantments.getEnchantmentEntries()) {
+            RegistryEntry<Enchantment> enchantment = entry.getKey();
+            if (!enchantment.value().slotMatches(slot)) {
+                continue;
+            }
+            enchantmentConsumer.accept(enchantment, entry.getIntValue());
+        }
+    }
+
+    private static void forEachEnchantment(LivingEntity entity, BiConsumer<RegistryEntry<Enchantment>, Integer> enchantmentConsumer) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            forEachEnchantment(entity.getEquippedStack(slot), slot, enchantmentConsumer);
+        }
     }
 }

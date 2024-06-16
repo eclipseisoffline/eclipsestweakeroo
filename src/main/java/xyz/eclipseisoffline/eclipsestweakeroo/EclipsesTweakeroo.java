@@ -210,7 +210,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 new SimpleSynchronousResourceReloadListener() {
                     @Override
                     public Identifier getFabricId() {
-                        return new Identifier(MOD_ID, FANCYNAME_EFFECT_MAP_PATH);
+                        return Identifier.of(MOD_ID, FANCYNAME_EFFECT_MAP_PATH);
                     }
 
                     @Override
@@ -227,8 +227,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                                 JsonObject effectMap = JsonParser.parseString(effectMapJson)
                                         .getAsJsonObject();
                                 for (String statusEffectString : effectMap.keySet()) {
-                                    StatusEffect statusEffect = Registries.STATUS_EFFECT.get(
-                                            new Identifier(statusEffectString));
+                                    StatusEffect statusEffect = Registries.STATUS_EFFECT.get(Identifier.of(statusEffectString));
                                     if (statusEffect != null) {
                                         STATUS_EFFECT_CHARACTER_MAP.put(statusEffect,
                                                 effectMap.get(statusEffectString).getAsString());

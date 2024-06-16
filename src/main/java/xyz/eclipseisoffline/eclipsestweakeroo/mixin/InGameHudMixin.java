@@ -6,6 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -55,10 +56,8 @@ public abstract class InGameHudMixin {
     public abstract TextRenderer getTextRenderer();
 
     @Inject(method = "renderStatusEffectOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectInstance;isAmbient()Z"))
-    public void drawStatusText(DrawContext context, float tickDelta, CallbackInfo callbackInfo,
-            @Local StatusEffectInstance statusEffectInstance,
-            @Local(ordinal = 2) int k,
-            @Local(ordinal = 3) LocalIntRef l) {
+    public void drawStatusText(DrawContext context, RenderTickCounter tickCounter, CallbackInfo callbackInfo,
+            @Local StatusEffectInstance statusEffectInstance, @Local(ordinal = 2) int k, @Local(ordinal = 3) LocalIntRef l) {
         if (AdditionalFeatureToggle.TWEAK_STATUS_EFFECT.getBooleanValue()) {
             TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
             // Second row
