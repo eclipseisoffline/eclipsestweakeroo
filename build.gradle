@@ -25,8 +25,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    // Change back to mod implementation when tweakeroo/malilib releases for 1.20.5
-    // Also update fabric.mod.json when 1.20.5 release
+    // Change back to mod implementation when tweakeroo/malilib releases for 1.20.5/1.21
+    // Also update fabric.mod.json when 1.20.5/1.21 release
     modCompileOnly "curse.maven:malilib-303119:${project.malilib_version}"
     modCompileOnly "curse.maven:tweakeroo-297344:${project.tweakeroo_version_cursemaven}"
 
