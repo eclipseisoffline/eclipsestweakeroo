@@ -107,8 +107,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
 
             if (AdditionalDisableConfig.DISABLE_BED_EXPLOSION.getBooleanValue()
                     && !world.getDimension().bedWorks()
-                    && world.getBlockState(hitResult.getBlockPos())
-                    .getBlock() instanceof BedBlock) {
+                    && world.getBlockState(hitResult.getBlockPos()).getBlock() instanceof BedBlock) {
                 return ActionResult.FAIL;
             }
 
@@ -124,8 +123,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                             && entity instanceof AllayEntity allay) {
                         if (!player.getStackInHand(hand).isEmpty()) {
                             Item item = player.getStackInHand(hand).getItem();
-                            if (((AllayEntityInvoker) allay).invokeCanDuplicate()
-                                    && item == Items.AMETHYST_SHARD) {
+                            if (((AllayEntityInvoker) allay).invokeCanDuplicate() && item == Items.AMETHYST_SHARD) {
                                 return ActionResult.PASS;
                             }
                             return ActionResult.FAIL;
