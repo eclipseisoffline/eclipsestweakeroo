@@ -29,6 +29,7 @@
     "LightmapTextureManagerMixin",
     "LivingEntityAccessor",
     "LivingEntityMixin",
+    "LivingEntityRendererMixin",
     "MessageHandlerMixin",
     "PlayerEntityMixin",
     "PlayerListHudMixin",

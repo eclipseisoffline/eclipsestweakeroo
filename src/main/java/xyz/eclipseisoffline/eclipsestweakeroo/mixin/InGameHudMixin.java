@@ -24,6 +24,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
@@ -54,6 +55,13 @@ public abstract class InGameHudMixin {
 
     @Shadow
     public abstract TextRenderer getTextRenderer();
+
+    @Inject(method = "renderMiscOverlays", at = @At("HEAD"), cancellable = true)
+    public void cancelOverlays(DrawContext context, RenderTickCounter tickCounter, CallbackInfo callbackInfo) {
+        if (AdditionalDisableConfig.DISABLE_OVERLAY_RENDER.getBooleanValue()) {
+            callbackInfo.cancel();
+        }
+    }
 
     @Inject(method = "renderStatusEffectOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectInstance;isAmbient()Z"))
     public void drawStatusText(DrawContext context, RenderTickCounter tickCounter, CallbackInfo callbackInfo,

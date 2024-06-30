@@ -44,4 +44,10 @@ public class AdditionalDisableConfig {
     public static final ConfigBooleanHotkeyed DISABLE_HORSE_JUMP_CHARGE = new ConfigBooleanHotkeyed(
             "disableHorseJumpCharge", false, "",
             "Disables (always maximises) the jump charge on horses and similar entities");
+    public static final ConfigBooleanHotkeyed DISABLE_OVERLAY_RENDER = new ConfigBooleanHotkeyed(
+            "disableOverlayRender", false, "",
+            "Disables rendering the vignette, spyglass, carved pumpkin, powder snow, and other overlays");
+    public static ConfigBooleanHotkeyed DISABLE_ALL_NAMES_IN_F1 = new ConfigBooleanHotkeyed(
+            "disableAllNamesInF1", false, "",
+            "Disables rendering all name tags in F1 (vanilla Minecraft still renders the names of entities in teams)");
 }
