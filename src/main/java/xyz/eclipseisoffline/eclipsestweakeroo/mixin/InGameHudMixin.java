@@ -217,13 +217,14 @@ public abstract class InGameHudMixin {
     @Unique
     private Formatting getHealthTextColour(LivingEntity entity) {
         if (isWarningTick() && entity instanceof PlayerEntity
-                && entity.getHealth() <= AdditionalGenericConfig
-                .TWEAK_NUMBER_HUD_HEALTH_WARNING_THRESHOLD.getIntegerValue()) {
+                && entity.getHealth() <= AdditionalGenericConfig.TWEAK_NUMBER_HUD_HEALTH_WARNING_THRESHOLD.getIntegerValue()) {
             return Formatting.WHITE;
         } else if (entity.hasStatusEffect(StatusEffects.WITHER)) {
             return Formatting.DARK_GRAY;
         } else if (entity.hasStatusEffect(StatusEffects.POISON)) {
             return Formatting.DARK_GREEN;
+        } else if (entity.isFrozen()) {
+            return Formatting.AQUA;
         } else if (entity.hasStatusEffect(StatusEffects.REGENERATION)) {
             return Formatting.DARK_RED;
         }
