@@ -58,6 +58,8 @@ public class AdditionalFeatureToggle {
             "tweakNumberHud", false, false, "",
             "Replaces part of the HUD with number/text-based rendering to be more informative",
             "Number HUD tweak");
+    public static final FeatureToggle TWEAK_LODESTONE = newToggle("tweakLodestoneCompass", false, false, "",
+            "Enables you to see the position a lodestone compass has targeted by right clicking it", "Lodestone compass tweak");
 
     private static FeatureToggle newToggle(String name, boolean defaultValue, boolean singlePlayer,
             String defaultHotkey, String comment, String prettyName) {

@@ -26,6 +26,8 @@ import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.LodestoneTrackerComponent;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.passive.AllayEntity;
@@ -37,6 +39,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
@@ -132,9 +135,27 @@ public class EclipsesTweakeroo implements ClientModInitializer {
 
                     return ActionResult.PASS;
                 }));
-        UseItemCallback.EVENT.register(((player, world, hand) -> useCheck(player, hand)
-                ? TypedActionResult.pass(player.getStackInHand(hand))
-                : TypedActionResult.fail(player.getStackInHand(hand))));
+        UseItemCallback.EVENT.register(((player, world, hand) -> {
+            ItemStack usedStack = player.getStackInHand(hand);
+            if (!useCheck(player, hand)) {
+                return TypedActionResult.fail(usedStack);
+            } else if (AdditionalFeatureToggle.TWEAK_LODESTONE.getBooleanValue() && usedStack.contains(DataComponentTypes.LODESTONE_TRACKER)) {
+                LodestoneTrackerComponent tracker = usedStack.get(DataComponentTypes.LODESTONE_TRACKER);
+                assert tracker != null;
+
+                MutableText info = Text.empty().append(usedStack.getName()).append(" has ");
+                if (tracker.target().isPresent()) {
+                    info.append(tracker.target().orElseThrow().pos().toShortString() + " in " + tracker.target().orElseThrow().dimension().getValue().toString() + " as set position");
+                } else {
+                    info.append("no tracked position");
+                }
+
+                MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(info);
+                return TypedActionResult.consume(usedStack);
+            }
+
+            return TypedActionResult.pass(usedStack);
+        }));
 
         ClientTickEvents.START_WORLD_TICK.register((world -> {
             if (!AdditionalFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()) {
