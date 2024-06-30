@@ -43,7 +43,7 @@ public abstract class ClientPlayNetworkHandlerMixin extends ClientCommonNetworkH
         World world = MinecraftClient.getInstance().world;
         assert world != null;
 
-        Entity entity = world.getEntityById(packet.getId());
+        Entity entity = world.getEntityById(packet.getEntityId());
         if (AdditionalDisableConfig.DISABLE_KNOCKBACK.getBooleanValue()) {
             assert entity != null;
             if (entity.equals(MinecraftClient.getInstance().player)) {
