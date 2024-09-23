@@ -14,6 +14,7 @@ import net.minecraft.network.TickablePacketListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundExplodePacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.world.entity.Entity;
@@ -46,6 +47,13 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
             if (entity.equals(Minecraft.getInstance().player)) {
                 callbackInfo.cancel();
             }
+        }
+    }
+
+    @Inject(method = "handleExplosion", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V"), cancellable = true)
+    public void cancelPlayerVelocitySet(ClientboundExplodePacket packet, CallbackInfo callbackInfo) {
+        if (AdditionalGenericConfig.DISABLE_EXPLOSION_KNOCKBACK.getBooleanValue()) {
+            callbackInfo.cancel();
         }
     }
 

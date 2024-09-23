@@ -93,4 +93,7 @@ public class AdditionalGenericConfig {
     public static ConfigBoolean TWEAK_NUMBER_HUD_SHOW_DURABILITY_WARNING = new ConfigBoolean(
             "numberHudDurabilityWarning", true,
             "Shows durability warnings for equipment slots when tweakNumberHud is used");
+    public static ConfigBoolean DISABLE_EXPLOSION_KNOCKBACK = new ConfigBoolean(
+            "disableExplosionKnockback", false,
+            "Disables knockback from explosions when disableKnockback is enabled");
 }
