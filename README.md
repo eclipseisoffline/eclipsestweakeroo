@@ -1,5 +1,9 @@
 # Eclipse's Tweakeroo Additions
 
+![Modrinth Version](https://img.shields.io/modrinth/v/6kKLK5i1?logo=modrinth&color=008800)
+![Modrinth Game Versions](https://img.shields.io/modrinth/game-versions/6kKLK5i1?logo=modrinth&color=008800)
+![Modrinth Downloads](https://img.shields.io/modrinth/dt/6kKLK5i1?logo=modrinth&color=008800)
+
 This mod contains some basic modifications/additions I made to [Tweakeroo](https://www.curseforge.com/minecraft/mc-mods/tweakeroo).
 
 Feel free to report any bugs, or suggest new features, such as tweaks, yeets, or fixes, [here](https://github.com/eclipseisoffline/eclipsestweakeroo/issues/new/choose).
