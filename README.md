@@ -29,6 +29,7 @@ At the moment, this mod makes the following modifications:
 - Added `handRestockUnstackable` generic option, which toggles whether to restock unstackable items with `tweakHandRestock`.
 - Added `commandOnlyAdultPets` generic option, which toggles whether to only select adult pets with `sitDownNearbyPets` and `standUpNearbyPets` hotkeys.
 - Added `pistonFlexiblePlacementFix` fix, which fixes inverse rotation placement of pistons, dispensers and droppers with `tweakFlexibleBlockPlacement` (allows placing these blocks facing away from you).
+- Added `handRestockCreativeFix` fix, which disables `tweakHandRestock` when the player is in creative mode.
 - Added `tweakPlayerList` tweak, which modifies the player (tab) list in various ways, depending on how configured in the `Generic` category:
   - If `playerListHideHeader` is enabled, it hides the additional player list header some servers use.
   - If `playerListHideFooter` is enabled, it hides the additional player list footer some servers use.
@@ -69,6 +70,7 @@ At the moment, this mod makes the following modifications:
 - Added `tweakLodestoneCompass`, which allows you to see the exact position of a lodestone compass by right-clicking it with the tweak enabled.
 - Added `disableEntityCollisions` yeet, which disables entity collisions. You can still push other entities, but they can't push you.
 - Added `disableKnockback` yeet, which disables taking knockback.
+  - When `disableExplosionKnockback` in `Generic` is set to true, also disables knockback from explosions. 
 - Added `disableFogModifiers` yeet, which disables all fog modifiers (water, lava, powdered snow, darkness, etc.).
 - Added `disableArmorRestriction` yeet, which disables the restriction of armour slots in the inventory. May not work on servers.
 - Added `disableBindingCurse` yeet, which disables Curse of Binding. May not work on servers.
