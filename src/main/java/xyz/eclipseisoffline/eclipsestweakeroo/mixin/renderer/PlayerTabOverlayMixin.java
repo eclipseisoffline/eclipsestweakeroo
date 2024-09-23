@@ -5,10 +5,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import fi.dy.masa.tweakeroo.config.Configs.Disable;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.BossHealthOverlay;
@@ -34,6 +30,10 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.PlayerListOrder;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.FancyName;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Mixin(PlayerTabOverlay.class)
 public abstract class PlayerTabOverlayMixin {
@@ -125,7 +125,7 @@ public abstract class PlayerTabOverlayMixin {
     }
 
     @ModifyVariable(method = "render", at = @At("HEAD"), ordinal = 0, argsOnly = true)
-    private Scoreboard hideScoreboardObjective(Scoreboard scoreboardObjective) {
+    private Objective hideScoreboardObjective(Objective scoreboardObjective) {
         if (AdditionalFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
                 && AdditionalGenericConfig.TWEAK_PLAYER_LIST_OBJECTIVE.getBooleanValue()) {
             return null;
