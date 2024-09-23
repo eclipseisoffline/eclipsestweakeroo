@@ -6,11 +6,11 @@ Feel free to report any bugs, or suggest new features, such as tweaks, yeets, or
 
 ## License
 
-This mod is licensed under GNU GPLv3.
+This mod is licensed under GNU LGPLv3.
 
 ## Donating
 
-If you like this mod, consider [donating](https://ko-fi.com/eclipseisoffline)!
+If you like this mod, consider [donating](https://buymeacoffee.com/eclipseisoffline)!
 It really helps me a ton!
 
 ## Usage
@@ -18,8 +18,8 @@ It really helps me a ton!
 Mod builds can be found [here](https://github.com/eclipseisoffline/eclipsestweakeroo/packages/2043865/versions)
 and on [Modrinth](https://modrinth.com/mod/eclipses-tweakeroo-additions).
 
-This mod is currently available for Minecraft 1.19.4, 1.20.1 and 1.20.4, with Tweakeroo versions 0.16.0,
-0.17.1 and 0.19.2 respectively.  All added config entries are integrated into Tweakeroo's config,
+This mod is currently available for Minecraft 1.21+1, Tweakeroo version 0.21.50. Ports for versions 1.19.4, 1.20.1, 1.20.4,
+and 1.20.5+6 are available, but are no longer updated. All added config entries are integrated into Tweakeroo's config,
 the mod doesn't have a config itself.
 
 ## Modifications
@@ -28,7 +28,6 @@ At the moment, this mod makes the following modifications:
 
 - Added `handRestockUnstackable` generic option, which toggles whether to restock unstackable items with `tweakHandRestock`.
 - Added `commandOnlyAdultPets` generic option, which toggles whether to only select adult pets with `sitDownNearbyPets` and `standUpNearbyPets` hotkeys.
-- Added `gammaOverrideFix` fix, which fixes gamma override not applying when relaunching the game.
 - Added `pistonFlexiblePlacementFix` fix, which fixes inverse rotation placement of pistons, dispensers and droppers with `tweakFlexibleBlockPlacement` (allows placing these blocks facing away from you).
 - Added `tweakPlayerList` tweak, which modifies the player (tab) list in various ways, depending on how configured in the `Generic` category:
   - If `playerListHideHeader` is enabled, it hides the additional player list header some servers use.
@@ -67,6 +66,7 @@ At the moment, this mod makes the following modifications:
   - `hungerWarningThreshold` determines when to start flashing the hunger value.
   - `airWarningThreshold` determines when to start flashing the air value.
   - If `numberHudDurabilityWarning` is enabled, a flashing text is shown when items in your hotbar or armour slots are at low durability.
+- Added `tweakLodestoneCompass`, which allows you to see the exact position of a lodestone compass by right-clicking it with the tweak enabled.
 - Added `disableEntityCollisions` yeet, which disables entity collisions. You can still push other entities, but they can't push you.
 - Added `disableKnockback` yeet, which disables taking knockback.
 - Added `disableFogModifiers` yeet, which disables all fog modifiers (water, lava, powdered snow, darkness, etc.).
@@ -80,6 +80,8 @@ At the moment, this mod makes the following modifications:
   - When allays are dancing, you can still give them amethyst shards to duplicate them.
 - Added `disableOffhandUse` yeet, which disables being able to use items in the offhand.
 - Added `disableHorseJumpCharge` yeet, which disables the horse jump charge (pressing space once immediately uses the maximum horse jump height).
+- Added `disableOverlayRender` to disable rendering various overlays, such as the vignette, spyglass, carved pumpkin and powdered snow overlays.
+- Added `disableAllNamesInF1`, which hides all entity names when the HUD is disabled (vanilla Minecraft still renders the names of entities in teams).
 
 ### Fancy names
 
@@ -99,8 +101,7 @@ The following placeholders are available:
   - Shows critical damage addition (players only) as well by default, but can be disabled using the `attackPlaceholderShowCritical` generic option.
 - `{armor}` - replaces with the current value of the `generic.armor` attribute, the `generic.armor_toughness` attribute, and the EPF value of the mob/player.
 - `{distance}` - replaces with the distance to the mob/player.
-- `{statuseffect}` - replaces with the status effects of a player/entity.
-  - As of right now, only works in singleplayer.
+- `{statuseffect}` - replaces with the status effects of a player/entity. Only effects with particles are visible.
 - `{horsestats}` - replaces with the speed and jump attributes of a horse entity.
   - Speed is converted to m/s, the jump value is raw.
 - `{rawhorsestats}` - replaces with the raw speed and jump attributes of a horse entity.

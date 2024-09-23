@@ -3,21 +3,22 @@ package xyz.eclipseisoffline.eclipsestweakeroo.config;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import java.util.Arrays;
 import java.util.Comparator;
-import net.minecraft.client.network.PlayerListEntry;
+
+import net.minecraft.client.multiplayer.PlayerInfo;
 
 public enum PlayerListOrder implements IConfigOptionListEntry {
     DEFAULT("default", "Default", null),
-    PING("ping", "Ping", Comparator.comparingInt(PlayerListEntry::getLatency)),
+    PING("ping", "Ping", Comparator.comparingInt(PlayerInfo::getLatency)),
     GAMEMODE("gamemode", "Gamemode", Comparator.comparingInt(entry -> entry.getGameMode().getId())),
     NAME("name", "Name",
             Comparator.comparing(entry -> entry.getProfile().getName(), String::compareTo));
 
     private final String stringName;
     private final String displayName;
-    private final Comparator<PlayerListEntry> comparator;
+    private final Comparator<PlayerInfo> comparator;
 
     PlayerListOrder(String stringName, String displayName,
-            Comparator<PlayerListEntry> comparator) {
+            Comparator<PlayerInfo> comparator) {
         this.stringName = stringName;
         this.displayName = displayName;
         this.comparator = comparator;
@@ -33,7 +34,7 @@ public enum PlayerListOrder implements IConfigOptionListEntry {
         return displayName;
     }
 
-    public Comparator<PlayerListEntry> getComparator() {
+    public Comparator<PlayerInfo> getComparator() {
         return comparator;
     }
 

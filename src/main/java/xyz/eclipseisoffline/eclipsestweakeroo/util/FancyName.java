@@ -6,175 +6,142 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.passive.AbstractHorseEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.scoreboard.Team;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.PlainTextContent.Literal;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameMode;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.PlayerTeam;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 
 public class FancyName {
 
-    private static final Map<GameMode, MutableText> GAMEMODE_TEXT = Map.of(
-            GameMode.SURVIVAL, Text.literal("S").formatted(Formatting.RED),
-            GameMode.CREATIVE, Text.literal("C").formatted(Formatting.GREEN),
-            GameMode.ADVENTURE, Text.literal("A").formatted(Formatting.YELLOW),
-            GameMode.SPECTATOR, Text.literal("SP").formatted(Formatting.BLUE)
+    private static final Map<GameType, MutableComponent> GAMEMODE_TEXT = Map.of(
+            GameType.SURVIVAL, Component.literal("S").withStyle(ChatFormatting.RED),
+            GameType.CREATIVE, Component.literal("C").withStyle(ChatFormatting.GREEN),
+            GameType.ADVENTURE, Component.literal("A").withStyle(ChatFormatting.YELLOW),
+            GameType.SPECTATOR, Component.literal("SP").withStyle(ChatFormatting.BLUE)
     );
 
-    private static final Map<String, BiFunction<LivingEntity, PlayerListEntry, Text>> PLACEHOLDERS = Map.ofEntries(
-            Map.entry("name", (livingEntity, playerListEntry) -> {
-                if (playerListEntry != null && playerListEntry.getDisplayName() != null) {
-                    return playerListEntry.getDisplayName();
+    private static final Map<String, BiFunction<LivingEntity, PlayerInfo, Component>> PLACEHOLDERS = Map.ofEntries(
+            Map.entry("name", (livingEntity, playerInfo) -> {
+                if (playerInfo != null && playerInfo.getTabListDisplayName() != null) {
+                    return playerInfo.getTabListDisplayName();
                 } else if (livingEntity != null) {
                     return livingEntity.getDisplayName();
-                } else if (playerListEntry != null) {
-                    return Team.decorateName(playerListEntry.getScoreboardTeam(),
-                            Text.of(playerListEntry.getProfile().getName()));
+                } else if (playerInfo != null) {
+                    return PlayerTeam.formatNameForTeam(playerInfo.getTeam(), Component.literal(playerInfo.getProfile().getName()));
                 }
                 return null;
             }),
-            Map.entry("rawname", ((livingEntity, playerListEntry) -> {
+            Map.entry("rawname", ((livingEntity, playerInfo) -> {
                 if (livingEntity != null) {
-                    if (livingEntity instanceof PlayerEntity player) {
-                        return Text.of(player.getGameProfile().getName());
+                    if (livingEntity instanceof Player player) {
+                        return Component.literal(player.getGameProfile().getName());
                     }
                     return livingEntity.getName();
-                } else if (playerListEntry != null) {
-                    return Text.of(playerListEntry.getProfile().getName());
+                } else if (playerInfo != null) {
+                    return Component.literal(playerInfo.getProfile().getName());
                 }
                 return null;
             })),
-            Map.entry("gamemode", (livingEntity, playerListEntry) -> GAMEMODE_TEXT.get(
-                    playerListEntry.getGameMode())),
-            Map.entry("ping",
-                    (livingEntity, playerListEntry) -> getPingText(playerListEntry.getLatency())),
-            Map.entry("health", (livingEntity, playerListEntry) -> Text.literal(
-                            String.valueOf(Math.ceil(livingEntity.getHealth())))
-                    .formatted(Formatting.RED)),
-            Map.entry("uuid", (livingEntity, playerListEntry) -> {
+            Map.entry("gamemode", (livingEntity, playerInfo) -> GAMEMODE_TEXT.get(playerInfo.getGameMode())),
+            Map.entry("ping", (livingEntity, playerInfo) -> getPingText(playerInfo.getLatency())),
+            Map.entry("health", (livingEntity, playerInfo) -> Component.literal(EclipsesTweakerooUtil.roundToOneDecimal(livingEntity.getHealth())).withStyle(ChatFormatting.RED)),
+            Map.entry("uuid", (livingEntity, playerInfo) -> {
                 if (livingEntity != null) {
-                    return Text.of(livingEntity.getUuidAsString());
-                } else if (playerListEntry != null) {
-                    return Text.of(playerListEntry.getProfile().getId().toString());
+                    return Component.literal(livingEntity.getStringUUID());
+                } else if (playerInfo != null) {
+                    return Component.literal(playerInfo.getProfile().getId().toString());
                 }
                 return null;
             }),
-            Map.entry("team", (livingEntity, playerListEntry) -> {
+            Map.entry("team", (livingEntity, playerInfo) -> {
                 if (livingEntity != null) {
-                    return Objects.requireNonNull(livingEntity.getScoreboardTeam())
-                            .getDisplayName();
-                } else if (playerListEntry != null) {
-                    return Objects.requireNonNull(playerListEntry.getScoreboardTeam())
-                            .getDisplayName();
+                    return Objects.requireNonNull(livingEntity.getTeam()).getDisplayName();
+                } else if (playerInfo != null) {
+                    return Objects.requireNonNull(playerInfo.getTeam()).getDisplayName();
                 }
                 return null;
             }),
-            Map.entry("key", (livingEntity, playerListEntry) -> playerListEntry.hasPublicKey()
-                    ? Text.literal("KEY").formatted(Formatting.GREEN)
-                    : Text.literal("NO KEY").formatted(Formatting.RED)),
-            Map.entry("attack", (livingEntity, playerListEntry) -> {
-                try {
-                    return EclipsesTweakerooUtil.getAttackDamageText(livingEntity,
-                            AdditionalGenericConfig.ATTACK_PLACEHOLDER_CRITICAL.getBooleanValue());
-                } catch (IllegalArgumentException exception) {
+            Map.entry("key", (livingEntity, playerInfo) -> playerInfo.hasVerifiableChat()
+                    ? Component.literal("KEY").withStyle(ChatFormatting.GREEN)
+                    : Component.literal("NO KEY").withStyle(ChatFormatting.RED)),
+            Map.entry("attack", (livingEntity, playerInfo) -> EclipsesTweakerooUtil.getAttackDamageText(livingEntity, AdditionalGenericConfig.ATTACK_PLACEHOLDER_CRITICAL.getBooleanValue())),
+            Map.entry("armor", (livingEntity, playerInfo) -> EclipsesTweakerooUtil.getArmorText(livingEntity)),
+            Map.entry("distance", (livingEntity, playerInfo) -> {
+                Player player = Minecraft.getInstance().player;
+                if (player == null || player.equals(livingEntity)) {
                     return null;
                 }
+                Vec3 cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+                return Component.literal(String.valueOf(Math.floor(cameraPos.distanceTo(livingEntity.position()))))
+                        .withStyle(ChatFormatting.BLUE);
             }),
-            Map.entry("armor",
-                    (livingEntity, playerListEntry) -> EclipsesTweakerooUtil.getArmorText(livingEntity)),
-            Map.entry("distance", (livingEntity, playerListEntry) -> {
-                PlayerEntity player = MinecraftClient.getInstance().player;
-                assert player != null;
-                if (player.equals(livingEntity)) {
+            Map.entry("statuseffect", (livingEntity, playerInfo) -> {
+                List<ResourceKey<MobEffect>> mobEffects = new ArrayList<>(EclipsesTweakerooUtil.getStatusEffectsFromParticles(livingEntity));
+                if (mobEffects.isEmpty()) {
                     return null;
                 }
-                Vec3d cameraPos = MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
-                return Text.literal(
-                                String.valueOf(Math.floor(cameraPos.distanceTo(livingEntity.getPos()))))
-                        .formatted(Formatting.BLUE);
-            }),
-            Map.entry("statuseffect", (livingEntity, playerListEntry) -> {
-                List<StatusEffect> statusEffects = new ArrayList<>(
-                        livingEntity.getActiveStatusEffects().keySet()
-                                .stream().map(RegistryEntry::value).toList());
 
-                if (statusEffects.isEmpty()) {
-                    statusEffects.addAll(EclipsesTweakerooUtil.getStatusEffectsFromParticles(livingEntity));
-                    if (statusEffects.isEmpty()) {
-                        return null;
-                    }
-                }
-
-                statusEffects.sort(Comparator.comparingInt(
-                        (statusEffect -> statusEffect.isBeneficial() ? 0 : 1)));
+                mobEffects.sort(Comparator.comparingInt((mobEffect -> BuiltInRegistries.MOB_EFFECT.getOrThrow(mobEffect).isBeneficial() ? 0 : 1)));
                 StringBuilder statusEffectString = new StringBuilder();
-                for (StatusEffect statusEffect : statusEffects) {
-                    String statusEffectIconString = EclipsesTweakeroo.STATUS_EFFECT_CHARACTER_MAP.get(
-                            statusEffect);
+                for (ResourceKey<MobEffect> mobEffect : mobEffects) {
+                    String statusEffectIconString = EclipsesTweakeroo.STATUS_EFFECT_CHARACTER_MAP.get(mobEffect);
                     if (statusEffectIconString != null) {
                         statusEffectString.append(statusEffectIconString);
                     }
                 }
 
-                return Text.of(statusEffectString.toString());
+                return Component.literal(statusEffectString.toString());
             }),
             Map.entry("horsestats", (livingEntity, playerListEntry) -> {
-                if (livingEntity instanceof AbstractHorseEntity horse) {
-                    double movementSpeed = horse.getAttributeValue(
-                            EntityAttributes.GENERIC_MOVEMENT_SPEED);
-                    double jumpStrength = horse.getAttributeValue(
-                            EntityAttributes.GENERIC_JUMP_STRENGTH);
+                if (livingEntity instanceof AbstractHorse horse) {
+                    double movementSpeed = horse.getAttributeValue(Attributes.MOVEMENT_SPEED);
+                    double jumpStrength = horse.getAttributeValue(Attributes.JUMP_STRENGTH);
 
                     movementSpeed *= 42.16;
-                    MutableText text = Text.literal(Math.round(movementSpeed * 100D) / 100D + "m/s")
-                            .formatted(Formatting.GOLD);
-                    text.append(Text.literal("-").formatted(Formatting.RESET));
-                    text.append(Text.literal(String.valueOf(Math.round(jumpStrength * 100D) / 100D))
-                            .formatted(Formatting.GREEN));
+                    MutableComponent text = Component.literal(Math.round(movementSpeed * 100D) / 100D + "m/s").withStyle(ChatFormatting.GOLD);
+                    text.append(Component.literal("-").withStyle(ChatFormatting.RESET));
+                    text.append(Component.literal(String.valueOf(Math.round(jumpStrength * 100D) / 100D)).withStyle(ChatFormatting.GREEN));
                     return text;
                 }
                 return null;
             }),
             Map.entry("rawhorsestats", (livingEntity, playerListEntry) -> {
-                if (livingEntity instanceof AbstractHorseEntity horse) {
-                    double movementSpeed = horse.getAttributeValue(
-                            EntityAttributes.GENERIC_MOVEMENT_SPEED);
-                    double jumpStrength = horse.getAttributeValue(
-                            EntityAttributes.GENERIC_JUMP_STRENGTH);
+                if (livingEntity instanceof AbstractHorse horse) {
+                    double movementSpeed = horse.getAttributeValue(Attributes.MOVEMENT_SPEED);
+                    double jumpStrength = horse.getAttributeValue(Attributes.JUMP_STRENGTH);
 
-                    MutableText text = Text.literal(
-                                    String.valueOf(Math.round(movementSpeed * 100D) / 100D))
-                            .formatted(Formatting.GOLD);
-                    text.append(Text.literal("-").formatted(Formatting.RESET));
-                    text.append(Text.literal(String.valueOf(Math.round(jumpStrength * 100D) / 100D))
-                            .formatted(Formatting.GREEN));
+                    MutableComponent text = Component.literal(String.valueOf(Math.round(movementSpeed * 100D) / 100D)).withStyle(ChatFormatting.GOLD);
+                    text.append(Component.literal("-").withStyle(ChatFormatting.RESET));
+                    text.append(Component.literal(String.valueOf(Math.round(jumpStrength * 100D) / 100D)).withStyle(ChatFormatting.GREEN));
                     return text;
                 }
                 return null;
             })
     );
 
-    public static Text applyFancyName(LivingEntity entity, PlayerListEntry player) {
-        MutableText fancyName = MutableText.of(Literal.EMPTY);
-        List<Text> elements = new ArrayList<>();
+    public static Component applyFancyName(LivingEntity entity, PlayerInfo player) {
+        MutableComponent fancyName = Component.empty();
+        List<Component> elements = new ArrayList<>();
 
         for (String element : AdditionalGenericConfig.FANCY_NAME_ELEMENTS.getStrings()) {
             if (element.isEmpty()) {
                 continue;
             }
-            Text elementValue = Text.of(element);
+            Component elementValue = Component.literal(element);
             if (element.startsWith("{")) {
                 String placeholder = element.replace("{", "").replace("}", "");
                 try {
@@ -199,23 +166,23 @@ public class FancyName {
         return fancyName;
     }
 
-    private static Text getPingText(int ping) {
-        return Text.literal(ping + "ms").formatted(getPingColor(ping));
+    private static Component getPingText(int ping) {
+        return Component.literal(ping + "ms").withStyle(getPingColor(ping));
     }
 
-    private static Formatting getPingColor(int ping) {
+    private static ChatFormatting getPingColor(int ping) {
         if (ping <= 0) {
-            return Formatting.DARK_GRAY;
+            return ChatFormatting.DARK_GRAY;
         } else if (ping <= 150) {
-            return Formatting.GREEN;
+            return ChatFormatting.GREEN;
         } else if (ping <= 300) {
-            return Formatting.YELLOW;
+            return ChatFormatting.YELLOW;
         } else if (ping <= 600) {
-            return Formatting.GOLD;
+            return ChatFormatting.GOLD;
         } else if (ping <= 1000) {
-            return Formatting.RED;
+            return ChatFormatting.RED;
         }
 
-        return Formatting.DARK_RED;
+        return ChatFormatting.DARK_RED;
     }
 }

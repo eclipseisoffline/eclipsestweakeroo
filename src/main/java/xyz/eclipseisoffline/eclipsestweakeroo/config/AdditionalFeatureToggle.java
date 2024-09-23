@@ -1,7 +1,7 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.config;
 
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
-import xyz.eclipseisoffline.eclipsestweakeroo.mixin.FeatureToggleCreator;
+import xyz.eclipseisoffline.eclipsestweakeroo.mixin.tweakeroo.FeatureToggleCreator;
 
 public class AdditionalFeatureToggle {
 

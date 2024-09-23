@@ -2,8 +2,8 @@ package xyz.eclipseisoffline.eclipsestweakeroo.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.client.network.ServerAddress;
-import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
 
 public interface AttemptConnectionCallback {
 
@@ -14,5 +14,5 @@ public interface AttemptConnectionCallback {
                 }
             });
 
-    void connect(ServerAddress address, ServerInfo connectionInfo);
+    void connect(ServerAddress address, ServerData connectionInfo);
 }

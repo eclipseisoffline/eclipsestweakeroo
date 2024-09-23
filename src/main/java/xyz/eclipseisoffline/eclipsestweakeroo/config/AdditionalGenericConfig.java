@@ -6,10 +6,11 @@ import fi.dy.masa.malilib.config.options.ConfigDouble;
 import fi.dy.masa.malilib.config.options.ConfigInteger;
 import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import fi.dy.masa.malilib.config.options.ConfigStringList;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 
 public class AdditionalGenericConfig {
 
+    // TODO hand restock creative
     public static final ConfigBoolean HAND_RESTOCK_UNSTACKABLE = new ConfigBoolean(
             "handRestockUnstackable", true, "Whether to restock unstackable items");
     public static final ConfigBoolean TWEAK_PLAYER_LIST_HEADER = new ConfigBoolean(
@@ -32,7 +33,7 @@ public class AdditionalGenericConfig {
             "playerListOrder", PlayerListOrder.DEFAULT,
             "Changes the order of players in the player list when the player list tweak is enabled");
     public static final ConfigDouble TWEAK_SLIPPERY_SLIPPERINESS = new ConfigDouble("slipperiness",
-            Blocks.ICE.getSlipperiness(), 0.6, 1.15,
+            Blocks.ICE.getFriction(), 0.6, 1.15,
             "Defines how slippery every block is when using tweakSlippery.");
     public static final ConfigBoolean TWEAK_SLIPPERY_VEHICLES = new ConfigBoolean(
             "slipperinessAffectVehicles", false,

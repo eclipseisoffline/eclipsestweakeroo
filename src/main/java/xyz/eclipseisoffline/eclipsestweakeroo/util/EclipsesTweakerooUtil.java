@@ -5,102 +5,106 @@ import fi.dy.masa.malilib.config.IHotkeyTogglable;
 import fi.dy.masa.malilib.gui.Message.MessageType;
 import fi.dy.masa.malilib.util.InfoUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ReferenceMap;
+import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.EnchantmentEffectComponentTypes;
-import net.minecraft.component.type.AttributeModifiersComponent;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.effect.EnchantmentEffectEntry;
-import net.minecraft.enchantment.effect.EnchantmentValueEffect;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffectUtil;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.predicate.TagPredicate;
-import net.minecraft.predicate.entity.DamageSourcePredicate;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.DamageTypeTags;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.MathHelper;
+import java.util.stream.Collectors;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.critereon.DamageSourcePredicate;
+import net.minecraft.advancements.critereon.TagPredicate;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.TickRateManager;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffectUtil;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.enchantment.ConditionalEffect;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
+import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
 import org.apache.commons.lang3.mutable.MutableFloat;
-import xyz.eclipseisoffline.eclipsestweakeroo.mixin.EntityEffectParticleEffectAccessor;
-import xyz.eclipseisoffline.eclipsestweakeroo.mixin.LivingEntityAccessor;
+import xyz.eclipseisoffline.eclipsestweakeroo.mixin.particle.ColorParticleOptionAccessor;
+import xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity.LivingEntityAccessor;
 
 public class EclipsesTweakerooUtil {
 
     private static final double NANO_MILLI = 0.000001;
     private static final int MAX_DURATION_SECONDS_EFFECT_TEXT = 3600;
     private static final double DURABILITY_WARNING = 0.9;
-    private static final Map<RegistryEntry<StatusEffect>, Formatting> EFFECT_COLOURS = Map.ofEntries(
-            Map.entry(StatusEffects.SPEED, Formatting.WHITE),
-            Map.entry(StatusEffects.SLOWNESS, Formatting.DARK_GRAY),
-            Map.entry(StatusEffects.HASTE, Formatting.GOLD),
-            Map.entry(StatusEffects.MINING_FATIGUE, Formatting.GRAY),
-            Map.entry(StatusEffects.STRENGTH, Formatting.DARK_RED),
-            Map.entry(StatusEffects.JUMP_BOOST, Formatting.DARK_AQUA),
-            Map.entry(StatusEffects.NAUSEA, Formatting.DARK_GREEN),
-            Map.entry(StatusEffects.REGENERATION, Formatting.RED),
-            Map.entry(StatusEffects.RESISTANCE, Formatting.GRAY),
-            Map.entry(StatusEffects.FIRE_RESISTANCE, Formatting.GOLD),
-            Map.entry(StatusEffects.WATER_BREATHING, Formatting.BLUE),
-            Map.entry(StatusEffects.INVISIBILITY, Formatting.WHITE),
-            Map.entry(StatusEffects.BLINDNESS, Formatting.DARK_GRAY),
-            Map.entry(StatusEffects.NIGHT_VISION, Formatting.BLUE),
-            Map.entry(StatusEffects.HUNGER, Formatting.YELLOW),
-            Map.entry(StatusEffects.WEAKNESS, Formatting.GRAY),
-            Map.entry(StatusEffects.POISON, Formatting.GREEN),
-            Map.entry(StatusEffects.WITHER, Formatting.DARK_GRAY),
-            Map.entry(StatusEffects.HEALTH_BOOST, Formatting.RED),
-            Map.entry(StatusEffects.ABSORPTION, Formatting.AQUA),
-            Map.entry(StatusEffects.SATURATION, Formatting.RED),
-            Map.entry(StatusEffects.GLOWING, Formatting.WHITE),
-            Map.entry(StatusEffects.LEVITATION, Formatting.WHITE),
-            Map.entry(StatusEffects.LUCK, Formatting.GREEN),
-            Map.entry(StatusEffects.UNLUCK, Formatting.DARK_RED),
-            Map.entry(StatusEffects.SLOW_FALLING, Formatting.GRAY),
-            Map.entry(StatusEffects.CONDUIT_POWER, Formatting.BLUE),
-            Map.entry(StatusEffects.DOLPHINS_GRACE, Formatting.BLUE),
-            Map.entry(StatusEffects.BAD_OMEN, Formatting.GRAY),
-            Map.entry(StatusEffects.HERO_OF_THE_VILLAGE, Formatting.GREEN),
-            Map.entry(StatusEffects.DARKNESS, Formatting.DARK_GRAY),
-            Map.entry(StatusEffects.INFESTED, Formatting.GRAY),
-            Map.entry(StatusEffects.OOZING, Formatting.GREEN),
-            Map.entry(StatusEffects.RAID_OMEN, Formatting.DARK_GRAY),
-            Map.entry(StatusEffects.TRIAL_OMEN, Formatting.AQUA),
-            Map.entry(StatusEffects.WEAVING, Formatting.WHITE),
-            Map.entry(StatusEffects.WIND_CHARGED, Formatting.BLUE)
-    );
-    private static final Int2ObjectMap<StatusEffect> STATUS_EFFECT_PARTICLE_COLORS = new Int2ObjectOpenHashMap<>();
+    private static final Map<ResourceKey<MobEffect>, ChatFormatting> EFFECT_COLOURS = Map.ofEntries(
+            Map.entry(MobEffects.MOVEMENT_SPEED, ChatFormatting.WHITE),
+            Map.entry(MobEffects.MOVEMENT_SLOWDOWN, ChatFormatting.DARK_GRAY),
+            Map.entry(MobEffects.DIG_SPEED, ChatFormatting.GOLD),
+            Map.entry(MobEffects.DIG_SLOWDOWN, ChatFormatting.GRAY),
+            Map.entry(MobEffects.DAMAGE_BOOST, ChatFormatting.DARK_RED),
+            Map.entry(MobEffects.JUMP, ChatFormatting.DARK_AQUA),
+            Map.entry(MobEffects.CONFUSION, ChatFormatting.DARK_GREEN),
+            Map.entry(MobEffects.REGENERATION, ChatFormatting.RED),
+            Map.entry(MobEffects.DAMAGE_RESISTANCE, ChatFormatting.GRAY),
+            Map.entry(MobEffects.FIRE_RESISTANCE, ChatFormatting.GOLD),
+            Map.entry(MobEffects.WATER_BREATHING, ChatFormatting.BLUE),
+            Map.entry(MobEffects.INVISIBILITY, ChatFormatting.WHITE),
+            Map.entry(MobEffects.BLINDNESS, ChatFormatting.DARK_GRAY),
+            Map.entry(MobEffects.NIGHT_VISION, ChatFormatting.BLUE),
+            Map.entry(MobEffects.HUNGER, ChatFormatting.YELLOW),
+            Map.entry(MobEffects.WEAKNESS, ChatFormatting.GRAY),
+            Map.entry(MobEffects.POISON, ChatFormatting.GREEN),
+            Map.entry(MobEffects.WITHER, ChatFormatting.DARK_GRAY),
+            Map.entry(MobEffects.HEALTH_BOOST, ChatFormatting.RED),
+            Map.entry(MobEffects.ABSORPTION, ChatFormatting.AQUA),
+            Map.entry(MobEffects.SATURATION, ChatFormatting.RED),
+            Map.entry(MobEffects.GLOWING, ChatFormatting.WHITE),
+            Map.entry(MobEffects.LEVITATION, ChatFormatting.WHITE),
+            Map.entry(MobEffects.LUCK, ChatFormatting.GREEN),
+            Map.entry(MobEffects.UNLUCK, ChatFormatting.DARK_RED),
+            Map.entry(MobEffects.SLOW_FALLING, ChatFormatting.GRAY),
+            Map.entry(MobEffects.CONDUIT_POWER, ChatFormatting.BLUE),
+            Map.entry(MobEffects.DOLPHINS_GRACE, ChatFormatting.BLUE),
+            Map.entry(MobEffects.BAD_OMEN, ChatFormatting.GRAY),
+            Map.entry(MobEffects.HERO_OF_THE_VILLAGE, ChatFormatting.GREEN),
+            Map.entry(MobEffects.DARKNESS, ChatFormatting.DARK_GRAY),
+            Map.entry(MobEffects.INFESTED, ChatFormatting.GRAY),
+            Map.entry(MobEffects.OOZING, ChatFormatting.GREEN),
+            Map.entry(MobEffects.RAID_OMEN, ChatFormatting.DARK_GRAY),
+            Map.entry(MobEffects.TRIAL_OMEN, ChatFormatting.AQUA),
+            Map.entry(MobEffects.WEAVING, ChatFormatting.WHITE),
+            Map.entry(MobEffects.WIND_CHARGED, ChatFormatting.BLUE)
+    ).entrySet().stream().collect(Collectors.toUnmodifiableMap(e -> e.getKey().unwrapKey().orElseThrow(), Map.Entry::getValue));
+    private static final Int2ReferenceMap<ResourceKey<MobEffect>> STATUS_EFFECT_PARTICLE_COLORS = new Int2ReferenceOpenHashMap<>();
 
-    private EclipsesTweakerooUtil() {
-    }
+    private EclipsesTweakerooUtil() {}
 
     public static List<IConfigBase> getDeclaredOptions(Class<?> clazz) {
         Field[] tweakerooFields = clazz.getDeclaredFields();
@@ -163,70 +167,63 @@ public class EclipsesTweakerooUtil {
     }
 
     public static boolean shouldWarnDurability(ItemStack itemStack) {
-        return itemStack.isDamageable() && itemStack.getDamage() >= (DURABILITY_WARNING
-                * itemStack.getMaxDamage());
+        return itemStack.isDamageableItem() && itemStack.getDamageValue() >= (DURABILITY_WARNING * itemStack.getMaxDamage());
     }
 
     public static void showLowDurabilityWarning(ItemStack itemStack, boolean actionBar) {
         if (actionBar) {
             InfoUtils.showGuiOrActionBarMessage(MessageType.WARNING,
-                    itemStack.getName().getString() + " is at low durability! "
-                            + (itemStack.getMaxDamage() - itemStack.getDamage()) + "/"
-                            + itemStack.getMaxDamage());
+                    itemStack.getHoverName().getString() + " is at low durability! "
+                            + (itemStack.getMaxDamage() - itemStack.getDamageValue()) + "/" + itemStack.getMaxDamage());
             return;
         }
         InfoUtils.showGuiOrInGameMessage(MessageType.WARNING,
-                itemStack.getName().getString() + " is at low durability! "
-                        + (itemStack.getMaxDamage() - itemStack.getDamage()) + "/"
-                        + itemStack.getMaxDamage());
+                itemStack.getHoverName().getString() + " is at low durability! "
+                        + (itemStack.getMaxDamage() - itemStack.getDamageValue()) + "/" + itemStack.getMaxDamage());
     }
 
-    public static Text getDurationTextWithStyle(StatusEffectInstance effect) {
-        assert MinecraftClient.getInstance().world != null;
-        int durationSeconds = (int) ((MinecraftClient.getInstance().world.getTickManager()
-                .getMillisPerTick() * effect.getDuration()) / 1000);
+    public static Component getDurationTextWithStyle(MobEffectInstance effect) {
+        assert Minecraft.getInstance().level != null;
+        TickRateManager tickRate = Minecraft.getInstance().level.tickRateManager();
+        int durationSeconds = (int) (tickRate.millisecondsPerTick() * effect.getDuration()) / 1000;
 
-        MutableText durationText;
+        MutableComponent durationText;
         if (durationSeconds >= MAX_DURATION_SECONDS_EFFECT_TEXT) {
-            durationText = Text.literal("**:**");
+            durationText = Component.literal("**:**");
         } else {
-            durationText = (MutableText) StatusEffectUtil.getDurationText(effect,
-                    1, MinecraftClient.getInstance().world.getTickManager().getTickRate());
+            durationText = (MutableComponent) MobEffectUtil.formatDuration(effect, 1, tickRate.tickrate());
         }
 
-        durationText.formatted(
-                EFFECT_COLOURS.getOrDefault(effect.getEffectType(), Formatting.WHITE));
+        durationText.withStyle(EFFECT_COLOURS.getOrDefault(effect.getEffect().unwrapKey().orElseThrow(), ChatFormatting.WHITE));
         return durationText;
     }
 
-    public static Text getAttackDamageText(LivingEntity entity, boolean critical) {
+    public static Component getAttackDamageText(LivingEntity entity, boolean critical) {
         // TODO cache?
-        EntityAttributeInstance temporaryInstance = new EntityAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE, (instance) -> {});
+        if (entity.getAttribute(Attributes.ATTACK_DAMAGE) == null) {
+            return null;
+        }
+        AttributeInstance temporaryInstance = new AttributeInstance(Attributes.ATTACK_DAMAGE, (instance) -> {});
 
-        temporaryInstance.setBaseValue(entity.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_DAMAGE));
+        temporaryInstance.setBaseValue(entity.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
 
-        BiConsumer<RegistryEntry<EntityAttribute>, EntityAttributeModifier> modifierApplier =
-                (attribute, modifier) -> {
-            if (attribute == EntityAttributes.GENERIC_ATTACK_DAMAGE) {
-                temporaryInstance.addTemporaryModifier(modifier);
+        BiConsumer<Holder<Attribute>, AttributeModifier> modifierApplier = (attribute, modifier) -> {
+            if (attribute == Attributes.ATTACK_DAMAGE) {
+                temporaryInstance.addTransientModifier(modifier);
             }
         };
 
-        AttributeModifiersComponent attributeModifiers = entity
-                .getStackInHand(Hand.MAIN_HAND)
-                .get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
+        ItemAttributeModifiers attributeModifiers = entity.getItemInHand(InteractionHand.MAIN_HAND).get(DataComponents.ATTRIBUTE_MODIFIERS);
         if (attributeModifiers != null) {
-            attributeModifiers.applyModifiers(EquipmentSlot.MAINHAND, modifierApplier);
+            attributeModifiers.forEach(EquipmentSlot.MAINHAND, modifierApplier);
         }
 
-        if (!entity.getActiveStatusEffects().isEmpty()) {
-            entity.getActiveStatusEffects().forEach((effect, instance) -> {
-                effect.value().forEachAttributeModifier(instance.getAmplifier(), modifierApplier);
-            });
+        if (!entity.getActiveEffects().isEmpty()) {
+            entity.getActiveEffectsMap().forEach((effect, instance) -> effect.value().createModifiers(instance.getAmplifier(), modifierApplier));
         } else {
-            List<StatusEffect> activeParticleEffects = getStatusEffectsFromParticles(entity);
-            for (StatusEffect activeEffect : activeParticleEffects) {
-                activeEffect.forEachAttributeModifier(0, modifierApplier);
+            List<ResourceKey<MobEffect>> activeParticleEffects = getStatusEffectsFromParticles(entity);
+            for (ResourceKey<MobEffect> activeEffect : activeParticleEffects) {
+                BuiltInRegistries.MOB_EFFECT.getOrThrow(activeEffect).createModifiers(0, modifierApplier);
             }
         }
 
@@ -234,36 +231,37 @@ public class EclipsesTweakerooUtil {
         float criticalBase = attackDamage.floatValue();
 
         forEachEnchantment(entity, (enchantment, level) -> {
-            List<EnchantmentEffectEntry<EnchantmentValueEffect>> damageEffects = enchantment.value().getEffect(EnchantmentEffectComponentTypes.DAMAGE);
-            for (EnchantmentEffectEntry<EnchantmentValueEffect> effectEntry : damageEffects) {
-                if (effectEntry.requirements().isEmpty()) {
-                    attackDamage.setValue(effectEntry.effect().apply(level, entity.getRandom(), attackDamage.getValue()));
+            List<ConditionalEffect<EnchantmentValueEffect>> damageEffects = enchantment.value().getEffects(EnchantmentEffectComponents.DAMAGE);
+            for (ConditionalEffect<EnchantmentValueEffect> damageEffect : damageEffects) {
+                if (damageEffect.requirements().isEmpty()) {
+                    attackDamage.setValue(damageEffect.effect().process(level, entity.getRandom(), attackDamage.getValue()));
                 }
             }
         });
 
-        float criticalDamage = entity instanceof PlayerEntity
-                ? (float) ((criticalBase * 1.5) + (attackDamage.floatValue() - criticalBase)) - attackDamage.floatValue() : 0;
+        float criticalDamage = entity instanceof Player ? (float) ((criticalBase * 1.5) + (attackDamage.floatValue() - criticalBase)) - attackDamage.floatValue() : 0;
 
-        MutableText attack = Text.literal(String.valueOf(attackDamage))
-                .formatted(Formatting.YELLOW);
+        MutableComponent component = Component.literal(String.valueOf(attackDamage)).withStyle(ChatFormatting.YELLOW);
         if (criticalDamage > 0 && critical) {
-            attack.append(Text.literal("+" + criticalDamage).formatted(Formatting.RED));
+            component.append(Component.literal("+" + criticalDamage).withStyle(ChatFormatting.RED));
         }
-        return attack;
+        return component;
     }
 
-    public static Text getArmorText(LivingEntity entity) {
-        int baseArmor = entity.getArmor();
-        int armorToughness = MathHelper.ceil(entity
-                .getAttributeValue(EntityAttributes.GENERIC_ARMOR_TOUGHNESS));
+    public static Component getArmorText(LivingEntity entity) {
+        int baseArmor = entity.getArmorValue();
+        int armorToughness = Mth.ceil(entity
+                .getAttributeValue(Attributes.ARMOR_TOUGHNESS));
 
         MutableFloat mutableProtectionFactor = new MutableFloat();
         forEachEnchantment(entity, (enchantment, level) -> {
-            List<EnchantmentEffectEntry<EnchantmentValueEffect>> damageProtectionEffects = enchantment.value().getEffect(EnchantmentEffectComponentTypes.DAMAGE_PROTECTION);
-            for (EnchantmentEffectEntry<EnchantmentValueEffect> effectEntry : damageProtectionEffects) {
-                boolean emptyRequirements = effectEntry.requirements().isEmpty();
-                if (!emptyRequirements && effectEntry.requirements().get() instanceof DamageSourcePropertiesLootCondition damageSourceProperties) {
+            List<ConditionalEffect<EnchantmentValueEffect>> damageProtectionEffects = enchantment.value().getEffects(EnchantmentEffectComponents.DAMAGE_PROTECTION);
+            for (ConditionalEffect<EnchantmentValueEffect> effect : damageProtectionEffects) {
+                // Empty requirements = effect activates always, OR when the only requirement is that the damage source doesn't bypass invulnerability
+                // In vanilla Minecraft, only the Protection enchantment matches these requirements
+                boolean emptyRequirements = effect.requirements().isEmpty();
+
+                if (!emptyRequirements && effect.requirements().get() instanceof DamageSourceCondition damageSourceProperties) {
                     if (damageSourceProperties.predicate().isEmpty()) {
                         emptyRequirements = true;
                     } else {
@@ -289,36 +287,34 @@ public class EclipsesTweakerooUtil {
                 }
 
                 if (emptyRequirements) {
-                    mutableProtectionFactor.setValue(effectEntry.effect().apply(level, entity.getRandom(), mutableProtectionFactor.getValue()));
+                    mutableProtectionFactor.setValue(effect.effect().process(level, entity.getRandom(), mutableProtectionFactor.getValue()));
                 }
             }
         });
         int enchantmentProtectionFactor = mutableProtectionFactor.intValue();
 
         if (baseArmor > 0) {
-            MutableText armorText = Text.literal(String.valueOf(baseArmor))
-                    .formatted(Formatting.GRAY);
+            MutableComponent armorText = Component.literal(String.valueOf(baseArmor)).withStyle(ChatFormatting.GRAY);
             if (armorToughness > 0) {
-                armorText.append(Text.literal("+" + armorToughness).formatted(Formatting.WHITE));
+                armorText.append(Component.literal("+" + armorToughness).withStyle(ChatFormatting.WHITE));
             }
             if (enchantmentProtectionFactor > 0) {
-                armorText.append(Text.literal("+" + enchantmentProtectionFactor)
-                        .formatted(Formatting.LIGHT_PURPLE));
+                armorText.append(Component.literal("+" + enchantmentProtectionFactor).withStyle(ChatFormatting.LIGHT_PURPLE));
             }
             return armorText;
         }
         return null;
     }
 
-    public static List<StatusEffect> getStatusEffectsFromParticles(LivingEntity livingEntity) {
-        List<ParticleEffect> potionParticles = livingEntity.getDataTracker().get(LivingEntityAccessor.getTrackedPotionSwirls());
+    public static List<ResourceKey<MobEffect>> getStatusEffectsFromParticles(LivingEntity entity) {
+        List<ParticleOptions> potionParticles = entity.getEntityData().get(LivingEntityAccessor.getDataEffectParticles());
         if (potionParticles.isEmpty()) {
             return List.of();
         }
 
-        List<StatusEffect> statusEffects = new ArrayList<>();
-        for (ParticleEffect particleEffect : potionParticles) {
-            StatusEffect statusEffect = getStatusEffectFromParticle(particleEffect);
+        List<ResourceKey<MobEffect>> statusEffects = new ArrayList<>();
+        for (ParticleOptions particleEffect : potionParticles) {
+            ResourceKey<MobEffect> statusEffect = getStatusEffectFromParticle(particleEffect);
             if (statusEffect != null) {
                 statusEffects.add(statusEffect);
             }
@@ -326,23 +322,23 @@ public class EclipsesTweakerooUtil {
         return List.copyOf(statusEffects);
     }
 
-    public static StatusEffect getStatusEffectFromParticle(ParticleEffect particle) {
+    public static ResourceKey<MobEffect> getStatusEffectFromParticle(ParticleOptions particle) {
         ParticleType<?> type = particle.getType();
 
         if (type == ParticleTypes.TRIAL_OMEN) {
-            return StatusEffects.TRIAL_OMEN.value();
+            return MobEffects.TRIAL_OMEN.unwrapKey().orElseThrow();
         } else if (type == ParticleTypes.INFESTED) {
-            return StatusEffects.INFESTED.value();
+            return MobEffects.INFESTED.unwrapKey().orElseThrow();
         } else if (type == ParticleTypes.ITEM_SLIME) {
-            return StatusEffects.OOZING.value();
+            return MobEffects.OOZING.unwrapKey().orElseThrow();
         } else if (type == ParticleTypes.RAID_OMEN) {
-            return StatusEffects.RAID_OMEN.value();
+            return MobEffects.RAID_OMEN.unwrapKey().orElseThrow();
         } else if (type == ParticleTypes.ITEM_COBWEB) {
-            return StatusEffects.WEAVING.value();
+            return MobEffects.WEAVING.unwrapKey().orElseThrow();
         } else if (type == ParticleTypes.SMALL_GUST) {
-            return StatusEffects.WIND_CHARGED.value();
+            return MobEffects.WIND_CHARGED.unwrapKey().orElseThrow();
         } else if (type == ParticleTypes.ENTITY_EFFECT) {
-            int argb = ((EntityEffectParticleEffectAccessor) particle).getColor();
+            int argb = ((ColorParticleOptionAccessor) particle).getColor();
             int rgb = argb & 0x00FFFFFF;
             return STATUS_EFFECT_PARTICLE_COLORS.get(rgb);
         }
@@ -351,33 +347,38 @@ public class EclipsesTweakerooUtil {
     }
 
     public static void populateStatusEffectColorMap() {
-        Registries.STATUS_EFFECT.forEach(statusEffect -> STATUS_EFFECT_PARTICLE_COLORS.put(statusEffect.getColor(), statusEffect));
+        BuiltInRegistries.MOB_EFFECT.registryKeySet()
+                .forEach(statusEffect -> STATUS_EFFECT_PARTICLE_COLORS.put(BuiltInRegistries.MOB_EFFECT.getOrThrow(statusEffect).getColor(), statusEffect));
     }
 
     public static int milliTime() {
         return (int) (System.nanoTime() * NANO_MILLI);
     }
 
-    private static void forEachEnchantment(ItemStack stack, EquipmentSlot slot, BiConsumer<RegistryEntry<Enchantment>, Integer> enchantmentConsumer) {
+    public static String roundToOneDecimal(float number) {
+        return "%.1f".formatted(number);
+    }
+
+    private static void forEachEnchantment(ItemStack stack, EquipmentSlot slot, BiConsumer<Holder<Enchantment>, Integer> enchantmentConsumer) {
         if (stack.isEmpty()) {
             return;
         }
-        ItemEnchantmentsComponent enchantments = stack.get(DataComponentTypes.ENCHANTMENTS);
+        ItemEnchantments enchantments = stack.get(DataComponents.ENCHANTMENTS);
         if (enchantments == null || enchantments.isEmpty()) {
             return;
         }
-        for (Object2IntMap.Entry<RegistryEntry<Enchantment>> entry : enchantments.getEnchantmentEntries()) {
-            RegistryEntry<Enchantment> enchantment = entry.getKey();
-            if (!enchantment.value().slotMatches(slot)) {
+        for (Object2IntMap.Entry<Holder<Enchantment>> entry : enchantments.entrySet()) {
+            Holder<Enchantment> enchantment = entry.getKey();
+            if (!enchantment.value().matchingSlot(slot)) {
                 continue;
             }
             enchantmentConsumer.accept(enchantment, entry.getIntValue());
         }
     }
 
-    private static void forEachEnchantment(LivingEntity entity, BiConsumer<RegistryEntry<Enchantment>, Integer> enchantmentConsumer) {
+    private static void forEachEnchantment(LivingEntity entity, BiConsumer<Holder<Enchantment>, Integer> enchantmentConsumer) {
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-            forEachEnchantment(entity.getEquippedStack(slot), slot, enchantmentConsumer);
+            forEachEnchantment(entity.getItemBySlot(slot), slot, enchantmentConsumer);
         }
     }
 }

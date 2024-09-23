@@ -1,7 +1,7 @@
 import java.nio.file.Files
 
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'fabric-loom' version '1.7-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -9,6 +9,11 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
+    // ParchmentMC repository
+    maven {
+        name = 'ParchmentMC'
+        url = 'https://maven.parchmentmc.org'
+    }
     // Mod Menu repository
     maven {
         url "https://maven.terraformersmc.com/releases/"
@@ -21,14 +26,15 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:${project.parchment_version}@zip")
+    }
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    // Change back to mod implementation when tweakeroo/malilib releases for 1.20.5/1.21
-    // Also update fabric.mod.json when 1.20.5/1.21 release
-    modCompileOnly "curse.maven:malilib-303119:${project.malilib_version}"
-    modCompileOnly "curse.maven:tweakeroo-297344:${project.tweakeroo_version_cursemaven}"
+    modImplementation "curse.maven:malilib-303119:${project.malilib_version}"
+    modImplementation "curse.maven:tweakeroo-297344:${project.tweakeroo_version_cursemaven}"
 
     // Used during compiling
     modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"

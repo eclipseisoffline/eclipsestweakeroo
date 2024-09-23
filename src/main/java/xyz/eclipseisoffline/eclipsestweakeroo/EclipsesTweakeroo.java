@@ -2,9 +2,6 @@ package xyz.eclipseisoffline.eclipsestweakeroo;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -16,65 +13,68 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.block.BedBlock;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.DisconnectedScreen;
-import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.network.ServerAddress;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LodestoneTrackerComponent;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.passive.AllayEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.ConnectScreen;
+import net.minecraft.client.gui.screens.DisconnectedScreen;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.animal.allay.Allay;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.LodestoneTracker;
+import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.Blocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.event.AttemptConnectionCallback;
-import xyz.eclipseisoffline.eclipsestweakeroo.mixin.AllayEntityInvoker;
-import xyz.eclipseisoffline.eclipsestweakeroo.mixin.DisconnectedScreenAccessor;
+import xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity.AllayInvoker;
+import xyz.eclipseisoffline.eclipsestweakeroo.mixin.screen.DisconnectedScreenAccessor;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EclipsesTweakeroo implements ClientModInitializer {
 
     public static final String MOD_ID = "eclipsestweakeroo";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    public static final Map<StatusEffect, String> STATUS_EFFECT_CHARACTER_MAP = new HashMap<>();
+    public static final Map<ResourceKey<MobEffect>, String> STATUS_EFFECT_CHARACTER_MAP = new HashMap<>();
 
-    private static final Text TO_MENU_TEXT = Text.translatable("gui.toMenu");
-    private static final String FANCYNAME_EFFECT_MAP_PATH = "fancyname";
-    private static final String FANCYNAME_EFFECT_MAP_NAME = "effect_map.json";
+    private static final Component TO_MENU_TEXT = Component.translatable("gui.toMenu");
     private final Map<EquipmentSlot, Item> registeredItems = new HashMap<>();
     private final Map<EquipmentSlot, Integer> registeredWarningTimes = new HashMap<>();
     private ServerAddress lastConnection = null;
-    private ServerInfo lastConnectionInfo = null;
+    private ServerData lastConnectionInfo = null;
 
     @Override
     public void onInitializeClient() {
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.BARRIER, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LIGHT, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.STRUCTURE_VOID, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.BARRIER, RenderType.translucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LIGHT, RenderType.translucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.STRUCTURE_VOID, RenderType.translucent());
 
         EclipsesTweakerooUtil.populateStatusEffectColorMap();
 
@@ -94,88 +94,84 @@ public class EclipsesTweakeroo implements ClientModInitializer {
             });
 
             AdditionalFeatureToggle.TWEAK_RENDER_OPERATOR_BLOCKS.setValueChangeCallback(value -> {
-                WorldRenderer worldRenderer = client.worldRenderer;
-                if (worldRenderer != null) {
-                    worldRenderer.reload();
-                }
+                LevelRenderer levelRenderer = client.levelRenderer;
+                levelRenderer.allChanged();
             });
         }));
 
-        ClientPreAttackCallback.EVENT.register(
-                ((client, player, clickCount) -> !useCheck(player, Hand.MAIN_HAND)));
+        ClientPreAttackCallback.EVENT.register(((client, player, clickCount) -> !useCheck(player, InteractionHand.MAIN_HAND)));
         UseBlockCallback.EVENT.register(((player, world, hand, hitResult) -> {
             if (!useCheck(player, hand)) {
-                return ActionResult.FAIL;
+                return InteractionResult.FAIL;
             }
 
             if (AdditionalDisableConfig.DISABLE_BED_EXPLOSION.getBooleanValue()
-                    && !world.getDimension().bedWorks()
+                    && !world.dimensionType().bedWorks()
                     && world.getBlockState(hitResult.getBlockPos()).getBlock() instanceof BedBlock) {
-                return ActionResult.FAIL;
+                return InteractionResult.FAIL;
             }
 
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         }));
         UseEntityCallback.EVENT.register(
                 ((player, world, hand, entity, hitResult) -> {
                     if (!useCheck(player, hand)) {
-                        return ActionResult.FAIL;
+                        return InteractionResult.FAIL;
                     }
 
                     if (AdditionalDisableConfig.DISABLE_ALLAY_USE.getBooleanValue()
-                            && entity instanceof AllayEntity allay) {
-                        if (!player.getStackInHand(hand).isEmpty()) {
-                            Item item = player.getStackInHand(hand).getItem();
-                            if (((AllayEntityInvoker) allay).invokeCanDuplicate() && item == Items.AMETHYST_SHARD) {
-                                return ActionResult.PASS;
+                            && entity instanceof Allay allay) {
+                        if (!player.getItemInHand(hand).isEmpty()) {
+                            Item item = player.getItemInHand(hand).getItem();
+                            if (((AllayInvoker) allay).invokeCanDuplicate() && item == Items.AMETHYST_SHARD) {
+                                return InteractionResult.PASS;
                             }
-                            return ActionResult.FAIL;
+                            return InteractionResult.FAIL;
                         }
                     }
 
-                    return ActionResult.PASS;
+                    return InteractionResult.PASS;
                 }));
         UseItemCallback.EVENT.register(((player, world, hand) -> {
-            ItemStack usedStack = player.getStackInHand(hand);
+            ItemStack usedStack = player.getItemInHand(hand);
             if (!useCheck(player, hand)) {
-                return TypedActionResult.fail(usedStack);
-            } else if (AdditionalFeatureToggle.TWEAK_LODESTONE.getBooleanValue() && usedStack.contains(DataComponentTypes.LODESTONE_TRACKER)) {
-                LodestoneTrackerComponent tracker = usedStack.get(DataComponentTypes.LODESTONE_TRACKER);
+                return InteractionResultHolder.fail(usedStack);
+            } else if (AdditionalFeatureToggle.TWEAK_LODESTONE.getBooleanValue() && usedStack.has(DataComponents.LODESTONE_TRACKER)) {
+                LodestoneTracker tracker = usedStack.get(DataComponents.LODESTONE_TRACKER);
                 assert tracker != null;
 
-                MutableText info = Text.empty().append(usedStack.getName()).append(" has ");
+                MutableComponent info = Component.empty().append(usedStack.getHoverName()).append(" has ");
                 if (tracker.target().isPresent()) {
-                    info.append(tracker.target().orElseThrow().pos().toShortString() + " in " + tracker.target().orElseThrow().dimension().getValue().toString() + " as set position");
+                    info.append(tracker.target().orElseThrow().pos().toShortString() + " in " + tracker.target().orElseThrow().dimension().location() + " as set position");
                 } else {
                     info.append("no tracked position");
                 }
 
-                MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(info);
-                return TypedActionResult.consume(usedStack);
+                Minecraft.getInstance().gui.getChat().addMessage(info);
+                return InteractionResultHolder.consume(usedStack);
             }
 
-            return TypedActionResult.pass(usedStack);
+            return InteractionResultHolder.pass(usedStack);
         }));
 
         ClientTickEvents.START_WORLD_TICK.register((world -> {
-            if (!AdditionalFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()) {
+            if (world.getGameTime() % 10 != 0 || !AdditionalFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()) {
                 return;
             }
 
-            assert MinecraftClient.getInstance().player != null;
+            assert Minecraft.getInstance().player != null;
             int time = EclipsesTweakerooUtil.milliTime();
-            for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
-                ItemStack itemStack = MinecraftClient.getInstance().player.getEquippedStack(
-                        equipmentSlot);
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                ItemStack itemStack = Minecraft.getInstance().player.getItemBySlot(slot);
 
                 if (!EclipsesTweakerooUtil.shouldWarnDurability(itemStack)) {
-                    registeredWarningTimes.put(equipmentSlot, 0);
+                    registeredWarningTimes.put(slot, 0);
                     continue;
                 }
 
-                int warningTime = registeredWarningTimes.getOrDefault(equipmentSlot, 0);
+                int warningTime = registeredWarningTimes.getOrDefault(slot, 0);
                 boolean check = false;
-                if (!itemStack.getItem().equals(registeredItems.get(equipmentSlot))) {
+                if (!itemStack.getItem().equals(registeredItems.get(slot))) {
                     check = true;
                 } else if ((time - warningTime) / 1000
                         > AdditionalGenericConfig.DURABILITY_WARNING_COOLDOWN.getIntegerValue()) {
@@ -184,8 +180,8 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 if (!check) {
                     continue;
                 }
-                registeredItems.put(equipmentSlot, itemStack.getItem());
-                registeredWarningTimes.put(equipmentSlot, time);
+                registeredItems.put(slot, itemStack.getItem());
+                registeredWarningTimes.put(slot, time);
                 EclipsesTweakerooUtil.showLowDurabilityWarning(itemStack, false);
             }
         }));
@@ -198,8 +194,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
             if (screen instanceof DisconnectedScreen disconnectedScreen
                     && AdditionalFeatureToggle.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
                 int disconnectedTime = EclipsesTweakerooUtil.milliTime();
-                ButtonWidget backButton = (ButtonWidget) disconnectedScreen.children().stream()
-                        .filter(child -> child instanceof ButtonWidget).findFirst().orElseThrow();
+                Button backButton = (Button) disconnectedScreen.children().stream().filter(child -> child instanceof Button).findFirst().orElseThrow();
                 int originalWidth = backButton.getWidth();
                 if (originalWidth < 300) {
                     backButton.setWidth(300);
@@ -212,47 +207,39 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                     int passed = EclipsesTweakerooUtil.milliTime() - disconnectedTime;
                     int wait = AdditionalGenericConfig.RECONNECT_TIME.getIntegerValue();
                     if (passed > wait) {
-                        ConnectScreen.connect(
+                        ConnectScreen.startConnecting(
                                 ((DisconnectedScreenAccessor) disconnectedScreen).getParent(),
-                                MinecraftClient.getInstance(),
+                                Minecraft.getInstance(),
                                 lastConnection, lastConnectionInfo,
                                 false, null);
                     }
                     backButton.setMessage(TO_MENU_TEXT.copy()
-                            .append(Text.of(" (reconnecting in "))
-                            .append(Text.literal((wait - passed) + "ms")
-                                    .formatted(Formatting.GREEN))
-                            .append(Text.of(")")));
+                            .append(Component.literal(" (reconnecting in "))
+                            .append(Component.literal((wait - passed) + "ms")
+                                    .withStyle(ChatFormatting.GREEN))
+                            .append(Component.literal(")")));
                 }));
             }
         }));
 
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(
+        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(
                 new SimpleSynchronousResourceReloadListener() {
                     @Override
-                    public Identifier getFabricId() {
-                        return Identifier.of(MOD_ID, FANCYNAME_EFFECT_MAP_PATH);
+                    public ResourceLocation getFabricId() {
+                        return ResourceLocation.tryBuild(MOD_ID, "fancyname");
                     }
 
                     @Override
-                    public void reload(ResourceManager manager) {
+                    public void onResourceManagerReload(ResourceManager manager) {
                         STATUS_EFFECT_CHARACTER_MAP.clear();
                         try {
-                            Resource effectMapResource = manager.findResources(
-                                            FANCYNAME_EFFECT_MAP_PATH,
-                                            path -> path.getPath().endsWith(FANCYNAME_EFFECT_MAP_NAME))
-                                    .values().stream().findFirst().orElseThrow();
-                            try (InputStream effectMapInputStream = effectMapResource.getInputStream()) {
-                                String effectMapJson = new String(
-                                        effectMapInputStream.readAllBytes());
-                                JsonObject effectMap = JsonParser.parseString(effectMapJson)
-                                        .getAsJsonObject();
+                            Resource effectMapResource = manager.getResourceOrThrow(ResourceLocation.tryBuild(MOD_ID, "fancyname/effect_map.json"));
+                            try (InputStream effectMapInputStream = effectMapResource.open()) {
+                                String effectMapJson = new String(effectMapInputStream.readAllBytes());
+                                JsonObject effectMap = JsonParser.parseString(effectMapJson).getAsJsonObject();
                                 for (String statusEffectString : effectMap.keySet()) {
-                                    StatusEffect statusEffect = Registries.STATUS_EFFECT.get(Identifier.of(statusEffectString));
-                                    if (statusEffect != null) {
-                                        STATUS_EFFECT_CHARACTER_MAP.put(statusEffect,
-                                                effectMap.get(statusEffectString).getAsString());
-                                    }
+                                    ResourceKey<MobEffect> statusEffect = ResourceKey.create(Registries.MOB_EFFECT, ResourceLocation.tryParse(statusEffectString));
+                                    STATUS_EFFECT_CHARACTER_MAP.put(statusEffect, effectMap.get(statusEffectString).getAsString());
                                 }
                             }
                         } catch (Exception exception) {
@@ -262,21 +249,19 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 });
     }
 
-    private static boolean useCheck(PlayerEntity player, Hand hand) {
+    private static boolean useCheck(Player player, InteractionHand hand) {
         if (AdditionalDisableConfig.DISABLE_OFFHAND_USE.getBooleanValue()
-                && hand == Hand.OFF_HAND) {
+                && hand == InteractionHand.OFF_HAND) {
             return false;
         }
 
         if (AdditionalGenericConfig.TWEAK_DURABILITY_PREVENT_USE.getBooleanValue()
                 && AdditionalFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()
-                && player.getStackInHand(hand).isDamageable()) {
-            if (player.getStackInHand(hand).getDamage()
-                    < player.getStackInHand(hand).getMaxDamage()
-                    - AdditionalGenericConfig.DURABILITY_PREVENT_USE_THRESHOLD.getIntegerValue()) {
+                && player.getItemInHand(hand).isDamageableItem()) {
+            if (player.getItemInHand(hand).getDamageValue() < player.getItemInHand(hand).getMaxDamage() - AdditionalGenericConfig.DURABILITY_PREVENT_USE_THRESHOLD.getIntegerValue()) {
                 return true;
             }
-            EclipsesTweakerooUtil.showLowDurabilityWarning(player.getStackInHand(hand), true);
+            EclipsesTweakerooUtil.showLowDurabilityWarning(player.getItemInHand(hand), true);
             return false;
         }
         return true;

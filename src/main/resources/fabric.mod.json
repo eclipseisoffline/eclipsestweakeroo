@@ -18,7 +18,7 @@
     "issues": "https://github.com/eclipseisoffline/eclipsestweakeroo/issues",
     "sources": "https://github.com/eclipseisoffline/eclipsestweakeroo"
   },
-  "license": "GPLv3",
+  "license": "LGPL-3.0-only",
   "environment": "client",
   "entrypoints": {
     "client": [
@@ -36,13 +36,13 @@
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${supported_versions}",
-    "tweakeroo": "*"
+    "tweakeroo": "${tweakeroo_version}"
   },
   "custom": {
     "modmenu": {
       "links": {
-        "modmenu.donate": "https://ko-fi.com/eclipseisoffline",
-        "modmenu.kofi": "https://ko-fi.com/eclipseisoffline",
+        "modmenu.donate": "https://buymeacoffee.com/eclipseisoffline",
+        "modmenu.kofi": "https://buymeacoffee.com/eclipseisoffline",
         "modmenu.modrinth": "https://modrinth.com/mod/eclipses-tweakeroo-additions"
       }
     }
