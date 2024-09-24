@@ -31,8 +31,8 @@ public abstract class LivingEntityMixin extends Entity {
     public float getTweakedFriction(Block instance, Operation<Float> original) {
         //noinspection ConstantValue
         if (AdditionalFeatureToggle.TWEAK_SLIPPERY.getBooleanValue()
-                && (Object) this instanceof Player
-                || (getFirstPassenger() instanceof Player && AdditionalGenericConfig.TWEAK_SLIPPERY_VEHICLES.getBooleanValue())) {
+                && ((Object) this instanceof Player || getFirstPassenger() instanceof Player)
+                && AdditionalGenericConfig.TWEAK_SLIPPERY_VEHICLES.getBooleanValue()) {
             return (float) AdditionalGenericConfig.TWEAK_SLIPPERY_SLIPPERINESS.getDoubleValue();
         }
 
