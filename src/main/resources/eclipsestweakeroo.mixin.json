@@ -10,6 +10,7 @@
     "block.StructureVoidBlockMixin",
     "entity.AllayInvoker",
     "entity.BoatMixin",
+    "entity.CamelMixin",
     "entity.EntityMixin",
     "entity.LivingEntityAccessor",
     "entity.LivingEntityMixin",
