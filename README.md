@@ -85,7 +85,7 @@ At the moment, this mod makes the following modifications:
 - Added `disableAllayItemUse` yeet, which disables giving items to allays.
   - When allays are dancing, you can still give them amethyst shards to duplicate them.
 - Added `disableOffhandUse` yeet, which disables being able to use items in the offhand.
-- Added `disableHorseJumpCharge` yeet, which disables the horse jump charge (pressing space once immediately uses the maximum horse jump height).
+- Added `disableHorseJumpCharge` yeet, which disables the horse jump charge and cooldown (pressing space once immediately uses the maximum horse jump height). Also disables the camel dash cooldown.
 - Added `disableOverlayRender` to disable rendering various overlays, such as the vignette, spyglass, carved pumpkin and powdered snow overlays.
 - Added `disableAllNamesInF1`, which hides all entity names when the HUD is disabled (vanilla Minecraft still renders the names of entities in teams).
 
