@@ -32,6 +32,8 @@ At the moment, this mod makes the following modifications:
 
 - Added `handRestockUnstackable` generic option, which toggles whether to restock unstackable items with `tweakHandRestock`.
 - Added `commandOnlyAdultPets` generic option, which toggles whether to only select adult pets with `sitDownNearbyPets` and `standUpNearbyPets` hotkeys.
+- Added `fakeSneakingLadder` generic option, which toggles whether `tweakFakeSneaking` should stop you from falling down ladders.
+- Added `permanentSneakFreeCamera` generic option, which toggles whether `tweakPermanentSneak` should work while using `tweakFreeCamera`.
 - Added `pistonFlexiblePlacementFix` fix, which fixes inverse rotation placement of pistons, dispensers, droppers and crafters with `tweakFlexibleBlockPlacement` (allows placing these blocks facing away from you).
 - Added `handRestockCreativeFix` fix, which disables `tweakHandRestock` when the player is in creative mode.
 - Added `tweakPlayerList` tweak, which modifies the player (tab) list in various ways, depending on how configured in the `Generic` category:
@@ -72,6 +74,8 @@ At the moment, this mod makes the following modifications:
   - `airWarningThreshold` determines when to start flashing the air value.
   - If `numberHudDurabilityWarning` is enabled, a flashing text is shown when items in your hotbar or armour slots are at low durability.
 - Added `tweakLodestoneCompass`, which allows you to see the exact position of a lodestone compass by right-clicking it with the tweak enabled.
+- Added `tweakGravity`, which allows you to override your gravity attribute. Can be configured using the `gravityOverride` generic option.
+- Added `tweakStepHeight`, which allows you to override your step height attribute. Can be configured using the `stepHeightOverride` generic option.
 - Added `disableEntityCollisions` yeet, which disables entity collisions. You can still push other entities, but they can't push you.
 - Added `disableKnockback` yeet, which disables taking knockback.
   - When `disableExplosionKnockback` in `Generic` is set to true, also disables knockback from explosions. 

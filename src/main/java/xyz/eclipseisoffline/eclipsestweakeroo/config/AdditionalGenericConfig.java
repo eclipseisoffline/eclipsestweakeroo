@@ -104,5 +104,5 @@ public class AdditionalGenericConfig {
     public static final ConfigBoolean FAKE_SNEAKING_LADDER = new ConfigBoolean("fakeSneakingLadder", false,
             "Allows tweakFakeSneaking to stop you from falling down a ladder");
     public static final ConfigBoolean PERMANENT_SNEAK_FREE_CAMERA = new ConfigBoolean("permanentSneakFreeCamera", false,
-            "Enables tweakPermanentSneak while using tweakFreeCamera");
+            "Allows tweakPermanentSneak to work while using tweakFreeCamera");
 }
