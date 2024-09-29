@@ -60,6 +60,8 @@ public class AdditionalFeatureToggle {
             "Number HUD tweak");
     public static final FeatureToggle TWEAK_LODESTONE = newToggle("tweakLodestoneCompass", false, false, "",
             "Enables you to see the position a lodestone compass has targeted by right clicking it", "Lodestone compass tweak");
+    public static final FeatureToggle TWEAK_GRAVITY_OVERRIDE = newToggle("tweakGravityOverride", false, false, "",
+            "Allows you to override your gravity attribute. Can be configured in General.", "Gravity override tweak");
 
     private static FeatureToggle newToggle(String name, boolean defaultValue, boolean singlePlayer,
             String defaultHotkey, String comment, String prettyName) {

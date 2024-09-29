@@ -95,4 +95,7 @@ public class AdditionalGenericConfig {
     public static ConfigBoolean DISABLE_EXPLOSION_KNOCKBACK = new ConfigBoolean(
             "disableExplosionKnockback", false,
             "Disables knockback from explosions when disableKnockback is enabled");
+    public static final ConfigDouble TWEAK_GRAVITY_OVERRIDE = new ConfigDouble(
+            "gravityOverride", 0.08, -0.5, 0.5,
+            "Defines the gravity attribute override when using tweakGravityOverride");
 }

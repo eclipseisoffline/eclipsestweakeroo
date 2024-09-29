@@ -12,6 +12,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Slice;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin extends AbstractClientPlayer {
@@ -37,5 +39,13 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
             return 0;
         }
         return v;
+    }
+
+    @Override
+    protected double getDefaultGravity() {
+        if (AdditionalFeatureToggle.TWEAK_GRAVITY_OVERRIDE.getBooleanValue()) {
+            return AdditionalGenericConfig.TWEAK_GRAVITY_OVERRIDE.getDoubleValue();
+        }
+        return super.getDefaultGravity();
     }
 }
