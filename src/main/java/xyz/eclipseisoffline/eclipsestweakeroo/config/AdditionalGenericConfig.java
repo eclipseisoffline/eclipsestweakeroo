@@ -101,4 +101,6 @@ public class AdditionalGenericConfig {
     public static final ConfigDouble TWEAK_STEP_HEIGHT_OVERRIDE = new ConfigDouble(
             "stepHeightOverride", 0.6, 0.0, 1.5,
             "Defines the step height value when using tweakStepHeight");
+    public static final ConfigBoolean FAKE_SNEAKING_LADDER = new ConfigBoolean("fakeSneakingLadder", false,
+            "Allows tweakFakeSneaking to stop you from falling down a ladder");
 }

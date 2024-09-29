@@ -4,13 +4,16 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
+import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
@@ -55,5 +58,12 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
             return (float) AdditionalGenericConfig.TWEAK_STEP_HEIGHT_OVERRIDE.getDoubleValue();
         }
         return super.maxUpStep();
+    }
+
+    @Inject(method = "isSuppressingSlidingDownLadder", at = @At("HEAD"), cancellable = true)
+    public void checkFakeSneaking(CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+        if (FeatureToggle.TWEAK_FAKE_SNEAKING.getBooleanValue() && AdditionalGenericConfig.FAKE_SNEAKING_LADDER.getBooleanValue()) {
+            callbackInfoReturnable.setReturnValue(true);
+        }
     }
 }
