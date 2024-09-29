@@ -52,7 +52,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
 
     @Inject(method = "handleExplosion", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V"), cancellable = true)
     public void cancelPlayerVelocitySet(ClientboundExplodePacket packet, CallbackInfo callbackInfo) {
-        if (AdditionalGenericConfig.DISABLE_EXPLOSION_KNOCKBACK.getBooleanValue()) {
+        if (AdditionalDisableConfig.DISABLE_KNOCKBACK.getBooleanValue() && AdditionalGenericConfig.DISABLE_EXPLOSION_KNOCKBACK.getBooleanValue()) {
             callbackInfo.cancel();
         }
     }
