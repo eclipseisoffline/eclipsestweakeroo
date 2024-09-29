@@ -43,9 +43,17 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 
     @Override
     protected double getDefaultGravity() {
-        if (AdditionalFeatureToggle.TWEAK_GRAVITY_OVERRIDE.getBooleanValue()) {
+        if (AdditionalFeatureToggle.TWEAK_GRAVITY.getBooleanValue()) {
             return AdditionalGenericConfig.TWEAK_GRAVITY_OVERRIDE.getDoubleValue();
         }
         return super.getDefaultGravity();
+    }
+
+    @Override
+    public float maxUpStep() {
+        if (AdditionalFeatureToggle.TWEAK_STEP_HEIGHT.getBooleanValue()) {
+            return (float) AdditionalGenericConfig.TWEAK_STEP_HEIGHT_OVERRIDE.getDoubleValue();
+        }
+        return super.maxUpStep();
     }
 }

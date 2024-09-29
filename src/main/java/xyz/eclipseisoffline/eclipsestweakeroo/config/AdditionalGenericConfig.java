@@ -97,5 +97,8 @@ public class AdditionalGenericConfig {
             "Disables knockback from explosions when disableKnockback is enabled");
     public static final ConfigDouble TWEAK_GRAVITY_OVERRIDE = new ConfigDouble(
             "gravityOverride", 0.08, -0.5, 0.5,
-            "Defines the gravity attribute override when using tweakGravityOverride");
+            "Defines the gravity value when using tweakGravity");
+    public static final ConfigDouble TWEAK_STEP_HEIGHT_OVERRIDE = new ConfigDouble(
+            "stepHeightOverride", 0.6, 0.0, 1.5,
+            "Defines the step height value when using tweakStepHeight");
 }
