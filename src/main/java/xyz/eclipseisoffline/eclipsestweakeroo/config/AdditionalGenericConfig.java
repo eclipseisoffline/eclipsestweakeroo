@@ -103,4 +103,6 @@ public class AdditionalGenericConfig {
             "Defines the step height value when using tweakStepHeight");
     public static final ConfigBoolean FAKE_SNEAKING_LADDER = new ConfigBoolean("fakeSneakingLadder", false,
             "Allows tweakFakeSneaking to stop you from falling down a ladder");
+    public static final ConfigBoolean PERMANENT_SNEAK_FREE_CAMERA = new ConfigBoolean("permanentSneakFreeCamera", false,
+            "Enables tweakPermanentSneak while using tweakFreeCamera");
 }

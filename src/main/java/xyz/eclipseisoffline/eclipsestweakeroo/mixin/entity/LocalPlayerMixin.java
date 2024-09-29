@@ -66,4 +66,13 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
             callbackInfoReturnable.setReturnValue(true);
         }
     }
+
+    @Inject(method = "isShiftKeyDown", at = @At("HEAD"), cancellable = true)
+    public void freecamFix(CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+        if (FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue()
+                && FeatureToggle.TWEAK_PERMANENT_SNEAK.getBooleanValue()
+                && AdditionalGenericConfig.PERMANENT_SNEAK_FREE_CAMERA.getBooleanValue()) {
+            callbackInfoReturnable.setReturnValue(true);
+        }
+    }
 }
