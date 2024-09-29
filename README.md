@@ -32,7 +32,7 @@ At the moment, this mod makes the following modifications:
 
 - Added `handRestockUnstackable` generic option, which toggles whether to restock unstackable items with `tweakHandRestock`.
 - Added `commandOnlyAdultPets` generic option, which toggles whether to only select adult pets with `sitDownNearbyPets` and `standUpNearbyPets` hotkeys.
-- Added `pistonFlexiblePlacementFix` fix, which fixes inverse rotation placement of pistons, dispensers and droppers with `tweakFlexibleBlockPlacement` (allows placing these blocks facing away from you).
+- Added `pistonFlexiblePlacementFix` fix, which fixes inverse rotation placement of pistons, dispensers, droppers and crafters with `tweakFlexibleBlockPlacement` (allows placing these blocks facing away from you).
 - Added `handRestockCreativeFix` fix, which disables `tweakHandRestock` when the player is in creative mode.
 - Added `tweakPlayerList` tweak, which modifies the player (tab) list in various ways, depending on how configured in the `Generic` category:
   - If `playerListHideHeader` is enabled, it hides the additional player list header some servers use.

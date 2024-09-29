@@ -27,7 +27,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFixesConfig;
 public abstract class TweakerooPlacementTweaksMixin {
 
     @Unique
-    private static final List<Item> ITEMS_TO_PATCH = List.of(Items.PISTON, Items.STICKY_PISTON, Items.DISPENSER, Items.DROPPER);
+    private static final List<Item> ITEMS_TO_PATCH = List.of(Items.PISTON, Items.STICKY_PISTON, Items.DISPENSER, Items.DROPPER, Items.CRAFTER);
 
     @Inject(method = "tryPlaceBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;getItemInHand(Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/item/ItemStack;", ordinal = 0))
     private static void fixPistonFlexiblePlacement(MultiPlayerGameMode controller, LocalPlayer player, ClientLevel world, BlockPos posIn,
