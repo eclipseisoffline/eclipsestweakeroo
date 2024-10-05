@@ -26,11 +26,17 @@ public abstract class TweakerooFeatureToggleMixin implements IHotkeyTogglable,
     @Shadow(remap = false)
     public static ImmutableList<FeatureToggle> VALUES;
 
+    @Mutable
+    @Final
+    @Shadow(aliases = "$VALUES", remap = false)
+    private static FeatureToggle[] values;
+
     @Inject(method = "<clinit>()V", at = @At("TAIL"))
     private static void addAdditionalEntries(CallbackInfo callbackInfo) {
         List<FeatureToggle> newValues = new ArrayList<>(VALUES);
         newValues.addAll(EclipsesTweakerooUtil.getDeclaredFeatureToggles(
                 AdditionalFeatureToggle.class));
         VALUES = ImmutableList.copyOf(newValues);
+        values = VALUES.toArray(new FeatureToggle[0]);
     }
 }
