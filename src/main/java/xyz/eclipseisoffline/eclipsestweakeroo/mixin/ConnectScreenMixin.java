@@ -20,8 +20,7 @@ public abstract class ConnectScreenMixin extends Screen {
     }
 
     @Inject(method = "connect(Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/client/MinecraftClient;Lnet/minecraft/client/network/ServerAddress;Lnet/minecraft/client/network/ServerInfo;)V", at = @At("HEAD"))
-    private static void registerNewConnection(Screen screen, MinecraftClient client,
-            ServerAddress address, ServerInfo info, boolean quickPlay, CallbackInfo callbackInfo) {
+    private static void registerNewConnection(Screen screen, MinecraftClient client, ServerAddress address, ServerInfo info, CallbackInfo callbackInfo) {
         AttemptConnectionCallback.EVENT.invoker().connect(address, info);
     }
 }
