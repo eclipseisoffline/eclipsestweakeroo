@@ -2,10 +2,10 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,8 +31,8 @@ public abstract class LivingEntityMixin extends Entity {
     public float getTweakedFriction(Block instance, Operation<Float> original) {
         //noinspection ConstantValue
         if (AdditionalFeatureToggle.TWEAK_SLIPPERY.getBooleanValue()
-                && ((Object) this instanceof Player || getFirstPassenger() instanceof Player)
-                && AdditionalGenericConfig.TWEAK_SLIPPERY_VEHICLES.getBooleanValue()) {
+                && ((Object) this instanceof LocalPlayer
+                    || (getControllingPassenger() instanceof LocalPlayer && AdditionalGenericConfig.TWEAK_SLIPPERY_VEHICLES.getBooleanValue()))) {
             return (float) AdditionalGenericConfig.TWEAK_SLIPPERY_SLIPPERINESS.getDoubleValue();
         }
 
