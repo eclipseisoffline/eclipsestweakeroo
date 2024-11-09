@@ -7,7 +7,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Leashable;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractBoat;
 import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.VehicleEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,8 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 
-@Mixin(Boat.class)
-public abstract class BoatMixin extends net.minecraft.world.entity.vehicle.VehicleEntity implements Leashable, VariantHolder<Boat.Type> {
+@Mixin(AbstractBoat.class)
+public abstract class AbstractBoatMixin extends VehicleEntity implements Leashable {
 
     @Shadow
     private double lerpYRot;
@@ -35,7 +37,7 @@ public abstract class BoatMixin extends net.minecraft.world.entity.vehicle.Vehic
     @Shadow
     private float deltaRotation;
 
-    public BoatMixin(net.minecraft.world.entity.EntityType<?> entityType, Level level) {
+    public AbstractBoatMixin(net.minecraft.world.entity.EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
 

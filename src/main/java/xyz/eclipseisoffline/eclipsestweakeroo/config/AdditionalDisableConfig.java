@@ -17,12 +17,10 @@ public class AdditionalDisableConfig {
             "Disable fog modifiers");
     public static final ConfigBooleanHotkeyed DISABLE_EQUIPMENT_RESTRICTION = new ConfigBooleanClient(
             "disableArmorRestriction",
-            false, "", "Disables the restriction armor slots have",
-            "Disable armor slot restriction");
+            false, "", "Disables the restriction armor slots have");
     public static final ConfigBooleanHotkeyed DISABLE_BINDING_CURSE = new ConfigBooleanClient(
             "disableBindingCurse",
-            false, "", "Disables curse of binding",
-            "Disable curse of binding");
+            false, "", "Disables curse of binding");
     public static final ConfigBooleanHotkeyed DISABLE_ITEM_COOLDOWN = new ConfigBooleanClient(
             "disableItemCooldown", false, "",
             "Disables all item cooldowns (for items such as ender pearls, chorus fruits, etc.)");

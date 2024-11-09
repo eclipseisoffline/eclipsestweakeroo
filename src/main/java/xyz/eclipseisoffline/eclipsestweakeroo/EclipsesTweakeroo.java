@@ -33,7 +33,6 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.allay.Allay;
@@ -135,7 +134,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
         UseItemCallback.EVENT.register(((player, world, hand) -> {
             ItemStack usedStack = player.getItemInHand(hand);
             if (!useCheck(player, hand)) {
-                return InteractionResultHolder.fail(usedStack);
+                return InteractionResult.FAIL;
             } else if (AdditionalFeatureToggle.TWEAK_LODESTONE.getBooleanValue() && usedStack.has(DataComponents.LODESTONE_TRACKER)) {
                 LodestoneTracker tracker = usedStack.get(DataComponents.LODESTONE_TRACKER);
                 assert tracker != null;
@@ -148,10 +147,10 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 }
 
                 Minecraft.getInstance().gui.getChat().addMessage(info);
-                return InteractionResultHolder.consume(usedStack);
+                return InteractionResult.CONSUME;
             }
 
-            return InteractionResultHolder.pass(usedStack);
+            return InteractionResult.PASS;
         }));
 
         ClientTickEvents.START_WORLD_TICK.register((world -> {
