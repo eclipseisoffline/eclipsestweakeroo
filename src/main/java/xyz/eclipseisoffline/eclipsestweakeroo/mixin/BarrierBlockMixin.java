@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
 
 @Mixin(BarrierBlock.class)
-public abstract class BarrierBlockMixin extends Block implements Waterloggable {
+public abstract class BarrierBlockMixin extends Block{
 
     public BarrierBlockMixin(Settings settings) {
         super(settings);
