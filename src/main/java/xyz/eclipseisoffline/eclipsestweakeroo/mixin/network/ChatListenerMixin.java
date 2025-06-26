@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesListsConfig;
 
 // TODO this needs to be done over
@@ -43,7 +43,7 @@ public abstract class ChatListenerMixin {
                               GameProfile gameProfile, boolean onlyShowSecureChat, Instant timestamp,
                               CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         // TODO - redo - further customise - combine with cancelMessage method? investigate
-        if (EclipsesFeatureToggle.TWEAK_CHAT_MESSAGES.getBooleanValue()) {
+        if (EclipsesTweaksConfig.TWEAK_CHAT_MESSAGES.getBooleanValue()) {
             String messageBody = getMessageBody(decoratedServerContent);
 
             ChatTrustLevel messageTrustStatus = evaluateTrustLevel(chatMessage, decoratedServerContent, timestamp);
@@ -67,7 +67,7 @@ public abstract class ChatListenerMixin {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/network/chat/FilterMask;isEmpty()Z"),
                     to = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/chat/ChatListener;narrateChatMessage(Lnet/minecraft/network/chat/ChatType$Bound;Lnet/minecraft/network/chat/Component;)V")))
     public void cancelMessage(ChatComponent instance, Component chatComponent, MessageSignature headerSignature, GuiMessageTag tag) {
-        if (EclipsesFeatureToggle.TWEAK_CHAT_MESSAGES.getBooleanValue()) {
+        if (EclipsesTweaksConfig.TWEAK_CHAT_MESSAGES.getBooleanValue()) {
             return;
         }
         instance.addMessage(chatComponent, headerSignature, tag);

@@ -44,7 +44,7 @@ dependencies {
     // Used during compiling
     modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
     // Used during testing
-    //modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 loom {

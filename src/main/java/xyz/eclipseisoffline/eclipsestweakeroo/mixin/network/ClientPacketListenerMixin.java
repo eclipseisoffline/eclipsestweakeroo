@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 
 @Mixin(ClientPacketListener.class)
@@ -62,7 +62,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
         assert object instanceof PlayerInfo;
         PlayerInfo entry = (PlayerInfo) object;
 
-        if (EclipsesFeatureToggle.TWEAK_PLAYER_INFO_NOTIFICATIONS.getBooleanValue()
+        if (EclipsesTweaksConfig.TWEAK_PLAYER_INFO_NOTIFICATIONS.getBooleanValue()
                 && EclipsesGenericConfig.PLAYER_ADD_REMOVE_NOTIFICATION.getBooleanValue()) {
             Minecraft.getInstance().gui.getChat().addMessage(
                     Component.literal("Player info entry " + entry.getProfile().getName() + " was removed").withStyle(ChatFormatting.GOLD));
@@ -74,7 +74,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
     @Inject(method = "applyPlayerInfoUpdate", at = @At("HEAD"))
     public void showPlayerInfoNotifications(ClientboundPlayerInfoUpdatePacket.Action action,
                                             ClientboundPlayerInfoUpdatePacket.Entry received, PlayerInfo current, CallbackInfo ci) {
-        if (!EclipsesFeatureToggle.TWEAK_PLAYER_INFO_NOTIFICATIONS.getBooleanValue()) {
+        if (!EclipsesTweaksConfig.TWEAK_PLAYER_INFO_NOTIFICATIONS.getBooleanValue()) {
             return;
         }
 

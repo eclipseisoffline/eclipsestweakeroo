@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.PlayerListOrder;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.FancyName;
@@ -49,7 +49,7 @@ public abstract class PlayerTabOverlayMixin {
 
     @Inject(method = "getNameForDisplay", at = @At("HEAD"), cancellable = true)
     public void getFancyPlayerName(PlayerInfo playerInfo, CallbackInfoReturnable<Component> callbackInfoReturnable) {
-        if (EclipsesFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
+        if (EclipsesTweaksConfig.TWEAK_PLAYER_LIST.getBooleanValue()
                 && EclipsesGenericConfig.TWEAK_PLAYER_LIST_NAMES.getBooleanValue()) {
             assert minecraft.level != null;
             Player entity = minecraft.level.getPlayerByUUID(playerInfo.getProfile().getId());
@@ -61,7 +61,7 @@ public abstract class PlayerTabOverlayMixin {
     @Inject(method = "getPlayerInfos", at = @At("HEAD"), cancellable = true)
     public void getCustomOrder(CallbackInfoReturnable<List<PlayerInfo>> callbackInfoReturnable) {
         PlayerListOrder order = (PlayerListOrder) EclipsesGenericConfig.TWEAK_PLAYER_LIST_ORDER.getOptionListValue();
-        if (EclipsesFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
+        if (EclipsesTweaksConfig.TWEAK_PLAYER_LIST.getBooleanValue()
                 && order.getComparator() != null) {
             assert minecraft.getConnection() != null;
             callbackInfoReturnable.setReturnValue(
@@ -74,7 +74,7 @@ public abstract class PlayerTabOverlayMixin {
     @WrapOperation(method = "render",
             at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;header:Lnet/minecraft/network/chat/Component;"))
     private Component hideHeader(PlayerTabOverlay instance, Operation<Component> original) {
-        if (EclipsesFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue() && EclipsesGenericConfig.TWEAK_PLAYER_LIST_HEADER.getBooleanValue()) {
+        if (EclipsesTweaksConfig.TWEAK_PLAYER_LIST.getBooleanValue() && EclipsesGenericConfig.TWEAK_PLAYER_LIST_HEADER.getBooleanValue()) {
             return null;
         }
 
@@ -84,7 +84,7 @@ public abstract class PlayerTabOverlayMixin {
     @WrapOperation(method = "render",
             at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;footer:Lnet/minecraft/network/chat/Component;"))
     private Component hideFooter(PlayerTabOverlay instance, Operation<Component> original) {
-        if (EclipsesFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue() && EclipsesGenericConfig.TWEAK_PLAYER_LIST_FOOTER.getBooleanValue()) {
+        if (EclipsesTweaksConfig.TWEAK_PLAYER_LIST.getBooleanValue() && EclipsesGenericConfig.TWEAK_PLAYER_LIST_FOOTER.getBooleanValue()) {
             return null;
         }
 
@@ -93,7 +93,7 @@ public abstract class PlayerTabOverlayMixin {
 
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerInfo;getGameMode()Lnet/minecraft/world/level/GameType;"))
     private GameType disableSpectatorGameModeFormatting(PlayerInfo instance, Operation<GameType> original) {
-        if (EclipsesFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
+        if (EclipsesTweaksConfig.TWEAK_PLAYER_LIST.getBooleanValue()
                 && EclipsesGenericConfig.TWEAK_PLAYER_LIST_NAMES.getBooleanValue()
                 && instance.getGameMode() == GameType.SPECTATOR) {
             return GameType.CREATIVE;
@@ -105,7 +105,7 @@ public abstract class PlayerTabOverlayMixin {
     @Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;header:Lnet/minecraft/network/chat/Component;", opcode = Opcodes.GETFIELD, ordinal = 0))
     public void moveBelowBossbar(GuiGraphics graphics, int width, Scoreboard scoreboard, Objective objective,
                                  CallbackInfo callbackInfo, @Local(ordinal = 10) LocalIntRef renderYStart) {
-        if (!EclipsesFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
+        if (!EclipsesTweaksConfig.TWEAK_PLAYER_LIST.getBooleanValue()
                 || !EclipsesGenericConfig.TWEAK_PLAYER_LIST_BOSSBAR.getBooleanValue()
                 || Disable.DISABLE_BOSS_BAR.getBooleanValue()) {
             return;
@@ -126,7 +126,7 @@ public abstract class PlayerTabOverlayMixin {
 
     @ModifyVariable(method = "render", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private Objective hideScoreboardObjective(Objective scoreboardObjective) {
-        if (EclipsesFeatureToggle.TWEAK_PLAYER_LIST.getBooleanValue()
+        if (EclipsesTweaksConfig.TWEAK_PLAYER_LIST.getBooleanValue()
                 && EclipsesGenericConfig.TWEAK_PLAYER_LIST_OBJECTIVE.getBooleanValue()) {
             return null;
         }

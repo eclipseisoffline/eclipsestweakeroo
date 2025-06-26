@@ -1,5 +1,6 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.gui;
 
+import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
@@ -7,6 +8,11 @@ import fi.dy.masa.malilib.gui.button.IButtonActionListener;
 import fi.dy.masa.tweakeroo.gui.GuiConfigs;
 import net.minecraft.client.gui.screens.Screen;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFixesConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesListsConfig;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,8 +47,37 @@ public class EclipsesTweakerooConfig extends GuiConfigsBase {
     }
 
     @Override
+    protected int getConfigWidth() {
+        if (tab == GuiConfigs.ConfigGuiTab.GENERIC) {
+            return 120;
+        } else if (tab == GuiConfigs.ConfigGuiTab.FIXES) {
+            return 60;
+        } else if (tab == GuiConfigs.ConfigGuiTab.LISTS) {
+            return 200;
+        }
+
+        return 260;
+    }
+
+    @Override
+    protected boolean useKeybindSearch() {
+        return tab == GuiConfigs.ConfigGuiTab.TWEAKS
+                || tab == GuiConfigs.ConfigGuiTab.GENERIC_HOTKEYS
+                || tab == GuiConfigs.ConfigGuiTab.DISABLES;
+    }
+
+    @Override
     public List<ConfigOptionWrapper> getConfigs() {
-        return List.of();
+        List<IConfigBase> configs = switch (tab) {
+            case GENERIC -> EclipsesGenericConfig.values();
+            case FIXES -> EclipsesFixesConfig.values();
+            case LISTS -> EclipsesListsConfig.values();
+            case TWEAKS -> EclipsesTweaksConfig.values();
+            case GENERIC_HOTKEYS -> List.of();
+            case DISABLES -> EclipsesDisableConfig.values();
+        };
+
+        return configs.stream().map(ConfigOptionWrapper::new).toList();
     }
 
     private class TabSwitcher implements IButtonActionListener {

@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 
 @Mixin(LocalPlayer.class)
@@ -46,7 +46,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 
     @Override
     protected double getDefaultGravity() {
-        if (EclipsesFeatureToggle.TWEAK_GRAVITY.getBooleanValue()) {
+        if (EclipsesTweaksConfig.TWEAK_GRAVITY.getBooleanValue()) {
             return EclipsesGenericConfig.TWEAK_GRAVITY_OVERRIDE.getDoubleValue();
         }
         return super.getDefaultGravity();
@@ -54,7 +54,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 
     @Override
     public float maxUpStep() {
-        if (EclipsesFeatureToggle.TWEAK_STEP_HEIGHT.getBooleanValue()) {
+        if (EclipsesTweaksConfig.TWEAK_STEP_HEIGHT.getBooleanValue()) {
             return (float) EclipsesGenericConfig.TWEAK_STEP_HEIGHT_OVERRIDE.getDoubleValue();
         }
         return super.maxUpStep();

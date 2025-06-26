@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity {
@@ -48,7 +48,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @Inject(method = "startFallFlying", at = @At("TAIL"))
     public void startCreativeFly(CallbackInfo callbackInfo) {
-        if (EclipsesFeatureToggle.TWEAK_CREATIVE_ELYTRA_FLIGHT.getBooleanValue()) {
+        if (EclipsesTweaksConfig.TWEAK_CREATIVE_ELYTRA_FLIGHT.getBooleanValue()) {
             //noinspection EqualsBetweenInconvertibleTypes
             if (equals(Minecraft.getInstance().player)) {
                 abilities.mayfly = true;

@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 
 @Mixin(Entity.class)
@@ -25,7 +25,7 @@ public abstract class EntityMixin {
 
     @Inject(method = "getBlockJumpFactor", at = @At("HEAD"), cancellable = true)
     public void getTweakedJumpFactor(CallbackInfoReturnable<Float> callbackInfoReturnable) {
-        if (EclipsesFeatureToggle.TWEAK_JUMP_VELOCITY.getBooleanValue()) {
+        if (EclipsesTweaksConfig.TWEAK_JUMP_VELOCITY.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue((float) EclipsesGenericConfig.TWEAK_JUMP_VELOCITY.getDoubleValue());
         }
     }

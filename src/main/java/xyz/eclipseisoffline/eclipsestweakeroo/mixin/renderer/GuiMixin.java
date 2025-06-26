@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
@@ -66,7 +66,7 @@ public abstract class GuiMixin {
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectInstance;isAmbient()Z"))
     public void drawStatusText(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo callbackInfo,
                                @Local MobEffectInstance mobEffectInstance, @Local(ordinal = 2) int k, @Local(ordinal = 3) LocalIntRef l) {
-        if (EclipsesFeatureToggle.TWEAK_STATUS_EFFECT.getBooleanValue()) {
+        if (EclipsesTweaksConfig.TWEAK_STATUS_EFFECT.getBooleanValue()) {
             // Second row
             if (l.get() > 20) {
                 l.set(l.get() + STATUS_EFFECT_SPACE + getFont().lineHeight);
@@ -82,7 +82,7 @@ public abstract class GuiMixin {
 
     @Inject(method = "renderVehicleHealth", at = @At("HEAD"), cancellable = true)
     public void renderVehicleHealthInCreativeWithNumberHud(GuiGraphics graphics, CallbackInfo callbackInfo) {
-        if (EclipsesFeatureToggle.TWEAK_NUMBER_HUD.getBooleanValue()) {
+        if (EclipsesTweaksConfig.TWEAK_NUMBER_HUD.getBooleanValue()) {
             callbackInfo.cancel();
         } else {
             return;
@@ -98,7 +98,7 @@ public abstract class GuiMixin {
 
     @Inject(method = "renderPlayerHealth", at = @At("HEAD"), cancellable = true)
     public void useNumberHud(GuiGraphics graphics, CallbackInfo callbackInfo) {
-        if (!EclipsesFeatureToggle.TWEAK_NUMBER_HUD.getBooleanValue()) {
+        if (!EclipsesTweaksConfig.TWEAK_NUMBER_HUD.getBooleanValue()) {
             return;
         }
         callbackInfo.cancel();

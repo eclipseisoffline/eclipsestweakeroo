@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 
 @Mixin(ClientLevel.class)
 public abstract class ClientLevelMixin extends Level {
@@ -23,7 +23,7 @@ public abstract class ClientLevelMixin extends Level {
 
     @Inject(method = "getMarkerParticleTarget", at = @At("HEAD"), cancellable = true)
     public void noBlockParticles(CallbackInfoReturnable<Block> callbackInfoReturnable) {
-        if (EclipsesFeatureToggle.TWEAK_RENDER_OPERATOR_BLOCKS.getBooleanValue()) {
+        if (EclipsesTweaksConfig.TWEAK_RENDER_OPERATOR_BLOCKS.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(null);
         }
     }

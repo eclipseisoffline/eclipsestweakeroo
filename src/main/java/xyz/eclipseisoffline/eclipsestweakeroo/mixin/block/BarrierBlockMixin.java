@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 
 @Mixin(BarrierBlock.class)
 public abstract class BarrierBlockMixin extends Block implements SimpleWaterloggedBlock {
@@ -21,7 +21,7 @@ public abstract class BarrierBlockMixin extends Block implements SimpleWaterlogg
     @Inject(method = "getRenderShape", at = @At("HEAD"), cancellable = true)
     public void useModelRenderShape(BlockState state,
                                     CallbackInfoReturnable<RenderShape> callbackInfoReturnable) {
-        if (EclipsesFeatureToggle.TWEAK_RENDER_OPERATOR_BLOCKS.getBooleanValue()) {
+        if (EclipsesTweaksConfig.TWEAK_RENDER_OPERATOR_BLOCKS.getBooleanValue()) {
             callbackInfoReturnable.setReturnValue(RenderShape.MODEL);
         }
     }
