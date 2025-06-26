@@ -10,6 +10,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screens.Screen;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesHotkeys;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFixesConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
@@ -77,7 +78,7 @@ public class EclipsesTweakerooConfig extends GuiConfigsBase {
             case FIXES -> EclipsesFixesConfig.values();
             case LISTS -> EclipsesListsConfig.values();
             case TWEAKS -> EclipsesTweaksConfig.values();
-            case GENERIC_HOTKEYS -> List.of();
+            case GENERIC_HOTKEYS -> EclipsesHotkeys.values();
             case DISABLES -> EclipsesDisableConfig.values();
         };
 

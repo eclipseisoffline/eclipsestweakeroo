@@ -46,7 +46,7 @@ public class EclipsesConfigs implements IConfigHandler {
 
                 ConfigUtils.readConfigBase(root, "fixes", EclipsesFixesConfig.values());
                 ConfigUtils.readConfigBase(root, "generic", EclipsesGenericConfig.values());
-                //ConfigUtils.readConfigBase(root, "GenericHotkeys", Hotkeys.HOTKEY_LIST);
+                ConfigUtils.readConfigBase(root, "hotkeys", EclipsesHotkeys.values());
                 ConfigUtils.readConfigBase(root, "lists", EclipsesListsConfig.values());
                 ConfigUtils.readHotkeyToggleOptions(root, "disable_hotkeys", "disable", EclipsesDisableConfig.hotkeys());
                 ConfigUtils.readHotkeyToggleOptions(root, "tweak_hotkeys", "tweaks", EclipsesTweaksConfig.hotkeys());
@@ -70,7 +70,7 @@ public class EclipsesConfigs implements IConfigHandler {
         JsonObject root = new JsonObject();
         ConfigUtils.writeConfigBase(root, "fixes", EclipsesFixesConfig.values());
         ConfigUtils.writeConfigBase(root, "generic", EclipsesGenericConfig.values());
-
+        ConfigUtils.writeConfigBase(root, "hotkeys", EclipsesHotkeys.values());
         ConfigUtils.writeConfigBase(root, "lists", EclipsesListsConfig.values());
         ConfigUtils.writeHotkeyToggleOptions(root, "disable_hotkeys", "disable", EclipsesDisableConfig.hotkeys());
         ConfigUtils.writeHotkeyToggleOptions(root, "tweak_hotkeys", "tweaks", EclipsesTweaksConfig.hotkeys());

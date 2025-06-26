@@ -51,10 +51,12 @@ import net.minecraft.world.level.block.Blocks;
 import org.slf4j.Logger;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesConfigs;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesHotkeys;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.event.AttemptConnectionCallback;
 import xyz.eclipseisoffline.eclipsestweakeroo.gui.EclipsesTweakerooConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.hotkeys.EclipsesKeybindProvider;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity.AllayInvoker;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.screen.DisconnectedScreenAccessor;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
@@ -256,6 +258,9 @@ public class EclipsesTweakeroo implements ClientModInitializer {
         ConfigManager.getInstance().registerConfigHandler(MOD_ID, new EclipsesConfigs());
 
         Registry.CONFIG_SCREEN.registerConfigScreenFactory(new ModInfo(MOD_ID, "Eclipse's Tweakeroo", () -> new EclipsesTweakerooConfig(null)));
+
+        EclipsesHotkeys.bootstrap();
+        EclipsesKeybindProvider.bootstrap();
     }
 
     private static boolean useCheck(Player player, InteractionHand hand) {

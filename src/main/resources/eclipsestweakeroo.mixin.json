@@ -36,7 +36,6 @@
     "renderer.PlayerTabOverlayMixin",
     "screen.ConnectScreenMixin",
     "screen.DisconnectedScreenAccessor",
-    "tweakeroo.TweakerooInputHandlerMixin",
     "tweakeroo.TweakerooInventoryUtilsMixin",
     "tweakeroo.TweakerooMiscUtilsMixin",
     "tweakeroo.TweakerooPlacementTweaksMixin"
