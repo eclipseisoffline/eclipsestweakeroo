@@ -38,9 +38,6 @@ public abstract class PlayerMixin extends LivingEntity {
     @Unique
     private boolean creativeFallFlying = false;
 
-    @Shadow
-    public abstract void stopFallFlying();
-
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setPos(DDD)V"))
     public void ignoreWorldBorderBlock(Player instance, double x, double y, double z, Operation<Void> original) {
         if (AdditionalDisableConfig.DISABLE_WORLD_BORDER.getBooleanValue()) {
@@ -85,9 +82,9 @@ public abstract class PlayerMixin extends LivingEntity {
         }
     }
 
-    @Inject(method = "stopFallFlying", at = @At("TAIL"))
-    public void stopCreativeFly(CallbackInfo callbackInfo) {
-        //noinspection EqualsBetweenInconvertibleTypes
+    @Override
+    public void stopFallFlying() {
+        super.stopFallFlying();
         if (!equals(Minecraft.getInstance().player)) {
             return;
         }

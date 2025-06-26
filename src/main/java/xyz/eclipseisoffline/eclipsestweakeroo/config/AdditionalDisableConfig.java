@@ -48,4 +48,7 @@ public class AdditionalDisableConfig {
     public static ConfigBooleanHotkeyed DISABLE_ALL_NAMES_IN_F1 = new ConfigBooleanHotkeyed(
             "disableAllNamesInF1", false, "",
             "Disables rendering all name tags in F1 (vanilla Minecraft still renders the names of entities in teams)");
+    public static ConfigBooleanHotkeyed DISABLE_BLOCK_USE = new ConfigBooleanHotkeyed(
+            "disableBlockUse", false, "",
+            "Disables using items on blocks");
 }

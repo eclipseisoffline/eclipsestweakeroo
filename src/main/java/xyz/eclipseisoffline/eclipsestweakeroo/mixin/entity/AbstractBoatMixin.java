@@ -5,10 +5,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Leashable;
-import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractBoat;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.VehicleEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -26,8 +24,6 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
 @Mixin(AbstractBoat.class)
 public abstract class AbstractBoatMixin extends VehicleEntity implements Leashable {
 
-    @Shadow
-    private double lerpYRot;
     @Shadow
     private boolean inputLeft;
     @Shadow
@@ -94,13 +90,12 @@ public abstract class AbstractBoatMixin extends VehicleEntity implements Leashab
 
     @Inject(method = "controlBoat", at = @At("HEAD"))
     public void copyPlayerYaw(CallbackInfo callbackInfo) {
-        if (isControlledByLocalInstance()
+        if (isClientAuthoritative()
                 && getControllingPassenger() != null
                 && AdditionalGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
                 && AdditionalFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
             if (Math.abs(getYRot() - getControllingPassenger().getYRot()) > 1) {
                 setYRot(getControllingPassenger().getYRot());
-                lerpYRot = getControllingPassenger().getYRot();
             }
         }
     }

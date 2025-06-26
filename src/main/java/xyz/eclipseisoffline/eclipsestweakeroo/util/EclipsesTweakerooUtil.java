@@ -64,15 +64,15 @@ public class EclipsesTweakerooUtil {
     private static final int MAX_DURATION_SECONDS_EFFECT_TEXT = 3600;
     private static final double DURABILITY_WARNING = 0.9;
     private static final Map<ResourceKey<MobEffect>, ChatFormatting> EFFECT_COLOURS = Map.ofEntries(
-            Map.entry(MobEffects.MOVEMENT_SPEED, ChatFormatting.WHITE),
-            Map.entry(MobEffects.MOVEMENT_SLOWDOWN, ChatFormatting.DARK_GRAY),
-            Map.entry(MobEffects.DIG_SPEED, ChatFormatting.GOLD),
-            Map.entry(MobEffects.DIG_SLOWDOWN, ChatFormatting.GRAY),
-            Map.entry(MobEffects.DAMAGE_BOOST, ChatFormatting.DARK_RED),
-            Map.entry(MobEffects.JUMP, ChatFormatting.DARK_AQUA),
-            Map.entry(MobEffects.CONFUSION, ChatFormatting.DARK_GREEN),
+            Map.entry(MobEffects.SPEED, ChatFormatting.WHITE),
+            Map.entry(MobEffects.SLOWNESS, ChatFormatting.DARK_GRAY),
+            Map.entry(MobEffects.HASTE, ChatFormatting.GOLD),
+            Map.entry(MobEffects.MINING_FATIGUE, ChatFormatting.GRAY),
+            Map.entry(MobEffects.STRENGTH, ChatFormatting.DARK_RED),
+            Map.entry(MobEffects.JUMP_BOOST, ChatFormatting.DARK_AQUA),
+            Map.entry(MobEffects.NAUSEA, ChatFormatting.DARK_GREEN),
             Map.entry(MobEffects.REGENERATION, ChatFormatting.RED),
-            Map.entry(MobEffects.DAMAGE_RESISTANCE, ChatFormatting.GRAY),
+            Map.entry(MobEffects.RESISTANCE, ChatFormatting.GRAY),
             Map.entry(MobEffects.FIRE_RESISTANCE, ChatFormatting.GOLD),
             Map.entry(MobEffects.WATER_BREATHING, ChatFormatting.BLUE),
             Map.entry(MobEffects.INVISIBILITY, ChatFormatting.WHITE),

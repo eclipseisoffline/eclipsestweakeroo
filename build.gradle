@@ -1,7 +1,7 @@
 import java.nio.file.Files
 
 plugins {
-    id 'fabric-loom' version '1.8-SNAPSHOT'
+    id 'fabric-loom' version '1.10-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -33,14 +33,15 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "curse.maven:malilib-303119:${project.malilib_version}"
+    // modImplementation "curse.maven:malilib-303119:${project.malilib_version}" // TODO
     //modImplementation "curse.maven:tweakeroo-297344:${project.tweakeroo_version_cursemaven}" // TODO
+    modImplementation files("malilib.jar") // TODO
     modImplementation files("tweakeroo.jar") // TODO
 
     // Used during compiling
     modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
     // Used during testing
-    modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    //modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 loom {

@@ -2,7 +2,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin.tweakeroo;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import fi.dy.masa.malilib.util.PositionUtils;
+import fi.dy.masa.malilib.util.position.PositionUtils;
 import fi.dy.masa.tweakeroo.tweaks.PlacementTweaks;
 import java.util.List;
 
@@ -30,10 +30,9 @@ public abstract class TweakerooPlacementTweaksMixin {
     private static final List<Item> ITEMS_TO_PATCH = List.of(Items.PISTON, Items.STICKY_PISTON, Items.DISPENSER, Items.DROPPER, Items.CRAFTER);
 
     @Inject(method = "tryPlaceBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;getItemInHand(Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/item/ItemStack;", ordinal = 0))
-    private static void fixPistonFlexiblePlacement(MultiPlayerGameMode controller, LocalPlayer player, ClientLevel world, BlockPos posIn,
-                                                   Direction sideIn, Direction sideRotatedIn, float playerYaw, Vec3 hitVec, InteractionHand hand,
-                                                   PositionUtils.HitPart hitPart, boolean isFirstClick,
-                                                   CallbackInfoReturnable<InteractionResult> callbackInfoReturnable,
+    private static void fixPistonFlexiblePlacement(MultiPlayerGameMode controller, LocalPlayer player, ClientLevel world, BlockPos posIn, Direction sideIn, Direction sideRotatedIn, float playerYaw, Vec3 hitVec, InteractionHand hand,
+                                                   PositionUtils.HitPart hitPart,
+                                                   boolean isFirstClick, CallbackInfoReturnable<InteractionResult> cir,
                                                    @Local(ordinal = 1, argsOnly = true) LocalRef<Direction> sideRotatedInLocal,
                                                    @Local(ordinal = 2) boolean flexible,
                                                    @Local(ordinal = 7) boolean rotation) {

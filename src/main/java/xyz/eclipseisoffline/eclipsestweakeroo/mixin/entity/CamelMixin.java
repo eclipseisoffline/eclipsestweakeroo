@@ -2,8 +2,6 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.PlayerRideableJumping;
-import net.minecraft.world.entity.Saddleable;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.level.Level;
@@ -13,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 
 @Mixin(Camel.class)
-public abstract class CamelMixin extends AbstractHorse implements PlayerRideableJumping, Saddleable {
+public abstract class CamelMixin extends AbstractHorse {
 
     protected CamelMixin(EntityType<? extends AbstractHorse> entityType, Level level) {
         super(entityType, level);

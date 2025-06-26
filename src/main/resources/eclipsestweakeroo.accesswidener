@@ -1,2 +1,2 @@
 accessWidener v2 named
-accessible class net/minecraft/client/renderer/FogRenderer$MobEffectFogFunction
+#accessible class net/minecraft/client/renderer/FogRenderer$MobEffectFogFunction

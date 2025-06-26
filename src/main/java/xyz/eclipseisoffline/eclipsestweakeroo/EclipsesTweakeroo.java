@@ -3,9 +3,9 @@ package xyz.eclipseisoffline.eclipsestweakeroo;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -21,7 +21,7 @@ import net.minecraft.client.gui.screens.DisconnectedScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -71,9 +71,9 @@ public class EclipsesTweakeroo implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.BARRIER, RenderType.translucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LIGHT, RenderType.translucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.STRUCTURE_VOID, RenderType.translucent());
+        BlockRenderLayerMap.putBlock(Blocks.BARRIER, ChunkSectionLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(Blocks.LIGHT, ChunkSectionLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(Blocks.STRUCTURE_VOID, ChunkSectionLayer.TRANSLUCENT);
 
         EclipsesTweakerooUtil.populateStatusEffectColorMap();
 
@@ -102,9 +102,9 @@ public class EclipsesTweakeroo implements ClientModInitializer {
         UseBlockCallback.EVENT.register(((player, world, hand, hitResult) -> {
             if (!useCheck(player, hand)) {
                 return InteractionResult.FAIL;
-            }
-
-            if (AdditionalDisableConfig.DISABLE_BED_EXPLOSION.getBooleanValue()
+            } else if (AdditionalDisableConfig.DISABLE_BLOCK_USE.getBooleanValue()) {
+                return InteractionResult.FAIL;
+            } else if (AdditionalDisableConfig.DISABLE_BED_EXPLOSION.getBooleanValue()
                     && !world.dimensionType().bedWorks()
                     && world.getBlockState(hitResult.getBlockPos()).getBlock() instanceof BedBlock) {
                 return InteractionResult.FAIL;

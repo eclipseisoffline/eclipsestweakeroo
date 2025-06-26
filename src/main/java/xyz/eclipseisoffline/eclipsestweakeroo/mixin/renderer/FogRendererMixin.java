@@ -3,7 +3,9 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin.renderer;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.Camera;
-import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.fog.FogRenderer;
+import net.minecraft.client.renderer.fog.environment.AtmosphericFogEnvironment;
+import net.minecraft.client.renderer.fog.environment.FogEnvironment;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.material.FogType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,21 +17,21 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
 @Mixin(FogRenderer.class)
 public abstract class FogRendererMixin {
 
-    @WrapOperation(method = "setupFog",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;getFluidInCamera()Lnet/minecraft/world/level/material/FogType;"))
-    private static FogType disableSubmersionFogModifiers(Camera instance, Operation<FogType> original) {
-        if (AdditionalDisableConfig.DISABLE_FOG_MODIFIER.getBooleanValue()) {
-            return FogType.NONE;
+    @WrapOperation(method = "computeFogColor",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/fog/environment/FogEnvironment;isApplicable(Lnet/minecraft/world/level/material/FogType;Lnet/minecraft/world/entity/Entity;)Z"))
+    public boolean disableFogModifiers(FogEnvironment instance, FogType fogType, Entity entity, Operation<Boolean> original) {
+        if (AdditionalDisableConfig.DISABLE_FOG_MODIFIER.getBooleanValue()
+                && !(instance instanceof AtmosphericFogEnvironment)) {
+            return false;
         }
 
-        return original.call(instance);
+        return original.call(instance, fogType, entity);
     }
 
-    @Inject(method = "getPriorityFogFunction", at = @At("HEAD"), cancellable = true)
-    private static void disableMobEffectFogModifiers(Entity entity, float partialTick,
-                                                     CallbackInfoReturnable<FogRenderer.MobEffectFogFunction> callbackInfoReturnable) {
+    @Inject(method = "getFogType", at = @At(value = "HEAD"), cancellable = true)
+    public void disableFogModifiers(Camera camera, boolean bl, CallbackInfoReturnable<FogType> callbackInfoReturnable) {
         if (AdditionalDisableConfig.DISABLE_FOG_MODIFIER.getBooleanValue()) {
-            callbackInfoReturnable.setReturnValue(null);
+            callbackInfoReturnable.setReturnValue(FogType.ATMOSPHERIC);
         }
     }
 }

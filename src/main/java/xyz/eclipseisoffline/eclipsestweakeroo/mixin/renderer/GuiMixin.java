@@ -9,6 +9,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -30,6 +31,8 @@ import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 @Mixin(Gui.class)
 public abstract class GuiMixin {
 
+    @Unique
+    private static final int TEXT_COLOUR = 0xFFFFFFFF;
     @Unique
     private static final int HOTBAR_WIDTH = 182;
     @Unique
@@ -74,14 +77,16 @@ public abstract class GuiMixin {
             int textWidth = getFont().width(durationText);
             graphics.drawString(getFont(), durationText,
                     k + (STATUS_EFFECT_SPRITE_SIZE / 2) - (textWidth / 2),
-                    l.get() + STATUS_EFFECT_SPRITE_SIZE + STATUS_EFFECT_SPACE, -1);
+                    l.get() + STATUS_EFFECT_SPRITE_SIZE + STATUS_EFFECT_SPACE, TEXT_COLOUR);
         }
     }
 
     @Inject(method = "renderVehicleHealth", at = @At("HEAD"), cancellable = true)
-    public void renderVehicleHealthWithNumberHud(GuiGraphics graphics, CallbackInfo callbackInfo) {
+    public void renderVehicleHealthInCreativeWithNumberHud(GuiGraphics graphics, CallbackInfo callbackInfo) {
         if (AdditionalFeatureToggle.TWEAK_NUMBER_HUD.getBooleanValue()) {
             callbackInfo.cancel();
+        } else {
+            return;
         }
 
         Player player = getCameraPlayer();
@@ -121,10 +126,10 @@ public abstract class GuiMixin {
 
         graphics.drawString(getFont(), healthText,
                 calculateHudLineX(graphics, healthText, false),
-                calculateHudLineY(graphics, 0), 0);
+                calculateHudLineY(graphics, 0), TEXT_COLOUR);
         graphics.drawString(getFont(), airHungerText,
                 calculateHudLineX(graphics, airHungerText, true),
-                calculateHudLineY(graphics, 0), 0);
+                calculateHudLineY(graphics, 0), TEXT_COLOUR);
 
         boolean shownArmorText = false;
         Component armorText = EclipsesTweakerooUtil.getArmorText(player);
@@ -132,13 +137,13 @@ public abstract class GuiMixin {
             shownArmorText = true;
             graphics.drawString(getFont(), armorText,
                     calculateHudLineX(graphics, armorText, false),
-                    calculateHudLineY(graphics, 1), 0);
+                    calculateHudLineY(graphics, 1), TEXT_COLOUR);
         }
 
         Component attackDamageText = EclipsesTweakerooUtil.getAttackDamageText(player, true);
         graphics.drawString(getFont(), attackDamageText,
                 calculateHudLineX(graphics, attackDamageText, true),
-                calculateHudLineY(graphics, 1), 0);
+                calculateHudLineY(graphics, 1), TEXT_COLOUR);
 
         if (AdditionalGenericConfig.TWEAK_NUMBER_HUD_SHOW_DURABILITY_WARNING.getBooleanValue()) {
             StringBuilder durabilityWarnString = new StringBuilder();
@@ -163,7 +168,7 @@ public abstract class GuiMixin {
                 Component durabilityWarnText = Component.literal(durabilityWarnString.toString()).withStyle(getDurabilityWarnTextColour());
                 graphics.drawString(getFont(), durabilityWarnText,
                         calculateHudLineX(graphics, durabilityWarnText, true),
-                        calculateHudLineY(graphics, 2), 0);
+                        calculateHudLineY(graphics, 2), TEXT_COLOUR);
             }
         }
 
@@ -177,7 +182,7 @@ public abstract class GuiMixin {
         Component vehicleHealthText = getHealthText(vehicle);
         graphics.drawString(getFont(), vehicleHealthText,
                 calculateHudLineX(graphics, vehicleHealthText, false),
-                calculateHudLineY(graphics, line), 0);
+                calculateHudLineY(graphics, line), TEXT_COLOUR);
     }
 
     @Unique
