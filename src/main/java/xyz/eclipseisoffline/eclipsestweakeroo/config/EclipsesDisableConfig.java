@@ -1,6 +1,7 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.config;
 
 import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.config.IHotkeyTogglable;
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import fi.dy.masa.tweakeroo.config.ConfigBooleanClient;
 
@@ -42,5 +43,9 @@ public class EclipsesDisableConfig {
 
     public static List<IConfigBase> values() {
         return List.copyOf(CONFIGS);
+    }
+
+    public static List<IHotkeyTogglable> hotkeys() {
+        return CONFIGS.stream().map(config -> (IHotkeyTogglable) config).toList();
     }
 }

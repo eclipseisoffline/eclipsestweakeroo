@@ -6,6 +6,7 @@ import fi.dy.masa.malilib.gui.button.ButtonBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.button.IButtonActionListener;
 import fi.dy.masa.tweakeroo.gui.GuiConfigs;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screens.Screen;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
@@ -19,10 +20,13 @@ import java.util.Objects;
 
 public class EclipsesTweakerooConfig extends GuiConfigsBase {
 
+    private static final String VERSION = FabricLoader.getInstance()
+            .getModContainer(EclipsesTweakeroo.MOD_ID).orElseThrow()
+            .getMetadata().getVersion().getFriendlyString();
     private static GuiConfigs.ConfigGuiTab tab = GuiConfigs.ConfigGuiTab.TWEAKS;
 
     public EclipsesTweakerooConfig(Screen parent) {
-        super(10, 50, EclipsesTweakeroo.MOD_ID, parent, "Eclipse's Tweakeroo Configs");
+        super(10, 50, EclipsesTweakeroo.MOD_ID, parent, "Eclipse's Tweakeroo Configs - " + VERSION);
     }
 
     @Override

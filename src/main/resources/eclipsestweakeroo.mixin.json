@@ -37,7 +37,6 @@
     "screen.ConnectScreenMixin",
     "screen.DisconnectedScreenAccessor",
     "tweakeroo.FeatureToggleCreator",
-    "tweakeroo.GuiConfigsMixin",
     "tweakeroo.TweakerooDisableConfigsMixin",
     "tweakeroo.TweakerooFeatureToggleMixin",
     "tweakeroo.TweakerooFixesConfigsMixin",

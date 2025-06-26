@@ -3,6 +3,9 @@ package xyz.eclipseisoffline.eclipsestweakeroo;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.logging.LogUtils;
+import fi.dy.masa.malilib.config.ConfigManager;
+import fi.dy.masa.malilib.registry.Registry;
+import fi.dy.masa.malilib.util.data.ModInfo;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -14,6 +17,7 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -45,10 +49,12 @@ import net.minecraft.world.item.component.LodestoneTracker;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Blocks;
 import org.slf4j.Logger;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesConfigs;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.event.AttemptConnectionCallback;
+import xyz.eclipseisoffline.eclipsestweakeroo.gui.EclipsesTweakerooConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity.AllayInvoker;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.screen.DisconnectedScreenAccessor;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
@@ -246,6 +252,10 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                         }
                     }
                 });
+
+        ConfigManager.getInstance().registerConfigHandler(MOD_ID, new EclipsesConfigs());
+
+        Registry.CONFIG_SCREEN.registerConfigScreenFactory(new ModInfo(MOD_ID, "Eclipse's Tweakeroo", () -> new EclipsesTweakerooConfig(null)));
     }
 
     private static boolean useCheck(Player player, InteractionHand hand) {
