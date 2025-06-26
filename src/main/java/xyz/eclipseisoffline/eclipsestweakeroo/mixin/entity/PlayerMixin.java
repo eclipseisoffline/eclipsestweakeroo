@@ -21,8 +21,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity {
@@ -40,7 +40,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setPos(DDD)V"))
     public void ignoreWorldBorderBlock(Player instance, double x, double y, double z, Operation<Void> original) {
-        if (AdditionalDisableConfig.DISABLE_WORLD_BORDER.getBooleanValue()) {
+        if (EclipsesDisableConfig.DISABLE_WORLD_BORDER.getBooleanValue()) {
             return;
         }
         original.call(instance, x, y, z);
@@ -48,7 +48,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @Inject(method = "startFallFlying", at = @At("TAIL"))
     public void startCreativeFly(CallbackInfo callbackInfo) {
-        if (AdditionalFeatureToggle.TWEAK_CREATIVE_ELYTRA_FLIGHT.getBooleanValue()) {
+        if (EclipsesFeatureToggle.TWEAK_CREATIVE_ELYTRA_FLIGHT.getBooleanValue()) {
             //noinspection EqualsBetweenInconvertibleTypes
             if (equals(Minecraft.getInstance().player)) {
                 abilities.mayfly = true;

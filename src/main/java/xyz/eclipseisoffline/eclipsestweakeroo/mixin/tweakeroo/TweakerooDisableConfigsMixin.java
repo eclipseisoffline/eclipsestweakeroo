@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(Disable.class)
@@ -27,7 +27,7 @@ public abstract class TweakerooDisableConfigsMixin {
     private static void addAdditionalEntries(CallbackInfo callbackInfo) {
         List<IHotkeyTogglable> newOptions = new ArrayList<>(OPTIONS);
         newOptions.addAll(
-                EclipsesTweakerooUtil.getDeclaredHotkeyOptions(AdditionalDisableConfig.class));
+                EclipsesTweakerooUtil.getDeclaredHotkeyOptions(EclipsesDisableConfig.class));
         OPTIONS = ImmutableList.copyOf(newOptions);
     }
 }

@@ -3,7 +3,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.config;
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import fi.dy.masa.tweakeroo.config.ConfigBooleanClient;
 
-public class AdditionalDisableConfig {
+public class EclipsesDisableConfig {
 
     public static final ConfigBooleanHotkeyed DISABLE_ENTITY_COLLISIONS = new ConfigBooleanHotkeyed(
             "disableEntityCollisions", false, "", "Disables entity collisions",

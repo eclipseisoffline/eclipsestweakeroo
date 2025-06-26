@@ -8,7 +8,7 @@ import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import fi.dy.masa.malilib.config.options.ConfigStringList;
 import net.minecraft.world.level.block.Blocks;
 
-public class AdditionalGenericConfig {
+public class EclipsesGenericConfig {
 
     public static final ConfigBoolean HAND_RESTOCK_UNSTACKABLE = new ConfigBoolean(
             "handRestockUnstackable", true, "Whether to restock unstackable items");

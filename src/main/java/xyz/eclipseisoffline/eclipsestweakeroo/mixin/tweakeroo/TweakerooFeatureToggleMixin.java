@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(FeatureToggle.class)
@@ -30,7 +30,7 @@ public abstract class TweakerooFeatureToggleMixin implements IHotkeyTogglable,
     private static void addAdditionalEntries(CallbackInfo callbackInfo) {
         List<FeatureToggle> newValues = new ArrayList<>(VALUES);
         newValues.addAll(EclipsesTweakerooUtil.getDeclaredFeatureToggles(
-                AdditionalFeatureToggle.class));
+                EclipsesFeatureToggle.class));
         VALUES = ImmutableList.copyOf(newValues);
     }
 }

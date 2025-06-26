@@ -11,14 +11,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
 
 @Mixin(ParticleEngine.class)
 public abstract class ParticleEngineMixin implements PreparableReloadListener {
 
     @Inject(method = "crack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"), cancellable = true)
     public void noOperatorBlockParticles(BlockPos pos, Direction side, CallbackInfo callbackInfo, @Local BlockState state) {
-        if (AdditionalFeatureToggle.TWEAK_RENDER_OPERATOR_BLOCKS.getBooleanValue()
+        if (EclipsesFeatureToggle.TWEAK_RENDER_OPERATOR_BLOCKS.getBooleanValue()
                 && (state.is(Blocks.BARRIER) || state.is(Blocks.LIGHT) || state.is(Blocks.STRUCTURE_VOID))) {
             callbackInfo.cancel();
         }

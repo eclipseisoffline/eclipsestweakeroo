@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(InputHandler.class)
@@ -18,7 +18,7 @@ public abstract class TweakerooInputHandlerMixin implements IKeybindProvider, IK
 
     @Inject(method = "addKeysToMap", at = @At("TAIL"), remap = false)
     public void addKeysToMap(IKeybindManager manager, CallbackInfo callbackInfo) {
-        for (FeatureToggle newToggle : EclipsesTweakerooUtil.getDeclaredFeatureToggles(AdditionalFeatureToggle.class)) {
+        for (FeatureToggle newToggle : EclipsesTweakerooUtil.getDeclaredFeatureToggles(EclipsesFeatureToggle.class)) {
             manager.addKeybindToMap(newToggle.getKeybind());
         }
     }

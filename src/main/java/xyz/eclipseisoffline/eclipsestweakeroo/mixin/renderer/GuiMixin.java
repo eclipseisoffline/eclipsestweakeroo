@@ -9,7 +9,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.util.ARGB;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -23,9 +22,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(Gui.class)
@@ -59,7 +58,7 @@ public abstract class GuiMixin {
 
     @Inject(method = "renderCameraOverlays", at = @At("HEAD"), cancellable = true)
     public void cancelOverlays(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo callbackInfo) {
-        if (AdditionalDisableConfig.DISABLE_OVERLAY_RENDER.getBooleanValue()) {
+        if (EclipsesDisableConfig.DISABLE_OVERLAY_RENDER.getBooleanValue()) {
             callbackInfo.cancel();
         }
     }
@@ -67,7 +66,7 @@ public abstract class GuiMixin {
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectInstance;isAmbient()Z"))
     public void drawStatusText(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo callbackInfo,
                                @Local MobEffectInstance mobEffectInstance, @Local(ordinal = 2) int k, @Local(ordinal = 3) LocalIntRef l) {
-        if (AdditionalFeatureToggle.TWEAK_STATUS_EFFECT.getBooleanValue()) {
+        if (EclipsesFeatureToggle.TWEAK_STATUS_EFFECT.getBooleanValue()) {
             // Second row
             if (l.get() > 20) {
                 l.set(l.get() + STATUS_EFFECT_SPACE + getFont().lineHeight);
@@ -83,7 +82,7 @@ public abstract class GuiMixin {
 
     @Inject(method = "renderVehicleHealth", at = @At("HEAD"), cancellable = true)
     public void renderVehicleHealthInCreativeWithNumberHud(GuiGraphics graphics, CallbackInfo callbackInfo) {
-        if (AdditionalFeatureToggle.TWEAK_NUMBER_HUD.getBooleanValue()) {
+        if (EclipsesFeatureToggle.TWEAK_NUMBER_HUD.getBooleanValue()) {
             callbackInfo.cancel();
         } else {
             return;
@@ -99,7 +98,7 @@ public abstract class GuiMixin {
 
     @Inject(method = "renderPlayerHealth", at = @At("HEAD"), cancellable = true)
     public void useNumberHud(GuiGraphics graphics, CallbackInfo callbackInfo) {
-        if (!AdditionalFeatureToggle.TWEAK_NUMBER_HUD.getBooleanValue()) {
+        if (!EclipsesFeatureToggle.TWEAK_NUMBER_HUD.getBooleanValue()) {
             return;
         }
         callbackInfo.cancel();
@@ -145,7 +144,7 @@ public abstract class GuiMixin {
                 calculateHudLineX(graphics, attackDamageText, true),
                 calculateHudLineY(graphics, 1), TEXT_COLOUR);
 
-        if (AdditionalGenericConfig.TWEAK_NUMBER_HUD_SHOW_DURABILITY_WARNING.getBooleanValue()) {
+        if (EclipsesGenericConfig.TWEAK_NUMBER_HUD_SHOW_DURABILITY_WARNING.getBooleanValue()) {
             StringBuilder durabilityWarnString = new StringBuilder();
             for (int hotbarSlot = 0; hotbarSlot < 9; hotbarSlot++) {
                 if (EclipsesTweakerooUtil.shouldWarnDurability(player.getInventory().getItem(hotbarSlot))) {
@@ -223,7 +222,7 @@ public abstract class GuiMixin {
     @Unique
     private ChatFormatting getHealthTextColour(LivingEntity entity) {
         if (isWarningTick() && entity instanceof Player
-                && entity.getHealth() <= AdditionalGenericConfig.TWEAK_NUMBER_HUD_HEALTH_WARNING_THRESHOLD.getIntegerValue()) {
+                && entity.getHealth() <= EclipsesGenericConfig.TWEAK_NUMBER_HUD_HEALTH_WARNING_THRESHOLD.getIntegerValue()) {
             return ChatFormatting.WHITE;
         } else if (entity.hasEffect(MobEffects.WITHER)) {
             return ChatFormatting.DARK_GRAY;
@@ -239,7 +238,7 @@ public abstract class GuiMixin {
 
     @Unique
     private ChatFormatting getHungerTextColour(Player player) {
-        if (isWarningTick() && player.getFoodData().getFoodLevel() <= AdditionalGenericConfig.TWEAK_NUMBER_HUD_HUNGER_WARNING_THRESHOLD.getIntegerValue()) {
+        if (isWarningTick() && player.getFoodData().getFoodLevel() <= EclipsesGenericConfig.TWEAK_NUMBER_HUD_HUNGER_WARNING_THRESHOLD.getIntegerValue()) {
             return ChatFormatting.WHITE;
         } else if (player.hasEffect(MobEffects.HUNGER)) {
             return ChatFormatting.DARK_GREEN;
@@ -253,7 +252,7 @@ public abstract class GuiMixin {
     private ChatFormatting getAirTextColour(Player player) {
         if (player.hasEffect(MobEffects.WATER_BREATHING)) {
             return ChatFormatting.AQUA;
-        } else if (isWarningTick() && player.getAirSupply() <= AdditionalGenericConfig.TWEAK_NUMBER_HUD_AIR_WARNING_THRESHOLD.getIntegerValue()) {
+        } else if (isWarningTick() && player.getAirSupply() <= EclipsesGenericConfig.TWEAK_NUMBER_HUD_AIR_WARNING_THRESHOLD.getIntegerValue()) {
             return ChatFormatting.WHITE;
         }
         return ChatFormatting.BLUE;

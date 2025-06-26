@@ -3,7 +3,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.config;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.tweakeroo.FeatureToggleCreator;
 
-public class AdditionalFeatureToggle {
+public class EclipsesFeatureToggle {
 
     public static final FeatureToggle TWEAK_PLAYER_LIST = newToggle("tweakPlayerList", false, false,
             "", "Makes various changes to the player list.\nCan be configured in General",

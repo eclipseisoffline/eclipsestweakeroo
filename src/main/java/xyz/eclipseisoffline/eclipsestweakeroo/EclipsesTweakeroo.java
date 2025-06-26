@@ -2,6 +2,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -44,10 +45,9 @@ import net.minecraft.world.item.component.LodestoneTracker;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Blocks;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalDisableConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.event.AttemptConnectionCallback;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity.AllayInvoker;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.screen.DisconnectedScreenAccessor;
@@ -60,7 +60,7 @@ import java.util.Map;
 public class EclipsesTweakeroo implements ClientModInitializer {
 
     public static final String MOD_ID = "eclipsestweakeroo";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final Logger LOGGER = LogUtils.getLogger();
     public static final Map<ResourceKey<MobEffect>, String> STATUS_EFFECT_CHARACTER_MAP = new HashMap<>();
 
     private static final Component TO_MENU_TEXT = Component.translatable("gui.toMenu");
@@ -79,7 +79,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
 
         ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
             // Registering value change callbacks here to prevent crashes
-            AdditionalFeatureToggle.TWEAK_CREATIVE_ELYTRA_FLIGHT.setValueChangeCallback(value -> {
+            EclipsesFeatureToggle.TWEAK_CREATIVE_ELYTRA_FLIGHT.setValueChangeCallback(value -> {
                 if (client.player == null) {
                     return;
                 }
@@ -92,7 +92,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 }
             });
 
-            AdditionalFeatureToggle.TWEAK_RENDER_OPERATOR_BLOCKS.setValueChangeCallback(value -> {
+            EclipsesFeatureToggle.TWEAK_RENDER_OPERATOR_BLOCKS.setValueChangeCallback(value -> {
                 LevelRenderer levelRenderer = client.levelRenderer;
                 levelRenderer.allChanged();
             });
@@ -102,9 +102,9 @@ public class EclipsesTweakeroo implements ClientModInitializer {
         UseBlockCallback.EVENT.register(((player, world, hand, hitResult) -> {
             if (!useCheck(player, hand)) {
                 return InteractionResult.FAIL;
-            } else if (AdditionalDisableConfig.DISABLE_BLOCK_USE.getBooleanValue()) {
+            } else if (EclipsesDisableConfig.DISABLE_BLOCK_USE.getBooleanValue()) {
                 return InteractionResult.FAIL;
-            } else if (AdditionalDisableConfig.DISABLE_BED_EXPLOSION.getBooleanValue()
+            } else if (EclipsesDisableConfig.DISABLE_BED_EXPLOSION.getBooleanValue()
                     && !world.dimensionType().bedWorks()
                     && world.getBlockState(hitResult.getBlockPos()).getBlock() instanceof BedBlock) {
                 return InteractionResult.FAIL;
@@ -118,7 +118,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                         return InteractionResult.FAIL;
                     }
 
-                    if (AdditionalDisableConfig.DISABLE_ALLAY_USE.getBooleanValue()
+                    if (EclipsesDisableConfig.DISABLE_ALLAY_USE.getBooleanValue()
                             && entity instanceof Allay allay) {
                         if (!player.getItemInHand(hand).isEmpty()) {
                             Item item = player.getItemInHand(hand).getItem();
@@ -135,7 +135,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
             ItemStack usedStack = player.getItemInHand(hand);
             if (!useCheck(player, hand)) {
                 return InteractionResult.FAIL;
-            } else if (AdditionalFeatureToggle.TWEAK_LODESTONE.getBooleanValue() && usedStack.has(DataComponents.LODESTONE_TRACKER)) {
+            } else if (EclipsesFeatureToggle.TWEAK_LODESTONE.getBooleanValue() && usedStack.has(DataComponents.LODESTONE_TRACKER)) {
                 LodestoneTracker tracker = usedStack.get(DataComponents.LODESTONE_TRACKER);
                 assert tracker != null;
 
@@ -154,7 +154,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
         }));
 
         ClientTickEvents.START_WORLD_TICK.register((world -> {
-            if (world.getGameTime() % 10 != 0 || !AdditionalFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()) {
+            if (world.getGameTime() % 10 != 0 || !EclipsesFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()) {
                 return;
             }
 
@@ -173,7 +173,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 if (!itemStack.getItem().equals(registeredItems.get(slot))) {
                     check = true;
                 } else if ((time - warningTime) / 1000
-                        > AdditionalGenericConfig.DURABILITY_WARNING_COOLDOWN.getIntegerValue()) {
+                        > EclipsesGenericConfig.DURABILITY_WARNING_COOLDOWN.getIntegerValue()) {
                     check = true;
                 }
                 if (!check) {
@@ -191,7 +191,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
         });
         ScreenEvents.AFTER_INIT.register(((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof DisconnectedScreen disconnectedScreen
-                    && AdditionalFeatureToggle.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
+                    && EclipsesFeatureToggle.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
                 int disconnectedTime = EclipsesTweakerooUtil.milliTime();
                 Button backButton = (Button) disconnectedScreen.children().stream().filter(child -> child instanceof Button).findFirst().orElseThrow();
                 int originalWidth = backButton.getWidth();
@@ -204,7 +204,7 @@ public class EclipsesTweakeroo implements ClientModInitializer {
                 ScreenEvents.afterRender(screen).register(((screenInstance, drawContext,
                         mouseX, mouseY, tickDelta) -> {
                     int passed = EclipsesTweakerooUtil.milliTime() - disconnectedTime;
-                    int wait = AdditionalGenericConfig.RECONNECT_TIME.getIntegerValue();
+                    int wait = EclipsesGenericConfig.RECONNECT_TIME.getIntegerValue();
                     if (passed > wait) {
                         ConnectScreen.startConnecting(
                                 ((DisconnectedScreenAccessor) disconnectedScreen).getParent(),
@@ -249,15 +249,15 @@ public class EclipsesTweakeroo implements ClientModInitializer {
     }
 
     private static boolean useCheck(Player player, InteractionHand hand) {
-        if (AdditionalDisableConfig.DISABLE_OFFHAND_USE.getBooleanValue()
+        if (EclipsesDisableConfig.DISABLE_OFFHAND_USE.getBooleanValue()
                 && hand == InteractionHand.OFF_HAND) {
             return false;
         }
 
-        if (AdditionalGenericConfig.TWEAK_DURABILITY_PREVENT_USE.getBooleanValue()
-                && AdditionalFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()
+        if (EclipsesGenericConfig.TWEAK_DURABILITY_PREVENT_USE.getBooleanValue()
+                && EclipsesFeatureToggle.TWEAK_DURABILITY_CHECK.getBooleanValue()
                 && player.getItemInHand(hand).isDamageableItem()) {
-            if (player.getItemInHand(hand).getDamageValue() < player.getItemInHand(hand).getMaxDamage() - AdditionalGenericConfig.DURABILITY_PREVENT_USE_THRESHOLD.getIntegerValue()) {
+            if (player.getItemInHand(hand).getDamageValue() < player.getItemInHand(hand).getMaxDamage() - EclipsesGenericConfig.DURABILITY_PREVENT_USE_THRESHOLD.getIntegerValue()) {
                 return true;
             }
             EclipsesTweakerooUtil.showLowDurabilityWarning(player.getItemInHand(hand), true);

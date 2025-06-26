@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFeatureToggle;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFeatureToggle;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 
 @Mixin(AbstractBoat.class)
 public abstract class AbstractBoatMixin extends VehicleEntity implements Leashable {
@@ -39,10 +39,10 @@ public abstract class AbstractBoatMixin extends VehicleEntity implements Leashab
 
     @WrapOperation(method = "getGroundFriction", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getFriction()F"))
     public float getTweakedFriction(Block instance, Operation<Float> original) {
-        if (AdditionalFeatureToggle.TWEAK_SLIPPERY.getBooleanValue()
+        if (EclipsesFeatureToggle.TWEAK_SLIPPERY.getBooleanValue()
                 && getFirstPassenger() instanceof Player
-                && AdditionalGenericConfig.TWEAK_SLIPPERY_VEHICLES.getBooleanValue()) {
-            return (float) AdditionalGenericConfig.TWEAK_SLIPPERY_SLIPPERINESS.getDoubleValue();
+                && EclipsesGenericConfig.TWEAK_SLIPPERY_VEHICLES.getBooleanValue()) {
+            return (float) EclipsesGenericConfig.TWEAK_SLIPPERY_SLIPPERINESS.getDoubleValue();
         }
 
         return original.call(instance);
@@ -50,11 +50,11 @@ public abstract class AbstractBoatMixin extends VehicleEntity implements Leashab
 
     @Inject(method = "floatBoat", at = @At("TAIL"))
     public void clearYawVelocityAndJump(CallbackInfo callbackInfo) {
-        if (AdditionalFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
+        if (EclipsesFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
             if (!inputLeft && !inputRight) {
                 deltaRotation = 0.0F;
             }
-            if (inputUp && (onGround() || AdditionalGenericConfig.TWEAK_BOAT_SPIDER.getBooleanValue())) {
+            if (inputUp && (onGround() || EclipsesGenericConfig.TWEAK_BOAT_SPIDER.getBooleanValue())) {
                 Direction face = getDirection().getOpposite();
 
                 BlockPos inFrontPos = blockPosition().relative(getDirection(), 1);
@@ -71,7 +71,7 @@ public abstract class AbstractBoatMixin extends VehicleEntity implements Leashab
                 if (inFrontY > 0.0) {
                     double currentY = position().y;
                     double y = 0.0;
-                     if (AdditionalGenericConfig.TWEAK_BOAT_SPIDER.getBooleanValue()) {
+                     if (EclipsesGenericConfig.TWEAK_BOAT_SPIDER.getBooleanValue()) {
                          y = 1.0;
                      } else if (inFrontY < 1.0) {
                          y = inFrontY;
@@ -92,8 +92,8 @@ public abstract class AbstractBoatMixin extends VehicleEntity implements Leashab
     public void copyPlayerYaw(CallbackInfo callbackInfo) {
         if (isClientAuthoritative()
                 && getControllingPassenger() != null
-                && AdditionalGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
-                && AdditionalFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
+                && EclipsesGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
+                && EclipsesFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
             if (Math.abs(getYRot() - getControllingPassenger().getYRot()) > 1) {
                 setYRot(getControllingPassenger().getYRot());
             }
@@ -102,8 +102,8 @@ public abstract class AbstractBoatMixin extends VehicleEntity implements Leashab
 
     @ModifyVariable(method = "setInput", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     public boolean notPressingLeftWhenUsingPlayerYaw(boolean inputLeft) {
-        if (AdditionalGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
-                && AdditionalFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
+        if (EclipsesGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
+                && EclipsesFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
             return false;
         }
         return inputLeft;
@@ -111,8 +111,8 @@ public abstract class AbstractBoatMixin extends VehicleEntity implements Leashab
 
     @ModifyVariable(method = "setInput", at = @At("HEAD"), ordinal = 1, argsOnly = true)
     public boolean notPressingRightWhenUsingPlayerYaw(boolean inputRight) {
-        if (AdditionalGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
-                && AdditionalFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
+        if (EclipsesGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
+                && EclipsesFeatureToggle.TWEAK_BOATS.getBooleanValue()) {
             return false;
         }
         return inputRight;

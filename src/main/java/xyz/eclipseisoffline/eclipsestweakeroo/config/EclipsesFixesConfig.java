@@ -2,7 +2,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.config;
 
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 
-public class AdditionalFixesConfig {
+public class EclipsesFixesConfig {
 
     public static ConfigBoolean PISTON_FLEXIBLE_PLACEMENT_FIX = new ConfigBoolean(
             "pistonFlexiblePlacementFix", false,

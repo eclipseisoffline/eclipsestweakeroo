@@ -23,7 +23,7 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.PlayerTeam;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 
 public class FancyName {
 
@@ -78,7 +78,7 @@ public class FancyName {
             Map.entry("key", (livingEntity, playerInfo) -> playerInfo.hasVerifiableChat()
                     ? Component.literal("KEY").withStyle(ChatFormatting.GREEN)
                     : Component.literal("NO KEY").withStyle(ChatFormatting.RED)),
-            Map.entry("attack", (livingEntity, playerInfo) -> EclipsesTweakerooUtil.getAttackDamageText(livingEntity, AdditionalGenericConfig.ATTACK_PLACEHOLDER_CRITICAL.getBooleanValue())),
+            Map.entry("attack", (livingEntity, playerInfo) -> EclipsesTweakerooUtil.getAttackDamageText(livingEntity, EclipsesGenericConfig.ATTACK_PLACEHOLDER_CRITICAL.getBooleanValue())),
             Map.entry("armor", (livingEntity, playerInfo) -> EclipsesTweakerooUtil.getArmorText(livingEntity)),
             Map.entry("distance", (livingEntity, playerInfo) -> {
                 Player player = Minecraft.getInstance().player;
@@ -137,7 +137,7 @@ public class FancyName {
         MutableComponent fancyName = Component.empty();
         List<Component> elements = new ArrayList<>();
 
-        for (String element : AdditionalGenericConfig.FANCY_NAME_ELEMENTS.getStrings()) {
+        for (String element : EclipsesGenericConfig.FANCY_NAME_ELEMENTS.getStrings()) {
             if (element.isEmpty()) {
                 continue;
             }

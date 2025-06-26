@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalListsConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesListsConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 
 @Mixin(Lists.class)
@@ -26,7 +26,7 @@ public abstract class TweakerooListsConfigsMixin {
     @Inject(method = "<clinit>()V", at = @At("TAIL"))
     private static void addAdditionalEntries(CallbackInfo callbackInfo) {
         List<IConfigBase> newOptions = new ArrayList<>(OPTIONS);
-        newOptions.addAll(EclipsesTweakerooUtil.getDeclaredOptions(AdditionalListsConfig.class));
+        newOptions.addAll(EclipsesTweakerooUtil.getDeclaredOptions(EclipsesListsConfig.class));
         OPTIONS = ImmutableList.copyOf(newOptions);
     }
 }

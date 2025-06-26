@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.AdditionalFixesConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFixesConfig;
 
 @Mixin(PlacementTweaks.class)
 public abstract class TweakerooPlacementTweaksMixin {
@@ -36,7 +36,7 @@ public abstract class TweakerooPlacementTweaksMixin {
                                                    @Local(ordinal = 1, argsOnly = true) LocalRef<Direction> sideRotatedInLocal,
                                                    @Local(ordinal = 2) boolean flexible,
                                                    @Local(ordinal = 7) boolean rotation) {
-        if (!AdditionalFixesConfig.PISTON_FLEXIBLE_PLACEMENT_FIX.getBooleanValue()) {
+        if (!EclipsesFixesConfig.PISTON_FLEXIBLE_PLACEMENT_FIX.getBooleanValue()) {
             return;
         }
         if (flexible && rotation
