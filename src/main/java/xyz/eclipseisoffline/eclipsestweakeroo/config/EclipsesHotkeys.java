@@ -13,7 +13,7 @@ public class EclipsesHotkeys {
 
     private static final List<IConfigBase> CONFIGS = new ArrayList<>();
 
-    public static final ConfigHotkey OPEN_CONFIG_GUI = create("openConfigGui", "E,C", "Open the in-game config GUI");
+    public static final ConfigHotkey OPEN_CONFIG_GUI = create("openConfigGui", "C,E", "Open the in-game config GUI");
 
     private static ConfigHotkey create(String name, String defaultHotkey, String comment) {
         ConfigHotkey hotkey = new ConfigHotkey(name, defaultHotkey, comment);

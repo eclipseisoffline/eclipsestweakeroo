@@ -17,7 +17,6 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -68,6 +67,9 @@ import java.util.Map;
 public class EclipsesTweakeroo implements ClientModInitializer {
 
     public static final String MOD_ID = "eclipsestweakeroo";
+    public static final String MOD_NAME = "Eclipse's Tweakeroo Additions";
+    public static final String MOD_NAME_SHORT = "Eclipse's Tweakeroo";
+
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final Map<ResourceKey<MobEffect>, String> STATUS_EFFECT_CHARACTER_MAP = new HashMap<>();
 
