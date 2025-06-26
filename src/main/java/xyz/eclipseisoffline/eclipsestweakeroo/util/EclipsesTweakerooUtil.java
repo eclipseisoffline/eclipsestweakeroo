@@ -55,6 +55,9 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
 import org.apache.commons.lang3.mutable.MutableFloat;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.particle.ColorParticleOptionAccessor;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity.LivingEntityAccessor;
 
@@ -351,12 +354,31 @@ public class EclipsesTweakerooUtil {
                 .forEach(statusEffect -> STATUS_EFFECT_PARTICLE_COLORS.put(BuiltInRegistries.MOB_EFFECT.getOrThrow(statusEffect).value().getColor(), statusEffect));
     }
 
+    @Deprecated(forRemoval = true)
     public static int milliTime() {
         return (int) (System.nanoTime() * NANO_MILLI);
     }
 
     public static String roundToOneDecimal(float number) {
         return "%.1f".formatted(number);
+    }
+
+    public static boolean shouldDisableUse(Player player, InteractionHand hand) {
+        if (EclipsesDisableConfig.DISABLE_OFFHAND_USE.getBooleanValue()
+                && hand == InteractionHand.OFF_HAND) {
+            return true;
+        }
+
+        if (EclipsesGenericConfig.TWEAK_DURABILITY_PREVENT_USE.getBooleanValue()
+                && EclipsesTweaksConfig.TWEAK_DURABILITY_CHECK.getBooleanValue()
+                && player.getItemInHand(hand).isDamageableItem()) {
+            if (player.getItemInHand(hand).getDamageValue() < player.getItemInHand(hand).getMaxDamage() - EclipsesGenericConfig.DURABILITY_PREVENT_USE_THRESHOLD.getIntegerValue()) {
+                return false;
+            }
+            showLowDurabilityWarning(player.getItemInHand(hand), true);
+            return true;
+        }
+        return false;
     }
 
     private static void forEachEnchantment(ItemStack stack, EquipmentSlot slot, BiConsumer<Holder<Enchantment>, Integer> enchantmentConsumer) {

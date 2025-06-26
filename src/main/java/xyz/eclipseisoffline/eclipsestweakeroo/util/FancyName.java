@@ -22,7 +22,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.PlayerTeam;
-import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 
 public class FancyName {
@@ -98,7 +97,7 @@ public class FancyName {
                 mobEffects.sort(Comparator.comparingInt((mobEffect -> BuiltInRegistries.MOB_EFFECT.getOrThrow(mobEffect).value().isBeneficial() ? 0 : 1)));
                 StringBuilder statusEffectString = new StringBuilder();
                 for (ResourceKey<MobEffect> mobEffect : mobEffects) {
-                    String statusEffectIconString = EclipsesTweakeroo.STATUS_EFFECT_CHARACTER_MAP.get(mobEffect);
+                    String statusEffectIconString = StatusEffectCharacterLoader.MAP.get(mobEffect);
                     if (statusEffectIconString != null) {
                         statusEffectString.append(statusEffectIconString);
                     }
