@@ -34,6 +34,9 @@ public class EclipsesTweaksConfig {
     public static final ConfigBooleanHotkeyed TWEAK_GRAVITY = create("tweakGravity", "Allows you to override your gravity attribute. Can be configured in General", "Gravity tweak");
     public static final ConfigBooleanHotkeyed TWEAK_STEP_HEIGHT = create("tweakStepHeight", "Allows you to override your step height attribute. Can be configured in General.\nNote that this also affects sneaking",
             "Step height tweak");
+    public static final ConfigBooleanHotkeyed TWEAK_CREATIVE_HAPPY_GHAST_FLIGHT = create("tweakCreativeHappyGhastFlight",
+            "Changes Happy Ghast controls to work like creative flight. Still uses the speed of Happy Ghasts. Double-tap jump to dismount the ghast.",
+            "Creative Happy Ghast flight tweak");
 
     private static ConfigBooleanHotkeyed create(String name, String comment, String prettyName) {
         ConfigBooleanHotkeyed config = new ConfigBooleanHotkeyed(name, false, "", comment);

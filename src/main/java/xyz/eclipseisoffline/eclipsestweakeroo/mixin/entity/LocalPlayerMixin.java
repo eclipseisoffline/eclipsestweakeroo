@@ -3,16 +3,26 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.authlib.GameProfile;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.protocol.game.ServerboundPlayerInputPacket;
+import net.minecraft.world.entity.animal.HappyGhast;
+import net.minecraft.world.entity.player.Input;
 import org.objectweb.asm.Opcodes;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
@@ -20,6 +30,17 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin extends AbstractClientPlayer {
+
+    @Shadow
+    public ClientInput input;
+
+    @Shadow
+    @Final
+    public ClientPacketListener connection;
+
+    @Shadow private Input lastSentInput;
+    @Unique
+    private int ghastJumpTime = 0;
 
     public LocalPlayerMixin(ClientLevel clientLevel, GameProfile gameProfile) {
         super(clientLevel, gameProfile);
@@ -67,12 +88,61 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
         }
     }
 
-    @Inject(method = "isShiftKeyDown", at = @At("HEAD"), cancellable = true)
-    public void freecamFix(CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+    @WrapOperation(method = "tick", at = @At(value = "NEW", target = "net/minecraft/network/protocol/game/ServerboundPlayerInputPacket"))
+    public ServerboundPlayerInputPacket noSneakSendWhenHappyGhastTweak(Input input, Operation<ServerboundPlayerInputPacket> original) {
+        if (EclipsesTweaksConfig.TWEAK_CREATIVE_HAPPY_GHAST_FLIGHT.getBooleanValue()
+                && getControlledVehicle() instanceof HappyGhast && input.shift()) {
+            input = new Input(
+                    input.forward(),
+                    input.backward(),
+                    input.left(),
+                    input.right(),
+                    input.jump(),
+                    false,
+                    input.sprint());
+        }
+        return original.call(input);
+    }
+
+    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/tutorial/Tutorial;onInput(Lnet/minecraft/client/player/ClientInput;)V"))
+    public void freecamPermanentSneak(CallbackInfo callbackInfo) {
         if (FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue()
                 && FeatureToggle.TWEAK_PERMANENT_SNEAK.getBooleanValue()
                 && EclipsesGenericConfig.PERMANENT_SNEAK_FREE_CAMERA.getBooleanValue()) {
-            callbackInfoReturnable.setReturnValue(true);
+            input.keyPresses = new Input(
+                    input.keyPresses.forward(),
+                    input.keyPresses.backward(),
+                    input.keyPresses.left(),
+                    input.keyPresses.right(),
+                    input.keyPresses.jump(),
+                    true,
+                    input.keyPresses.sprint());
+        }
+    }
+
+    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;canStartSprinting()Z"))
+    public void dismountHappyGhastWhenDoubleTapJump(CallbackInfo callbackInfo, @Local(ordinal = 0) boolean wasJumping, @Local(ordinal = 3) boolean didAutoJump) {
+        if (ghastJumpTime > 0) {
+            ghastJumpTime--;
+        }
+
+        if (EclipsesTweaksConfig.TWEAK_CREATIVE_HAPPY_GHAST_FLIGHT.getBooleanValue()
+                && getControlledVehicle() instanceof HappyGhast
+                && !wasJumping && input.keyPresses.jump() && !didAutoJump) {
+            if (ghastJumpTime == 0) {
+                ghastJumpTime = 7;
+            } else {
+                input.keyPresses = new Input(
+                        input.keyPresses.forward(),
+                        input.keyPresses.backward(),
+                        input.keyPresses.left(),
+                        input.keyPresses.right(),
+                        false,
+                        true,
+                        input.keyPresses.sprint());
+                connection.send(new ServerboundPlayerInputPacket(input.keyPresses));
+                lastSentInput = input.keyPresses;
+            }
         }
     }
 }
