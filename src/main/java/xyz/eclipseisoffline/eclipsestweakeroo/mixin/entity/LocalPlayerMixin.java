@@ -11,7 +11,11 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.Holder;
 import net.minecraft.network.protocol.game.ServerboundPlayerInputPacket;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.animal.HappyGhast;
 import net.minecraft.world.entity.player.Input;
 import org.objectweb.asm.Opcodes;
@@ -144,5 +148,21 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
                 lastSentInput = input.keyPresses;
             }
         }
+    }
+
+    @WrapOperation(method = "modifyInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isUsingItem()Z"))
+    public boolean noUseItemSlowdown(LocalPlayer instance, Operation<Boolean> original) {
+        if (EclipsesDisableConfig.DISABLE_USE_ITEM_SLOWDOWN.getBooleanValue()) {
+            return false;
+        }
+        return original.call(instance);
+    }
+
+    @WrapOperation(method = "modifyInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;getAttributeValue(Lnet/minecraft/core/Holder;)D"))
+    public double useDefaultAttributeValue(LocalPlayer instance, Holder<Attribute> holder, Operation<Double> original) {
+        if (EclipsesDisableConfig.DISABLE_SWIFT_SNEAK.getBooleanValue()) {
+            return DefaultAttributes.getSupplier(EntityType.PLAYER).getValue(holder);
+        }
+        return original.call(instance, holder);
     }
 }
