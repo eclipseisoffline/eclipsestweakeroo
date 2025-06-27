@@ -1,12 +1,17 @@
-import java.nio.file.Files
+import me.modmuss50.mpp.ReleaseType
 
 plugins {
+    id 'me.modmuss50.mod-publish-plugin' version '0.8.4'
     id 'fabric-loom' version '1.10-SNAPSHOT'
     id 'maven-publish'
 }
 
 version = project.mod_version
 group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
 
 repositories {
     // ParchmentMC repository
@@ -18,7 +23,6 @@ repositories {
     maven {
         url 'https://maven.terraformersmc.com/releases/'
     }
-
     // Jitpack for Tweakeroo and Malilib
     maven {
         url 'https://jitpack.io'
@@ -34,12 +38,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    // modImplementation "curse.maven:malilib-303119:${project.malilib_version}" // TODO
-    //modImplementation "curse.maven:tweakeroo-297344:${project.tweakeroo_version_cursemaven}" // TODO
-    //modImplementation files("malilib.jar") // TODO
-    //modImplementation files("tweakeroo.jar") // TODO
-    modImplementation "com.github.sakura-ryoko:tweakeroo:1.21.6-0.25.0-sakura.2"
-    modImplementation "com.github.sakura-ryoko:malilib:1.21.6-0.25.0"
+    modImplementation "com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}"
+    modImplementation "com.github.sakura-ryoko:malilib:${malilib_version}"
 
     // Used during compiling
     modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
@@ -92,20 +92,52 @@ jar {
 publishing {
     repositories {
         maven {
-            name = "GithubPackages"
-            url = uri("https://maven.pkg.github.com/eclipseisoffline/eclipsestweakeroo")
-            credentials {
-                username = "eclipseisoffline"
-                password = Files.readString(java.nio.file.Path.of("./github_auth"))
+            name = "eclipseisoffline"
+            url = "https://maven.eclipseisoffline.xyz/releases"
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
             }
         }
     }
 
     publications {
-        gpr(MavenPublication) {
-            artifactId project.archives_base_name
-
+        maven(MavenPublication) {
+            artifactId = project.archives_base_name
             from components.java
         }
+    }
+}
+
+publish {
+    dependsOn("publishMods")
+}
+
+publishMods {
+    changelog = new File("CHANGELOG.md").text
+    type = ReleaseType.of(release_type)
+
+    file = remapJar.archiveFile
+    modLoaders.add("fabric")
+
+    modrinth {
+        accessToken = providers.gradleProperty("MODRINTH_API_TOKEN")
+        projectId = "6kKLK5i1"
+        minecraftVersions.addAll(release_minecraft_versions.split(","))
+
+        requires {
+            slug = "P7dR8mSH"
+            version = project.fabric_version
+        }
+
+        requires {
+            slug = "t5wuYk45"
+        }
+    }
+
+    github {
+        accessToken = providers.gradleProperty("GITHUB_API_PUBLISH_TOKEN")
+        repository = "eclipseisoffline/eclipsestweakeroo"
+        commitish = "main"
     }
 }
