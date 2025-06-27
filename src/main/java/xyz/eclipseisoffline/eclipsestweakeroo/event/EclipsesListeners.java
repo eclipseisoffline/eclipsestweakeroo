@@ -50,7 +50,9 @@ import java.util.Map;
 public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
         ClientPreAttackCallback, UseBlockCallback, UseEntityCallback, UseItemCallback,
         ClientTickEvents.StartWorldTick, AttemptConnectionCallback, ScreenEvents.AfterInit {
-    
+
+    private static final Component TO_SERVER_LIST = Component.translatable("gui.toMenu");
+
     private final Map<EquipmentSlot, Item> durabilityItems = new HashMap<>();
     private final Map<EquipmentSlot, Long> durabilityWarningTimes = new HashMap<>();
     private ServerAddress lastConnection = null;
@@ -101,7 +103,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
                     client.player.startFallFlying();
                 }
             } else {
-                client.player.stopFallFlying();
+                client.player.getAbilities().flying = false;
             }
         });
 
@@ -134,7 +136,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
                             lastConnection, lastConnectionInfo,
                             false, null);
                 }
-                backButton.setMessage(CommonComponents.GUI_RETURN_TO_MENU.copy()
+                backButton.setMessage(TO_SERVER_LIST.copy()
                         .append(Component.literal(" (reconnecting in "))
                         .append(Component.literal((wait - passed) + "ms")
                                 .withStyle(ChatFormatting.GREEN))

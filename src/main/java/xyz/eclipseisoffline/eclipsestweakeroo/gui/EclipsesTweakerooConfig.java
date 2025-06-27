@@ -21,13 +21,10 @@ import java.util.Objects;
 
 public class EclipsesTweakerooConfig extends GuiConfigsBase {
 
-    private static final String VERSION = FabricLoader.getInstance()
-            .getModContainer(EclipsesTweakeroo.MOD_ID).orElseThrow()
-            .getMetadata().getVersion().getFriendlyString();
     private static GuiConfigs.ConfigGuiTab tab = GuiConfigs.ConfigGuiTab.TWEAKS;
 
     public EclipsesTweakerooConfig(Screen parent) {
-        super(10, 50, EclipsesTweakeroo.MOD_ID, parent, "Eclipse's Tweakeroo Configs - " + VERSION);
+        super(10, 50, EclipsesTweakeroo.MOD_ID, parent, EclipsesTweakeroo.MOD_NAME_SHORT + " Configs - " + EclipsesTweakeroo.MOD_VERSION);
     }
 
     @Override

@@ -6,6 +6,7 @@ import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
@@ -23,6 +24,9 @@ public class EclipsesTweakeroo implements ClientModInitializer {
     public static final String MOD_ID = "eclipsestweakeroo";
     public static final String MOD_NAME = "Eclipse's Tweakeroo Additions";
     public static final String MOD_NAME_SHORT = "Eclipse's Tweakeroo";
+    public static final String MOD_VERSION = FabricLoader.getInstance()
+            .getModContainer(EclipsesTweakeroo.MOD_ID).orElseThrow()
+            .getMetadata().getVersion().getFriendlyString();
 
     public static final Logger LOGGER = LogUtils.getLogger();
 
