@@ -4,16 +4,15 @@ import java.util.List;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -37,6 +36,8 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @Unique
     private boolean creativeFallFlying = false;
+    @Unique
+    private boolean couldFly = false;
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setPos(DDD)V"))
     public void ignoreWorldBorderBlock(Player instance, double x, double y, double z, Operation<Void> original) {
@@ -48,18 +49,18 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @Inject(method = "startFallFlying", at = @At("TAIL"))
     public void startCreativeFly(CallbackInfo callbackInfo) {
-        if (EclipsesTweaksConfig.TWEAK_CREATIVE_ELYTRA_FLIGHT.getBooleanValue()) {
-            //noinspection EqualsBetweenInconvertibleTypes
-            if (equals(Minecraft.getInstance().player)) {
-                abilities.mayfly = true;
-                abilities.flying = true;
-                creativeFallFlying = true;
-            }
+        //noinspection ConstantValue
+        if (EclipsesTweaksConfig.TWEAK_CREATIVE_ELYTRA_FLIGHT.getBooleanValue() && (Object) this instanceof LocalPlayer) {
+            couldFly = abilities.mayfly;
+
+            abilities.mayfly = true;
+            abilities.flying = true;
+            creativeFallFlying = true;
         }
     }
 
     @Override
-    public void onSyncedDataUpdated(List<SynchedEntityData.DataValue<?>> newData) {
+    public void onSyncedDataUpdated(@NotNull List<SynchedEntityData.DataValue<?>> newData) {
         if (!creativeFallFlying) {
             return;
         }
@@ -67,8 +68,10 @@ public abstract class PlayerMixin extends LivingEntity {
         // Stop creative flying when the server no longer thinks we're using an elytra
         for (SynchedEntityData.DataValue<?> data : newData) {
             if (data.id() == Entity.DATA_SHARED_FLAGS_ID.id()) {
-                if (!getSharedFlag(Entity.FLAG_FALL_FLYING) && !Minecraft.getInstance().isSingleplayer()) {
-                    stopFallFlying();
+                if (!getSharedFlag(Entity.FLAG_FALL_FLYING)) {
+                    abilities.mayfly = couldFly;
+                    abilities.flying = false;
+                    creativeFallFlying = false;
                 }
                 break;
             }
@@ -77,27 +80,14 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @Inject(method = "aiStep", at = @At("HEAD"))
     public void stopFallFlyingWhenNotCreativeFlying(CallbackInfo callbackInfo) {
-        if (creativeFallFlying && !abilities.flying) {
-            stopFallFlying();
+        if (creativeFallFlying) {
+            if (abilities.flying) {
+                setSharedFlag(FLAG_FALL_FLYING, false);
+            } else {
+                abilities.mayfly = couldFly;
+                creativeFallFlying = false;
+                setSharedFlag(FLAG_FALL_FLYING, true);
+            }
         }
-    }
-
-    @Override
-    public void stopFallFlying() {
-        super.stopFallFlying();
-        if (!equals(Minecraft.getInstance().player)) {
-            return;
-        }
-
-        assert Minecraft.getInstance().getConnection() != null;
-
-        PlayerInfo thisPlayer = Minecraft.getInstance().getConnection().getPlayerInfo(getUUID());
-        if (thisPlayer == null) {
-            throw new AssertionError();
-        }
-        GameType gameMode = thisPlayer.getGameMode();
-        abilities.mayfly = !gameMode.isSurvival();
-        abilities.flying = !gameMode.isSurvival();
-        creativeFallFlying = false;
     }
 }
