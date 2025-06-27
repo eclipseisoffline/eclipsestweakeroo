@@ -90,7 +90,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 
     @WrapOperation(method = "tick", at = @At(value = "NEW", target = "net/minecraft/network/protocol/game/ServerboundPlayerInputPacket"))
     public ServerboundPlayerInputPacket noSneakSendWhenHappyGhastTweak(Input input, Operation<ServerboundPlayerInputPacket> original) {
-        if (EclipsesTweaksConfig.TWEAK_CREATIVE_HAPPY_GHAST_FLIGHT.getBooleanValue()
+        if (EclipsesTweaksConfig.TWEAK_HAPPY_GHAST.getBooleanValue()
                 && getControlledVehicle() instanceof HappyGhast && input.shift()) {
             input = new Input(
                     input.forward(),
@@ -126,7 +126,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
             ghastJumpTime--;
         }
 
-        if (EclipsesTweaksConfig.TWEAK_CREATIVE_HAPPY_GHAST_FLIGHT.getBooleanValue()
+        if (EclipsesTweaksConfig.TWEAK_HAPPY_GHAST.getBooleanValue()
                 && getControlledVehicle() instanceof HappyGhast
                 && !wasJumping && input.keyPresses.jump() && !didAutoJump) {
             if (ghastJumpTime == 0) {

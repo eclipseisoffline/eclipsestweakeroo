@@ -12,6 +12,7 @@ import net.minecraft.world.entity.animal.HappyGhast;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 
 import java.util.Objects;
@@ -38,7 +39,8 @@ public abstract class LevelRendererMixin implements ResourceManagerReloadListene
 
     @Unique
     private static boolean shouldHideHappyGhast(Entity entity) {
-        return EclipsesTweaksConfig.TWEAK_CREATIVE_HAPPY_GHAST_FLIGHT.getBooleanValue()
+        return EclipsesTweaksConfig.TWEAK_HAPPY_GHAST.getBooleanValue()
+                && EclipsesGenericConfig.HIDE_HAPPY_GHAST.getBooleanValue()
                 && entity instanceof HappyGhast
                 && Objects.requireNonNull(Minecraft.getInstance().player).getControlledVehicle() == entity;
     }
