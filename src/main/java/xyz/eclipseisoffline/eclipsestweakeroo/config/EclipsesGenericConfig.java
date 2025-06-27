@@ -52,26 +52,26 @@ public class EclipsesGenericConfig {
     public static final ConfigBoolean PLAYER_GAMEMODE_NOTIFICATION = createBoolean("playerGamemodeNotification", true, "Notifies player info gamemode changes with tweakPlayerInfoNotifications");
     public static final ConfigBoolean PLAYER_LISTED_NOTIFICATION = createBoolean("playerListedNotification", true, "Notifies listed players changes with tweakPlayerInfoNotifications");
     public static final ConfigBoolean PLAYER_DISPLAY_NAME_NOTIFICATION = createBoolean("playerDisplayNameNotification", true, "Notifies player info display name changes with tweakPlayerInfoNotifications");
-    public static ConfigInteger DURABILITY_PREVENT_USE_THRESHOLD = new ConfigInteger("durabilityCheckPreventUseThreshold",
+    public static ConfigInteger DURABILITY_PREVENT_USE_THRESHOLD = createInteger("durabilityCheckPreventUseThreshold",
             10, 1, 50,
             "The threshold to start preventing the use of items low on durability");
     public static ConfigBoolean TWEAK_BOAT_SPIDER = createBoolean("spiderBoat", "Boats can jump infinitely high when tweakBoats is enabled");
     public static ConfigBoolean TWEAK_BOAT_PLAYER_YAW = createBoolean("boatPlayerYaw", "Boats follow the yaw of the controlling player when tweakBoats is enabled");
-    public static ConfigInteger TWEAK_NUMBER_HUD_HEALTH_WARNING_THRESHOLD = new ConfigInteger("healthWarningThreshold",
+    public static ConfigInteger TWEAK_NUMBER_HUD_HEALTH_WARNING_THRESHOLD = createInteger("healthWarningThreshold",
             5, -1, 20,
             "Determines when to start flashing the HP text when tweakNumberHud is used");
-    public static ConfigInteger TWEAK_NUMBER_HUD_HUNGER_WARNING_THRESHOLD = new ConfigInteger("hungerWarningThreshold",
+    public static ConfigInteger TWEAK_NUMBER_HUD_HUNGER_WARNING_THRESHOLD = createInteger("hungerWarningThreshold",
             15, -1, 20,
             "Determines when to start flashing the hunger text when tweakNumberHud is used");
-    public static ConfigInteger TWEAK_NUMBER_HUD_AIR_WARNING_THRESHOLD = new ConfigInteger("airWarningThreshold",
+    public static ConfigInteger TWEAK_NUMBER_HUD_AIR_WARNING_THRESHOLD = createInteger("airWarningThreshold",
             75, -21, 300,
             "Determines when to start flashing the air text when tweakNumberHud is used");
     public static ConfigBoolean TWEAK_NUMBER_HUD_SHOW_DURABILITY_WARNING = createBoolean("numberHudDurabilityWarning", true, "Shows durability warnings for equipment slots when tweakNumberHud is used");
     public static ConfigBoolean DISABLE_EXPLOSION_KNOCKBACK = createBoolean("disableExplosionKnockback", "Disables knockback from explosions when disableKnockback is enabled");
-    public static final ConfigDouble TWEAK_GRAVITY_OVERRIDE = new ConfigDouble("gravityOverride",
+    public static final ConfigDouble TWEAK_GRAVITY_OVERRIDE = createDouble("gravityOverride",
             0.08, -0.5, 0.5,
             "Defines the gravity value when using tweakGravity");
-    public static final ConfigDouble TWEAK_STEP_HEIGHT_OVERRIDE = new ConfigDouble("stepHeightOverride",
+    public static final ConfigDouble TWEAK_STEP_HEIGHT_OVERRIDE = createDouble("stepHeightOverride",
             0.6, 0.0, 1.5,
             "Defines the step height value when using tweakStepHeight");
     public static final ConfigBoolean FAKE_SNEAKING_LADDER = createBoolean("fakeSneakingLadder", "Allows tweakFakeSneaking to stop you from falling down a ladder");
