@@ -35,6 +35,7 @@
     "renderer.LevelRendererMixin",
     "renderer.LightTextureMixin",
     "renderer.LivingEntityRendererMixin",
+    "renderer.LocatorBarRendererMixin",
     "renderer.ParticleEngineMixin",
     "renderer.PlayerTabOverlayMixin",
     "screen.ConnectScreenMixin",
