@@ -25,6 +25,7 @@ public class EclipsesTweakerooConfig extends GuiConfigsBase {
 
     public EclipsesTweakerooConfig(Screen parent) {
         super(10, 50, EclipsesTweakeroo.MOD_ID, parent, EclipsesTweakeroo.MOD_NAME_SHORT + " Configs - " + EclipsesTweakeroo.MOD_VERSION);
+        setParent(parent); // super constructor doesn't do anything with parent...
     }
 
     @Override
