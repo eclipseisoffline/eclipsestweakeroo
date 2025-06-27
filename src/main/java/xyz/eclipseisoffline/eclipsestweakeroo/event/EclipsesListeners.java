@@ -52,7 +52,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
         ClientTickEvents.StartWorldTick, AttemptConnectionCallback, ScreenEvents.AfterInit {
     
     private final Map<EquipmentSlot, Item> durabilityItems = new HashMap<>();
-    private final Map<EquipmentSlot, Integer> durabilityWarningTimes = new HashMap<>();
+    private final Map<EquipmentSlot, Long> durabilityWarningTimes = new HashMap<>();
     private ServerAddress lastConnection = null;
     private ServerData lastConnectionInfo = null;
     
@@ -63,21 +63,20 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
         }
 
         assert Minecraft.getInstance().player != null;
-        int time = EclipsesTweakerooUtil.milliTime();
+        long time = System.currentTimeMillis();
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             ItemStack itemStack = Minecraft.getInstance().player.getItemBySlot(slot);
 
             if (!EclipsesTweakerooUtil.shouldWarnDurability(itemStack)) {
-                durabilityWarningTimes.put(slot, 0);
+                durabilityWarningTimes.put(slot, 0L);
                 continue;
             }
 
-            int warningTime = durabilityWarningTimes.getOrDefault(slot, 0);
+            long warningTime = durabilityWarningTimes.getOrDefault(slot, 0L);
             boolean check = false;
             if (!itemStack.getItem().equals(durabilityItems.get(slot))) {
                 check = true;
-            } else if ((time - warningTime) / 1000
-                    > EclipsesGenericConfig.DURABILITY_WARNING_COOLDOWN.getIntegerValue()) {
+            } else if ((time - warningTime) / 1000 > EclipsesGenericConfig.DURABILITY_WARNING_COOLDOWN.getIntegerValue()) {
                 check = true;
             }
             if (!check) {
@@ -115,7 +114,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
     @Override
     public void afterInit(Minecraft minecraft, Screen screen, int i, int i1) {
         if (screen instanceof DisconnectedScreen disconnectedScreen && EclipsesTweaksConfig.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
-            int disconnectedTime = EclipsesTweakerooUtil.milliTime();
+            long disconnectedTime = System.currentTimeMillis();
             Button backButton = (Button) disconnectedScreen.children().stream().filter(child -> child instanceof Button).findFirst().orElseThrow();
             int originalWidth = backButton.getWidth();
             if (originalWidth < 300) {
@@ -126,7 +125,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
 
             ScreenEvents.afterRender(screen).register(((screenInstance, drawContext,
                                                         mouseX, mouseY, tickDelta) -> {
-                int passed = EclipsesTweakerooUtil.milliTime() - disconnectedTime;
+                long passed = System.currentTimeMillis() - disconnectedTime;
                 int wait = EclipsesGenericConfig.RECONNECT_TIME.getIntegerValue();
                 if (passed > wait) {
                     ConnectScreen.startConnecting(

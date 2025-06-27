@@ -35,7 +35,7 @@ public class EclipsesTweaksConfig {
     public static final ConfigBooleanHotkeyed TWEAK_STEP_HEIGHT = create("tweakStepHeight", "Allows you to override your step height attribute. Can be configured in General.\nNote that this also affects sneaking",
             "Step height tweak");
     public static final ConfigBooleanHotkeyed TWEAK_HAPPY_GHAST = create("tweakHappyGhast",
-            "Makes various tweaks to controlling Happy Ghasts. Configure in General",
+            "Makes various tweaks to controlling Happy Ghasts.\nRequires configuring in General",
             "Happy Ghast flight tweak");
     public static final ConfigBooleanHotkeyed TWEAK_LOCATOR_BAR = create("tweakLocatorBar", "Shows faces of players on the locator bar", "Locator bar tweak");
 

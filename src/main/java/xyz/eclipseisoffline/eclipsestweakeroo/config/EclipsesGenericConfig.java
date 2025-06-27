@@ -76,12 +76,12 @@ public class EclipsesGenericConfig {
             "Defines the step height value when using tweakStepHeight");
     public static final ConfigBoolean FAKE_SNEAKING_LADDER = createBoolean("fakeSneakingLadder", "Allows tweakFakeSneaking to stop you from falling down a ladder");
     public static final ConfigBoolean PERMANENT_SNEAK_FREE_CAMERA = createBoolean("permanentSneakFreeCamera", "Allows tweakPermanentSneak to work while using tweakFreeCamera");
-    public static final ConfigBoolean HAPPY_GHAST_CREATIVE_FLIGHT = createBoolean("happyGhastCreativeFlight", "Uses creative flight controls to control Happy Ghasts when tweakHappyGhast is enabled. Uses same speed as normally, except when sprinting. Double-tap jump to dismount");
-    public static final ConfigBoolean HIDE_HAPPY_GHAST = createBoolean("hideHappyGhast", "Hides the Happy Ghast when driving it and tweakHappyGhast is enabled");
-    public static final ConfigBoolean NO_HAPPY_GHAST_ROTATION = createBoolean("noHappyGhastRotation", "Disables rotating the Happy Ghast when driving but not moving and tweakHappyGhast is enabled");
+    public static final ConfigBoolean HAPPY_GHAST_CREATIVE_FLIGHT = createBoolean("happyGhastCreativeFlight", "Uses creative flight controls to control Happy Ghasts\nwhen tweakHappyGhast is enabled.\nUses same speed as normally, except when sprinting.\nDouble-tap jump to dismount");
+    public static final ConfigBoolean HIDE_HAPPY_GHAST = createBoolean("hideHappyGhast", "Hides the Happy Ghast when controlling it and tweakHappyGhast is enabled");
+    public static final ConfigBoolean NO_HAPPY_GHAST_ROTATION = createBoolean("noHappyGhastRotation", "Disables rotating the Happy Ghast when not moving and tweakHappyGhast is enabled");
     public static final ConfigDouble HAPPY_GHAST_ROTATION_LERP_SPEED = createDouble("happyGhastRotationLerpSpeed",
             0.08, 0.01, 1.0,
-            "Defines the rotation speed when controlling the Happy Ghast. 1.0 is instant rotation");
+            "Defines the rotation speed when controlling the Happy Ghast with tweakHappyGhast.\n1.0 is instant rotation");
 
     private static ConfigBoolean createBoolean(String name, String comment) {
         return createBoolean(name, false, comment);

@@ -85,7 +85,7 @@ public class FancyName {
                     return null;
                 }
                 Vec3 cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-                return Component.literal(String.valueOf(Math.floor(cameraPos.distanceTo(livingEntity.position()))))
+                return Component.literal(EclipsesTweakerooUtil.roundToOneDecimal((float) cameraPos.distanceTo(livingEntity.position())))
                         .withStyle(ChatFormatting.BLUE);
             }),
             Map.entry("statuseffect", (livingEntity, playerInfo) -> {
