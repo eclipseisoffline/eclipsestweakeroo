@@ -127,7 +127,6 @@ publishMods {
 
         requires {
             slug = "P7dR8mSH"
-            version = project.fabric_version
         }
 
         requires {

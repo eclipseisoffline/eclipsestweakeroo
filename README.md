@@ -32,7 +32,6 @@ The Fabric API and Tweakeroo are required dependencies. The mod has its own conf
 which can be opened by default by pressing `C + E`. This hotkey can be configured. The configuration screen can
 also be opened via [Mod Menu](https://modrinth.com/mod/modmenu).
 
-
 ## Version support
 
 | Minecraft Version | Status       |
