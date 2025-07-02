@@ -19,9 +19,12 @@
     "sources": "https://github.com/eclipseisoffline/eclipsestweakeroo"
   },
   "license": "LGPL-3.0-only",
-  "environment": "client",
+  "environment": "*",
   "entrypoints": {
     "client": [
+      "xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakerooClient"
+    ],
+    "main": [
       "xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo"
     ],
     "modmenu": [
@@ -29,7 +32,10 @@
     ]
   },
   "mixins": [
-    "eclipsestweakeroo.mixin.json"
+    {
+      "config": "eclipsestweakeroo.client.mixin.json",
+      "environment": "client"
+    }
   ],
   "accessWidener": "eclipsestweakeroo.accesswidener",
   "depends": {

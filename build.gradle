@@ -48,6 +48,15 @@ dependencies {
 }
 
 loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        "eclipsestweakeroo" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+
     accessWidenerPath = file("src/main/resources/eclipsestweakeroo.accesswidener")
 }
 
