@@ -13,7 +13,8 @@ public class EclipsesTweakerooNetworking {
 
         ServerConfigurationConnectionEvents.CONFIGURE.register((listener, server) -> {
             if (ServerConfigurationNetworking.canSend(listener, ClientboundDisabledTogglesPacket.TYPE)) {
-                ServerConfigurationNetworking.send(listener, new ClientboundDisabledTogglesPacket(List.of(ClientboundDisabledTogglesPacket.Toggle.CREATIVE_ELYTRA_FLIGHT)));
+                ServerConfigurationNetworking.send(listener, new ClientboundDisabledTogglesPacket(List.of(ClientboundDisabledTogglesPacket.Toggle.CREATIVE_ELYTRA_FLIGHT,
+                        ClientboundDisabledTogglesPacket.Toggle.NO_KNOCKBACK, ClientboundDisabledTogglesPacket.Toggle.NO_ENTITY_COLLISIONS)));
             }
         });
     }

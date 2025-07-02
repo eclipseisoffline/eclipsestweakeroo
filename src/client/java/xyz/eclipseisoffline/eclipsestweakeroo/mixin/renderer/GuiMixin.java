@@ -23,9 +23,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 @Mixin(Gui.class)
 public abstract class GuiMixin {
@@ -58,7 +59,7 @@ public abstract class GuiMixin {
 
     @Inject(method = "renderCameraOverlays", at = @At("HEAD"), cancellable = true)
     public void cancelOverlays(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo callbackInfo) {
-        if (EclipsesDisableConfig.DISABLE_OVERLAY_RENDER.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_OVERLAY_RENDER)) {
             callbackInfo.cancel();
         }
     }
@@ -66,7 +67,7 @@ public abstract class GuiMixin {
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectInstance;isAmbient()Z"))
     public void drawStatusText(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo callbackInfo,
                                @Local MobEffectInstance mobEffectInstance, @Local(ordinal = 2) int k, @Local(ordinal = 3) LocalIntRef l) {
-        if (EclipsesTweaksConfig.TWEAK_STATUS_EFFECT.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_STATUS_EFFECT)) {
             // Second row
             if (l.get() > 20) {
                 l.set(l.get() + STATUS_EFFECT_SPACE + getFont().lineHeight);
@@ -82,7 +83,7 @@ public abstract class GuiMixin {
 
     @Inject(method = "renderVehicleHealth", at = @At("HEAD"), cancellable = true)
     public void renderVehicleHealthInCreativeWithNumberHud(GuiGraphics graphics, CallbackInfo callbackInfo) {
-        if (EclipsesTweaksConfig.TWEAK_NUMBER_HUD.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_NUMBER_HUD)) {
             callbackInfo.cancel();
         } else {
             return;
@@ -98,7 +99,7 @@ public abstract class GuiMixin {
 
     @Inject(method = "renderPlayerHealth", at = @At("HEAD"), cancellable = true)
     public void useNumberHud(GuiGraphics graphics, CallbackInfo callbackInfo) {
-        if (!EclipsesTweaksConfig.TWEAK_NUMBER_HUD.getBooleanValue()) {
+        if (!ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_NUMBER_HUD)) {
             return;
         }
         callbackInfo.cancel();

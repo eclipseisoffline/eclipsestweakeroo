@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 @Mixin(targets = "net.minecraft.world.inventory.ArmorSlot")
 public abstract class ArmorSlotMixin extends Slot {
@@ -21,14 +22,14 @@ public abstract class ArmorSlotMixin extends Slot {
 
     @Inject(method = "mayPlace", at = @At("HEAD"), cancellable = true)
     public void canAlwaysPlace(ItemStack stack, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        if (EclipsesDisableConfig.DISABLE_EQUIPMENT_RESTRICTION.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_EQUIPMENT_RESTRICTION)) {
             callbackInfoReturnable.setReturnValue(true);
         }
     }
 
     @WrapOperation(method = "mayPickup", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;has(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/core/component/DataComponentType;)Z"))
     public boolean disableBindingCurse(ItemStack stack, DataComponentType<?> componentType, Operation<Boolean> original) {
-        if (EclipsesDisableConfig.DISABLE_BINDING_CURSE.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_BINDING_CURSE)) {
             return false;
         }
 

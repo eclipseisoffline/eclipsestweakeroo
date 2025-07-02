@@ -1,8 +1,6 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin.network;
 
 import com.mojang.authlib.GameProfile;
-import java.time.Instant;
-
 import net.minecraft.client.GuiMessageTag;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ChatComponent;
@@ -24,8 +22,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesListsConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
+
+import java.time.Instant;
 
 // TODO this needs to be done over
 @Mixin(ChatListener.class)
@@ -43,7 +44,7 @@ public abstract class ChatListenerMixin {
                               GameProfile gameProfile, boolean onlyShowSecureChat, Instant timestamp,
                               CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         // TODO - redo - further customise - combine with cancelMessage method? investigate
-        if (EclipsesTweaksConfig.TWEAK_CHAT_MESSAGES.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_CHAT_MESSAGES)) {
             String messageBody = getMessageBody(decoratedServerContent);
 
             ChatTrustLevel messageTrustStatus = evaluateTrustLevel(chatMessage, decoratedServerContent, timestamp);
@@ -67,7 +68,7 @@ public abstract class ChatListenerMixin {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/network/chat/FilterMask;isEmpty()Z"),
                     to = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/chat/ChatListener;narrateChatMessage(Lnet/minecraft/network/chat/ChatType$Bound;Lnet/minecraft/network/chat/Component;)V")))
     public void cancelMessage(ChatComponent instance, Component chatComponent, MessageSignature headerSignature, GuiMessageTag tag) {
-        if (EclipsesTweaksConfig.TWEAK_CHAT_MESSAGES.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_CHAT_MESSAGES)) {
             return;
         }
         instance.addMessage(chatComponent, headerSignature, tag);

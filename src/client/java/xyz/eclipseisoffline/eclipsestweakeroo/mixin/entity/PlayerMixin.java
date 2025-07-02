@@ -1,7 +1,5 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity;
 
-import java.util.List;
-
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.player.LocalPlayer;
@@ -22,6 +20,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
+
+import java.util.List;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity {
@@ -41,7 +42,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setPos(DDD)V"))
     public void ignoreWorldBorderBlock(Player instance, double x, double y, double z, Operation<Void> original) {
-        if (EclipsesDisableConfig.DISABLE_WORLD_BORDER.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_WORLD_BORDER)) {
             return;
         }
         original.call(instance, x, y, z);
@@ -50,7 +51,7 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "startFallFlying", at = @At("TAIL"))
     public void startCreativeFly(CallbackInfo callbackInfo) {
         //noinspection ConstantValue
-        if (EclipsesTweaksConfig.TWEAK_CREATIVE_ELYTRA_FLIGHT.getBooleanValue() && (Object) this instanceof LocalPlayer) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_CREATIVE_ELYTRA_FLIGHT) && (Object) this instanceof LocalPlayer) {
             couldFly = abilities.mayfly;
 
             abilities.mayfly = true;

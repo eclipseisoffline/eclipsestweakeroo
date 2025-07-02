@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 @Mixin(HappyGhast.class)
 public abstract class HappyGhastMixin extends Animal {
@@ -29,7 +30,7 @@ public abstract class HappyGhastMixin extends Animal {
 
     @Inject(method = "getRiddenInput", at = @At("HEAD"), cancellable = true)
     public void useCreativeFlyInput(Player player, Vec3 travelVector, CallbackInfoReturnable<Vec3> callbackInfoReturnable) {
-        if (EclipsesTweaksConfig.TWEAK_HAPPY_GHAST.getBooleanValue() && EclipsesGenericConfig.HAPPY_GHAST_CREATIVE_FLIGHT.getBooleanValue()
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_HAPPY_GHAST) && EclipsesGenericConfig.HAPPY_GHAST_CREATIVE_FLIGHT.getBooleanValue()
                 && player instanceof LocalPlayer localPlayer) {
             Input input = localPlayer.input.keyPresses;
             double speed = 3.9F * getAttributeValue(Attributes.FLYING_SPEED);
@@ -44,7 +45,7 @@ public abstract class HappyGhastMixin extends Animal {
 
     @Inject(method = "tickRidden", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/HappyGhast;getRiddenRotation(Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/phys/Vec2;"), cancellable = true)
     public void dontRotateIfNotMoving(Player player, Vec3 travelVector, CallbackInfo callbackInfo) {
-        if (EclipsesTweaksConfig.TWEAK_HAPPY_GHAST.getBooleanValue() && EclipsesGenericConfig.NO_HAPPY_GHAST_ROTATION.getBooleanValue()
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_HAPPY_GHAST) && EclipsesGenericConfig.NO_HAPPY_GHAST_ROTATION.getBooleanValue()
                 && player instanceof LocalPlayer && travelVector.lengthSqr() < 0.005) {
             callbackInfo.cancel();
         }
@@ -52,7 +53,7 @@ public abstract class HappyGhastMixin extends Animal {
 
     @ModifyConstant(method = "tickRidden", constant = @Constant(floatValue = 0.08F))
     public float modifyRotationLerpSpeed(float original, @Local(argsOnly = true) Player player) {
-        if (EclipsesTweaksConfig.TWEAK_HAPPY_GHAST.getBooleanValue() && player instanceof LocalPlayer) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_HAPPY_GHAST) && player instanceof LocalPlayer) {
             return (float) EclipsesGenericConfig.HAPPY_GHAST_ROTATION_LERP_SPEED.getDoubleValue();
         }
         return original;

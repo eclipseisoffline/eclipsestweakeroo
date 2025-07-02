@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 @Mixin(StructureVoidBlock.class)
 public abstract class StructureVoidBlockMixin extends Block {
@@ -19,7 +20,7 @@ public abstract class StructureVoidBlockMixin extends Block {
 
     @Inject(method = "getRenderShape", at = @At("HEAD"), cancellable = true)
     public void useModelRenderShape(BlockState state, CallbackInfoReturnable<RenderShape> callbackInfoReturnable) {
-        if (EclipsesTweaksConfig.TWEAK_RENDER_OPERATOR_BLOCKS.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_RENDER_OPERATOR_BLOCKS)) {
             callbackInfoReturnable.setReturnValue(RenderShape.MODEL);
         }
     }

@@ -12,8 +12,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -24,13 +25,13 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "shouldShowName", at = @At("TAIL"), cancellable = true)
     public void alwaysShowName(CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        callbackInfoReturnable.setReturnValue(callbackInfoReturnable.getReturnValue() || (EclipsesTweaksConfig.TWEAK_MOB_NAMES.getBooleanValue()));
+        callbackInfoReturnable.setReturnValue(callbackInfoReturnable.getReturnValue() || (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_MOB_NAMES)));
     }
 
     @WrapOperation(method = "travelInAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getFriction()F"))
     public float getTweakedFriction(Block instance, Operation<Float> original) {
         //noinspection ConstantValue
-        if (EclipsesTweaksConfig.TWEAK_SLIPPERY.getBooleanValue()
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_SLIPPERY)
                 && ((Object) this instanceof LocalPlayer
                     || (getControllingPassenger() instanceof LocalPlayer && EclipsesGenericConfig.TWEAK_SLIPPERY_VEHICLES.getBooleanValue()))) {
             return (float) EclipsesGenericConfig.TWEAK_SLIPPERY_SLIPPERINESS.getDoubleValue();

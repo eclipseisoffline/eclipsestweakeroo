@@ -7,13 +7,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 @Mixin(ItemCooldowns.class)
 public abstract class ItemCooldownsMixin {
 
     @Inject(method = "addCooldown(Lnet/minecraft/resources/ResourceLocation;I)V", at = @At("HEAD"), cancellable = true)
     public void disableItemCooldown(ResourceLocation resourceLocation, int i, CallbackInfo callbackInfo) {
-        if (EclipsesDisableConfig.DISABLE_ITEM_COOLDOWN.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_ITEM_COOLDOWN)) {
             callbackInfo.cancel();
         }
     }

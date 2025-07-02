@@ -8,8 +8,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
@@ -18,14 +19,14 @@ public abstract class EntityMixin {
     public void cancelPush(Entity entity, CallbackInfo callbackInfo) {
         //noinspection ConstantValue
         if (((Object) this instanceof Player)
-                && EclipsesDisableConfig.DISABLE_ENTITY_COLLISIONS.getBooleanValue()) {
+                && ToggleManager.enabled(EclipsesDisableConfig.DISABLE_ENTITY_COLLISIONS)) {
             callbackInfo.cancel();
         }
     }
 
     @Inject(method = "getBlockJumpFactor", at = @At("HEAD"), cancellable = true)
     public void getTweakedJumpFactor(CallbackInfoReturnable<Float> callbackInfoReturnable) {
-        if (EclipsesTweaksConfig.TWEAK_JUMP_VELOCITY.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_JUMP_VELOCITY)) {
             callbackInfoReturnable.setReturnValue((float) EclipsesGenericConfig.TWEAK_JUMP_VELOCITY.getDoubleValue());
         }
     }

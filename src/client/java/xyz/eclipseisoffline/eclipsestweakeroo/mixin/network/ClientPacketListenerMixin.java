@@ -1,8 +1,6 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin.network;
 
 import com.mojang.authlib.GameProfile;
-import java.util.Set;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
@@ -25,8 +23,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
+
+import java.util.Set;
 
 @Mixin(ClientPacketListener.class)
 public abstract class ClientPacketListenerMixin extends ClientCommonPacketListenerImpl implements ClientGamePacketListener, TickablePacketListener {
@@ -42,7 +43,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
         assert level != null;
 
         Entity entity = level.getEntity(packet.getId());
-        if (EclipsesDisableConfig.DISABLE_KNOCKBACK.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_KNOCKBACK)) {
             assert entity != null;
             if (entity.equals(Minecraft.getInstance().player)) {
                 callbackInfo.cancel();
@@ -52,7 +53,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
 
     @Inject(method = "handleExplosion", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/protocol/game/ClientboundExplodePacket;playerKnockback()Ljava/util/Optional;"), cancellable = true)
     public void cancelPlayerVelocitySet(ClientboundExplodePacket packet, CallbackInfo callbackInfo) {
-        if (EclipsesDisableConfig.DISABLE_KNOCKBACK.getBooleanValue() && EclipsesGenericConfig.DISABLE_EXPLOSION_KNOCKBACK.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_KNOCKBACK) && EclipsesGenericConfig.DISABLE_EXPLOSION_KNOCKBACK.getBooleanValue()) {
             callbackInfo.cancel();
         }
     }
@@ -62,7 +63,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
         assert object instanceof PlayerInfo;
         PlayerInfo entry = (PlayerInfo) object;
 
-        if (EclipsesTweaksConfig.TWEAK_PLAYER_INFO_NOTIFICATIONS.getBooleanValue()
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_INFO_NOTIFICATIONS)
                 && EclipsesGenericConfig.PLAYER_ADD_REMOVE_NOTIFICATION.getBooleanValue()) {
             Minecraft.getInstance().gui.getChat().addMessage(
                     Component.literal("Player info entry " + entry.getProfile().getName() + " was removed").withStyle(ChatFormatting.GOLD));
@@ -74,7 +75,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
     @Inject(method = "applyPlayerInfoUpdate", at = @At("HEAD"))
     public void showPlayerInfoNotifications(ClientboundPlayerInfoUpdatePacket.Action action,
                                             ClientboundPlayerInfoUpdatePacket.Entry received, PlayerInfo current, CallbackInfo ci) {
-        if (!EclipsesTweaksConfig.TWEAK_PLAYER_INFO_NOTIFICATIONS.getBooleanValue()) {
+        if (!ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_INFO_NOTIFICATIONS)) {
             return;
         }
 

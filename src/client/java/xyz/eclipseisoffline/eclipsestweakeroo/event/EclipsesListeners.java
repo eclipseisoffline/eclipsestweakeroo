@@ -42,6 +42,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity.AllayInvoker;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.screen.DisconnectedScreenAccessor;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +60,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
     
     @Override
     public void onStartTick(ClientLevel level) {
-        if (level.getGameTime() % 10 != 0 || !EclipsesTweaksConfig.TWEAK_DURABILITY_CHECK.getBooleanValue()) {
+        if (level.getGameTime() % 10 != 0 || !ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_DURABILITY_CHECK)) {
             return;
         }
 
@@ -114,7 +115,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
 
     @Override
     public void afterInit(Minecraft minecraft, Screen screen, int i, int i1) {
-        if (screen instanceof DisconnectedScreen disconnectedScreen && EclipsesTweaksConfig.TWEAK_AUTO_RECONNECT.getBooleanValue()) {
+        if (screen instanceof DisconnectedScreen disconnectedScreen && ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_AUTO_RECONNECT)) {
             long disconnectedTime = System.currentTimeMillis();
             Button backButton = (Button) disconnectedScreen.children().stream().filter(child -> child instanceof Button).findFirst().orElseThrow();
             int originalWidth = backButton.getWidth();
@@ -153,9 +154,9 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
     public InteractionResult interact(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
         if (EclipsesTweakerooUtil.shouldDisableUse(player, hand)) {
             return InteractionResult.FAIL;
-        } else if (EclipsesDisableConfig.DISABLE_BLOCK_USE.getBooleanValue()) {
+        } else if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_BLOCK_USE)) {
             return InteractionResult.FAIL;
-        } else if (EclipsesDisableConfig.DISABLE_BED_EXPLOSION.getBooleanValue()
+        } else if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_BED_EXPLOSION)
                 && !level.dimensionType().bedWorks()
                 && level.getBlockState(hitResult.getBlockPos()).getBlock() instanceof BedBlock) {
             return InteractionResult.FAIL;
@@ -170,7 +171,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
             return InteractionResult.FAIL;
         }
 
-        if (EclipsesDisableConfig.DISABLE_ALLAY_USE.getBooleanValue() && entity instanceof Allay allay) {
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_ALLAY_USE) && entity instanceof Allay allay) {
             if (!player.getItemInHand(hand).isEmpty()) {
                 Item item = player.getItemInHand(hand).getItem();
                 if (((AllayInvoker) allay).invokeCanDuplicate() && item == Items.AMETHYST_SHARD) {
@@ -188,7 +189,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
         ItemStack usedStack = player.getItemInHand(hand);
         if (EclipsesTweakerooUtil.shouldDisableUse(player, hand)) {
             return InteractionResult.FAIL;
-        } else if (EclipsesTweaksConfig.TWEAK_LODESTONE.getBooleanValue() && usedStack.has(DataComponents.LODESTONE_TRACKER)) {
+        } else if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_LODESTONE) && usedStack.has(DataComponents.LODESTONE_TRACKER)) {
             LodestoneTracker tracker = usedStack.get(DataComponents.LODESTONE_TRACKER);
             assert tracker != null;
 

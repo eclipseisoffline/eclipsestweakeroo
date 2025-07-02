@@ -5,13 +5,6 @@ import fi.dy.masa.malilib.util.InfoUtils;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceMap;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.BiConsumer;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.DamageSourcePredicate;
 import net.minecraft.advancements.critereon.TagPredicate;
@@ -53,8 +46,14 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.mixin.particle.ColorParticleOptionAccessor;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity.LivingEntityAccessor;
+import xyz.eclipseisoffline.eclipsestweakeroo.mixin.particle.ColorParticleOptionAccessor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiConsumer;
 
 public class EclipsesTweakerooUtil {
 
@@ -293,13 +292,13 @@ public class EclipsesTweakerooUtil {
     }
 
     public static boolean shouldDisableUse(Player player, InteractionHand hand) {
-        if (EclipsesDisableConfig.DISABLE_OFFHAND_USE.getBooleanValue()
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_OFFHAND_USE)
                 && hand == InteractionHand.OFF_HAND) {
             return true;
         }
 
         if (EclipsesGenericConfig.TWEAK_DURABILITY_PREVENT_USE.getBooleanValue()
-                && EclipsesTweaksConfig.TWEAK_DURABILITY_CHECK.getBooleanValue()
+                && ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_DURABILITY_CHECK)
                 && player.getItemInHand(hand).isDamageableItem()) {
             if (player.getItemInHand(hand).getDamageValue() < player.getItemInHand(hand).getMaxDamage() - EclipsesGenericConfig.DURABILITY_PREVENT_USE_THRESHOLD.getIntegerValue()) {
                 return false;

@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 @Mixin(LocatorBarRenderer.class)
 public abstract class LocatorBarRendererMixin implements ContextualBarRenderer {
@@ -37,7 +38,7 @@ public abstract class LocatorBarRendererMixin implements ContextualBarRenderer {
     @WrapOperation(method = "method_70870", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIIII)V"))
     public void usePlayerIcon(GuiGraphics instance, RenderPipeline pipeline, ResourceLocation texture, int x, int y, int width, int height, int color, Operation<Void> original,
                               @Local(argsOnly = true) TrackedWaypoint waypoint, @Local float distance) {
-        if (EclipsesTweaksConfig.TWEAK_LOCATOR_BAR.getBooleanValue() && waypoint.id().left().isPresent()) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_LOCATOR_BAR) && waypoint.id().left().isPresent()) {
             PlayerInfo player = minecraft.getConnection().getPlayerInfo(waypoint.id().left().orElseThrow());
             if (player != null) {
                 float size = MAX_FACE_WIDTH + FACE_SIZE_LERP * distance;

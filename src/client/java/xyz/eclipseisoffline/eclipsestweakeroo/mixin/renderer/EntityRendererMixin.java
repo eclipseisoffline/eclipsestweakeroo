@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.FancyName;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 @Mixin(EntityRenderer.class)
 public abstract class EntityRendererMixin<T extends Entity, S extends EntityRenderState> {
@@ -21,13 +22,13 @@ public abstract class EntityRendererMixin<T extends Entity, S extends EntityRend
     @Inject(method = "getNameTag", at = @At("HEAD"), cancellable = true)
     public void getFancyDisplayName(T entity, CallbackInfoReturnable<Component> callbackInfoReturnable) {
         if (entity instanceof Player player) {
-            if (EclipsesTweaksConfig.TWEAK_PLAYER_NAME.getBooleanValue()) {
+            if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_NAME)) {
                 if (Minecraft.getInstance().getConnection() != null) {
                     PlayerInfo playerInfo = Minecraft.getInstance().getConnection().getPlayerInfo(entity.getUUID());
                     callbackInfoReturnable.setReturnValue(FancyName.applyFancyName(player, playerInfo));
                 }
             }
-        } else if (EclipsesTweaksConfig.TWEAK_MOB_NAMES.getBooleanValue()
+        } else if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_MOB_NAMES)
                 && (entity instanceof LivingEntity living)) {
             callbackInfoReturnable.setReturnValue(FancyName.applyFancyName(living, null));
         }

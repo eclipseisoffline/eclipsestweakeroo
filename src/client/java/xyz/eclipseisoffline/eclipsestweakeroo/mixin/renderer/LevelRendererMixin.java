@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ public abstract class LevelRendererMixin implements ResourceManagerReloadListene
 
     @Unique
     private static boolean shouldHideHappyGhast(Entity entity) {
-        return EclipsesTweaksConfig.TWEAK_HAPPY_GHAST.getBooleanValue()
+        return ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_HAPPY_GHAST)
                 && EclipsesGenericConfig.HIDE_HAPPY_GHAST.getBooleanValue()
                 && entity instanceof HappyGhast
                 && Objects.requireNonNull(Minecraft.getInstance().player).getControlledVehicle() == entity;
