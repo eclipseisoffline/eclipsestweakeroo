@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.toggle.ServerSideToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 @Mixin(AbstractBoat.class)
@@ -55,7 +56,9 @@ public abstract class AbstractBoatMixin extends VehicleEntity implements Leashab
             if (!inputLeft && !inputRight) {
                 deltaRotation = 0.0F;
             }
-            if (inputUp && (onGround() || EclipsesGenericConfig.TWEAK_BOAT_SPIDER.getBooleanValue())) {
+            boolean allowJumping = !ToggleManager.disabled(ServerSideToggle.BOAT_JUMP);
+            boolean allowSpiderBoat = EclipsesGenericConfig.TWEAK_BOAT_SPIDER.getBooleanValue() && !ToggleManager.disabled(ServerSideToggle.SPIDER_BOAT);
+            if (inputUp && allowJumping && (onGround() || allowSpiderBoat)) {
                 Direction face = getDirection().getOpposite();
 
                 BlockPos inFrontPos = blockPosition().relative(getDirection(), 1);
@@ -72,7 +75,7 @@ public abstract class AbstractBoatMixin extends VehicleEntity implements Leashab
                 if (inFrontY > 0.0) {
                     double currentY = position().y;
                     double y = 0.0;
-                     if (EclipsesGenericConfig.TWEAK_BOAT_SPIDER.getBooleanValue()) {
+                     if (allowSpiderBoat) {
                          y = 1.0;
                      } else if (inFrontY < 1.0) {
                          y = inFrontY;
