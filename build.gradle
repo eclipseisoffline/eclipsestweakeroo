@@ -2,7 +2,7 @@ import me.modmuss50.mpp.ReleaseType
 
 plugins {
     id 'me.modmuss50.mod-publish-plugin' version '0.8.4'
-    id 'fabric-loom' version '1.10-SNAPSHOT'
+    id 'fabric-loom' version '1.11-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -125,10 +125,12 @@ publishMods {
         projectId = "6kKLK5i1"
         minecraftVersions.addAll(release_minecraft_versions.split(","))
 
+        // Fabric API
         requires {
             slug = "P7dR8mSH"
         }
 
+        // Tweakeroo
         requires {
             slug = "t5wuYk45"
         }

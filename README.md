@@ -36,7 +36,7 @@ also be opened via [Mod Menu](https://modrinth.com/mod/modmenu).
 
 | Minecraft Version | Status       |
 |-------------------|--------------|
-| 1.21.6            | ✅ Current    |
+| 1.21.6+7          | ✅ Current    |
 | 1.21.2+3          | ✔️ Available |
 | 1.21+1            | ✔️ Available |
 | 1.20.5+6          | ✔️ Available |
