@@ -22,6 +22,7 @@ public enum ServerSideToggle implements StringRepresentable {
     STEP_HEIGHT("tweakStepHeight"),
     NO_ENTITY_COLLISIONS("disableEntityCollisions"),
     NO_KNOCKBACK("disableKnockback"),
+    NO_HORSE_JUMP_CHARGE("disableHorseJumpCharge"),
     NO_USE_ITEM_SLOWDOWN("disableUseItemSlowdown");
 
     public static final List<ServerSideToggle> ALL = Arrays.asList(values());

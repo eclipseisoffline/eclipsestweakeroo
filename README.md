@@ -32,6 +32,30 @@ The Fabric API and Tweakeroo are required dependencies. The mod has its own conf
 which can be opened by default by pressing `C + E`. This hotkey can be configured. The configuration screen can
 also be opened via [Mod Menu](https://modrinth.com/mod/modmenu).
 
+### Server-side opt-in
+
+As of version `0.6.2-1.21.7`, the mod requires a server-side opt-in for certain features. At the moment, these include
+the following:
+
+- `tweakSlippery`
+- `tweakJumpVelocity`
+- `tweakBoats (boat jumping functionality)`
+- `tweakBoats (spiderBoat functionality)`
+- `tweakCreativeElytraFlight`
+- `tweakGravity`
+- `tweakStepHeight`
+- `disableEntityCollisions`
+- `disableKnockback`
+- `disableHorseJumpCharge`
+- `disableUseItemSlowdown`
+
+These features will be automatically disabled when playing on servers that do not have this mod installed. Fabric servers
+can install this mod and configure which features to enable for players in the configuration file, which can be found under
+`<server>/config/eclipsestweakeroo-server.json`. You can always allow all options for operators using the `operators_exempt`
+option in the aforementioned file.
+
+You'll still be able to use all features when playing on singleplayer worlds.
+
 ## Version support
 
 | Minecraft Version | Status       |
@@ -48,7 +72,6 @@ I try to keep support up for the latest major and latest minor release of Minecr
 versions may be delayed from time to time, as I do not always have the time to immediately update my mods.
 
 Unsupported versions are still available to download, but they won't receive new features or bugfixes.
-
 
 ## Modifications
 

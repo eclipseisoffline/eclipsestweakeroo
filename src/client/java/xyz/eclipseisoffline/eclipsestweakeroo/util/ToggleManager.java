@@ -25,6 +25,7 @@ public class ToggleManager {
             EclipsesTweaksConfig.TWEAK_STEP_HEIGHT, ServerSideToggle.STEP_HEIGHT,
             EclipsesDisableConfig.DISABLE_ENTITY_COLLISIONS, ServerSideToggle.NO_ENTITY_COLLISIONS,
             EclipsesDisableConfig.DISABLE_KNOCKBACK, ServerSideToggle.NO_KNOCKBACK,
+            EclipsesDisableConfig.DISABLE_HORSE_JUMP_CHARGE, ServerSideToggle.NO_HORSE_JUMP_CHARGE,
             EclipsesDisableConfig.DISABLE_USE_ITEM_SLOWDOWN, ServerSideToggle.NO_USE_ITEM_SLOWDOWN
     );
 
