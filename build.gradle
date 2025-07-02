@@ -57,6 +57,12 @@ loom {
         }
     }
 
+    runs {
+        named("server") {
+            runDir = "run-server"
+        }
+    }
+
     accessWidenerPath = file("src/main/resources/eclipsestweakeroo.accesswidener")
 }
 

@@ -27,6 +27,9 @@
     "main": [
       "xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo"
     ],
+    "server": [
+      "xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo"
+    ],
     "modmenu": [
       "xyz.eclipseisoffline.eclipsestweakeroo.compat.ModMenuCompat"
     ]

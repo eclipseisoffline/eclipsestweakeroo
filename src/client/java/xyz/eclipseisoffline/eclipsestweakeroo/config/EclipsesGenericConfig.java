@@ -17,6 +17,8 @@ public class EclipsesGenericConfig {
 
     private static final List<IConfigBase> CONFIGS = new ArrayList<>();
 
+    public static final ConfigBoolean SERVER_SIDE_DISABLED_MESSAGE = createBoolean("serverDisabledMessage", true,
+            "Whether to broadcast in chat which features of the mod the server has disabled (if any) when joining");
     public static final ConfigBoolean HAND_RESTOCK_UNSTACKABLE = createBoolean("handRestockUnstackable", true, "Whether to restock unstackable items");
     public static final ConfigBoolean TWEAK_PLAYER_LIST_HEADER = createBoolean("playerListHideHeader", "Hides the player list header when the player list tweak is enabled");
     public static final ConfigBoolean TWEAK_PLAYER_LIST_FOOTER = createBoolean("playerListHideFooter", "Hides the player list footer when the player list tweak is enabled");
