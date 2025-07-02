@@ -4,6 +4,7 @@ import fi.dy.masa.malilib.config.ConfigManager;
 import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.world.level.block.Blocks;
@@ -12,6 +13,8 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesHotkeys;
 import xyz.eclipseisoffline.eclipsestweakeroo.event.EclipsesListeners;
 import xyz.eclipseisoffline.eclipsestweakeroo.gui.EclipsesTweakerooConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.hotkeys.EclipsesKeybindProvider;
+import xyz.eclipseisoffline.eclipsestweakeroo.network.ClientboundDisabledTogglesPacket;
+import xyz.eclipseisoffline.eclipsestweakeroo.network.EclipsesTweakerooClientNetworking;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.StatusEffectCharacterLoader;
 
@@ -27,6 +30,7 @@ public class EclipsesTweakerooClient implements ClientModInitializer {
 
         EclipsesListeners.bootstrap();
         StatusEffectCharacterLoader.bootstrap();
+        EclipsesTweakerooClientNetworking.bootstrap();
         EclipsesTweakerooUtil.populateStatusEffectColorMap();
 
         BlockRenderLayerMap.putBlock(Blocks.BARRIER, ChunkSectionLayer.TRANSLUCENT);

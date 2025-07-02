@@ -5,6 +5,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
+import xyz.eclipseisoffline.eclipsestweakeroo.network.EclipsesTweakerooNetworking;
 
 public class EclipsesTweakeroo implements ModInitializer {
 
@@ -19,7 +20,7 @@ public class EclipsesTweakeroo implements ModInitializer {
 
     @Override
     public void onInitialize() {
-
+        EclipsesTweakerooNetworking.bootstrap();
     }
 
     public static ResourceLocation getModdedLocation(String path) {
