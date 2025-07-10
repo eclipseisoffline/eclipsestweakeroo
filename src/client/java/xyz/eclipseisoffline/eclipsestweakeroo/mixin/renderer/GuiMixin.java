@@ -1,5 +1,6 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin.renderer;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import net.minecraft.ChatFormatting;
@@ -7,6 +8,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -62,6 +64,11 @@ public abstract class GuiMixin {
         if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_OVERLAY_RENDER)) {
             callbackInfo.cancel();
         }
+    }
+
+    @WrapWithCondition(method = "onDisconnected", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/ChatComponent;clearMessages(Z)V"))
+    public boolean checkPersistentChatTweak(ChatComponent instance, boolean clearSentMsgHistory) {
+        return !ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PERSISTENT_CHAT);
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectInstance;isAmbient()Z"))
