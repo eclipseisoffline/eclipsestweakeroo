@@ -56,8 +56,8 @@ public abstract class AbstractBoatMixin extends VehicleEntity implements Leashab
             if (!inputLeft && !inputRight) {
                 deltaRotation = 0.0F;
             }
-            boolean allowJumping = !ToggleManager.disabled(ServerSideToggle.BOAT_JUMP);
-            boolean allowSpiderBoat = EclipsesGenericConfig.TWEAK_BOAT_SPIDER.getBooleanValue() && !ToggleManager.disabled(ServerSideToggle.SPIDER_BOAT);
+            boolean allowJumping = ToggleManager.enabled(ServerSideToggle.BOAT_JUMP);
+            boolean allowSpiderBoat = EclipsesGenericConfig.TWEAK_BOAT_SPIDER.getBooleanValue() && ToggleManager.enabled(ServerSideToggle.SPIDER_BOAT);
             if (inputUp && allowJumping && (onGround() || allowSpiderBoat)) {
                 Direction face = getDirection().getOpposite();
 

@@ -20,7 +20,7 @@ public class EclipsesTweakeroo implements ModInitializer, DedicatedServerModInit
 
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    private static ToggleConfig config;
+    private static ToggleConfig config = ToggleConfig.EMPTY;
 
     @Override
     public void onInitialize() {

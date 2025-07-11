@@ -8,10 +8,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
@@ -38,5 +40,13 @@ public abstract class LivingEntityMixin extends Entity {
         }
 
         return original.call(instance);
+    }
+
+    @WrapOperation(method = "aiStep", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;noJumpDelay:I", opcode = Opcodes.PUTFIELD))
+    public void noJumpDelay(LivingEntity instance, int value, Operation<Void> original) {
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_JUMP_DELAY) && instance instanceof LocalPlayer) {
+            value = 0;
+        }
+        original.call(instance, value);
     }
 }

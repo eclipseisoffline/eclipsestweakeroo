@@ -25,12 +25,20 @@ public record ToggleConfig(Map<ServerSideToggle, Boolean> toggles, boolean opera
             ).apply(instance, ToggleConfig::new)
     );
     public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve(EclipsesTweakeroo.MOD_ID + "-server.json");
+    public static final ToggleConfig EMPTY = new ToggleConfig(Map.of(), false);
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final ToggleConfig DEFAULT = new ToggleConfig(Map.of(), Optional.empty());
 
     public ToggleConfig(Map<ServerSideToggle, Boolean> toggles, Optional<Boolean> operatorsExempt) {
         this(fillToggleMap(toggles), operatorsExempt.orElse(false));
+    }
+
+    public List<ServerSideToggle> enabledToggles() {
+        return toggles.entrySet().stream()
+                .filter(Map.Entry::getValue)
+                .map(Map.Entry::getKey)
+                .toList();
     }
 
     public List<ServerSideToggle> disabledToggles() {
@@ -59,7 +67,7 @@ public record ToggleConfig(Map<ServerSideToggle, Boolean> toggles, boolean opera
 
     private static Map<ServerSideToggle, Boolean> fillToggleMap(Map<ServerSideToggle, Boolean> map) {
         Map<ServerSideToggle, Boolean> filled = new HashMap<>(map);
-        for (ServerSideToggle toggle : ServerSideToggle.values()) {
+        for (ServerSideToggle toggle : ServerSideToggle.ALL) {
             filled.putIfAbsent(toggle, false);
         }
         return Map.copyOf(filled);

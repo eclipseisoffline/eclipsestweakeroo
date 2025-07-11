@@ -1,4 +1,4 @@
-package xyz.eclipseisoffline.eclipsestweakeroo.network;
+package xyz.eclipseisoffline.eclipsestweakeroo.network.protocol;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -10,10 +10,12 @@ import xyz.eclipseisoffline.eclipsestweakeroo.toggle.ServerSideToggle;
 
 import java.util.List;
 
+// Legacy, remove after protocol bump
+@Deprecated
 public record ClientboundDisabledTogglesPacket(List<ServerSideToggle> toggles) implements CustomPacketPayload {
 
     public static final Type<ClientboundDisabledTogglesPacket> TYPE = new Type<>(EclipsesTweakeroo.getModdedLocation("disabled_toggles"));
-    public static final StreamCodec<ByteBuf, ClientboundDisabledTogglesPacket> STREAM_CODEC = ServerSideToggle.STREAM_CODEC
+    public static final StreamCodec<ByteBuf, ClientboundDisabledTogglesPacket> STREAM_CODEC = ServerSideToggle.ID_STREAM_CODEC
             .apply(ByteBufCodecs.list())
             .map(ClientboundDisabledTogglesPacket::new, ClientboundDisabledTogglesPacket::toggles);
 

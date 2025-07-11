@@ -26,29 +26,37 @@ public class ToggleManager {
             EclipsesDisableConfig.DISABLE_ENTITY_COLLISIONS, ServerSideToggle.NO_ENTITY_COLLISIONS,
             EclipsesDisableConfig.DISABLE_KNOCKBACK, ServerSideToggle.NO_KNOCKBACK,
             EclipsesDisableConfig.DISABLE_HORSE_JUMP_CHARGE, ServerSideToggle.NO_HORSE_JUMP_CHARGE,
-            EclipsesDisableConfig.DISABLE_USE_ITEM_SLOWDOWN, ServerSideToggle.NO_USE_ITEM_SLOWDOWN
+            EclipsesDisableConfig.DISABLE_USE_ITEM_SLOWDOWN, ServerSideToggle.NO_USE_ITEM_SLOWDOWN,
+            EclipsesDisableConfig.DISABLE_JUMP_DELAY, ServerSideToggle.NO_JUMP_DELAY
     );
 
+    private static final List<ServerSideToggle> enabledToggles = new ArrayList<>();
     private static final List<ServerSideToggle> disabledToggles = new ArrayList<>();
-    private static boolean receivedDisabledToggles = false;
+    private static boolean receivedEnabledToggles = false;
 
     public static boolean enabled(ConfigBoolean toggle) {
         ServerSideToggle serverControlled = TOGGLES.get(toggle);
-        if (serverControlled != null && disabledToggles.contains(serverControlled)) {
+        if (serverControlled != null && !enabledToggles.contains(serverControlled)) {
             return false;
         }
         return toggle.getBooleanValue();
     }
 
-    public static boolean disabled(ServerSideToggle toggle) {
-        return disabledToggles.contains(toggle);
+    public static boolean enabled(ServerSideToggle toggle) {
+        return enabledToggles.contains(toggle);
     }
 
-    public static void disableToggles(List<ServerSideToggle> toggles, boolean installedOnServer) {
+    public static void enableToggles(List<ServerSideToggle> toggles, boolean installedOnServer) {
+        enabledToggles.clear();
         disabledToggles.clear();
-        disabledToggles.addAll(toggles);
+        enabledToggles.addAll(toggles);
+        receivedEnabledToggles = true;
 
-        receivedDisabledToggles = true;
+        for (ServerSideToggle toggle : ServerSideToggle.ALL) {
+            if (!enabledToggles.contains(toggle)) {
+                disabledToggles.add(toggle);
+            }
+        }
 
         if (EclipsesGenericConfig.SERVER_SIDE_DISABLED_MESSAGE.getBooleanValue() && !disabledToggles.isEmpty()) {
             String reason = installedOnServer ? "by the server" : "because they require a server-side opt-in";
@@ -77,12 +85,13 @@ public class ToggleManager {
         }
     }
 
-    public static void resetDisabledToggles() {
+    public static void resetEnabledToggles() {
+        enabledToggles.clear();
         disabledToggles.clear();
-        receivedDisabledToggles = false;
+        receivedEnabledToggles = false;
     }
 
-    public static boolean receivedDisabledToggles() {
-        return receivedDisabledToggles;
+    public static boolean receivedEnabledToggles() {
+        return receivedEnabledToggles;
     }
 }
