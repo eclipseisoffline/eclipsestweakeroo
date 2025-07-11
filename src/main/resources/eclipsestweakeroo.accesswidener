@@ -1,2 +1,2 @@
 accessWidener v2 named
-#accessible class net/minecraft/client/renderer/FogRenderer$MobEffectFogFunction
+accessible method net/minecraft/client/gui/components/MultiLineEditBox <init> (Lnet/minecraft/client/gui/Font;IIIILnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;IZIZZ)V

@@ -9,7 +9,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 @Mixin(StringUtil.class)
-public abstract class StringHelperMixin {
+public abstract class StringUtilMixin {
 
     @Inject(method = "isAllowedChatCharacter", at = @At("HEAD"), cancellable = true)
     private static void allowAllCharacters(char chr,
