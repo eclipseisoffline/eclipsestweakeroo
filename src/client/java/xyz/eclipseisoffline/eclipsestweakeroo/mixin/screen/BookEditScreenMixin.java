@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screens.inventory.BookEditScreen;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFixesConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.gui.components.BookPageEditBox;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
@@ -26,5 +27,13 @@ public abstract class BookEditScreenMixin extends Screen {
             return new BookPageEditBox(font, width, height, message, instance);
         }
         return original.call(instance, font, width, height, message);
+    }
+
+    @WrapOperation(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/MultiLineEditBox;setLineLimit(I)V"))
+    public void customLineLimit(MultiLineEditBox instance, int lineLimit, Operation<Void> original) {
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_BOOK_LINE_LIMIT)) {
+            lineLimit = 1024;
+        }
+        original.call(instance, lineLimit);
     }
 }
