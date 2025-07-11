@@ -46,7 +46,8 @@
     "screen.DisconnectedScreenAccessor",
     "tweakeroo.TweakerooInventoryUtilsMixin",
     "tweakeroo.TweakerooMiscUtilsMixin",
-    "tweakeroo.TweakerooPlacementTweaksMixin"
+    "tweakeroo.TweakerooPlacementTweaksMixin",
+    "util.StringDecomposerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

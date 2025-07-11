@@ -43,8 +43,10 @@
   "accessWidener": "eclipsestweakeroo.accesswidener",
   "depends": {
     "fabricloader": ">=${loader_version}",
-    "fabric": "*",
-    "minecraft": "${supported_versions}",
+    "fabric-api": "*",
+    "minecraft": "${supported_versions}"
+  },
+  "recommends": {
     "tweakeroo": "${tweakeroo_version}"
   },
   "custom": {

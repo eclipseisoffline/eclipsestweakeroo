@@ -39,6 +39,7 @@ public class EclipsesTweaksConfig {
             "Happy Ghast flight tweak");
     public static final ConfigBooleanHotkeyed TWEAK_LOCATOR_BAR = create("tweakLocatorBar", "Shows faces of players on the locator bar when applicable", "Locator bar tweak");
     public static final ConfigBooleanHotkeyed TWEAK_PERSISTENT_CHAT = create("tweakPersistentChat", "Keep past chat messages across server/world switches", "Persistent chat tweak");
+    public static final ConfigBooleanHotkeyed TWEAK_SHOW_FORMATTING_CODES = create("tweakShowFormattingCodes", "Renders legacy text formatting codes instead of hiding them", "Show formatting codes tweak");
 
     private static ConfigBooleanHotkeyed create(String name, String comment, String prettyName) {
         ConfigBooleanHotkeyed config = new ConfigBooleanHotkeyed(name, false, "", comment, prettyName);
