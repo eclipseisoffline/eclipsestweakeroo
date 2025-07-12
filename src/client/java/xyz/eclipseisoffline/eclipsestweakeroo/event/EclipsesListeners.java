@@ -94,23 +94,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
     @Override
     public void onClientStarted(Minecraft client) {
         // Registering value change callbacks here to prevent crashes
-        EclipsesTweaksConfig.TWEAK_CREATIVE_ELYTRA_FLIGHT.setValueChangeCallback(value -> {
-            if (client.player == null) {
-                return;
-            }
-            if (value.getBooleanValue()) {
-                if (client.player.isFallFlying()) {
-                    client.player.startFallFlying();
-                }
-            } else {
-                client.player.getAbilities().flying = false;
-            }
-        });
-
-        EclipsesTweaksConfig.TWEAK_RENDER_OPERATOR_BLOCKS.setValueChangeCallback(value -> {
-            LevelRenderer levelRenderer = client.levelRenderer;
-            levelRenderer.allChanged();
-        });
+        EclipsesTweaksConfig.bootstrap(client);
     }
 
     @Override

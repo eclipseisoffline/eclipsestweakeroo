@@ -3,6 +3,8 @@ package xyz.eclipseisoffline.eclipsestweakeroo.config;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IHotkeyTogglable;
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LevelRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,16 @@ public class EclipsesTweaksConfig {
     public static final ConfigBooleanHotkeyed TWEAK_LOCATOR_BAR = create("tweakLocatorBar", "Shows faces of players on the locator bar when applicable", "Locator bar tweak");
     public static final ConfigBooleanHotkeyed TWEAK_PERSISTENT_CHAT = create("tweakPersistentChat", "Keep past chat messages across server/world switches", "Persistent chat tweak");
     public static final ConfigBooleanHotkeyed TWEAK_SHOW_FORMATTING_CODES = create("tweakShowFormattingCodes", "Renders legacy text formatting codes instead of hiding them", "Show formatting codes tweak");
+    public static final ConfigBooleanHotkeyed TWEAK_MUSIC_TOAST = create("tweakMusicToast",
+            """
+Makes a few tweaks to the music toast:
+- Allows configuring whether to show a toast
+  or actionbar message for game music
+- Allows configuring whether to show a toast
+  or actionbar message for jukebox records
+- Allows configuring whether to show a toast
+  on the pause screen for game music or jukebox records
+Configure using the "musicToast" options in Generic""", "Music toast tweak");
 
     private static ConfigBooleanHotkeyed create(String name, String comment, String prettyName) {
         ConfigBooleanHotkeyed config = new ConfigBooleanHotkeyed(name, false, "", comment, prettyName);
@@ -53,5 +65,25 @@ public class EclipsesTweaksConfig {
 
     public static List<IHotkeyTogglable> hotkeys() {
         return CONFIGS.stream().map(config -> (IHotkeyTogglable) config).toList();
+    }
+
+    public static void bootstrap(Minecraft minecraft) {
+        TWEAK_CREATIVE_ELYTRA_FLIGHT.setValueChangeCallback(value -> {
+            if (minecraft.player == null) {
+                return;
+            }
+            if (value.getBooleanValue()) {
+                if (minecraft.player.isFallFlying()) {
+                    minecraft.player.startFallFlying();
+                }
+            } else {
+                minecraft.player.getAbilities().flying = false;
+            }
+        });
+
+        TWEAK_RENDER_OPERATOR_BLOCKS.setValueChangeCallback(value -> {
+            LevelRenderer levelRenderer = minecraft.levelRenderer;
+            levelRenderer.allChanged();
+        });
     }
 }
