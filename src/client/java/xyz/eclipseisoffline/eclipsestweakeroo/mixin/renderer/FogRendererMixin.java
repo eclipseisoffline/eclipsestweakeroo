@@ -18,7 +18,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 @Mixin(FogRenderer.class)
 public abstract class FogRendererMixin {
 
-    @WrapOperation(method = "computeFogColor",
+    @WrapOperation(method = {"computeFogColor", "setupFog"},
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/fog/environment/FogEnvironment;isApplicable(Lnet/minecraft/world/level/material/FogType;Lnet/minecraft/world/entity/Entity;)Z"))
     public boolean disableFogModifiers(FogEnvironment instance, FogType fogType, Entity entity, Operation<Boolean> original) {
         if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_FOG_MODIFIER)
