@@ -7,9 +7,17 @@
 [![Github Badge](https://img.shields.io/badge/github-eclipsestweakeroo-white?logo=github)](https://github.com/eclipseisoffline/eclipsestweakeroo)
 ![GitHub License](https://img.shields.io/github/license/eclipseisoffline/eclipsestweakeroo)
 
-This mod contains some basic modifications/additions I made to [Tweakeroo](https://modrinth.com/mod/tweakeroo).
+Eclipse's Tweakeroo Additions (often referred to as just Eclipse's Tweakeroo) is a modular utility mod for Minecraft.
+It contains various tweaks and modifications, all of which can be configured and toggled to your liking. The mod does
+little by default, only making the modifications you tell it to make.
 
-Feel free to report any bugs, or suggest new features, such as tweaks, yeets, or fixes, at the issue tracker.
+Most of these modules were created just because I needed them at a time, which is why they can be quite random sometimes.
+Still, I hope others may find good use out of them.
+
+This mod is often used as a companion mod to [Tweakeroo](https://modrinth.com/mod/tweakeroo),
+but can run fully independent of it as of version `0.6.3-1.21.7`.
+
+Feel free to report any bugs, or suggest new features, at the [issue tracker](https://github.com/eclipseisoffline/eclipsestweakeroo/issues).
 
 ## License
 
@@ -18,7 +26,6 @@ This mod is licensed under GNU LGPLv3.
 ## Donating
 
 If you like this mod, consider [donating](https://buymeacoffee.com/eclipseisoffline)!
-It really helps me a ton!
 
 ## Discord
 
@@ -26,15 +33,23 @@ For support and/or any questions you may have, feel free to join [my discord](ht
 
 ## Usage
 
-Mod builds  can be found on the releases page, as well as on [Modrinth](https://modrinth.com/mod/eclipses-tweakeroo-additions).
+Mod builds can be found on the releases page, as well as on [Modrinth](https://modrinth.com/mod/eclipses-tweakeroo-additions).
+The [Fabric API](https://modrinth.com/mod/fabric-api) and [MaLiLib](https://modrinth.com/mod/malilib) are required dependencies.
 
-The Fabric API and Tweakeroo are required dependencies. The mod has its own configuration screen as of 1.21.6,
+For versions below `0.6.0-1.21.6`, Tweakeroo is a required dependency as well. The mod will add its config options to Tweakeroo's
+config.
+
+For versions `0.6.0-1.21.6` and above, the mod has its own configuration screen,
 which can be opened by default by pressing `C + E`. This hotkey can be configured. The configuration screen can
 also be opened via [Mod Menu](https://modrinth.com/mod/modmenu).
 
+All the mod's modules and configuration options are listed below. Note that newer modules are only available on newer mod
+versions. If a module listed below does not appear in-game, it's probably not available for your version of Minecraft.
+See the table below for Minecraft version support.
+
 ### Server-side opt-in
 
-As of version `0.6.2-1.21.7`, the mod requires a server-side opt-in for certain features. At the moment, these include
+As of version `0.6.2-1.21.7`, the mod requires a server-side opt-in for certain modules. At the moment, these include
 the following:
 
 - `tweakSlippery`
@@ -48,13 +63,14 @@ the following:
 - `disableKnockback`
 - `disableHorseJumpCharge`
 - `disableUseItemSlowdown`
+- `disableJumpDelay`
 
-These features will be automatically disabled when playing on servers that do not have this mod installed. Fabric servers
-can install this mod and configure which features to enable for players in the configuration file, which can be found under
+These will be automatically disabled when playing on servers that do not have this mod installed. Fabric servers
+can install this mod and configure which modules to enable for players in the configuration file, which can be found under
 `<server>/config/eclipsestweakeroo-server.json`. You can always allow all options for operators using the `operators_exempt`
 option in the aforementioned file.
 
-You'll still be able to use all features when playing on singleplayer worlds.
+The mod doesn't require MaLiLib or Tweakeroo server-side. You'll still be able to use all features when playing on singleplayer worlds.
 
 ## Version support
 
@@ -71,25 +87,32 @@ You'll still be able to use all features when playing on singleplayer worlds.
 I try to keep support up for the latest major and latest minor release of Minecraft. Updates to newer Minecraft
 versions may be delayed from time to time, as I do not always have the time to immediately update my mods.
 
-Unsupported versions are still available to download, but they won't receive new features or bugfixes.
+Unsupported versions are still available to download, but they won't receive new features (such as new modules) or bugfixes.
+As such, not all modules listed below may be available to you if you're not on a current version of the mod.
 
-## Modifications
+## Modules
 
-At the moment, this mod makes the modifications described below.
+At the moment, this mod adds the modules and options described below.
 
-### New `Generic` options
+### `Generic` options
+
+The options listed below all configure Tweakeroo modules, as such these will only have an effect when Tweakeroo is installed.
 
 - `handRestockUnstackable`, toggles whether to restock unstackable items with `tweakHandRestock`.
 - `commandOnlyAdultPets`, toggles whether to only select adult pets with `sitDownNearbyPets` and `standUpNearbyPets` hotkeys.
 - `fakeSneakingLadder`, toggles whether `tweakFakeSneaking` should stop you from falling down ladders.
 - `permanentSneakFreeCamera`, toggles whether `tweakPermanentSneak` should work while using `tweakFreeCamera`.
 
-### New `Fixes`
+### `Fixes`
+
+- `writableBookFormattingFix`, fixes [MC-297501](https://bugs.mojang.com/browse/MC/issues/MC-297501), allowing you to use formatting codes in books again, and making them display as they would before 1.21.6. Breaks the editing cursor when placed mid-text.
+
+The fixes listed below fix certain Tweakeroo modules, as such these will only have an effect when Tweakeroo is installed.
 
 - `pistonFlexiblePlacementFix`, fixes inverse rotation placement of pistons, dispensers, droppers and crafters with `tweakFlexibleBlockPlacement` (allows placing these blocks facing away from you).
 - `handRestockCreativeFix`, disables `tweakHandRestock` when the player is in creative mode.
 
-### New `Tweaks` 
+### `Tweaks` 
 
 - `tweakPlayerList`, modifies the player (tab) list in various ways, depending on how configured in the `Generic` category:
   - If `playerListHideHeader` is enabled, it hides the additional player list header some servers use.
@@ -137,8 +160,19 @@ At the moment, this mod makes the modifications described below.
   - `noHappyGhastRotation`: disables rotating the Happy Ghast when controlling it and not moving, so that you can look at other players too.
   - `happyGhastRotationLerpSpeed`: changes the rotating speed of the Happy Ghast, the higher, the faster. Default is vanilla, `1.0` is instant rotation.
 - `tweakLocatorBar`, displays faces of players on the locator bar when applicable.
+- `tweakPersistentChat`, keeps past chat messages across server/world switches.
+- `tweakShowFormattingCodes`, renders legacy text formatting codes with a grey colour instead of hiding them. Still displays the formatting they set. Useful when writing books with formatting codes.
+- `tweakMusicToast`, makes a few tweaks to the music toasts added in 1.21.6, depending on how configured in `Generic`:
+  - `musicToastMusic`: shows the music toast for game music. When disabled, shows an actionbar text instead, like is normally done for jukebox records. Enabled by default.
+  - `musicToastRecords`: shows the music toast for jukebox records. When disabled, shows an actionbar text instead, like is normally done. Enabled by default.
+  - `musicToastPauseMenu`: whether to show music toasts in the pause menu for game music or jukebox records, when enabled for those. Enabled by default.
 
-### New `Yeets`
+### `Hotkeys`
+
+- `openConfigGui`, opens the in-game config GUI of the mod. Defaults to `C + E`.
+- `insertFormattingCode`, inserts a formatting code symbol (§) on the open screen. Useful when writing formatting codes in books.
+
+### `Yeets`
 
 - `disableEntityCollisions`, disables entity collisions. You can still push other entities, but they can't push you.
 - `disableKnockback`, disables taking knockback.
@@ -158,6 +192,8 @@ At the moment, this mod makes the modifications described below.
 - `disableAllNamesInF1`, hides all entity names when the HUD is disabled (vanilla Minecraft still renders the names of entities in teams).
 - `disableUseItemSlowdown`, disables slowing down when using items, like eating food.
 - `disableSwiftSneak`, disables sneak speed modifiers like swift sneak, because sometimes slow sneaking is nice.
+- `disableJumpDelay`, disables the 10-tick delay between jumps. Allows you to jump very fast when in a low area and holding down space.
+- `disableBookLineLimit`, disables the line limit of books, allowing you to write until the full limit of 1024 characters. A scroll bar will appear when writing enough lines. Note that lines will be cut off in signed books.
 
 ### Fancy names
 

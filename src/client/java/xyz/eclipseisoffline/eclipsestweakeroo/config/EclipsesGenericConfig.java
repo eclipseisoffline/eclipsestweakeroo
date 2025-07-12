@@ -85,8 +85,8 @@ public class EclipsesGenericConfig {
             0.08, 0.01, 1.0,
             "Defines the rotation speed when controlling the Happy Ghast with tweakHappyGhast.\n1.0 is instant rotation");
     public static final ConfigBoolean MUSIC_TOAST_MUSIC = createBoolean("musicToastMusic", true, "Shows the music toast for game music when\ntweakMusicToast is enabled.\nWhen disabled, shows an actionbar text instead,\nlike is normally done for jukebox records");
-    public static final ConfigBoolean MUSIC_TOAST_RECORDS = createBoolean("musicToastRecords", true, "Shows the music toast for jukebox records when\ntweakMusicToast is enabled.\nWhen disabled, shows an actionbar text instead,\nlike is normally done for jukebox records");
-    public static final ConfigBoolean MUSIC_TOAST_PAUSE_MENU = createBoolean("musicToastPauseMenu", true, "Whether to show the music toast in the pause menu when\nenabled for music or jukebox records,\nand tweakMusicToast is enabled");
+    public static final ConfigBoolean MUSIC_TOAST_RECORDS = createBoolean("musicToastRecords", true, "Shows the music toast for jukebox records when\ntweakMusicToast is enabled.\nWhen disabled, shows an actionbar text instead,\nlike is normally done");
+    public static final ConfigBoolean MUSIC_TOAST_PAUSE_MENU = createBoolean("musicToastPauseMenu", true, "Whether to show music toasts in the pause menu when\nenabled for music or jukebox records,\nand tweakMusicToast is enabled");
 
     private static ConfigBoolean createBoolean(String name, String comment) {
         return createBoolean(name, false, comment);

@@ -147,8 +147,13 @@ publishMods {
             slug = "P7dR8mSH"
         }
 
-        // Tweakeroo
+        // MaLiLib
         requires {
+            slug = "GcWjdA9I"
+        }
+
+        // Tweakeroo
+        optional {
             slug = "t5wuYk45"
         }
     }

@@ -40,8 +40,8 @@ public class EclipsesTweaksConfig {
             "Makes various tweaks to controlling Happy Ghasts.\nRequires configuring in General",
             "Happy Ghast flight tweak");
     public static final ConfigBooleanHotkeyed TWEAK_LOCATOR_BAR = create("tweakLocatorBar", "Shows faces of players on the locator bar when applicable", "Locator bar tweak");
-    public static final ConfigBooleanHotkeyed TWEAK_PERSISTENT_CHAT = create("tweakPersistentChat", "Keep past chat messages across server/world switches", "Persistent chat tweak");
-    public static final ConfigBooleanHotkeyed TWEAK_SHOW_FORMATTING_CODES = create("tweakShowFormattingCodes", "Renders legacy text formatting codes instead of hiding them", "Show formatting codes tweak");
+    public static final ConfigBooleanHotkeyed TWEAK_PERSISTENT_CHAT = create("tweakPersistentChat", "Keeps past chat messages across server/world switches", "Persistent chat tweak");
+    public static final ConfigBooleanHotkeyed TWEAK_SHOW_FORMATTING_CODES = create("tweakShowFormattingCodes", "Renders legacy text formatting codes\nwith a grey colour instead of hiding them.\nStill displays the formatting they set", "Show formatting codes tweak");
     public static final ConfigBooleanHotkeyed TWEAK_MUSIC_TOAST = create("tweakMusicToast",
             """
 Makes a few tweaks to the music toast:
