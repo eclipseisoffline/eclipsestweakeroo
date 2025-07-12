@@ -3,7 +3,6 @@ package xyz.eclipseisoffline.eclipsestweakeroo.config;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IHotkeyTogglable;
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
-import fi.dy.masa.tweakeroo.config.ConfigBooleanClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +32,8 @@ public class EclipsesDisableConfig {
     public static final ConfigBooleanHotkeyed DISABLE_JUMP_DELAY = create("disableJumpDelay", "Disables the 10-tick delay between jumps");
     public static final ConfigBooleanHotkeyed DISABLE_BOOK_LINE_LIMIT = create("disableBookLineLimit", "Disables the line limit of books, allowing you to write until the full limit of 1024 characters");
 
-    private static ConfigBooleanClient createClient(String name, String comment) {
-        ConfigBooleanClient config = new ConfigBooleanClient(name, false, "", comment);
+    private static ClientConfigOption createClient(String name, String comment) {
+        ClientConfigOption config = new ClientConfigOption(name, false, "", comment);
         CONFIGS.add(config);
         return config;
     }

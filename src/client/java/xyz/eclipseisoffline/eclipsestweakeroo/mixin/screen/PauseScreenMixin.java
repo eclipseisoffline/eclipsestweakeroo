@@ -80,6 +80,7 @@ public abstract class PauseScreenMixin extends Screen {
                 }
             }
 
+            // TODO check volume
             String musicPlaying = minecraft.getMusicManager().getCurrentMusicTranslationKey();
             if (EclipsesGenericConfig.MUSIC_TOAST_MUSIC.getBooleanValue() && !Objects.equals(cachedMusic, musicPlaying)) {
                 if (cachedMusic != null) {

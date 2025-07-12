@@ -5,7 +5,6 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.button.IButtonActionListener;
-import fi.dy.masa.tweakeroo.gui.GuiConfigs;
 import net.minecraft.client.gui.screens.Screen;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
@@ -20,7 +19,7 @@ import java.util.Objects;
 
 public class EclipsesTweakerooConfig extends GuiConfigsBase {
 
-    private static GuiConfigs.ConfigGuiTab tab = GuiConfigs.ConfigGuiTab.TWEAKS;
+    private static ConfigTab tab = ConfigTab.TWEAKS;
 
     public EclipsesTweakerooConfig(Screen parent) {
         super(10, 50, EclipsesTweakeroo.MOD_ID, parent, EclipsesTweakeroo.MOD_NAME_SHORT + " Configs - " + EclipsesTweakeroo.MOD_VERSION);
@@ -35,13 +34,13 @@ public class EclipsesTweakerooConfig extends GuiConfigsBase {
         int buttonX = 10;
         int buttonY = 26;
 
-        for (GuiConfigs.ConfigGuiTab tab : GuiConfigs.ConfigGuiTab.values())  {
+        for (ConfigTab tab : ConfigTab.values())  {
             buttonX += createButton(buttonX, buttonY, tab);
         }
     }
 
-    private int createButton(int x, int y, GuiConfigs.ConfigGuiTab tab) {
-        ButtonGeneric button = new ButtonGeneric(x, y, -1, 20, tab.getDisplayName());
+    private int createButton(int x, int y, ConfigTab tab) {
+        ButtonGeneric button = new ButtonGeneric(x, y, -1, 20, tab.getName());
         button.setEnabled(EclipsesTweakerooConfig.tab != tab);
         addButton(button, new TabSwitcher(tab));
 
@@ -50,11 +49,11 @@ public class EclipsesTweakerooConfig extends GuiConfigsBase {
 
     @Override
     protected int getConfigWidth() {
-        if (tab == GuiConfigs.ConfigGuiTab.GENERIC) {
+        if (tab == ConfigTab.GENERIC) {
             return 120;
-        } else if (tab == GuiConfigs.ConfigGuiTab.FIXES) {
+        } else if (tab == ConfigTab.FIXES) {
             return 60;
-        } else if (tab == GuiConfigs.ConfigGuiTab.LISTS) {
+        } else if (tab == ConfigTab.LISTS) {
             return 200;
         }
 
@@ -63,9 +62,9 @@ public class EclipsesTweakerooConfig extends GuiConfigsBase {
 
     @Override
     protected boolean useKeybindSearch() {
-        return tab == GuiConfigs.ConfigGuiTab.TWEAKS
-                || tab == GuiConfigs.ConfigGuiTab.GENERIC_HOTKEYS
-                || tab == GuiConfigs.ConfigGuiTab.DISABLES;
+        return tab == ConfigTab.TWEAKS
+                || tab == ConfigTab.HOTKEYS
+                || tab == ConfigTab.DISABLES;
     }
 
     @Override
@@ -75,7 +74,7 @@ public class EclipsesTweakerooConfig extends GuiConfigsBase {
             case FIXES -> EclipsesFixesConfig.values();
             case LISTS -> EclipsesListsConfig.values();
             case TWEAKS -> EclipsesTweaksConfig.values();
-            case GENERIC_HOTKEYS -> EclipsesHotkeys.values();
+            case HOTKEYS -> EclipsesHotkeys.values();
             case DISABLES -> EclipsesDisableConfig.values();
         };
 
@@ -83,9 +82,9 @@ public class EclipsesTweakerooConfig extends GuiConfigsBase {
     }
 
     private class TabSwitcher implements IButtonActionListener {
-        private final GuiConfigs.ConfigGuiTab tab;
+        private final ConfigTab tab;
 
-        private TabSwitcher(GuiConfigs.ConfigGuiTab tab) {
+        private TabSwitcher(ConfigTab tab) {
             this.tab = tab;
         }
 
@@ -95,6 +94,26 @@ public class EclipsesTweakerooConfig extends GuiConfigsBase {
             reCreateListWidget();
             Objects.requireNonNull(getListWidget()).resetScrollbarPosition();
             initGui();
+        }
+    }
+
+    private enum ConfigTab {
+        GENERIC("Generic"),
+        FIXES("Fixes"),
+        LISTS("Lists"),
+        TWEAKS("Tweaks"),
+        HOTKEYS("Hotkeys"),
+        DISABLES("Yeets");
+
+        private final String name;
+
+        ConfigTab(String name)
+        {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 }

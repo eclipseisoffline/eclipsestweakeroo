@@ -38,13 +38,13 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}"
-    modImplementation "com.github.sakura-ryoko:malilib:${malilib_version}"
-
-    // Used during compiling
+    modImplementation "com.github.sakura-ryoko:malilib:${malilib_build_version}"
+    modCompileOnly "com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}"
     modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+
     // Used during testing
     modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    modRuntimeOnly "com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}" // Comment me to test without Tweakeroo
 }
 
 loom {
@@ -70,6 +70,7 @@ processResources {
     inputs.property "version", project.version
     inputs.property "supported_versions", project.supported_versions
     inputs.property "loader_version", project.loader_version
+    inputs.property "malilib_version", project.malilib_version
     inputs.property "tweakeroo_version", project.tweakeroo_version
     filteringCharset "UTF-8"
 
@@ -77,6 +78,7 @@ processResources {
         expand "version": project.version,
                 "supported_versions": project.supported_versions,
                 "loader_version": project.loader_version,
+                "malilib_version": project.malilib_version,
                 "tweakeroo_version": project.tweakeroo_version
     }
 }

@@ -2,6 +2,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.util;
 
 import fi.dy.masa.malilib.gui.Message.MessageType;
 import fi.dy.masa.malilib.util.InfoUtils;
+import fi.dy.masa.tweakeroo.config.Configs;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceMap;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -307,6 +308,10 @@ public class EclipsesTweakerooUtil {
             return true;
         }
         return false;
+    }
+
+    public static boolean bossBarDisabled() {
+        return TweakerooFinder.hasTweakeroo() && Configs.Disable.DISABLE_BOSS_BAR.getBooleanValue();
     }
 
     private static void forEachEnchantment(ItemStack stack, EquipmentSlot slot, BiConsumer<Holder<Enchantment>, Integer> enchantmentConsumer) {

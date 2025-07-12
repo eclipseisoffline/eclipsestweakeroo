@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigHandler;
 import fi.dy.masa.malilib.util.JsonUtils;
-import fi.dy.masa.tweakeroo.Reference;
 import net.fabricmc.loader.api.FabricLoader;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 
@@ -15,8 +14,9 @@ import java.nio.file.Path;
 
 public class EclipsesConfigs implements IConfigHandler {
 
+    private static final String TWEAKEROO_MOD_ID = "tweakeroo";
     private static final Path CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve(EclipsesTweakeroo.MOD_ID + ".json");
-    private static final Path TWEAKEROO_CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve(Reference.MOD_ID + ".json");
+    private static final Path TWEAKEROO_CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve(TWEAKEROO_MOD_ID + ".json");
 
     @Override
     public void load() {

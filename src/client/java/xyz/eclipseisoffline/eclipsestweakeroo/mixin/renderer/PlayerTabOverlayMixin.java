@@ -4,7 +4,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
-import fi.dy.masa.tweakeroo.config.Configs.Disable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.BossHealthOverlay;
@@ -29,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.PlayerListOrder;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.FancyName;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
@@ -108,7 +108,7 @@ public abstract class PlayerTabOverlayMixin {
                                  CallbackInfo callbackInfo, @Local(ordinal = 10) LocalIntRef renderYStart) {
         if (!ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST)
                 || !EclipsesGenericConfig.TWEAK_PLAYER_LIST_BOSSBAR.getBooleanValue()
-                || Disable.DISABLE_BOSS_BAR.getBooleanValue()) {
+                || EclipsesTweakerooUtil.bossBarDisabled()) {
             return;
         }
 

@@ -1,4 +1,4 @@
-package xyz.eclipseisoffline.eclipsestweakeroo.mixin.tweakeroo;
+package xyz.eclipseisoffline.eclipsestweakeroo.mixin.tweakeroo.mod;
 
 import fi.dy.masa.tweakeroo.util.InventoryUtils;
 import net.minecraft.world.InteractionHand;

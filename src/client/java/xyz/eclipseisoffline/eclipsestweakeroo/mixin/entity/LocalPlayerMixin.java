@@ -5,7 +5,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.authlib.GameProfile;
-import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -27,7 +26,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
@@ -86,13 +84,6 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
         return super.maxUpStep();
     }
 
-    @Inject(method = "isSuppressingSlidingDownLadder", at = @At("HEAD"), cancellable = true)
-    public void checkFakeSneaking(CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        if (FeatureToggle.TWEAK_FAKE_SNEAKING.getBooleanValue() && EclipsesGenericConfig.FAKE_SNEAKING_LADDER.getBooleanValue()) {
-            callbackInfoReturnable.setReturnValue(true);
-        }
-    }
-
     @WrapOperation(method = "tick", at = @At(value = "NEW", target = "net/minecraft/network/protocol/game/ServerboundPlayerInputPacket"))
     public ServerboundPlayerInputPacket noSneakSendWhenHappyGhastTweak(Input input, Operation<ServerboundPlayerInputPacket> original) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_HAPPY_GHAST)
@@ -107,22 +98,6 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
                     input.sprint());
         }
         return original.call(input);
-    }
-
-    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/tutorial/Tutorial;onInput(Lnet/minecraft/client/player/ClientInput;)V"))
-    public void freecamPermanentSneak(CallbackInfo callbackInfo) {
-        if (FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue()
-                && FeatureToggle.TWEAK_PERMANENT_SNEAK.getBooleanValue()
-                && EclipsesGenericConfig.PERMANENT_SNEAK_FREE_CAMERA.getBooleanValue()) {
-            input.keyPresses = new Input(
-                    input.keyPresses.forward(),
-                    input.keyPresses.backward(),
-                    input.keyPresses.left(),
-                    input.keyPresses.right(),
-                    input.keyPresses.jump(),
-                    true,
-                    input.keyPresses.sprint());
-        }
     }
 
     @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;canStartSprinting()Z"))

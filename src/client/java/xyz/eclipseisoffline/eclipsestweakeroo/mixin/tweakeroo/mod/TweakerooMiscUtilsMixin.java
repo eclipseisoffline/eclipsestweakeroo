@@ -1,4 +1,4 @@
-package xyz.eclipseisoffline.eclipsestweakeroo.mixin.tweakeroo;
+package xyz.eclipseisoffline.eclipsestweakeroo.mixin.tweakeroo.mod;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

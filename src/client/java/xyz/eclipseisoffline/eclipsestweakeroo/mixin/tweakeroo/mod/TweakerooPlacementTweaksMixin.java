@@ -1,4 +1,4 @@
-package xyz.eclipseisoffline.eclipsestweakeroo.mixin.tweakeroo;
+package xyz.eclipseisoffline.eclipsestweakeroo.mixin.tweakeroo.mod;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;

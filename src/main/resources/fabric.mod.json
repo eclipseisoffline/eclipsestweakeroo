@@ -47,6 +47,9 @@
     "minecraft": "${supported_versions}"
   },
   "recommends": {
+    "malilib": "${malilib_version}"
+  },
+  "suggests": {
     "tweakeroo": "${tweakeroo_version}"
   },
   "custom": {

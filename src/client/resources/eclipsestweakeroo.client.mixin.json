@@ -16,6 +16,7 @@
     "entity.LivingEntityAccessor",
     "entity.LivingEntityMixin",
     "entity.LocalPlayerMixin",
+    "tweakeroo.entity.LocalPlayerTweakerooMixin",
     "entity.PlayerMixin",
     "gui.MultiLineEditBoxBuilderAccessor",
     "gui.MultiLineEditBoxMixin",
@@ -47,12 +48,13 @@
     "screen.DisconnectedScreenAccessor",
     "screen.PauseScreenMixin",
     "sounds.MusicManagerMixin",
-    "tweakeroo.TweakerooInventoryUtilsMixin",
-    "tweakeroo.TweakerooMiscUtilsMixin",
-    "tweakeroo.TweakerooPlacementTweaksMixin",
+    "tweakeroo.mod.TweakerooInventoryUtilsMixin",
+    "tweakeroo.mod.TweakerooMiscUtilsMixin",
+    "tweakeroo.mod.TweakerooPlacementTweaksMixin",
     "util.StringDecomposerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakerooMixins"
 }
