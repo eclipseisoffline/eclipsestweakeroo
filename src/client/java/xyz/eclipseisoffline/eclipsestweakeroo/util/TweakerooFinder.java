@@ -1,8 +1,12 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.util;
 
-import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TweakerooFinder {
+
+    // Not using main logger and mod ID constant here because this class should use as little classes as possible
+    public static final Logger LOGGER = LoggerFactory.getLogger("eclipsestweakeroo");
 
     private static Boolean tweakeroo = null;
 
@@ -11,10 +15,10 @@ public class TweakerooFinder {
             try {
                 Class.forName("fi.dy.masa.tweakeroo.Tweakeroo");
                 tweakeroo = true;
-                EclipsesTweakeroo.LOGGER.info("Tweakeroo compat enabled");
+                LOGGER.info("Tweakeroo compat enabled");
             } catch (ClassNotFoundException exception) {
                 tweakeroo = false;
-                EclipsesTweakeroo.LOGGER.info("Tweakeroo not found");
+                LOGGER.info("Tweakeroo not found");
             }
         }
         return tweakeroo;

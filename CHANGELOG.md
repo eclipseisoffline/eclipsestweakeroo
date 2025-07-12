@@ -1,3 +1,7 @@
+- Fix mixin incompatibilities with certain mods.
+
+From `0.6.3-1.21.6`:
+
 - Added the following tweaks:
   - `tweakPersistentChat`: keeps past chat messages across server/world switches.
   - `tweakShowFormattingCodes`: renders legacy text formatting codes with a grey colour instead of hiding them. Still displays the formatting they set. Useful when writing books with formatting codes.
