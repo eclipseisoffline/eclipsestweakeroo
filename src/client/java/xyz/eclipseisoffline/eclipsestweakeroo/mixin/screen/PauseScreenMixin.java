@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -70,7 +71,8 @@ public abstract class PauseScreenMixin extends Screen {
         if (minecraft != null) {
             PlayingJukeboxSongs.tick(minecraft.level);
 
-            if (EclipsesGenericConfig.MUSIC_TOAST_RECORDS.getBooleanValue() && (cachedSongs == null || PlayingJukeboxSongs.getPlaying().size() != cachedSongs.size())) {
+            if (EclipsesGenericConfig.MUSIC_TOAST_RECORDS.getBooleanValue() && (cachedSongs == null || PlayingJukeboxSongs.getPlaying().size() != cachedSongs.size())
+                    && minecraft.options.getFinalSoundSourceVolume(SoundSource.RECORDS) > 0.0F) {
                 musicToasts.clear();
                 cachedMusic = null;
                 cachedSongs = PlayingJukeboxSongs.getPlaying();
@@ -80,9 +82,9 @@ public abstract class PauseScreenMixin extends Screen {
                 }
             }
 
-            // TODO check volume
             String musicPlaying = minecraft.getMusicManager().getCurrentMusicTranslationKey();
-            if (EclipsesGenericConfig.MUSIC_TOAST_MUSIC.getBooleanValue() && !Objects.equals(cachedMusic, musicPlaying)) {
+            if (EclipsesGenericConfig.MUSIC_TOAST_MUSIC.getBooleanValue() && !Objects.equals(cachedMusic, musicPlaying)
+                    && minecraft.options.getFinalSoundSourceVolume(SoundSource.MUSIC) > 0.0F) {
                 if (cachedMusic != null) {
                     cachedMusic = null;
                     musicToasts.removeFirst();
