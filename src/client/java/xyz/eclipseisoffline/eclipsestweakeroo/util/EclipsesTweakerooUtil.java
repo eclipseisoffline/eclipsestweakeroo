@@ -5,6 +5,8 @@ import fi.dy.masa.malilib.util.InfoUtils;
 import fi.dy.masa.tweakeroo.config.Configs;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceMap;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.DamageSourcePredicate;
@@ -100,6 +102,7 @@ public class EclipsesTweakerooUtil {
             Map.entry(MobEffects.WIND_CHARGED, ChatFormatting.BLUE)
     );
     private static final Int2ReferenceMap<ResourceKey<MobEffect>> STATUS_EFFECT_PARTICLE_COLORS = new Int2ReferenceOpenHashMap<>();
+    private static final Object2BooleanMap<DamageSourcePredicate> EMPTY_DAMAGE_SOURCE_PREDICATES = new Object2BooleanOpenHashMap<>();
 
     private EclipsesTweakerooUtil() {}
 
@@ -187,8 +190,11 @@ public class EclipsesTweakerooUtil {
 
     public static Component getArmorText(LivingEntity entity) {
         int baseArmor = entity.getArmorValue();
-        int armorToughness = Mth.ceil(entity
-                .getAttributeValue(Attributes.ARMOR_TOUGHNESS));
+        if (baseArmor <= 0) {
+            return null;
+        }
+
+        int armorToughness = Mth.ceil(entity.getAttributeValue(Attributes.ARMOR_TOUGHNESS));
 
         MutableFloat mutableProtectionFactor = new MutableFloat();
         forEachEnchantment(entity, (enchantment, level) -> {
@@ -199,7 +205,7 @@ public class EclipsesTweakerooUtil {
                 boolean emptyRequirements = effect.requirements().isEmpty();
 
                 if (!emptyRequirements && effect.requirements().get() instanceof DamageSourceCondition(Optional<DamageSourcePredicate> predicate)) {
-                    if (predicate.isEmpty()) {
+                    if (predicate.isEmpty() || EMPTY_DAMAGE_SOURCE_PREDICATES.containsKey(predicate.get())) {
                         emptyRequirements = true;
                     } else {
                         DamageSourcePredicate sourcePredicate = predicate.get();
@@ -215,11 +221,14 @@ public class EclipsesTweakerooUtil {
                                         break;
                                     }
                                 }
+
                                 if (onlyInvulnerable) {
                                     emptyRequirements = true;
                                 }
                             }
                         }
+
+                        EMPTY_DAMAGE_SOURCE_PREDICATES.put(sourcePredicate, emptyRequirements);
                     }
                 }
 
@@ -230,17 +239,14 @@ public class EclipsesTweakerooUtil {
         });
         int enchantmentProtectionFactor = mutableProtectionFactor.intValue();
 
-        if (baseArmor > 0) {
-            MutableComponent armorText = Component.literal(String.valueOf(baseArmor)).withStyle(ChatFormatting.GRAY);
-            if (armorToughness > 0) {
-                armorText.append(Component.literal("+" + armorToughness).withStyle(ChatFormatting.WHITE));
-            }
-            if (enchantmentProtectionFactor > 0) {
-                armorText.append(Component.literal("+" + enchantmentProtectionFactor).withStyle(ChatFormatting.LIGHT_PURPLE));
-            }
-            return armorText;
+        MutableComponent armorText = Component.literal(String.valueOf(baseArmor)).withStyle(ChatFormatting.GRAY);
+        if (armorToughness > 0) {
+            armorText.append(Component.literal("+" + armorToughness).withStyle(ChatFormatting.WHITE));
         }
-        return null;
+        if (enchantmentProtectionFactor > 0) {
+            armorText.append(Component.literal("+" + enchantmentProtectionFactor).withStyle(ChatFormatting.LIGHT_PURPLE));
+        }
+        return armorText;
     }
 
     public static List<ResourceKey<MobEffect>> getStatusEffectsFromParticles(LivingEntity entity) {
