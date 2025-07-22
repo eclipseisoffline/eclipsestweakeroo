@@ -3,64 +3,36 @@ package xyz.eclipseisoffline.eclipsestweakeroo.util;
 import fi.dy.masa.malilib.gui.Message.MessageType;
 import fi.dy.masa.malilib.util.InfoUtils;
 import fi.dy.masa.tweakeroo.config.Configs;
-import it.unimi.dsi.fastutil.ints.Int2ReferenceMap;
-import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.critereon.DamageSourcePredicate;
-import net.minecraft.advancements.critereon.TagPredicate;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.TickRateManager;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.enchantment.ConditionalEffect;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
-import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
-import org.apache.commons.lang3.mutable.MutableFloat;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
-import xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity.LivingEntityAccessor;
-import xyz.eclipseisoffline.eclipsestweakeroo.mixin.particle.ColorParticleOptionAccessor;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.BiConsumer;
 
 public class EclipsesTweakerooUtil {
 
     private static final int MAX_DURATION_SECONDS_EFFECT_TEXT = 3600;
     private static final double DURABILITY_WARNING = 0.9;
-    private static final Map<Holder<MobEffect>, ChatFormatting> EFFECT_COLOURS = Map.ofEntries(
+    private static final Map<MobEffect, ChatFormatting> EFFECT_COLOURS = Map.ofEntries(
             Map.entry(MobEffects.MOVEMENT_SPEED, ChatFormatting.WHITE),
             Map.entry(MobEffects.MOVEMENT_SLOWDOWN, ChatFormatting.DARK_GRAY),
             Map.entry(MobEffects.DIG_SPEED, ChatFormatting.GOLD),
@@ -91,15 +63,8 @@ public class EclipsesTweakerooUtil {
             Map.entry(MobEffects.DOLPHINS_GRACE, ChatFormatting.BLUE),
             Map.entry(MobEffects.BAD_OMEN, ChatFormatting.GRAY),
             Map.entry(MobEffects.HERO_OF_THE_VILLAGE, ChatFormatting.GREEN),
-            Map.entry(MobEffects.DARKNESS, ChatFormatting.DARK_GRAY),
-            Map.entry(MobEffects.INFESTED, ChatFormatting.GRAY),
-            Map.entry(MobEffects.OOZING, ChatFormatting.GREEN),
-            Map.entry(MobEffects.RAID_OMEN, ChatFormatting.DARK_GRAY),
-            Map.entry(MobEffects.TRIAL_OMEN, ChatFormatting.AQUA),
-            Map.entry(MobEffects.WEAVING, ChatFormatting.WHITE),
-            Map.entry(MobEffects.WIND_CHARGED, ChatFormatting.BLUE)
+            Map.entry(MobEffects.DARKNESS, ChatFormatting.DARK_GRAY)
     );
-    private static final Int2ReferenceMap<ResourceKey<MobEffect>> STATUS_EFFECT_PARTICLE_COLORS = new Int2ReferenceOpenHashMap<>();
 
     private EclipsesTweakerooUtil() {}
 
@@ -121,14 +86,13 @@ public class EclipsesTweakerooUtil {
 
     public static Component getDurationTextWithStyle(MobEffectInstance effect) {
         assert Minecraft.getInstance().level != null;
-        TickRateManager tickRate = Minecraft.getInstance().level.tickRateManager();
-        int durationSeconds = (int) (tickRate.millisecondsPerTick() * effect.getDuration()) / 1000;
+        int durationSeconds = effect.getDuration() / 20 / 1000;
 
         MutableComponent durationText;
         if (durationSeconds >= MAX_DURATION_SECONDS_EFFECT_TEXT) {
             durationText = Component.literal("**:**");
         } else {
-            durationText = (MutableComponent) MobEffectUtil.formatDuration(effect, 1, tickRate.tickrate());
+            durationText = (MutableComponent) MobEffectUtil.formatDuration(effect, 1);
         }
 
         durationText.withStyle(EFFECT_COLOURS.getOrDefault(effect.getEffect(), ChatFormatting.WHITE));
@@ -141,42 +105,29 @@ public class EclipsesTweakerooUtil {
             return null;
         }
         AttributeInstance temporaryInstance = new AttributeInstance(Attributes.ATTACK_DAMAGE, (instance) -> {});
-
         temporaryInstance.setBaseValue(entity.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
 
-        BiConsumer<Holder<Attribute>, AttributeModifier> modifierApplier = (attribute, modifier) -> {
-            if (attribute == Attributes.ATTACK_DAMAGE) {
-                temporaryInstance.addTransientModifier(modifier);
-            }
-        };
-
-        ItemAttributeModifiers attributeModifiers = entity.getItemInHand(InteractionHand.MAIN_HAND).get(DataComponents.ATTRIBUTE_MODIFIERS);
-        if (attributeModifiers != null) {
-            attributeModifiers.forEach(EquipmentSlot.MAINHAND, modifierApplier);
-        }
+        ItemStack mainHand = entity.getItemInHand(InteractionHand.MAIN_HAND);
+        mainHand.getAttributeModifiers(EquipmentSlot.MAINHAND)
+                .get(Attributes.ATTACK_KNOCKBACK)
+                .forEach(temporaryInstance::addTransientModifier);
 
         if (!entity.getActiveEffects().isEmpty()) {
-            entity.getActiveEffectsMap().forEach((effect, instance) -> effect.value().createModifiers(instance.getAmplifier(), modifierApplier));
-        } else {
-            List<ResourceKey<MobEffect>> activeParticleEffects = getStatusEffectsFromParticles(entity);
-            for (ResourceKey<MobEffect> activeEffect : activeParticleEffects) {
-                BuiltInRegistries.MOB_EFFECT.getOrThrow(activeEffect).createModifiers(0, modifierApplier);
-            }
+            entity.getActiveEffectsMap().forEach((effect, instance) -> {
+                AttributeModifier baseModifier = effect.getAttributeModifiers()
+                        .get(Attributes.ATTACK_DAMAGE);
+                if (baseModifier != null) {
+                    AttributeModifier attackModifier = new AttributeModifier(baseModifier.getName(),
+                            effect.getAttributeModifierValue(instance.getAmplifier(), baseModifier), baseModifier.getOperation());
+                    temporaryInstance.addTransientModifier(attackModifier);
+                }
+            });
         }
 
-        MutableFloat attackDamage = new MutableFloat(temporaryInstance.getValue());
-        float criticalBase = attackDamage.floatValue();
-
-        forEachEnchantment(entity, (enchantment, level) -> {
-            List<ConditionalEffect<EnchantmentValueEffect>> damageEffects = enchantment.value().getEffects(EnchantmentEffectComponents.DAMAGE);
-            for (ConditionalEffect<EnchantmentValueEffect> damageEffect : damageEffects) {
-                if (damageEffect.requirements().isEmpty()) {
-                    attackDamage.setValue(damageEffect.effect().process(level, entity.getRandom(), attackDamage.getValue()));
-                }
-            }
-        });
-
-        float criticalDamage = entity instanceof Player ? (float) ((criticalBase * 1.5) + (attackDamage.floatValue() - criticalBase)) - attackDamage.floatValue() : 0;
+        float base = (float) temporaryInstance.getValue();
+        float enchantments = EnchantmentHelper.getDamageBonus(mainHand, MobType.UNDEFINED);
+        float attackDamage = base + enchantments;
+        float criticalDamage = entity instanceof Player ? (float) (base * 1.5 + enchantments) - attackDamage : 0;
 
         MutableComponent component = Component.literal(String.valueOf(attackDamage)).withStyle(ChatFormatting.YELLOW);
         if (criticalDamage > 0 && critical) {
@@ -189,46 +140,7 @@ public class EclipsesTweakerooUtil {
         int baseArmor = entity.getArmorValue();
         int armorToughness = Mth.ceil(entity
                 .getAttributeValue(Attributes.ARMOR_TOUGHNESS));
-
-        MutableFloat mutableProtectionFactor = new MutableFloat();
-        forEachEnchantment(entity, (enchantment, level) -> {
-            List<ConditionalEffect<EnchantmentValueEffect>> damageProtectionEffects = enchantment.value().getEffects(EnchantmentEffectComponents.DAMAGE_PROTECTION);
-            for (ConditionalEffect<EnchantmentValueEffect> effect : damageProtectionEffects) {
-                // Empty requirements = effect activates always, OR when the only requirement is that the damage source doesn't bypass invulnerability
-                // In vanilla Minecraft, only the Protection enchantment matches these requirements
-                boolean emptyRequirements = effect.requirements().isEmpty();
-
-                if (!emptyRequirements && effect.requirements().get() instanceof DamageSourceCondition(Optional<DamageSourcePredicate> predicate)) {
-                    if (predicate.isEmpty()) {
-                        emptyRequirements = true;
-                    } else {
-                        DamageSourcePredicate sourcePredicate = predicate.get();
-                        if (sourcePredicate.directEntity().isEmpty() && sourcePredicate.sourceEntity().isEmpty() && sourcePredicate.isDirect().isEmpty()) {
-                            List<TagPredicate<DamageType>> tags = sourcePredicate.tags();
-                            if (tags.isEmpty()) {
-                                emptyRequirements = true;
-                            } else {
-                                boolean onlyInvulnerable = true;
-                                for (TagPredicate<DamageType> tag : tags) {
-                                    if (tag.tag() != DamageTypeTags.BYPASSES_INVULNERABILITY) {
-                                        onlyInvulnerable = false;
-                                        break;
-                                    }
-                                }
-                                if (onlyInvulnerable) {
-                                    emptyRequirements = true;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (emptyRequirements) {
-                    mutableProtectionFactor.setValue(effect.effect().process(level, entity.getRandom(), mutableProtectionFactor.getValue()));
-                }
-            }
-        });
-        int enchantmentProtectionFactor = mutableProtectionFactor.intValue();
+        int enchantmentProtectionFactor = EnchantmentHelper.getDamageProtection(entity.getArmorSlots(), entity.damageSources().generic());
 
         if (baseArmor > 0) {
             MutableComponent armorText = Component.literal(String.valueOf(baseArmor)).withStyle(ChatFormatting.GRAY);
@@ -241,51 +153,6 @@ public class EclipsesTweakerooUtil {
             return armorText;
         }
         return null;
-    }
-
-    public static List<ResourceKey<MobEffect>> getStatusEffectsFromParticles(LivingEntity entity) {
-        List<ParticleOptions> potionParticles = entity.getEntityData().get(LivingEntityAccessor.getDataEffectParticles());
-        if (potionParticles.isEmpty()) {
-            return List.of();
-        }
-
-        List<ResourceKey<MobEffect>> statusEffects = new ArrayList<>();
-        for (ParticleOptions particleEffect : potionParticles) {
-            ResourceKey<MobEffect> statusEffect = getStatusEffectFromParticle(particleEffect);
-            if (statusEffect != null) {
-                statusEffects.add(statusEffect);
-            }
-        }
-        return List.copyOf(statusEffects);
-    }
-
-    public static ResourceKey<MobEffect> getStatusEffectFromParticle(ParticleOptions particle) {
-        ParticleType<?> type = particle.getType();
-
-        if (type == ParticleTypes.TRIAL_OMEN) {
-            return MobEffects.TRIAL_OMEN.unwrapKey().orElseThrow();
-        } else if (type == ParticleTypes.INFESTED) {
-            return MobEffects.INFESTED.unwrapKey().orElseThrow();
-        } else if (type == ParticleTypes.ITEM_SLIME) {
-            return MobEffects.OOZING.unwrapKey().orElseThrow();
-        } else if (type == ParticleTypes.RAID_OMEN) {
-            return MobEffects.RAID_OMEN.unwrapKey().orElseThrow();
-        } else if (type == ParticleTypes.ITEM_COBWEB) {
-            return MobEffects.WEAVING.unwrapKey().orElseThrow();
-        } else if (type == ParticleTypes.SMALL_GUST) {
-            return MobEffects.WIND_CHARGED.unwrapKey().orElseThrow();
-        } else if (type == ParticleTypes.ENTITY_EFFECT) {
-            int argb = ((ColorParticleOptionAccessor) particle).getColor();
-            int rgb = argb & 0x00FFFFFF;
-            return STATUS_EFFECT_PARTICLE_COLORS.get(rgb);
-        }
-
-        return null;
-    }
-
-    public static void populateStatusEffectColorMap() {
-        BuiltInRegistries.MOB_EFFECT.registryKeySet()
-                .forEach(statusEffect -> STATUS_EFFECT_PARTICLE_COLORS.put(BuiltInRegistries.MOB_EFFECT.getOrThrow(statusEffect).getColor(), statusEffect));
     }
 
     public static String roundToOneDecimal(float number) {
@@ -312,28 +179,5 @@ public class EclipsesTweakerooUtil {
 
     public static boolean bossBarDisabled() {
         return TweakerooFinder.hasTweakeroo() && Configs.Disable.DISABLE_BOSS_BAR.getBooleanValue();
-    }
-
-    private static void forEachEnchantment(ItemStack stack, EquipmentSlot slot, BiConsumer<Holder<Enchantment>, Integer> enchantmentConsumer) {
-        if (stack.isEmpty()) {
-            return;
-        }
-        ItemEnchantments enchantments = stack.get(DataComponents.ENCHANTMENTS);
-        if (enchantments == null || enchantments.isEmpty()) {
-            return;
-        }
-        for (Object2IntMap.Entry<Holder<Enchantment>> entry : enchantments.entrySet()) {
-            Holder<Enchantment> enchantment = entry.getKey();
-            if (!enchantment.value().matchingSlot(slot)) {
-                continue;
-            }
-            enchantmentConsumer.accept(enchantment, entry.getIntValue());
-        }
-    }
-
-    private static void forEachEnchantment(LivingEntity entity, BiConsumer<Holder<Enchantment>, Integer> enchantmentConsumer) {
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            forEachEnchantment(entity.getItemBySlot(slot), slot, enchantmentConsumer);
-        }
     }
 }

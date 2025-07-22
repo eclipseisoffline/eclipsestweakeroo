@@ -17,7 +17,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
@@ -27,10 +27,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.LodestoneTracker;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.phys.BlockHitResult;
@@ -173,13 +173,13 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
         ItemStack usedStack = player.getItemInHand(hand);
         if (EclipsesTweakerooUtil.shouldDisableUse(player, hand)) {
             return InteractionResultHolder.fail(usedStack);
-        } else if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_LODESTONE) && usedStack.has(DataComponents.LODESTONE_TRACKER)) {
-            LodestoneTracker tracker = usedStack.get(DataComponents.LODESTONE_TRACKER);
-            assert tracker != null;
+        } else if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_LODESTONE) && usedStack.is(Items.COMPASS) && CompassItem.isLodestoneCompass(usedStack)) {
+            assert usedStack.getTag() != null;
+            GlobalPos target = CompassItem.getLodestonePosition(usedStack.getTag());
 
             MutableComponent info = Component.empty().append(usedStack.getHoverName()).append(" has ");
-            if (tracker.target().isPresent()) {
-                info.append(tracker.target().orElseThrow().pos().toShortString() + " in " + tracker.target().orElseThrow().dimension().location() + " as set position");
+            if (target != null) {
+                info.append(target.pos().toShortString() + " in " + target.dimension().location() + " as set position");
             } else {
                 info.append("no tracked position");
             }

@@ -4,8 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.Resource;
@@ -19,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StatusEffectCharacterLoader implements SimpleSynchronousResourceReloadListener{
-    public static final Map<ResourceKey<MobEffect>, String> MAP = new HashMap<>();
+    public static final Map<MobEffect, String> MAP = new HashMap<>();
 
     @Override
     public ResourceLocation getFabricId() {
@@ -36,7 +35,7 @@ public class StatusEffectCharacterLoader implements SimpleSynchronousResourceRel
                 JsonObject effectMap = JsonParser.parseString(effectMapJson).getAsJsonObject();
 
                 for (String statusEffectString : effectMap.keySet()) {
-                    ResourceKey<MobEffect> statusEffect = ResourceKey.create(Registries.MOB_EFFECT, ResourceLocation.parse(statusEffectString));
+                    MobEffect statusEffect = BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(statusEffectString));
                     MAP.put(statusEffect, effectMap.get(statusEffectString).getAsString());
                 }
             }

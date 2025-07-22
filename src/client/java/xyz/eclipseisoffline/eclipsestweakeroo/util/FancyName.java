@@ -10,7 +10,6 @@ import java.util.function.BiFunction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerInfo;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
@@ -68,7 +67,7 @@ public class FancyName {
             }),
             Map.entry("team", (livingEntity, playerInfo) -> {
                 if (livingEntity != null) {
-                    return Objects.requireNonNull(livingEntity.getTeam()).getDisplayName();
+                    return Component.literal(Objects.requireNonNull(livingEntity.getTeam()).getName());
                 } else if (playerInfo != null) {
                     return Objects.requireNonNull(playerInfo.getTeam()).getDisplayName();
                 }
@@ -89,14 +88,15 @@ public class FancyName {
                         .withStyle(ChatFormatting.BLUE);
             }),
             Map.entry("statuseffect", (livingEntity, playerInfo) -> {
-                List<ResourceKey<MobEffect>> mobEffects = new ArrayList<>(EclipsesTweakerooUtil.getStatusEffectsFromParticles(livingEntity));
+                List<MobEffect> mobEffects = livingEntity.getActiveEffectsMap().keySet().stream()
+                        .sorted(Comparator.comparingInt((statusEffect -> statusEffect.isBeneficial() ? 0 : 1)))
+                        .toList();
                 if (mobEffects.isEmpty()) {
                     return null;
                 }
 
-                mobEffects.sort(Comparator.comparingInt((mobEffect -> BuiltInRegistries.MOB_EFFECT.getOrThrow(mobEffect).isBeneficial() ? 0 : 1)));
                 StringBuilder statusEffectString = new StringBuilder();
-                for (ResourceKey<MobEffect> mobEffect : mobEffects) {
+                for (MobEffect mobEffect : mobEffects) {
                     String statusEffectIconString = StatusEffectCharacterLoader.MAP.get(mobEffect);
                     if (statusEffectIconString != null) {
                         statusEffectString.append(statusEffectIconString);
