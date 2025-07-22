@@ -24,7 +24,7 @@ public class EclipsesConfigs implements IConfigHandler {
             // Backwards compatibility - try to read from the Tweakeroo config file, which is where configs were stored up until 1.21.6
             if (Files.exists(TWEAKEROO_CONFIG_FILE) && Files.isReadable(TWEAKEROO_CONFIG_FILE)) {
                 EclipsesTweakeroo.LOGGER.info("Config file not found - attempting to read from Tweakeroo file (legacy, will move to new file)");
-                JsonElement legacyConfig = JsonUtils.parseJsonFileAsPath(TWEAKEROO_CONFIG_FILE);
+                JsonElement legacyConfig = JsonUtils.parseJsonFile(TWEAKEROO_CONFIG_FILE.toFile());
                 if (legacyConfig != null && legacyConfig.isJsonObject()) {
                     JsonObject root = legacyConfig.getAsJsonObject();
 
@@ -42,7 +42,7 @@ public class EclipsesConfigs implements IConfigHandler {
                 EclipsesTweakeroo.LOGGER.info("Config file not found - will create one after change");
             }
         } else if (Files.isReadable(CONFIG_FILE)) {
-            JsonElement config = JsonUtils.parseJsonFileAsPath(CONFIG_FILE);
+            JsonElement config = JsonUtils.parseJsonFile(CONFIG_FILE.toFile());
             if (config != null && config.isJsonObject()) {
                 JsonObject root = config.getAsJsonObject();
 
@@ -77,6 +77,6 @@ public class EclipsesConfigs implements IConfigHandler {
         ConfigUtils.writeHotkeyToggleOptions(root, "disable_hotkeys", "disable", EclipsesDisableConfig.hotkeys());
         ConfigUtils.writeHotkeyToggleOptions(root, "tweak_hotkeys", "tweaks", EclipsesTweaksConfig.hotkeys());
 
-        JsonUtils.writeJsonToFileAsPath(root, CONFIG_FILE);
+        JsonUtils.writeJsonToFile(root, CONFIG_FILE.toFile());
     }
 }

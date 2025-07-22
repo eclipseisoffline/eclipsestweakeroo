@@ -11,7 +11,9 @@ import net.minecraft.world.level.block.Block;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
@@ -40,6 +42,15 @@ public abstract class LivingEntityMixin extends Entity {
         }
 
         return original.call(instance);
+    }
+
+    @ModifyConstant(method = "travel", constant = @Constant(doubleValue = 0.08))
+    public double modifyDefaultGravity(double constant) {
+        //noinspection ConstantValue
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_GRAVITY) && ((Object) this instanceof LocalPlayer)) {
+            return EclipsesGenericConfig.TWEAK_GRAVITY_OVERRIDE.getDoubleValue();
+        }
+        return constant;
     }
 
     @WrapOperation(method = "aiStep", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;noJumpDelay:I", opcode = Opcodes.PUTFIELD))

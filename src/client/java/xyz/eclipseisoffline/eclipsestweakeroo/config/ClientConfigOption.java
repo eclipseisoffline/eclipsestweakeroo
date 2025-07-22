@@ -9,11 +9,11 @@ import java.util.Objects;
 public class ClientConfigOption extends ConfigBooleanHotkeyed {
 
     public ClientConfigOption(String name, boolean defaultValue, String defaultHotkey, String comment) {
-        this(name, defaultValue, defaultHotkey, comment, StringUtils.splitCamelCase(name), name);
+        this(name, defaultValue, defaultHotkey, comment, StringUtils.splitCamelCase(name));
     }
 
-    public ClientConfigOption(String name, boolean defaultValue, String defaultHotkey, String comment, String prettyName, String translatedName) {
-        super(name, defaultValue, defaultHotkey, comment, prettyName, translatedName);
+    public ClientConfigOption(String name, boolean defaultValue, String defaultHotkey, String comment, String prettyName) {
+        super(name, defaultValue, defaultHotkey, comment, prettyName);
     }
 
     @Override

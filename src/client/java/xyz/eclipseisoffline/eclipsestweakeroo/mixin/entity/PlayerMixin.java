@@ -68,7 +68,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
         // Stop creative flying when the server no longer thinks we're using an elytra
         for (SynchedEntityData.DataValue<?> data : newData) {
-            if (data.id() == Entity.DATA_SHARED_FLAGS_ID.id()) {
+            if (data.id() == Entity.DATA_SHARED_FLAGS_ID.getId()) {
                 if (!getSharedFlag(Entity.FLAG_FALL_FLYING)) {
                     abilities.mayfly = couldFly;
                     abilities.flying = false;

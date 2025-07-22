@@ -10,6 +10,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -58,8 +59,22 @@ public abstract class GuiMixin {
     @Shadow
     public abstract Font getFont();
 
-    @Inject(method = "renderCameraOverlays", at = @At("HEAD"), cancellable = true)
-    public void cancelOverlays(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo callbackInfo) {
+    @Inject(method = "renderPortalOverlay", at = @At("HEAD"), cancellable = true)
+    public void cancelPortalOverlay(GuiGraphics guiGraphics, float alpha, CallbackInfo callbackInfo) {
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_OVERLAY_RENDER)) {
+            callbackInfo.cancel();
+        }
+    }
+
+    @Inject(method = "renderSpyglassOverlay", at = @At("HEAD"), cancellable = true)
+    public void cancelSpyglassOverlay(GuiGraphics guiGraphics, float alpha, CallbackInfo callbackInfo) {
+        if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_OVERLAY_RENDER)) {
+            callbackInfo.cancel();
+        }
+    }
+
+    @Inject(method = "renderTextureOverlay", at = @At("HEAD"), cancellable = true)
+    public void cancelTextureOverlay(GuiGraphics guiGraphics, ResourceLocation shaderLocation, float alpha, CallbackInfo callbackInfo) {
         if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_OVERLAY_RENDER)) {
             callbackInfo.cancel();
         }
