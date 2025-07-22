@@ -119,5 +119,6 @@ runs/
 
 github_auth
 
-python/venv
+python/.venv
+python/*.json
 screenshots
