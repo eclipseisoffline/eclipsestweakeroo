@@ -4,10 +4,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Leashable;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
-import net.minecraft.world.entity.vehicle.VehicleEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,7 +24,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.toggle.ServerSideToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 @Mixin(Boat.class)
-public abstract class BoatMixin extends VehicleEntity implements Leashable {
+public abstract class BoatMixin  extends Entity implements VariantHolder<Boat.Type> {
 
     @Shadow
     private boolean inputLeft;

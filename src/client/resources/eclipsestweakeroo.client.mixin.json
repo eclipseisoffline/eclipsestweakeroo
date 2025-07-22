@@ -25,7 +25,7 @@
     "level.WorldBorderMixin",
     "network.ChatListenerMixin",
     "network.ClientPacketListenerMixin",
-    "network.StringUtilMixin",
+    "network.SharedConstantsMixin",
     "particle.ColorParticleOptionAccessor",
     "renderer.BossHealthOverlayAccessor",
     "renderer.EntityRendererMixin",

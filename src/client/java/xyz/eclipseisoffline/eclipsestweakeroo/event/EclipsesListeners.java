@@ -118,7 +118,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
                             ((DisconnectedScreenAccessor) disconnectedScreen).getParent(),
                             Minecraft.getInstance(),
                             lastConnection, lastConnectionInfo,
-                            false, null);
+                            false);
                 }
                 backButton.setMessage(TO_SERVER_LIST.copy()
                         .append(Component.literal(" (reconnecting in "))

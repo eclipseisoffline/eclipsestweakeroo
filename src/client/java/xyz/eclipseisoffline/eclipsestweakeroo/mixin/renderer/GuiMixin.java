@@ -4,7 +4,6 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -72,7 +71,7 @@ public abstract class GuiMixin {
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectInstance;isAmbient()Z"))
-    public void drawStatusText(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo callbackInfo,
+    public void drawStatusText(GuiGraphics graphics, CallbackInfo callbackInfo,
                                @Local MobEffectInstance mobEffectInstance, @Local(ordinal = 2) int k, @Local(ordinal = 3) LocalIntRef l) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_STATUS_EFFECT)) {
             // Second row
@@ -148,9 +147,11 @@ public abstract class GuiMixin {
         }
 
         Component attackDamageText = EclipsesTweakerooUtil.getAttackDamageText(player, true);
-        graphics.drawString(getFont(), attackDamageText,
-                calculateHudLineX(graphics, attackDamageText, true),
-                calculateHudLineY(graphics, 1), TEXT_COLOUR);
+        if (attackDamageText != null) {
+            graphics.drawString(getFont(), attackDamageText,
+                    calculateHudLineX(graphics, attackDamageText, true),
+                    calculateHudLineY(graphics, 1), TEXT_COLOUR);
+        }
 
         if (EclipsesGenericConfig.TWEAK_NUMBER_HUD_SHOW_DURABILITY_WARNING.getBooleanValue()) {
             StringBuilder durabilityWarnString = new StringBuilder();
@@ -165,7 +166,7 @@ public abstract class GuiMixin {
                     continue;
                 }
                 if (EclipsesTweakerooUtil.shouldWarnDurability(player.getItemBySlot(slot))) {
-                    durabilityWarnString.append(slot.getSerializedName().substring(0, 1).toUpperCase());
+                    durabilityWarnString.append(slot.getName().substring(0, 1).toUpperCase());
                     durabilityWarnString.append("+");
                 }
             }

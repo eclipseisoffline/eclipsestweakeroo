@@ -3,11 +3,8 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin.network;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.client.multiplayer.CommonListenerCookie;
 import net.minecraft.client.multiplayer.PlayerInfo;
-import net.minecraft.network.Connection;
 import net.minecraft.network.TickablePacketListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -30,11 +27,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 import java.util.Set;
 
 @Mixin(ClientPacketListener.class)
-public abstract class ClientPacketListenerMixin extends ClientCommonPacketListenerImpl implements ClientGamePacketListener, TickablePacketListener {
-
-    protected ClientPacketListenerMixin(Minecraft minecraft, Connection connection, CommonListenerCookie commonListenerCookie) {
-        super(minecraft, connection, commonListenerCookie);
-    }
+public abstract class ClientPacketListenerMixin implements TickablePacketListener, ClientGamePacketListener {
 
     @Inject(method = "handleSetEntityMotion", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;lerpMotion(DDD)V"), cancellable = true)
     public void cancelPlayerVelocitySet(ClientboundSetEntityMotionPacket packet,
@@ -80,7 +73,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
         }
 
         GameProfile gameProfile = received.profile();
-        if (gameProfile == null) {
+        if (gameProfile.getName() == null) {
             gameProfile = current.getProfile();
         }
 

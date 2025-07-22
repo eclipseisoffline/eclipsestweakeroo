@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ConnectScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.multiplayer.TransferState;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,8 +20,7 @@ public abstract class ConnectScreenMixin extends Screen {
     }
 
     @Inject(method = "startConnecting", at = @At("HEAD"))
-    private static void registerNewConnection(Screen parent, Minecraft minecraft, ServerAddress serverAddress,
-                                              ServerData serverData, boolean isQuickPlay, TransferState transferState, CallbackInfo callbackInfo) {
+    private static void registerNewConnection(Screen parent, Minecraft minecraft, ServerAddress serverAddress, ServerData serverData, boolean isQuickPlay, CallbackInfo callbackInfo) {
         AttemptConnectionCallback.EVENT.invoker().connect(serverAddress, serverData);
     }
 }
