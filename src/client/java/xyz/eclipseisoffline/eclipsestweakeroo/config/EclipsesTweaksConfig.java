@@ -36,22 +36,8 @@ public class EclipsesTweaksConfig {
     public static final ConfigBooleanHotkeyed TWEAK_GRAVITY = create("tweakGravity", "Allows you to override your gravity attribute. Can be configured in General", "Gravity tweak");
     public static final ConfigBooleanHotkeyed TWEAK_STEP_HEIGHT = create("tweakStepHeight", "Allows you to override your step height attribute. Can be configured in General.\nNote that this also affects sneaking",
             "Step height tweak");
-    public static final ConfigBooleanHotkeyed TWEAK_HAPPY_GHAST = create("tweakHappyGhast",
-            "Makes various tweaks to controlling Happy Ghasts.\nRequires configuring in General",
-            "Happy Ghast flight tweak");
-    public static final ConfigBooleanHotkeyed TWEAK_LOCATOR_BAR = create("tweakLocatorBar", "Shows faces of players on the locator bar when applicable", "Locator bar tweak");
     public static final ConfigBooleanHotkeyed TWEAK_PERSISTENT_CHAT = create("tweakPersistentChat", "Keeps past chat messages across server/world switches", "Persistent chat tweak");
     public static final ConfigBooleanHotkeyed TWEAK_SHOW_FORMATTING_CODES = create("tweakShowFormattingCodes", "Renders legacy text formatting codes\nwith a grey colour instead of hiding them.\nStill displays the formatting they set", "Show formatting codes tweak");
-    public static final ConfigBooleanHotkeyed TWEAK_MUSIC_TOAST = create("tweakMusicToast",
-            """
-Makes a few tweaks to the music toast:
-- Allows configuring whether to show a toast
-  or actionbar message for game music
-- Allows configuring whether to show a toast
-  or actionbar message for jukebox records
-- Allows configuring whether to show a toast
-  on the pause screen for game music or jukebox records
-Configure using the "musicToast" options in Generic""", "Music toast tweak");
 
     private static ConfigBooleanHotkeyed create(String name, String comment, String prettyName) {
         ConfigBooleanHotkeyed config = new ConfigBooleanHotkeyed(name, false, "", comment, prettyName);

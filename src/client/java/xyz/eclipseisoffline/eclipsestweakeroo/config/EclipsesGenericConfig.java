@@ -78,15 +78,6 @@ public class EclipsesGenericConfig {
             "Defines the step height value when using tweakStepHeight");
     public static final ConfigBoolean FAKE_SNEAKING_LADDER = createBoolean("fakeSneakingLadder", "Allows tweakFakeSneaking to stop you from falling down a ladder");
     public static final ConfigBoolean PERMANENT_SNEAK_FREE_CAMERA = createBoolean("permanentSneakFreeCamera", "Allows tweakPermanentSneak to work while using tweakFreeCamera");
-    public static final ConfigBoolean HAPPY_GHAST_CREATIVE_FLIGHT = createBoolean("happyGhastCreativeFlight", "Uses creative flight controls to control Happy Ghasts\nwhen tweakHappyGhast is enabled.\nUses same speed as normally, except when sprinting.\nDouble-tap jump to dismount");
-    public static final ConfigBoolean HIDE_HAPPY_GHAST = createBoolean("hideHappyGhast", "Hides the Happy Ghast when controlling it and tweakHappyGhast is enabled");
-    public static final ConfigBoolean NO_HAPPY_GHAST_ROTATION = createBoolean("noHappyGhastRotation", "Disables rotating the Happy Ghast when not moving and tweakHappyGhast is enabled");
-    public static final ConfigDouble HAPPY_GHAST_ROTATION_LERP_SPEED = createDouble("happyGhastRotationLerpSpeed",
-            0.08, 0.01, 1.0,
-            "Defines the rotation speed when controlling the Happy Ghast with tweakHappyGhast.\n1.0 is instant rotation");
-    public static final ConfigBoolean MUSIC_TOAST_MUSIC = createBoolean("musicToastMusic", true, "Shows the music toast for game music when\ntweakMusicToast is enabled.\nWhen disabled, shows an actionbar text instead,\nlike is normally done for jukebox records");
-    public static final ConfigBoolean MUSIC_TOAST_RECORDS = createBoolean("musicToastRecords", true, "Shows the music toast for jukebox records when\ntweakMusicToast is enabled.\nWhen disabled, shows an actionbar text instead,\nlike is normally done");
-    public static final ConfigBoolean MUSIC_TOAST_PAUSE_MENU = createBoolean("musicToastPauseMenu", true, "Whether to show music toasts in the pause menu when\nenabled for music or jukebox records,\nand tweakMusicToast is enabled");
 
     private static ConfigBoolean createBoolean(String name, String comment) {
         return createBoolean(name, false, comment);

@@ -30,7 +30,6 @@ public class EclipsesDisableConfig {
     public static final ConfigBooleanHotkeyed DISABLE_USE_ITEM_SLOWDOWN = create("disableUseItemSlowdown", "Disables slowing down when using items, like eating food");
     public static final ConfigBooleanHotkeyed DISABLE_SWIFT_SNEAK = create("disableSwiftSneak", "Disables sneak speed modifiers like swift sneak,\nbecause sometimes slow sneaking is nice");
     public static final ConfigBooleanHotkeyed DISABLE_JUMP_DELAY = create("disableJumpDelay", "Disables the 10-tick delay between jumps");
-    public static final ConfigBooleanHotkeyed DISABLE_BOOK_LINE_LIMIT = create("disableBookLineLimit", "Disables the line limit of books,\nallowing you to write until the full limit of\n1024 characters");
 
     private static ClientConfigOption createClient(String name, String comment) {
         ClientConfigOption config = new ClientConfigOption(name, false, "", comment);
