@@ -94,7 +94,7 @@ public abstract class BoatMixin extends VehicleEntity implements Leashable {
 
     @Inject(method = "controlBoat", at = @At("HEAD"))
     public void copyPlayerYaw(CallbackInfo callbackInfo) {
-        if (isClientAuthoritative()
+        if (isControlledByLocalInstance()
                 && getControllingPassenger() != null
                 && EclipsesGenericConfig.TWEAK_BOAT_PLAYER_YAW.getBooleanValue()
                 && ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_BOATS)) {
