@@ -3,7 +3,7 @@ import requests
 
 # This script queries the mob effect icons in the vanilla assets/minecraft/textures/mob_effect folder, and builds a font for them
 
-MINECRAFT_VERSION_COMMIT = "585997f30c3a1f85542d1a637d9307011c7e7fc4" # 1.21.8
+MINECRAFT_VERSION_COMMIT = "906b6e49f59f4b07a809632c061f9b334b7eb764" # 1.20.1
 
 # Thanks Misode!
 STATUS_EFFECT_ICONS_QUERY = f"https://api.github.com/repos/misode/mcmeta/contents/assets/minecraft/textures/mob_effect?ref={MINECRAFT_VERSION_COMMIT}"
