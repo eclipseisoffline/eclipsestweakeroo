@@ -33,6 +33,8 @@ public class EclipsesConfigs implements IConfigHandler {
                     ConfigUtils.readConfigBase(root, "Lists", EclipsesListsConfig.values());
                     ConfigUtils.readHotkeyToggleOptions(root, "DisableHotkeys", "DisableToggles", EclipsesDisableConfig.hotkeys());
                     ConfigUtils.readHotkeyToggleOptions(root, "TweakHotkeys", "TweakToggles", EclipsesTweaksConfig.hotkeys());
+                    EclipsesTweakeroo.LOGGER.info("Read config options from Tweakeroo file - moving to new separate config file");
+                    save();
                 } else {
                     EclipsesTweakeroo.LOGGER.warn("Failed to read from legacy config file!");
                 }
