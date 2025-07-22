@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Leashable;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractBoat;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.VehicleEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -23,8 +23,8 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.toggle.ServerSideToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
-@Mixin(AbstractBoat.class)
-public abstract class AbstractBoatMixin extends VehicleEntity implements Leashable {
+@Mixin(Boat.class)
+public abstract class BoatMixin extends VehicleEntity implements Leashable {
 
     @Shadow
     private boolean inputLeft;
@@ -35,7 +35,7 @@ public abstract class AbstractBoatMixin extends VehicleEntity implements Leashab
     @Shadow
     private float deltaRotation;
 
-    public AbstractBoatMixin(net.minecraft.world.entity.EntityType<?> entityType, Level level) {
+    public BoatMixin(net.minecraft.world.entity.EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
 
