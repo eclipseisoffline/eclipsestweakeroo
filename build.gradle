@@ -58,8 +58,12 @@ loom {
     }
 
     runs {
+        named("client") {
+            runDir = "runs/run-client-${project.minecraft_version}"
+        }
+
         named("server") {
-            runDir = "run-server"
+            runDir = "runs/run-server-${project.minecraft_version}"
         }
     }
 
