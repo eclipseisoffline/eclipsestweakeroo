@@ -19,7 +19,7 @@ public abstract class CrossbowItemMixin extends ProjectileWeaponItem {
     }
 
     @Inject(method = "getPowerForTime", at = @At("HEAD"), cancellable = true)
-    private static void isAlwaysCharged(int timeLeft, ItemStack stack, LivingEntity shooter, CallbackInfoReturnable<Float> callbackInfoReturnable) {
+    private static void isAlwaysCharged(int useTime, ItemStack crossbowStack, CallbackInfoReturnable<Float> callbackInfoReturnable) {
         if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_BOW_DRAW_TIME)) {
             callbackInfoReturnable.setReturnValue(1.0F);
         }
