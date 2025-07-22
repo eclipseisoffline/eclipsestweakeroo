@@ -1,38 +1,40 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationConnectionEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
-import xyz.eclipseisoffline.eclipsestweakeroo.network.protocol.ClientboundDisabledTogglesPacket;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import xyz.eclipseisoffline.eclipsestweakeroo.network.protocol.ClientboundEnabledTogglesPacket;
-import xyz.eclipseisoffline.eclipsestweakeroo.toggle.ServerSideToggle;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EclipsesTweakerooClientNetworking {
 
     public static void bootstrap() {
-        ClientConfigurationNetworking.registerGlobalReceiver(ClientboundDisabledTogglesPacket.TYPE,
-                (packet, context) -> {
-                    List<ServerSideToggle> enabled = new ArrayList<>();
-                    for (ServerSideToggle toggle : ServerSideToggle.ALL) {
-                        if (!ServerSideToggle.LEGACY_UNSUPPORTED.contains(toggle) && !packet.toggles().contains(toggle)) {
-                            enabled.add(toggle);
-                        }
-                    }
-                    ToggleManager.enableToggles(enabled, true);
-                });
-        ClientConfigurationNetworking.registerGlobalReceiver(ClientboundEnabledTogglesPacket.TYPE,
-                (packet, context) -> ToggleManager.enableToggles(packet.toggles(), true));
+        ClientPlayNetworking.registerGlobalReceiver(ClientboundEnabledTogglesPacket.TYPE,
+                (packet, player, response) -> ToggleManager.enableToggles(packet.toggles(), true));
+        ClientPlayConnectionEvents.INIT.register(new ToggleListener());
+    }
 
-        ClientConfigurationConnectionEvents.INIT.register((listener, client) -> {
+    private static class ToggleListener implements ClientPlayConnectionEvents.Init, ClientTickEvents.StartTick {
+        private int receivedTogglesTimer = -1;
+
+        @Override
+        public void onPlayInit(ClientPacketListener clientPacketListener, Minecraft minecraft) {
             ToggleManager.resetEnabledToggles();
-        });
-        ClientConfigurationConnectionEvents.COMPLETE.register((listener, client) -> {
-            if (!ToggleManager.receivedEnabledToggles()) {
-                ToggleManager.enableToggles(List.of(), false);
+            receivedTogglesTimer = 150;
+        }
+
+        @Override
+        public void onStartTick(Minecraft minecraft) {
+            if (receivedTogglesTimer >= 0) {
+                if (receivedTogglesTimer == 0 && !ToggleManager.receivedEnabledToggles()) {
+                    ToggleManager.enableToggles(List.of(), false);
+                }
+                receivedTogglesTimer--;
             }
-        });
+        }
     }
 }

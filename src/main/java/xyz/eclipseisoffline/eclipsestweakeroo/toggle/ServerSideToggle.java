@@ -1,18 +1,14 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.toggle;
 
 import com.mojang.serialization.Codec;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.IntFunction;
 
 public enum ServerSideToggle implements StringRepresentable {
     SLIPPERY("tweak_slippery", "tweakSlippery"),
@@ -32,10 +28,6 @@ public enum ServerSideToggle implements StringRepresentable {
     public static final List<ServerSideToggle> ALL = Arrays.stream(values()).filter(toggle -> toggle != NO_OP).toList();
     public static final List<ServerSideToggle> LEGACY_UNSUPPORTED = List.of(NO_OP, NO_JUMP_DELAY);
 
-    private static final IntFunction<ServerSideToggle> BY_ID = ByIdMap.continuous(Enum::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
-    @Deprecated
-    public static final StreamCodec<ByteBuf, ServerSideToggle> ID_STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, ServerSideToggle::ordinal);
-    public static final StreamCodec<ByteBuf, ServerSideToggle> STREAM_CODEC = ResourceLocation.STREAM_CODEC.map(ServerSideToggle::fromId, ServerSideToggle::id);
     public static final Codec<ServerSideToggle> CODEC = StringRepresentable.fromEnum(ServerSideToggle::values);
 
     private final ResourceLocation id;
@@ -72,5 +64,13 @@ public enum ServerSideToggle implements StringRepresentable {
             }
         }
         return NO_OP;
+    }
+
+    public static ServerSideToggle read(FriendlyByteBuf buffer) {
+        return fromId(buffer.readResourceLocation());
+    }
+
+    public static void write(FriendlyByteBuf buffer, ServerSideToggle toggle) {
+        buffer.writeResourceLocation(toggle.id);
     }
 }

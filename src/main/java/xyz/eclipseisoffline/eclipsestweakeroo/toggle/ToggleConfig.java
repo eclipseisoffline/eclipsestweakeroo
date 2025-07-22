@@ -50,7 +50,7 @@ public record ToggleConfig(Map<ServerSideToggle, Boolean> toggles, boolean opera
 
     public void save() {
         try {
-            Files.writeString(PATH, GSON.toJson(CODEC.encodeStart(JsonOps.INSTANCE, this).getOrThrow()));
+            Files.writeString(PATH, GSON.toJson(CODEC.encodeStart(JsonOps.INSTANCE, this).result().orElseThrow()));
         } catch (IOException exception) {
             EclipsesTweakeroo.LOGGER.error("Failed to save config file!", exception);
         }
@@ -58,7 +58,7 @@ public record ToggleConfig(Map<ServerSideToggle, Boolean> toggles, boolean opera
 
     public static ToggleConfig read() {
         try {
-            return CODEC.parse(JsonOps.INSTANCE, GSON.fromJson(Files.readString(PATH), JsonElement.class)).getOrThrow();
+            return CODEC.parse(JsonOps.INSTANCE, GSON.fromJson(Files.readString(PATH), JsonElement.class)).result().orElseThrow();
         } catch (IOException exception) {
             EclipsesTweakeroo.LOGGER.error("Failed to read config file!", exception);
             return DEFAULT;
