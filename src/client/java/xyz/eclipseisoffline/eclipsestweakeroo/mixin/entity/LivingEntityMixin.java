@@ -30,7 +30,7 @@ public abstract class LivingEntityMixin extends Entity {
         callbackInfoReturnable.setReturnValue(callbackInfoReturnable.getReturnValue() || (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_MOB_NAMES)));
     }
 
-    @WrapOperation(method = "travelInAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getFriction()F"))
+    @WrapOperation(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getFriction()F"))
     public float getTweakedFriction(Block instance, Operation<Float> original) {
         //noinspection ConstantValue
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_SLIPPERY)

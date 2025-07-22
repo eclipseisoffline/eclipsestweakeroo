@@ -94,7 +94,7 @@ public class FancyName {
                     return null;
                 }
 
-                mobEffects.sort(Comparator.comparingInt((mobEffect -> BuiltInRegistries.MOB_EFFECT.getOrThrow(mobEffect).value().isBeneficial() ? 0 : 1)));
+                mobEffects.sort(Comparator.comparingInt((mobEffect -> BuiltInRegistries.MOB_EFFECT.getOrThrow(mobEffect).isBeneficial() ? 0 : 1)));
                 StringBuilder statusEffectString = new StringBuilder();
                 for (ResourceKey<MobEffect> mobEffect : mobEffects) {
                     String statusEffectIconString = StatusEffectCharacterLoader.MAP.get(mobEffect);
