@@ -32,6 +32,7 @@ repositories {
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.layered() {
+        mappings file("gradle/malilib_fix.tiny")
         officialMojangMappings()
         parchment("org.parchmentmc.data:${project.parchment_version}@zip")
     }
@@ -93,7 +94,7 @@ processResources {
     }
 }
 
-def targetJavaVersion = 21
+def targetJavaVersion = 17
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
@@ -108,6 +109,9 @@ java {
     }
     archivesBaseName = project.archives_base_name
     withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 jar {
