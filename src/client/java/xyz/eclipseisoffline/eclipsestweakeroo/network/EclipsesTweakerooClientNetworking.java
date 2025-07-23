@@ -15,7 +15,10 @@ public class EclipsesTweakerooClientNetworking {
     public static void bootstrap() {
         ClientPlayNetworking.registerGlobalReceiver(ClientboundEnabledTogglesPacket.TYPE,
                 (packet, player, response) -> ToggleManager.enableToggles(packet.toggles(), true));
-        ClientPlayConnectionEvents.INIT.register(new ToggleListener());
+
+        ToggleListener listener = new ToggleListener();
+        ClientPlayConnectionEvents.INIT.register(listener);
+        ClientTickEvents.START_CLIENT_TICK.register(listener);
     }
 
     private static class ToggleListener implements ClientPlayConnectionEvents.Init, ClientTickEvents.StartTick {
