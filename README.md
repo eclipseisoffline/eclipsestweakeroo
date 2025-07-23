@@ -143,7 +143,7 @@ The fixes listed below fix certain Tweakeroo modules, as such these will only ha
 - `tweakBoats`, disables the momentum boats gain on turning and allows boats to jump 1 block high. Can be further configured in `Generic`:
   - If `spiderBoat` is enabled, boats can climb walls like spiders. This is a bit buggy, and was mostly added for fun.
   - If `boatPlayerYaw` is enabled, boats follow the crosshair of the player controlling them.
-- `tweakCreativeElytraFlight`, allows creative elytra flight in survival while using an elytra.
+- `tweakCreativeElytraFlight`, aA
   - May be considered cheating on some servers, use at your own risk.
 - `tweakRenderOperatorBlocks`, makes operator blocks (barrier, light and structure void blocks) have a texture.
 - `tweakNumberHud`, replaces parts of the HUD with a number-based design. Can be further configured in `Generic`:
