@@ -121,4 +121,5 @@ github_auth
 
 python/.venv
 python/*.json
+python/*.md
 screenshots
