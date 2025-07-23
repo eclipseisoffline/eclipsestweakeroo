@@ -160,7 +160,7 @@ public class EclipsesTweakerooUtil {
         } else {
             List<ResourceKey<MobEffect>> activeParticleEffects = getStatusEffectsFromParticles(entity);
             for (ResourceKey<MobEffect> activeEffect : activeParticleEffects) {
-                BuiltInRegistries.MOB_EFFECT.getOrThrow(activeEffect).createModifiers(0, modifierApplier);
+                BuiltInRegistries.MOB_EFFECT.getOrThrow(activeEffect).value().createModifiers(0, modifierApplier);
             }
         }
 
@@ -285,7 +285,7 @@ public class EclipsesTweakerooUtil {
 
     public static void populateStatusEffectColorMap() {
         BuiltInRegistries.MOB_EFFECT.registryKeySet()
-                .forEach(statusEffect -> STATUS_EFFECT_PARTICLE_COLORS.put(BuiltInRegistries.MOB_EFFECT.getOrThrow(statusEffect).getColor(), statusEffect));
+                .forEach(statusEffect -> STATUS_EFFECT_PARTICLE_COLORS.put(BuiltInRegistries.MOB_EFFECT.getOrThrow(statusEffect).value().getColor(), statusEffect));
     }
 
     public static String roundToOneDecimal(float number) {

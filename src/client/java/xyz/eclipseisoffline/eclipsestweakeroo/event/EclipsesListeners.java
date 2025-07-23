@@ -22,7 +22,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.allay.Allay;
@@ -169,10 +168,10 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> interact(Player player, Level level, InteractionHand hand) {
+    public InteractionResult interact(Player player, Level level, InteractionHand hand) {
         ItemStack usedStack = player.getItemInHand(hand);
         if (EclipsesTweakerooUtil.shouldDisableUse(player, hand)) {
-            return InteractionResultHolder.fail(usedStack);
+            return InteractionResult.FAIL;
         } else if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_LODESTONE) && usedStack.has(DataComponents.LODESTONE_TRACKER)) {
             LodestoneTracker tracker = usedStack.get(DataComponents.LODESTONE_TRACKER);
             assert tracker != null;
@@ -185,10 +184,10 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
             }
 
             Minecraft.getInstance().gui.getChat().addMessage(info);
-            return InteractionResultHolder.consume(usedStack);
+            return InteractionResult.CONSUME;
         }
 
-        return InteractionResultHolder.pass(usedStack);
+        return InteractionResult.PASS;
     }
 
     @Override
