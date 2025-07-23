@@ -2,32 +2,21 @@ package xyz.eclipseisoffline.eclipsestweakeroo.config;
 
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import fi.dy.masa.malilib.gui.GuiBase;
-import fi.dy.masa.malilib.util.StringUtils;
-
-import java.util.Objects;
 
 public class ClientConfigOption extends ConfigBooleanHotkeyed {
 
     public ClientConfigOption(String name, boolean defaultValue, String defaultHotkey, String comment) {
-        this(name, defaultValue, defaultHotkey, comment, StringUtils.splitCamelCase(name));
-    }
-
-    public ClientConfigOption(String name, boolean defaultValue, String defaultHotkey, String comment, String prettyName) {
-        super(name, defaultValue, defaultHotkey, comment, prettyName);
-    }
-
-    @Override
-    public String getComment() {
-        String comment = StringUtils.getTranslatedOrFallback(Objects.requireNonNull(super.getComment()), super.getComment());
-        if (comment == null) {
-            return "";
-        }
-
-        return comment + "\n" + GuiBase.TXT_GOLD + "Note: This feature works either at all or\nat least fully only in single player" + GuiBase.TXT_RST;
+        super(name, defaultValue, defaultHotkey, comment);
     }
 
     @Override
     public String getConfigGuiDisplayName() {
         return GuiBase.TXT_GOLD + super.getConfigGuiDisplayName() + GuiBase.TXT_RST;
+    }
+
+    @Override
+    public String getComment() {
+        return super.getComment() + "\n" + GuiBase.TXT_GOLD + "Note: This feature works either at all or" + GuiBase.TXT_RST +
+                "\n" + GuiBase.TXT_GOLD + "at least fully only in single player" + GuiBase.TXT_RST;
     }
 }
