@@ -1,12 +1,15 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.event;
 
+import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -14,6 +17,7 @@ import net.minecraft.client.gui.screens.ConnectScreen;
 import net.minecraft.client.gui.screens.DisconnectedScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.player.LocalPlayer;
@@ -37,6 +41,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFixesConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.mixin.entity.AllayInvoker;
@@ -48,6 +53,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
+        ClientPlayConnectionEvents.Join,
         ClientPreAttackCallback, UseBlockCallback, UseEntityCallback, UseItemCallback,
         ClientTickEvents.StartWorldTick, AttemptConnectionCallback, ScreenEvents.AfterInit {
 
@@ -84,7 +90,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
             if (!check) {
                 continue;
             }
-            
+
             durabilityItems.put(slot, itemStack.getItem());
             durabilityWarningTimes.put(slot, time);
             EclipsesTweakerooUtil.showLowDurabilityWarning(itemStack, false);
@@ -95,6 +101,13 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
     public void onClientStarted(Minecraft client) {
         // Registering value change callbacks here to prevent crashes
         EclipsesTweaksConfig.bootstrap(client);
+    }
+
+    @Override
+    public void onPlayReady(ClientPacketListener listener, PacketSender sender, Minecraft client) {
+        if (EclipsesFixesConfig.GAMMA_OVERRIDE_FIX.getBooleanValue()) {
+            FeatureToggle.TWEAK_GAMMA_OVERRIDE.onValueChanged();
+        }
     }
 
     @Override
@@ -201,6 +214,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
         EclipsesListeners listeners = new EclipsesListeners();
         ClientTickEvents.START_WORLD_TICK.register(listeners);
         ClientLifecycleEvents.CLIENT_STARTED.register(listeners);
+        ClientPlayConnectionEvents.JOIN.register(listeners);
         ScreenEvents.AFTER_INIT.register(listeners);
         ClientPreAttackCallback.EVENT.register(listeners);
         UseBlockCallback.EVENT.register(listeners);

@@ -10,6 +10,7 @@ public class EclipsesFixesConfig {
 
     private static final List<IConfigBase> CONFIGS = new ArrayList<>();
 
+    public static ConfigBoolean GAMMA_OVERRIDE_FIX = create("gammaOverrideFix", "Fixes gamma override not applying when starting the game");
     public static final ConfigBoolean PISTON_FLEXIBLE_PLACEMENT_FIX = create("pistonFlexiblePlacementFix", "Fixes inverse rotation placement of pistons, dispensers, droppers and crafters with tweakFlexibleBlockPlacement\n(Allows placing these blocks facing away from you)");
     public static final ConfigBoolean HAND_RESTOCK_CREATIVE_FIX = create("handRestockCreativeFix", "Disables tweakHandRestock in creative mode");
 
