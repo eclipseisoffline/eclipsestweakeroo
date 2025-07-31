@@ -17,7 +17,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -25,6 +24,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -163,6 +163,9 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
                 }
                 return InteractionResult.FAIL;
             }
+        } else if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_BABY_FEEDING) && entity instanceof Animal animal
+                && animal.isBaby() && animal.isFood(player.getItemInHand(hand))) {
+            return InteractionResult.FAIL;
         }
 
         return InteractionResult.PASS;

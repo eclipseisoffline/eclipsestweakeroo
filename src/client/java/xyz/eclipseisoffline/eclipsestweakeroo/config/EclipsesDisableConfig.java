@@ -31,6 +31,7 @@ public class EclipsesDisableConfig {
     public static final ConfigBooleanHotkeyed DISABLE_SWIFT_SNEAK = create("disableSwiftSneak", "Disables sneak speed modifiers like swift sneak,\nbecause sometimes slow sneaking is nice");
     public static final ConfigBooleanHotkeyed DISABLE_JUMP_DELAY = createWithServerSideOptIn("disableJumpDelay", "Disables the 10-tick delay between jumps");
     public static final ConfigBooleanHotkeyed DISABLE_BOOK_LINE_LIMIT = create("disableBookLineLimit", "Disables the line limit of books,\nallowing you to write until the full limit of\n1024 characters");
+    public static final ConfigBooleanHotkeyed DISABLE_BABY_FEEDING = create("disableBabyFeeding", "Disables feeding of baby animals, making breeding animals easier when there are a lot of animals in a small space");
 
     private static ClientConfigOption createClient(String name, String comment) {
         ClientConfigOption config = new ClientConfigOption(name, false, "", comment);
