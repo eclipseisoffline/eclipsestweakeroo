@@ -52,6 +52,7 @@ Makes a few tweaks to the music toast:
 - Allows configuring whether to show a toast
   on the pause screen for game music or jukebox records
 Configure using the "musicToast" options in Generic""", "Music toast tweak");
+    public static final ConfigBooleanHotkeyed TWEAK_INVERT_MOUSE_X = create("tweakInvertMouseX", "Inverts mouse movement on the X-axis. Backport of the similar option introduced in 25w31a", "Invert mouse X");
 
     private static ConfigBooleanHotkeyed create(String name, String comment, String prettyName) {
         ConfigBooleanHotkeyed config = new ConfigBooleanHotkeyed(name, false, "", comment, prettyName);
