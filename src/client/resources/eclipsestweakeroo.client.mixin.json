@@ -49,6 +49,7 @@
     "screen.PauseScreenMixin",
     "sounds.MusicManagerMixin",
     "tweakeroo.entity.LocalPlayerTweakerooMixin",
+    "tweakeroo.entity.player.MultiPlayerGameModeTweakerooMixin",
     "tweakeroo.mod.TweakerooInventoryUtilsMixin",
     "tweakeroo.mod.TweakerooMiscUtilsMixin",
     "tweakeroo.mod.TweakerooPlacementTweaksMixin",
