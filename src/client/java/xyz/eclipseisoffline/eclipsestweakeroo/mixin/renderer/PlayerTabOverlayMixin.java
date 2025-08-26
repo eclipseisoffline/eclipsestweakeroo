@@ -1,5 +1,6 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin.renderer;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -21,7 +22,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -127,11 +130,23 @@ public abstract class PlayerTabOverlayMixin {
 
     @ModifyVariable(method = "render", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private Objective hideScoreboardObjective(Objective scoreboardObjective) {
-        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST)
-                && EclipsesGenericConfig.TWEAK_PLAYER_LIST_OBJECTIVE.getBooleanValue()) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_OBJECTIVE.getBooleanValue()) {
             return null;
         }
 
         return scoreboardObjective;
+    }
+
+    @ModifyConstant(method = "render", constant = @Constant(intValue = 13))
+    public int changePlayerListWidth(int constant) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_PING.getBooleanValue()) {
+            return constant - 12; // Ping icon is 10 in width, margin is 3. We're keeping 1 pixel for margin
+        }
+        return constant;
+    }
+
+    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;renderPingIcon(Lnet/minecraft/client/gui/GuiGraphics;IIILnet/minecraft/client/multiplayer/PlayerInfo;)V"))
+    public boolean checkPingSetting(PlayerTabOverlay instance, GuiGraphics guiGraphics, int width, int x, int y, PlayerInfo playerInfo) {
+        return !ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) || !EclipsesGenericConfig.TWEAK_PLAYER_LIST_PING.getBooleanValue();
     }
 }

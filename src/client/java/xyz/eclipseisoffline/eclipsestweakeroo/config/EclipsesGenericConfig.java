@@ -22,6 +22,7 @@ public class EclipsesGenericConfig {
     public static final ConfigBoolean HAND_RESTOCK_UNSTACKABLE = createBoolean("handRestockUnstackable", true, "Whether to restock unstackable items");
     public static final ConfigBoolean TWEAK_PLAYER_LIST_HEADER = createBoolean("playerListHideHeader", "Hides the player list header when the player list tweak is enabled");
     public static final ConfigBoolean TWEAK_PLAYER_LIST_FOOTER = createBoolean("playerListHideFooter", "Hides the player list footer when the player list tweak is enabled");
+    public static final ConfigBoolean TWEAK_PLAYER_LIST_PING = createBoolean("playerListHidePing", "Hides the player list ping bars when the player list tweak is enabled");
     public static final ConfigBoolean TWEAK_PLAYER_LIST_OBJECTIVE = createBoolean("playerListHideObjective", "Hides the scoreboard objectives in the player list when the player list tweak is enabled");
     public static final ConfigBoolean TWEAK_PLAYER_LIST_NAMES = createBoolean("playerListNames", true, "Changes player names in the player list to use fancy names when the player list tweak is enabled");
     public static final ConfigBoolean TWEAK_PLAYER_LIST_BOSSBAR = createBoolean("playerListBelowBossbar", false,
