@@ -68,6 +68,22 @@ Toggles whether `tweakPermanentSneak` should work while using `tweakFreeCamera`.
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
 
+### `toolSwitchBack`
+
+> [!NOTE]
+> This feature depends on Tweakeroo functionality. It will only be functional when Tweakeroo is also installed.
+
+Whether to switch back to the original hotbar slot and item after breaking blocks with tweakToolSwitch enabled
+
+#### Availability
+
+| Minecraft Version | Supported |
+|-------------------|-----------|
+| 1.21.6+7+8 | ✔️ Yes |
+| 1.21.4 | ❌ No |
+| 1.21+1 | ❌ No |
+| 1.20+1 | ❌ No |
+
 ## `Fixes`
 
 ### `pistonFlexiblePlacementFix`
@@ -123,6 +139,7 @@ Modifies the player (tab) list in various ways, depending on how configured in t
 
 - If `playerListHideHeader` is enabled, it hides the additional player list header some servers use.
 - If `playerListHideFooter` is enabled, it hides the additional player list footer some servers use.
+- If `playerListHidePing` is enabled, it hides the ping bars from the player list.
 - If `playerListHideObjective` is enabled, it hides the scoreboard objective from the player list.
 - If `playerListNames` is enabled, it uses fancy names for the names that appear in the list.
 - If `playerListBelowBossbar` is enabled, the player list will be moved below all bossbars rendering.
@@ -466,6 +483,19 @@ Makes a few tweaks to the music toasts added in 1.21.6, depending on how configu
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
 
+### `tweakInvertMouseX`
+
+Inverts mouse movement on the X-axis. Backport of the similar option introduced in 25w31a
+
+#### Availability
+
+| Minecraft Version | Supported |
+|-------------------|-----------|
+| 1.21.6+7+8 | ✔️ Yes |
+| 1.21.4 | ❌ No |
+| 1.21+1 | ❌ No |
+| 1.20+1 | ❌ No |
+
 ## `Hotkeys`
 
 ### `openConfigGui`
@@ -744,6 +774,19 @@ Disables the 10-tick delay between jumps. Allows you to jump very fast when in a
 ### `disableBookLineLimit`
 
 Disables the line limit of books, allowing you to write until the full limit of 1024 characters. A scroll bar will appear when writing enough lines. Note that lines will be cut off in signed books.
+
+#### Availability
+
+| Minecraft Version | Supported |
+|-------------------|-----------|
+| 1.21.6+7+8 | ✔️ Yes |
+| 1.21.4 | ❌ No |
+| 1.21+1 | ❌ No |
+| 1.20+1 | ❌ No |
+
+### `disableBabyFeeding`
+
+Disables feeding of baby animals, making breeding animals easier when there are a lot of animals in a small space
 
 #### Availability
 

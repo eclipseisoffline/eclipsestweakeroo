@@ -77,6 +77,7 @@ def generate_generic() -> Category:
     generic.add("commandOnlyAdultPets", "Toggles whether to only select adult pets with `sitDownNearbyPets` and `standUpNearbyPets` hotkeys.", requires_tweakeroo=True)
     generic.add("fakeSneakingLadder", "Toggles whether `tweakFakeSneaking` should stop you from falling down ladders.", requires_tweakeroo=True)
     generic.add("permanentSneakFreeCamera", "Toggles whether `tweakPermanentSneak` should work while using `tweakFreeCamera`.", requires_tweakeroo=True)
+    generic.add("toolSwitchBack", "Whether to switch back to the original hotbar slot and item after breaking blocks with tweakToolSwitch enabled", MC_ONE_TWENTY_ONE_SIX, requires_tweakeroo=True)
 
     return generic
 
@@ -98,6 +99,7 @@ def generate_tweaks() -> Category:
 
 - If `playerListHideHeader` is enabled, it hides the additional player list header some servers use.
 - If `playerListHideFooter` is enabled, it hides the additional player list footer some servers use.
+- If `playerListHidePing` is enabled, it hides the ping bars from the player list.
 - If `playerListHideObjective` is enabled, it hides the scoreboard objective from the player list.
 - If `playerListNames` is enabled, it uses fancy names for the names that appear in the list.
 - If `playerListBelowBossbar` is enabled, the player list will be moved below all bossbars rendering.
@@ -165,6 +167,7 @@ The boat jumping and spider boat features require a server-side opt-in, other fe
 - `musicToastMusic`: shows the music toast for game music. When disabled, shows an actionbar text instead, like is normally done for jukebox records. Enabled by default.
 - `musicToastRecords`: shows the music toast for jukebox records. When disabled, shows an actionbar text instead, like is normally done. Enabled by default.
 - `musicToastPauseMenu`: whether to show music toasts in the pause menu for game music or jukebox records, when enabled for those. Enabled by default.""", MC_ONE_TWENTY_ONE_SIX)
+    tweaks.add("tweakInvertMouseX", "Inverts mouse movement on the X-axis. Backport of the similar option introduced in 25w31a", MC_ONE_TWENTY_ONE_SIX)
 
     return tweaks
 
@@ -203,6 +206,7 @@ def generate_disables() -> Category:
     disables.add("disableSwiftSneak", "Disables sneak speed modifiers like swift sneak, because sometimes slow sneaking is nice.")
     disables.add("disableJumpDelay", "Disables the 10-tick delay between jumps. Allows you to jump very fast when in a low area and holding down space.", server_side=True)
     disables.add("disableBookLineLimit", "Disables the line limit of books, allowing you to write until the full limit of 1024 characters. A scroll bar will appear when writing enough lines. Note that lines will be cut off in signed books.", MC_ONE_TWENTY_ONE_SIX)
+    disables.add("disableBabyFeeding", "Disables feeding of baby animals, making breeding animals easier when there are a lot of animals in a small space", MC_ONE_TWENTY_ONE_SIX)
 
     return disables
 
