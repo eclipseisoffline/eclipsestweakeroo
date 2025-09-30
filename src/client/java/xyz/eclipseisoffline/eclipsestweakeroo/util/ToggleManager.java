@@ -61,27 +61,30 @@ public class ToggleManager {
         if (EclipsesGenericConfig.SERVER_SIDE_DISABLED_MESSAGE.getBooleanValue() && !disabledToggles.isEmpty()) {
             String reason = installedOnServer ? "by the server" : "because they require a server-side opt-in";
 
-            MutableComponent disableMessage = Component.literal("The following features of " + EclipsesTweakeroo.MOD_NAME_SHORT + " have been disabled " + reason + ": ");
+            MutableComponent disableMessageBuilder = Component.literal("The following features of " + EclipsesTweakeroo.MOD_NAME_SHORT + " have been disabled " + reason + ": ");
             for (int i = 0; i < disabledToggles.size(); i++) {
-                disableMessage.append(Component.literal(disabledToggles.get(i).displayName()).withStyle(ChatFormatting.RED));
+                disableMessageBuilder.append(Component.literal(disabledToggles.get(i).displayName()).withStyle(ChatFormatting.RED));
                 if (i < disabledToggles.size() - 1) {
-                    disableMessage.append(Component.literal(", "));
+                    disableMessageBuilder.append(Component.literal(", "));
                 }
             }
-            disableMessage = disableMessage.withStyle(ChatFormatting.GREEN);
-            Minecraft.getInstance().getChatListener().handleSystemMessage(disableMessage, false);
+            disableMessageBuilder = disableMessageBuilder.withStyle(ChatFormatting.GREEN);
+            Component disableMessage = disableMessageBuilder;
+            Minecraft.getInstance().execute(() -> {
+                Minecraft.getInstance().getChatListener().handleSystemMessage(disableMessage, false);
 
-            if (!installedOnServer) {
+                if (!installedOnServer) {
+                    Minecraft.getInstance().getChatListener().handleSystemMessage(
+                            Component.literal("Ask the server administrator to install the " + EclipsesTweakeroo.MOD_NAME_SHORT + " mod on the server to allow using these features")
+                                    .withStyle(ChatFormatting.GREEN), false);
+                }
+
                 Minecraft.getInstance().getChatListener().handleSystemMessage(
-                        Component.literal("Ask the server administrator to install the " + EclipsesTweakeroo.MOD_NAME_SHORT + " mod on the server to allow using these features")
+                        Component.literal("Toggle this message using the ")
+                                .append(Component.literal("serverDisabledMessage").withStyle(ChatFormatting.BLUE))
+                                .append(" option in the mod's config menu")
                                 .withStyle(ChatFormatting.GREEN), false);
-            }
-
-            Minecraft.getInstance().getChatListener().handleSystemMessage(
-                    Component.literal("Toggle this message using the ")
-                            .append(Component.literal("serverDisabledMessage").withStyle(ChatFormatting.BLUE))
-                            .append(" option in the mod's config menu")
-                            .withStyle(ChatFormatting.GREEN), false);
+            });
         }
     }
 

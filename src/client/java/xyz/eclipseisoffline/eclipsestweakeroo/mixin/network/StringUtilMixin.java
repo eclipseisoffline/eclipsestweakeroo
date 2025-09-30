@@ -12,8 +12,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 public abstract class StringUtilMixin {
 
     @Inject(method = "isAllowedChatCharacter", at = @At("HEAD"), cancellable = true)
-    private static void allowAllCharacters(char chr,
-            CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+    private static void allowAllCharacters(int codePoint, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_ILLEGAL_CHARACTER_CHECK)) {
             callbackInfoReturnable.setReturnValue(true);
         }

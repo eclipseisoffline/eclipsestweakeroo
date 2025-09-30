@@ -46,7 +46,7 @@ public abstract class LocatorBarRendererMixin implements ContextualBarRenderer {
                     size = MIN_FACE_SIZE;
                 }
 
-                PlayerFaceRenderer.draw(instance, player.getSkin().texture(), x + (int) ((width - size) / 2), y + (int) ((height - size) / 2), (int) size,
+                PlayerFaceRenderer.draw(instance, player.getSkin().body().texturePath(), x + (int) ((width - size) / 2), y + (int) ((height - size) / 2), (int) size,
                         player.showHat(), false, -1);
                 return;
             }

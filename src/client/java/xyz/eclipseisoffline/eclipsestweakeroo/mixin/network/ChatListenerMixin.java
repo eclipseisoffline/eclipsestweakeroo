@@ -52,10 +52,10 @@ public abstract class ChatListenerMixin {
             MessageSignature messageSignatureData = chatMessage.signature();
 
             assert minecraft.getConnection() != null;
-            PlayerInfo playerEntry = minecraft.getConnection().getPlayerInfo(gameProfile.getId());
+            PlayerInfo playerEntry = minecraft.getConnection().getPlayerInfo(gameProfile.id());
             if (playerEntry != null) {
                 MutableComponent newMessage = Component.literal("<");
-                newMessage.append(PlayerTeam.formatNameForTeam(playerEntry.getTeam(), Component.literal(gameProfile.getName())));
+                newMessage.append(PlayerTeam.formatNameForTeam(playerEntry.getTeam(), Component.literal(gameProfile.name())));
                 newMessage.append(Component.literal("> "));
                 newMessage.append(Component.literal(messageBody));
 

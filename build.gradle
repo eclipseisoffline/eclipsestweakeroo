@@ -43,7 +43,7 @@ dependencies {
     modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
     // Used during testing
-    modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    // modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}" TODO
     modRuntimeOnly "com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}" // Comment me to test without Tweakeroo
 }
 

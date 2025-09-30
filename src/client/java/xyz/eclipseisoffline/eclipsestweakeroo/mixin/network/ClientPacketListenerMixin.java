@@ -36,7 +36,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
         super(minecraft, connection, commonListenerCookie);
     }
 
-    @Inject(method = "handleSetEntityMotion", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;lerpMotion(DDD)V"), cancellable = true)
+    @Inject(method = "handleSetEntityMotion", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;lerpMotion(Lnet/minecraft/world/phys/Vec3;)V"), cancellable = true)
     public void cancelPlayerVelocitySet(ClientboundSetEntityMotionPacket packet,
                                         CallbackInfo callbackInfo) {
         Level level = Minecraft.getInstance().level;
@@ -66,7 +66,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_INFO_NOTIFICATIONS)
                 && EclipsesGenericConfig.PLAYER_ADD_REMOVE_NOTIFICATION.getBooleanValue()) {
             Minecraft.getInstance().gui.getChat().addMessage(
-                    Component.literal("Player info entry " + entry.getProfile().getName() + " was removed").withStyle(ChatFormatting.GOLD));
+                    Component.literal("Player info entry " + entry.getProfile().name() + " was removed").withStyle(ChatFormatting.GOLD));
         }
 
         return instance.remove(entry);
@@ -89,23 +89,23 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
             case ADD_PLAYER -> {
                 if (EclipsesGenericConfig.PLAYER_ADD_REMOVE_NOTIFICATION.getBooleanValue()) {
                     notification = Component.literal(
-                            "Player info entry " + gameProfile.getName() + " was added");
+                            "Player info entry " + gameProfile.name() + " was added");
                 }
             }
             case UPDATE_GAME_MODE -> {
                 if (EclipsesGenericConfig.PLAYER_GAMEMODE_NOTIFICATION.getBooleanValue()) {
-                    notification = Component.literal(gameProfile.getName() + " changed gamemode to " + received.gameMode().getName());
+                    notification = Component.literal(gameProfile.name() + " changed gamemode to " + received.gameMode().getName());
                 }
             }
             case UPDATE_LISTED -> {
                 if (EclipsesGenericConfig.PLAYER_LISTED_NOTIFICATION.getBooleanValue()) {
                     notification = Component.literal(
-                            gameProfile.getName() + " is now " + (received.listed() ? "listed" : "unlisted"));
+                            gameProfile.name() + " is now " + (received.listed() ? "listed" : "unlisted"));
                 }
             }
             case UPDATE_DISPLAY_NAME -> {
                 if (EclipsesGenericConfig.PLAYER_DISPLAY_NAME_NOTIFICATION.getBooleanValue()) {
-                    notification = Component.literal(gameProfile.getName() + "'s display name is now ")
+                    notification = Component.literal(gameProfile.name() + "'s display name is now ")
                             .append(received.displayName() == null ? Component.literal("unset") : received.displayName());
                 }
             }

@@ -7,6 +7,7 @@ import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.CharacterEvent;
 import xyz.eclipseisoffline.eclipsestweakeroo.gui.EclipsesTweakerooConfig;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class EclipsesHotkeys {
             if (key == INSERT_FORMATTING_CODE.getKeybind()) {
                 Screen openScreen = Minecraft.getInstance().screen;
                 if (openScreen != null) {
-                    openScreen.charTyped(ChatFormatting.PREFIX_CODE, 0);
+                    openScreen.charTyped(new CharacterEvent(ChatFormatting.PREFIX_CODE, 0));
                 }
                 return true;
             }

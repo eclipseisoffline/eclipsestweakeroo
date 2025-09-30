@@ -40,18 +40,18 @@ public class FancyName {
                 } else if (livingEntity != null) {
                     return livingEntity.getDisplayName();
                 } else if (playerInfo != null) {
-                    return PlayerTeam.formatNameForTeam(playerInfo.getTeam(), Component.literal(playerInfo.getProfile().getName()));
+                    return PlayerTeam.formatNameForTeam(playerInfo.getTeam(), Component.literal(playerInfo.getProfile().name()));
                 }
                 return null;
             }),
             Map.entry("rawname", ((livingEntity, playerInfo) -> {
                 if (livingEntity != null) {
                     if (livingEntity instanceof Player player) {
-                        return Component.literal(player.getGameProfile().getName());
+                        return Component.literal(player.getGameProfile().name());
                     }
                     return livingEntity.getName();
                 } else if (playerInfo != null) {
-                    return Component.literal(playerInfo.getProfile().getName());
+                    return Component.literal(playerInfo.getProfile().name());
                 }
                 return null;
             })),
@@ -62,7 +62,7 @@ public class FancyName {
                 if (livingEntity != null) {
                     return Component.literal(livingEntity.getStringUUID());
                 } else if (playerInfo != null) {
-                    return Component.literal(playerInfo.getProfile().getId().toString());
+                    return Component.literal(playerInfo.getProfile().id().toString());
                 }
                 return null;
             }),

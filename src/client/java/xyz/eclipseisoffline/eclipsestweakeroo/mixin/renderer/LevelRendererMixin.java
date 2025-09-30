@@ -22,7 +22,7 @@ import java.util.Objects;
 public abstract class LevelRendererMixin implements ResourceManagerReloadListener, AutoCloseable {
 
 
-    @WrapOperation(method = "collectVisibleEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderDispatcher;shouldRender(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/client/renderer/culling/Frustum;DDD)Z"))
+    @WrapOperation(method = "extractVisibleEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderDispatcher;shouldRender(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/client/renderer/culling/Frustum;DDD)Z"))
     public boolean noRenderIfHappyGhastTweak(EntityRenderDispatcher instance, Entity entity, Frustum frustum, double camX, double camY, double camZ, Operation<Boolean> original) {
         if (shouldHideHappyGhast(entity)) {
             return false;
@@ -30,7 +30,7 @@ public abstract class LevelRendererMixin implements ResourceManagerReloadListene
         return original.call(instance, entity, frustum, camX, camY, camZ);
     }
 
-    @WrapOperation(method = "collectVisibleEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hasIndirectPassenger(Lnet/minecraft/world/entity/Entity;)Z"))
+    @WrapOperation(method = "extractVisibleEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hasIndirectPassenger(Lnet/minecraft/world/entity/Entity;)Z"))
     public boolean noRenderIfHappyGhastTweak(Entity instance, Entity entity, Operation<Boolean> original) {
         if (shouldHideHappyGhast(instance)) {
             return false;

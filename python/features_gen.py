@@ -20,7 +20,8 @@ MC_ONE_TWENTY = "1.20+1"
 MC_ONE_TWENTY_ONE = "1.21+1"
 MC_ONE_TWENTY_ONE_FOUR = "1.21.4"
 MC_ONE_TWENTY_ONE_SIX = "1.21.6+7+8"
-LTS_VERSIONS = [MC_ONE_TWENTY, MC_ONE_TWENTY_ONE, MC_ONE_TWENTY_ONE_FOUR, MC_ONE_TWENTY_ONE_SIX]
+MC_ONE_TWENTY_ONE_NINE = "1.21.9"
+LTS_VERSIONS = [MC_ONE_TWENTY, MC_ONE_TWENTY_ONE, MC_ONE_TWENTY_ONE_FOUR, MC_ONE_TWENTY_ONE_SIX, MC_ONE_TWENTY_ONE_NINE]
 
 
 class Feature:
@@ -77,7 +78,7 @@ def generate_generic() -> Category:
     generic.add("commandOnlyAdultPets", "Toggles whether to only select adult pets with `sitDownNearbyPets` and `standUpNearbyPets` hotkeys.", requires_tweakeroo=True)
     generic.add("fakeSneakingLadder", "Toggles whether `tweakFakeSneaking` should stop you from falling down ladders.", requires_tweakeroo=True)
     generic.add("permanentSneakFreeCamera", "Toggles whether `tweakPermanentSneak` should work while using `tweakFreeCamera`.", requires_tweakeroo=True)
-    generic.add("toolSwitchBack", "Whether to switch back to the original hotbar slot and item after breaking blocks with tweakToolSwitch enabled", MC_ONE_TWENTY_ONE_SIX, requires_tweakeroo=True)
+    generic.add("toolSwitchBack", "Whether to switch back to the original hotbar slot and item after breaking blocks with tweakToolSwitch enabled", MC_ONE_TWENTY_ONE_SIX, MC_ONE_TWENTY_ONE_NINE, requires_tweakeroo=True)
 
     return generic
 
@@ -87,7 +88,7 @@ def generate_fixes() -> Category:
 
     fixes.add("pistonFlexiblePlacementFix", "Fixes inverse rotation placement of pistons, dispensers, droppers and crafters with `tweakFlexibleBlockPlacement` (allows placing these blocks facing away from you).", requires_tweakeroo=True)
     fixes.add("handRestockCreativeFix", "Disables `tweakHandRestock` when the player is in creative mode.", requires_tweakeroo=True)
-    fixes.add("`writableBookFormattingFix`", "Fixes [MC-297501](https://bugs.mojang.com/browse/MC/issues/MC-297501), allowing you to use formatting codes in books again, and making them display as they would before 1.21.6. Breaks the editing cursor when placed mid-text.", MC_ONE_TWENTY_ONE_SIX)
+    fixes.add("`writableBookFormattingFix`", "Fixes [MC-297501](https://bugs.mojang.com/browse/MC/issues/MC-297501), allowing you to use formatting codes in books again, and making them display as they would before 1.21.6. Breaks the editing cursor when placed mid-text.", MC_ONE_TWENTY_ONE_SIX, MC_ONE_TWENTY_ONE_NINE)
 
     return fixes
 
@@ -156,9 +157,9 @@ The boat jumping and spider boat features require a server-side opt-in, other fe
 - `happyGhastCreativeFlight`: changes flight controls to match the ones from creative flight. Uses the same speed as normal (so compatible with the `flying_speed` attribute). Double-tap jump to dismount the ghast.
 - `hideHappyGhast`: disables rendering of the Happy Ghast when you're controlling it, so that you can see more when looking down.
 - `noHappyGhastRotation`: disables rotating the Happy Ghast when controlling it and not moving, so that you can look at other players too.
-- `happyGhastRotationLerpSpeed`: changes the rotating speed of the Happy Ghast, the higher, the faster. Default is vanilla, `1.0` is instant rotation.""", MC_ONE_TWENTY_ONE_SIX)
+- `happyGhastRotationLerpSpeed`: changes the rotating speed of the Happy Ghast, the higher, the faster. Default is vanilla, `1.0` is instant rotation.""", MC_ONE_TWENTY_ONE_SIX, MC_ONE_TWENTY_ONE_NINE)
 
-    tweaks.add("tweakLocatorBar", "Displays faces of players on the locator bar when applicable.", MC_ONE_TWENTY_ONE_SIX)
+    tweaks.add("tweakLocatorBar", "Displays faces of players on the locator bar when applicable.", MC_ONE_TWENTY_ONE_SIX, MC_ONE_TWENTY_ONE_NINE)
     tweaks.add("tweakPersistentChat", "Keeps past chat messages across server/world switches.")
     tweaks.add("tweakShowFormattingCodes", "Renders legacy text formatting codes with a grey colour instead of hiding them. Still displays the formatting they set. Useful when writing books with formatting codes.")
 
@@ -166,8 +167,8 @@ The boat jumping and spider boat features require a server-side opt-in, other fe
 
 - `musicToastMusic`: shows the music toast for game music. When disabled, shows an actionbar text instead, like is normally done for jukebox records. Enabled by default.
 - `musicToastRecords`: shows the music toast for jukebox records. When disabled, shows an actionbar text instead, like is normally done. Enabled by default.
-- `musicToastPauseMenu`: whether to show music toasts in the pause menu for game music or jukebox records, when enabled for those. Enabled by default.""", MC_ONE_TWENTY_ONE_SIX)
-    tweaks.add("tweakInvertMouseX", "Inverts mouse movement on the X-axis. Backport of the similar option introduced in 25w31a", MC_ONE_TWENTY_ONE_SIX)
+- `musicToastPauseMenu`: whether to show music toasts in the pause menu for game music or jukebox records, when enabled for those. Enabled by default.""", MC_ONE_TWENTY_ONE_SIX, MC_ONE_TWENTY_ONE_NINE)
+    tweaks.add("tweakInvertMouseX", "Inverts mouse movement on the X-axis. Backport of the similar option introduced in 25w31a/1.21.9", MC_ONE_TWENTY_ONE_SIX)
 
     return tweaks
 
@@ -205,8 +206,8 @@ def generate_disables() -> Category:
     disables.add("disableUseItemSlowdown", "Disables slowing down when using items, like eating food.", server_side=True)
     disables.add("disableSwiftSneak", "Disables sneak speed modifiers like swift sneak, because sometimes slow sneaking is nice.")
     disables.add("disableJumpDelay", "Disables the 10-tick delay between jumps. Allows you to jump very fast when in a low area and holding down space.", server_side=True)
-    disables.add("disableBookLineLimit", "Disables the line limit of books, allowing you to write until the full limit of 1024 characters. A scroll bar will appear when writing enough lines. Note that lines will be cut off in signed books.", MC_ONE_TWENTY_ONE_SIX)
-    disables.add("disableBabyFeeding", "Disables feeding of baby animals, making breeding animals easier when there are a lot of animals in a small space", MC_ONE_TWENTY_ONE_SIX)
+    disables.add("disableBookLineLimit", "Disables the line limit of books, allowing you to write until the full limit of 1024 characters. A scroll bar will appear when writing enough lines. Note that lines will be cut off in signed books.", MC_ONE_TWENTY_ONE_SIX, MC_ONE_TWENTY_ONE_NINE)
+    disables.add("disableBabyFeeding", "Disables feeding of baby animals, making breeding animals easier when there are a lot of animals in a small space", MC_ONE_TWENTY_ONE_SIX, MC_ONE_TWENTY_ONE_NINE)
 
     return disables
 

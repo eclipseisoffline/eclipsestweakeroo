@@ -1,4 +1,2 @@
-- Added `tweakInvertMouseX` tweak. Inverts mouse movement on the X-axis. Backport of the similar vanilla option introduced in 25w31a.
-- Added `disableBabyFeeding` yeet. Disables feeding of baby animals, making breeding animals easier when there are a lot of animals in a small space.
-- Added `toolSwitchBack` generic option. Toggles whether to switch back to the original hotbar slot and item after breaking blocks with Tweakeroo's `tweakToolSwitch` enabled.
-- Added `playerListHidePing` option to `tweakPlayerList`. When enabled, hides ping bars from the player list.
+- Update to 1.21.9.
+- Removed `tweakInvertMouseX` as the functionality is now in vanilla.

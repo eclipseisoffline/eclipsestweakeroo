@@ -11,7 +11,7 @@ public enum PlayerListOrder implements IConfigOptionListEntry {
     PING("ping", "Ping", Comparator.comparingInt(PlayerInfo::getLatency)),
     GAMEMODE("gamemode", "Gamemode", Comparator.comparingInt(entry -> entry.getGameMode().getId())),
     NAME("name", "Name",
-            Comparator.comparing(entry -> entry.getProfile().getName(), String::compareTo));
+            Comparator.comparing(entry -> entry.getProfile().name(), String::compareTo));
 
     private final String stringName;
     private final String displayName;

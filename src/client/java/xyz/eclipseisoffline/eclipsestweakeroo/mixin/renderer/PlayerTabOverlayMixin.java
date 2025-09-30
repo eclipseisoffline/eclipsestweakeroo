@@ -56,7 +56,7 @@ public abstract class PlayerTabOverlayMixin {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST)
                 && EclipsesGenericConfig.TWEAK_PLAYER_LIST_NAMES.getBooleanValue()) {
             assert minecraft.level != null;
-            Player entity = minecraft.level.getPlayerByUUID(playerInfo.getProfile().getId());
+            Player entity = minecraft.level.getPlayerByUUID(playerInfo.getProfile().id());
             Component playerName = FancyName.applyFancyName(entity, playerInfo);
             callbackInfoReturnable.setReturnValue(playerName);
         }
@@ -71,7 +71,7 @@ public abstract class PlayerTabOverlayMixin {
             callbackInfoReturnable.setReturnValue(
                     minecraft.getConnection().getListedOnlinePlayers()
                             .stream().sorted(order.getComparator()
-                                    .thenComparing(entry -> entry.getProfile().getName(), String::compareTo)).toList());
+                                    .thenComparing(entry -> entry.getProfile().name(), String::compareTo)).toList());
         }
     }
 
