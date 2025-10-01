@@ -38,13 +38,20 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "com.github.sakura-ryoko:malilib:${malilib_build_version}"
-    modCompileOnly "com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}"
+    modImplementation("com.github.sakura-ryoko:malilib:${malilib_build_version}") {
+        exclude(group: "me.fallenbreath", module: "mixin-auditor")
+    }
+    modCompileOnly("com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}") {
+        exclude(group: "me.fallenbreath", module: "mixin-auditor")
+    }
     modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
     // Used during testing
     // modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}" TODO
-    modRuntimeOnly "com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}" // Comment me to test without Tweakeroo
+    // Comment me to test without Tweakeroo
+    modRuntimeOnly("com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}") {
+        exclude(group: "me.fallenbreath", module: "mixin-auditor")
+    }
 }
 
 loom {
@@ -100,7 +107,6 @@ java {
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
-    archivesBaseName = project.archives_base_name
     withSourcesJar()
 }
 
