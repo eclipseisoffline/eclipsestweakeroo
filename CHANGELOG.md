@@ -1,2 +1,1 @@
-- Update to 1.21.9.
-- Removed `tweakInvertMouseX` as the functionality is now in vanilla.
+- Update to 1.21.10.
