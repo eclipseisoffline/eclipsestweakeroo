@@ -8,10 +8,10 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(MultiLineEditBox.Builder.class)
 public interface MultiLineEditBoxBuilderAccessor {
 
-    @Accessor
+    @Accessor("x")
     int getX();
 
-    @Accessor
+    @Accessor("y")
     int getY();
 
     @Accessor

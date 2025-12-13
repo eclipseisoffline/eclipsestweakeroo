@@ -30,7 +30,7 @@ public abstract class FogRendererMixin {
     }
 
     @Inject(method = "getFogType", at = @At(value = "HEAD"), cancellable = true)
-    public void disableFogModifiers(Camera camera, boolean bl, CallbackInfoReturnable<FogType> callbackInfoReturnable) {
+    public void disableFogModifiers(Camera camera, CallbackInfoReturnable<FogType> callbackInfoReturnable) {
         if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_FOG_MODIFIER)) {
             callbackInfoReturnable.setReturnValue(FogType.ATMOSPHERIC);
         }

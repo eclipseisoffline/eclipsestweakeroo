@@ -43,7 +43,7 @@ public abstract class HappyGhastMixin extends Animal {
         }
     }
 
-    @Inject(method = "tickRidden", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/HappyGhast;getRiddenRotation(Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/phys/Vec2;"), cancellable = true)
+    @Inject(method = "tickRidden", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/happyghast/HappyGhast;getRiddenRotation(Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/phys/Vec2;"), cancellable = true)
     public void dontRotateIfNotMoving(Player player, Vec3 travelVector, CallbackInfo callbackInfo) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_HAPPY_GHAST) && EclipsesGenericConfig.NO_HAPPY_GHAST_ROTATION.getBooleanValue()
                 && player instanceof LocalPlayer && travelVector.lengthSqr() < 0.005) {
