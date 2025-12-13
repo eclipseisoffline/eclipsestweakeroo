@@ -63,7 +63,8 @@ The mod doesn't require MaLiLib or Tweakeroo server-side. You'll still be able t
 
 | Minecraft Version | Status          |
 |-------------------|-----------------|
-| 1.21.9+10         | ✅ Current       |
+| 1.21.11           | ✅ Current       |
+| 1.21.9+10         | ✔️ Available    |
 | 1.21.6+7+8        | ✔️ Available    |
 | 1.21.5            | 🚫️ Unavailable |
 | 1.21.4            | ❄️ LTS          |
