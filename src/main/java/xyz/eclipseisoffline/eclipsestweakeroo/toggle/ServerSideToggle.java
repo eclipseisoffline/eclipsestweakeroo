@@ -3,7 +3,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.toggle;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
@@ -29,9 +29,9 @@ public enum ServerSideToggle implements StringRepresentable {
     public static final List<ServerSideToggle> ALL = Arrays.stream(values()).filter(toggle -> toggle != NO_OP).toList();
 
     public static final Codec<ServerSideToggle> CODEC = StringRepresentable.fromEnum(ServerSideToggle::values);
-    public static final StreamCodec<ByteBuf, ServerSideToggle> STREAM_CODEC = ResourceLocation.STREAM_CODEC.map(ServerSideToggle::fromId, ServerSideToggle::id);
+    public static final StreamCodec<ByteBuf, ServerSideToggle> STREAM_CODEC = Identifier.STREAM_CODEC.map(ServerSideToggle::fromId, ServerSideToggle::id);
 
-    private final ResourceLocation id;
+    private final Identifier id;
     private final String name;
     private final String displayName;
 
@@ -40,12 +40,12 @@ public enum ServerSideToggle implements StringRepresentable {
     }
 
     ServerSideToggle(String id, String name, String displayName) {
-        this.id = EclipsesTweakeroo.getModdedLocation(id);
+        this.id = EclipsesTweakeroo.getModdedIdentifier(id);
         this.name = name;
         this.displayName = displayName;
     }
 
-    public ResourceLocation id() {
+    public Identifier id() {
         return id;
     }
 
@@ -58,9 +58,9 @@ public enum ServerSideToggle implements StringRepresentable {
         return name;
     }
 
-    public static ServerSideToggle fromId(ResourceLocation location) {
+    public static ServerSideToggle fromId(Identifier identifier) {
         for (ServerSideToggle toggle : values()) {
-            if (toggle.id.equals(location)) {
+            if (toggle.id.equals(identifier)) {
                 return toggle;
             }
         }

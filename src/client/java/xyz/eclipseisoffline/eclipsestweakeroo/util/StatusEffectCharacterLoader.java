@@ -5,8 +5,8 @@ import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -22,21 +22,21 @@ public class StatusEffectCharacterLoader implements SimpleSynchronousResourceRel
     public static final Map<ResourceKey<MobEffect>, String> MAP = new HashMap<>();
 
     @Override
-    public ResourceLocation getFabricId() {
-        return EclipsesTweakeroo.getModdedLocation("status_effect_character_loader");
+    public Identifier getFabricId() {
+        return EclipsesTweakeroo.getModdedIdentifier("status_effect_character_loader");
     }
 
     @Override
     public void onResourceManagerReload(@NotNull ResourceManager manager) {
         MAP.clear();
         try {
-            Resource effectMapResource = manager.getResourceOrThrow(EclipsesTweakeroo.getModdedLocation("fancyname/effect_map.json"));
+            Resource effectMapResource = manager.getResourceOrThrow(EclipsesTweakeroo.getModdedIdentifier("fancyname/effect_map.json"));
             try (InputStream effectMapInputStream = effectMapResource.open()) {
                 String effectMapJson = new String(effectMapInputStream.readAllBytes());
                 JsonObject effectMap = JsonParser.parseString(effectMapJson).getAsJsonObject();
 
                 for (String statusEffectString : effectMap.keySet()) {
-                    ResourceKey<MobEffect> statusEffect = ResourceKey.create(Registries.MOB_EFFECT, ResourceLocation.parse(statusEffectString));
+                    ResourceKey<MobEffect> statusEffect = ResourceKey.create(Registries.MOB_EFFECT, Identifier.parse(statusEffectString));
                     MAP.put(statusEffect, effectMap.get(statusEffectString).getAsString());
                 }
             }

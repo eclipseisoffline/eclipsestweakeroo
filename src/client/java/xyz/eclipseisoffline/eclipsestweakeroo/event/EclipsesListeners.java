@@ -22,6 +22,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.attribute.BedRule;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.Animal;
@@ -141,7 +143,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
         } else if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_BLOCK_USE)) {
             return InteractionResult.FAIL;
         } else if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_BED_EXPLOSION)
-                && !level.dimensionType().bedWorks()
+                && level.environmentAttributes().getValue(EnvironmentAttributes.BED_RULE, hitResult.getBlockPos()).explodes()
                 && level.getBlockState(hitResult.getBlockPos()).getBlock() instanceof BedBlock) {
             return InteractionResult.FAIL;
         }
@@ -182,7 +184,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
 
             MutableComponent info = Component.empty().append(usedStack.getHoverName()).append(" has ");
             if (tracker.target().isPresent()) {
-                info.append(tracker.target().orElseThrow().pos().toShortString() + " in " + tracker.target().orElseThrow().dimension().location() + " as set position");
+                info.append(tracker.target().orElseThrow().pos().toShortString() + " in " + tracker.target().orElseThrow().dimension().identifier() + " as set position");
             } else {
                 info.append("no tracked position");
             }

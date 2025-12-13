@@ -12,7 +12,7 @@ import java.util.List;
 
 public record ClientboundEnabledTogglesPacket(List<ServerSideToggle> toggles) implements CustomPacketPayload {
 
-    public static final Type<ClientboundEnabledTogglesPacket> TYPE = new Type<>(EclipsesTweakeroo.getModdedLocation("enabled_toggles"));
+    public static final Type<ClientboundEnabledTogglesPacket> TYPE = new Type<>(EclipsesTweakeroo.getModdedIdentifier("enabled_toggles"));
     public static final StreamCodec<ByteBuf, ClientboundEnabledTogglesPacket> STREAM_CODEC = ServerSideToggle.STREAM_CODEC
             .apply(ByteBufCodecs.list()).map(ClientboundEnabledTogglesPacket::new, ClientboundEnabledTogglesPacket::toggles);
 

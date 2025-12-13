@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
@@ -84,7 +84,7 @@ public class FancyName {
                 if (player == null || player.equals(livingEntity)) {
                     return null;
                 }
-                Vec3 cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+                Vec3 cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().position();
                 return Component.literal(EclipsesTweakerooUtil.roundToOneDecimal((float) cameraPos.distanceTo(livingEntity.position())))
                         .withStyle(ChatFormatting.BLUE);
             }),

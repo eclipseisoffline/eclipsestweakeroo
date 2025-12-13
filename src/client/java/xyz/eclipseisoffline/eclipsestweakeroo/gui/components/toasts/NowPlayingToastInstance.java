@@ -8,7 +8,7 @@ import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 // Same as NowPlayingToast, but allows showing any text component and is instanced, instead of using static variables to store music notes and the current song
 public class NowPlayingToastInstance implements Toast {
     // Constants from NowPlayingToast
-    private static final ResourceLocation NOW_PLAYING_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("toast/now_playing");
-    private static final ResourceLocation MUSIC_NOTES_SPRITE = ResourceLocation.parse("icon/music_notes");
+    private static final Identifier NOW_PLAYING_BACKGROUND_SPRITE = Identifier.withDefaultNamespace("toast/now_playing");
+    private static final Identifier MUSIC_NOTES_SPRITE = Identifier.withDefaultNamespace("icon/music_notes");
     private static final int PADDING = 7;
     private static final int MUSIC_NOTES_SIZE = 16;
     private static final int HEIGHT = 30;
