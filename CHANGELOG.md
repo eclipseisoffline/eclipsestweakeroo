@@ -1,1 +1,1 @@
-- Fix crash when `tweakLocatorBar` is enabled (#14).
+- Fix crash when `tweakMusicToast` is enabled and the pause menu is opened.

@@ -2,6 +2,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.mixin.screen;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.client.MusicToastDisplayState;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.PauseScreen;
@@ -61,7 +62,7 @@ public abstract class PauseScreenMixin extends Screen {
     @WrapOperation(method = "rendersNowPlayingToast", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/OptionInstance;get()Ljava/lang/Object;"))
     public Object useOwnMusicToastsWithTweak(OptionInstance instance, Operation original) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_MUSIC_TOAST)) {
-            return false;
+            return MusicToastDisplayState.NEVER;
         }
         return original.call(instance);
     }
