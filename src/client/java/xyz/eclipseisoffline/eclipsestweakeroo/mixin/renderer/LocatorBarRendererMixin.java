@@ -35,7 +35,7 @@ public abstract class LocatorBarRendererMixin implements ContextualBarRenderer {
     @Final
     private Minecraft minecraft;
 
-    @WrapOperation(method = "method_70870", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIIII)V"))
+    @WrapOperation(method = "method_70870", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIII)V"))
     public void usePlayerIcon(GuiGraphics instance, RenderPipeline pipeline, Identifier texture, int x, int y, int width, int height, int color, Operation<Void> original,
                               @Local(argsOnly = true) TrackedWaypoint waypoint, @Local float distance) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_LOCATOR_BAR) && waypoint.id().left().isPresent()) {

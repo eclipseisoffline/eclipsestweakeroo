@@ -1,1 +1,1 @@
-- Update to 1.21.11.
+- Fix crash when `tweakLocatorBar` is enabled (#14).
