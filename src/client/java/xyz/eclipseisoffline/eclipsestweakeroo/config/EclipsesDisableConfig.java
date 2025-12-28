@@ -32,6 +32,7 @@ public class EclipsesDisableConfig {
     public static final ConfigBooleanHotkeyed DISABLE_JUMP_DELAY = createWithServerSideOptIn("disableJumpDelay", "Disables the 10-tick delay between jumps");
     public static final ConfigBooleanHotkeyed DISABLE_BOOK_LINE_LIMIT = create("disableBookLineLimit", "Disables the line limit of books,\nallowing you to write until the full limit of\n1024 characters");
     public static final ConfigBooleanHotkeyed DISABLE_BABY_FEEDING = create("disableBabyFeeding", "Disables feeding of baby animals,\nmaking breeding animals easier when\nthere are a lot of animals in a small space");
+    public static final ConfigBooleanHotkeyed DISABLE_END_FLASHES = create("disableEndFlashes", "Disables end flashes completely,\nincluding the flashing of the sky\nand the flash textures in the sky");
 
     private static ClientConfigOption createClient(String name, String comment) {
         ClientConfigOption config = new ClientConfigOption(name, false, "", comment);

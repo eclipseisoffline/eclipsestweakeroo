@@ -41,6 +41,7 @@
     "renderer.LivingEntityRendererMixin",
     "renderer.LocatorBarRendererMixin",
     "renderer.PlayerTabOverlayMixin",
+    "renderer.SkyRendererMixin",
     "screen.BookEditScreenMixin",
     "screen.ConnectScreenMixin",
     "screen.DisconnectedScreenAccessor",
@@ -51,6 +52,7 @@
     "tweakeroo.mod.TweakerooInventoryUtilsMixin",
     "tweakeroo.mod.TweakerooMiscUtilsMixin",
     "tweakeroo.mod.TweakerooPlacementTweaksMixin",
+    "tweakeroo.renderer.GameRendererMixin",
     "util.StringDecomposerMixin"
   ],
   "injectors": {
