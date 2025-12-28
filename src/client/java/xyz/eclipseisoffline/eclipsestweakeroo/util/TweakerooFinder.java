@@ -1,5 +1,6 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.util;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +9,7 @@ public class TweakerooFinder {
     // Not using main logger and mod ID constant here because this class should use as little classes as possible
     public static final Logger LOGGER = LoggerFactory.getLogger("eclipsestweakeroo");
 
-    private static Boolean tweakeroo = null;
+    private static @Nullable Boolean tweakeroo = null;
 
     public static boolean hasTweakeroo() {
         if (tweakeroo == null) {
