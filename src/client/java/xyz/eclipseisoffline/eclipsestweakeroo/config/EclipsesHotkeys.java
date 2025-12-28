@@ -6,8 +6,11 @@ import fi.dy.masa.malilib.hotkeys.IHotkey;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.ScrollWheelHandler;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.player.Inventory;
 import xyz.eclipseisoffline.eclipsestweakeroo.gui.EclipsesTweakerooConfig;
 
 import java.util.ArrayList;
@@ -19,6 +22,8 @@ public class EclipsesHotkeys {
 
     public static final ConfigHotkey OPEN_CONFIG_GUI = create("openConfigGui", "C,E", "Open the in-game config GUI");
     public static final ConfigHotkey INSERT_FORMATTING_CODE = createGui("insertFormattingCode", "", "Inserts a formatting code on the open screen");
+    public static final ConfigHotkey NEXT_HOTBAR_SLOT = create("nextHotbarSlot", "", "Selects the next hotbar slot");
+    public static final ConfigHotkey PREVIOUS_HOTBAR_SLOT = create("previousHotbarSlot", "", "Selects the previous hotbar slot");
 
     private static ConfigHotkey create(String name, String defaultHotkey, String comment) {
         ConfigHotkey hotkey = new ConfigHotkey(name, defaultHotkey, comment);
@@ -55,6 +60,24 @@ public class EclipsesHotkeys {
                 if (openScreen != null) {
                     openScreen.charTyped(new CharacterEvent(ChatFormatting.PREFIX_CODE, 0));
                 }
+                return true;
+            }
+            return false;
+        });
+        NEXT_HOTBAR_SLOT.getKeybind().setCallback((action, key) -> {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (key == NEXT_HOTBAR_SLOT.getKeybind() && player != null) {
+                player.getInventory().setSelectedSlot(ScrollWheelHandler.getNextScrollWheelSelection(-1.0,
+                        player.getInventory().getSelectedSlot(), Inventory.getSelectionSize()));
+                return true;
+            }
+            return false;
+        });
+        PREVIOUS_HOTBAR_SLOT.getKeybind().setCallback((action, key) -> {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (key == PREVIOUS_HOTBAR_SLOT.getKeybind() && player != null) {
+                player.getInventory().setSelectedSlot(ScrollWheelHandler.getNextScrollWheelSelection(1.0,
+                        player.getInventory().getSelectedSlot(), Inventory.getSelectionSize()));
                 return true;
             }
             return false;
