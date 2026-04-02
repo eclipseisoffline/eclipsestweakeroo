@@ -1,9 +1,9 @@
 import me.modmuss50.mpp.ReleaseType
 
 plugins {
-    id 'me.modmuss50.mod-publish-plugin' version '0.8.4'
-    id 'fabric-loom' version '1.14-SNAPSHOT'
-    id 'maven-publish'
+    id "me.modmuss50.mod-publish-plugin" version "0.8.4"
+    id "net.fabricmc.fabric-loom" version "1.15-SNAPSHOT"
+    id "maven-publish"
 }
 
 version = project.mod_version
@@ -14,44 +14,51 @@ base {
 }
 
 repositories {
-    // ParchmentMC repository
-    maven {
-        name = 'ParchmentMC'
-        url = 'https://maven.parchmentmc.org'
-    }
     // Mod Menu repository
     maven {
-        url 'https://maven.terraformersmc.com/releases/'
+        url "https://maven.terraformersmc.com/releases/"
     }
+
     // Jitpack for Tweakeroo and Malilib
     maven {
-        url 'https://jitpack.io'
+        url "https://jitpack.io"
+    }
+
+    // Modrinth for Tweakeroo (temporarily)
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
     }
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.layered() {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:${project.parchment_version}@zip")
-    }
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    minecraft("com.mojang:minecraft:${project.minecraft_version}")
+    implementation("net.fabricmc:fabric-loader:${project.loader_version}")
+    implementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
 
-    modImplementation("com.github.sakura-ryoko:malilib:${malilib_build_version}") {
-        exclude(group: "me.fallenbreath", module: "mixin-auditor")
+    implementation("com.github.sakura-ryoko:malilib:${malilib_build_version}") {
+        exclude(group: "me.fallenbreath", module: "conditional-mixin-fabric")
     }
-    modCompileOnly("com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}") {
-        exclude(group: "me.fallenbreath", module: "mixin-auditor")
-    }
-    modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    /*compileOnly("com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}") {
+        exclude(group: "me.fallenbreath", module: "conditional-mixin-fabric")
+    }*/ // uncomment when Tweakeroo publishes correctly to Jitpack
+    compileOnly("maven.modrinth:tweakeroo:0.28.0")
+    compileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
 
     // Used during testing
-    modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    runtimeOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
     // Comment me to test without Tweakeroo
-    modRuntimeOnly("com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}") {
-        exclude(group: "me.fallenbreath", module: "mixin-auditor")
-    }
+    runtimeOnly("maven.modrinth:tweakeroo:0.28.0")
+    /*runtimeOnly("com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}") {
+        exclude(group: "me.fallenbreath", module: "conditional-mixin-fabric")
+    }*/
 }
 
 loom {
@@ -94,7 +101,7 @@ processResources {
     }
 }
 
-def targetJavaVersion = 21
+def targetJavaVersion = 25
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
@@ -144,7 +151,7 @@ publishMods {
     changelog = new File("CHANGELOG.md").text
     type = ReleaseType.of(release_type)
 
-    file = remapJar.archiveFile
+    file = jar.archiveFile
     modLoaders.add("fabric")
 
     modrinth {
