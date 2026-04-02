@@ -1,12 +1,12 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.mixin.network;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.client.GuiMessageTag;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.multiplayer.chat.ChatListener;
 import net.minecraft.client.multiplayer.chat.ChatTrustLevel;
+import net.minecraft.client.multiplayer.chat.GuiMessageTag;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MessageSignature;
@@ -59,7 +59,7 @@ public abstract class ChatListenerMixin {
                 newMessage.append(Component.literal("> "));
                 newMessage.append(Component.literal(messageBody));
 
-                minecraft.gui.getChat().addMessage(boundChatType.decorate(newMessage), messageSignatureData, messageIndicator);
+                minecraft.gui.getChat().addPlayerMessage(boundChatType.decorate(newMessage), messageSignatureData, messageIndicator);
             }
         }
     }
@@ -71,7 +71,7 @@ public abstract class ChatListenerMixin {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_CHAT_MESSAGES)) {
             return;
         }
-        instance.addMessage(chatComponent, headerSignature, tag);
+        instance.addClientSystemMessage(chatComponent, headerSignature, tag);
     }
 
     @Unique

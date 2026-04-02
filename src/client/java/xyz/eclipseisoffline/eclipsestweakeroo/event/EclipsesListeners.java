@@ -51,7 +51,7 @@ import java.util.Map;
 
 public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
         ClientPreAttackCallback, UseBlockCallback, UseEntityCallback, UseItemCallback,
-        ClientTickEvents.StartWorldTick, AttemptConnectionCallback, ScreenEvents.AfterInit {
+        ClientTickEvents.StartLevelTick, AttemptConnectionCallback, ScreenEvents.AfterInit {
 
     private static final Component TO_SERVER_LIST = Component.translatable("gui.toMenu");
 
@@ -111,8 +111,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
                         backButton.getX() - (backButton.getWidth() - originalWidth) / 2);
             }
 
-            ScreenEvents.afterRender(screen).register(((screenInstance, drawContext,
-                                                        mouseX, mouseY, tickDelta) -> {
+            ScreenEvents.afterExtract(screen).register(((_, _, _, _, _) -> {
                 long passed = System.currentTimeMillis() - disconnectedTime;
                 int wait = EclipsesGenericConfig.RECONNECT_TIME.getIntegerValue();
                 if (passed > wait) {
@@ -189,7 +188,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
                 info.append("no tracked position");
             }
 
-            Minecraft.getInstance().gui.getChat().addMessage(info);
+            Minecraft.getInstance().gui.getChat().addClientSystemMessage(info);
             return InteractionResult.CONSUME;
         }
 
@@ -204,7 +203,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
 
     public static void bootstrap() {
         EclipsesListeners listeners = new EclipsesListeners();
-        ClientTickEvents.START_WORLD_TICK.register(listeners);
+        ClientTickEvents.START_LEVEL_TICK.register(listeners);
         ClientLifecycleEvents.CLIENT_STARTED.register(listeners);
         ScreenEvents.AFTER_INIT.register(listeners);
         ClientPreAttackCallback.EVENT.register(listeners);

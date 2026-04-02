@@ -13,7 +13,7 @@ import java.util.List;
 public class EclipsesTweakerooNetworking {
 
     public static void bootstrap() {
-        PayloadTypeRegistry.configurationS2C().register(ClientboundEnabledTogglesPacket.TYPE, ClientboundEnabledTogglesPacket.STREAM_CODEC);
+        PayloadTypeRegistry.clientboundConfiguration().register(ClientboundEnabledTogglesPacket.TYPE, ClientboundEnabledTogglesPacket.STREAM_CODEC);
 
         ServerConfigurationConnectionEvents.CONFIGURE.register((listener, server) -> {
             if (ServerConfigurationNetworking.canSend(listener, ClientboundEnabledTogglesPacket.TYPE)) {

@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.MusicToastDisplayState;
 import net.minecraft.client.OptionInstance;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -46,15 +46,14 @@ public abstract class PauseScreenMixin extends Screen {
         }
     }
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/PauseScreen;rendersNowPlayingToast()Z"))
-    public void renderCustomMusicToasts(GuiGraphics graphics, int mouseX, int mouseY, float partialTick,
-                                        CallbackInfo callbackInfo) {
+    @Inject(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/PauseScreen;rendersNowPlayingToast()Z"))
+    public void renderCustomMusicToasts(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a, CallbackInfo callbackInfo) {
         for (int i = 0; i < musicToasts.size(); i++) {
             NowPlayingToastInstance toast = musicToasts.get(i);
 
             graphics.pose().pushMatrix();
             graphics.pose().translate(toast.xPos(width, 1.0F), toast.yPos(i));
-            toast.render(graphics, font, 0L);
+            toast.extractRenderState(graphics, font, 0L);
             graphics.pose().popMatrix();
         }
     }

@@ -8,7 +8,7 @@ import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,7 +30,7 @@ public abstract class TweakerooInventoryUtilsMixin {
     }
 
     @WrapOperation(method = "swapToolToHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;handleInventoryMouseClick(IIILnet/minecraft/world/inventory/ClickType;Lnet/minecraft/world/entity/player/Player;)V"))
-    private static void cacheSwappedSlots(MultiPlayerGameMode instance, int containerId, int slotId, int mouseButton, ClickType clickType, Player player, Operation<Void> original) {
+    private static void cacheSwappedSlots(MultiPlayerGameMode instance, int containerId, int slotId, int mouseButton, ContainerInput clickType, Player player, Operation<Void> original) {
         if (EclipsesGenericConfig.TOOL_SWITCH_BACK.getBooleanValue()) {
             ToolSwitchManager.cacheSwappedSlots(slotId, mouseButton);
         }

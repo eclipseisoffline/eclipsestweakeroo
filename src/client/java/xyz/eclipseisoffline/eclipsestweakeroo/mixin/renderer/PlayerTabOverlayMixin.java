@@ -6,7 +6,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.BossHealthOverlay;
 import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.client.gui.components.PlayerTabOverlay;
@@ -75,7 +75,7 @@ public abstract class PlayerTabOverlayMixin {
         }
     }
 
-    @WrapOperation(method = "render",
+    @WrapOperation(method = "extractRenderState",
             at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;header:Lnet/minecraft/network/chat/Component;"))
     private Component hideHeader(PlayerTabOverlay instance, Operation<Component> original) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_HEADER.getBooleanValue()) {
@@ -85,7 +85,7 @@ public abstract class PlayerTabOverlayMixin {
         return original.call(instance);
     }
 
-    @WrapOperation(method = "render",
+    @WrapOperation(method = "extractRenderState",
             at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;footer:Lnet/minecraft/network/chat/Component;"))
     private Component hideFooter(PlayerTabOverlay instance, Operation<Component> original) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_FOOTER.getBooleanValue()) {
@@ -95,7 +95,7 @@ public abstract class PlayerTabOverlayMixin {
         return original.call(instance);
     }
 
-    @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerInfo;getGameMode()Lnet/minecraft/world/level/GameType;"))
+    @WrapOperation(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerInfo;getGameMode()Lnet/minecraft/world/level/GameType;"))
     private GameType disableSpectatorGameModeFormatting(PlayerInfo instance, Operation<GameType> original) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST)
                 && EclipsesGenericConfig.TWEAK_PLAYER_LIST_NAMES.getBooleanValue()
@@ -106,8 +106,8 @@ public abstract class PlayerTabOverlayMixin {
         return original.call(instance);
     }
 
-    @Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;header:Lnet/minecraft/network/chat/Component;", opcode = Opcodes.GETFIELD, ordinal = 0))
-    public void moveBelowBossbar(GuiGraphics graphics, int width, Scoreboard scoreboard, Objective objective,
+    @Inject(method = "extractRenderState", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;header:Lnet/minecraft/network/chat/Component;", opcode = Opcodes.GETFIELD, ordinal = 0))
+    public void moveBelowBossbar(GuiGraphicsExtractor graphics, int screenWidth, Scoreboard scoreboard, Objective displayObjective,
                                  CallbackInfo callbackInfo, @Local(ordinal = 10) LocalIntRef renderYStart) {
         if (!ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST)
                 || !EclipsesGenericConfig.TWEAK_PLAYER_LIST_BOSSBAR.getBooleanValue()
@@ -128,7 +128,7 @@ public abstract class PlayerTabOverlayMixin {
         renderYStart.set(renderYStart.get() + bossBarHeight);
     }
 
-    @ModifyVariable(method = "render", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+    @ModifyVariable(method = "extractRenderState", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private Objective hideScoreboardObjective(Objective scoreboardObjective) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_OBJECTIVE.getBooleanValue()) {
             return null;
@@ -137,7 +137,7 @@ public abstract class PlayerTabOverlayMixin {
         return scoreboardObjective;
     }
 
-    @ModifyConstant(method = "render", constant = @Constant(intValue = 13))
+    @ModifyConstant(method = "extractRenderState", constant = @Constant(intValue = 13))
     public int changePlayerListWidth(int constant) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_PING.getBooleanValue()) {
             return constant - 12; // Ping icon is 10 in width, margin is 3. We're keeping 1 pixel for margin
@@ -145,8 +145,8 @@ public abstract class PlayerTabOverlayMixin {
         return constant;
     }
 
-    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;renderPingIcon(Lnet/minecraft/client/gui/GuiGraphics;IIILnet/minecraft/client/multiplayer/PlayerInfo;)V"))
-    public boolean checkPingSetting(PlayerTabOverlay instance, GuiGraphics guiGraphics, int width, int x, int y, PlayerInfo playerInfo) {
+    @WrapWithCondition(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;extractPingIcon(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIILnet/minecraft/client/multiplayer/PlayerInfo;)V"))
+    public boolean checkPingSetting(PlayerTabOverlay instance, GuiGraphicsExtractor guiGraphics, int width, int x, int y, PlayerInfo playerInfo) {
         return !ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) || !EclipsesGenericConfig.TWEAK_PLAYER_LIST_PING.getBooleanValue();
     }
 }

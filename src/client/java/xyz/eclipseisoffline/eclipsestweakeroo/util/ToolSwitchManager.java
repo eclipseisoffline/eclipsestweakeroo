@@ -2,7 +2,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.util;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 
 public class ToolSwitchManager {
     private static int lastHotbarSlot = -1;
@@ -31,7 +31,7 @@ public class ToolSwitchManager {
         }
         if (swappedSlots != null) {
             assert minecraft.gameMode != null;
-            minecraft.gameMode.handleInventoryMouseClick(minecraft.player.inventoryMenu.containerId, swappedSlots.getFirst(), swappedSlots.getSecond(), ClickType.SWAP, minecraft.player);
+            minecraft.gameMode.handleContainerInput(minecraft.player.inventoryMenu.containerId, swappedSlots.getFirst(), swappedSlots.getSecond(), ContainerInput.SWAP, minecraft.player);
         }
         lastHotbarSlot = -1;
         swappedSlots = null;

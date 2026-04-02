@@ -4,9 +4,6 @@ import fi.dy.masa.malilib.config.ConfigManager;
 import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-import net.minecraft.world.level.block.Blocks;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesConfigs;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesHotkeys;
 import xyz.eclipseisoffline.eclipsestweakeroo.event.EclipsesListeners;
@@ -31,8 +28,9 @@ public class EclipsesTweakerooClient implements ClientModInitializer {
         EclipsesTweakerooClientNetworking.bootstrap();
         EclipsesTweakerooUtil.populateStatusEffectColorMap();
 
+        /*
         BlockRenderLayerMap.putBlock(Blocks.BARRIER, ChunkSectionLayer.TRANSLUCENT);
         BlockRenderLayerMap.putBlock(Blocks.LIGHT, ChunkSectionLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(Blocks.STRUCTURE_VOID, ChunkSectionLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(Blocks.STRUCTURE_VOID, ChunkSectionLayer.TRANSLUCENT);*/ // FIXME
     }
 }

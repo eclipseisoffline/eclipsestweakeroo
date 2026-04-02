@@ -42,7 +42,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
         Level level = Minecraft.getInstance().level;
         assert level != null;
 
-        Entity entity = level.getEntity(packet.getId());
+        Entity entity = level.getEntity(packet.id());
         if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_KNOCKBACK)) {
             assert entity != null;
             if (entity.equals(Minecraft.getInstance().player)) {
@@ -65,8 +65,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
 
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_INFO_NOTIFICATIONS)
                 && EclipsesGenericConfig.PLAYER_ADD_REMOVE_NOTIFICATION.getBooleanValue()) {
-            Minecraft.getInstance().gui.getChat().addMessage(
-                    Component.literal("Player info entry " + entry.getProfile().name() + " was removed").withStyle(ChatFormatting.GOLD));
+            Minecraft.getInstance().gui.getChat().addClientSystemMessage(Component.literal("Player info entry " + entry.getProfile().name() + " was removed").withStyle(ChatFormatting.GOLD));
         }
 
         return instance.remove(entry);
@@ -112,8 +111,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
         }
 
         if (notification != null) {
-            Minecraft.getInstance().gui.getChat()
-                    .addMessage(notification.withStyle(ChatFormatting.GOLD));
+            Minecraft.getInstance().gui.getChat().addClientSystemMessage(notification.withStyle(ChatFormatting.GOLD));
         }
     }
 }

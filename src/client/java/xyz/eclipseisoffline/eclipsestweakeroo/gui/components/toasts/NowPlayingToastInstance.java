@@ -3,7 +3,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.gui.components.toasts;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.ColorLerper;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -53,10 +53,10 @@ public class NowPlayingToastInstance implements Toast {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics graphics, @NotNull Font font, long visibilityTime) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, Font font, long fullyVisibleForMs) {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, NOW_PLAYING_BACKGROUND_SPRITE, 0, 0, width(), HEIGHT);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, MUSIC_NOTES_SPRITE, PADDING, PADDING, MUSIC_NOTES_SIZE, MUSIC_NOTES_SIZE, musicNoteColor);
-        graphics.drawString(font, song, MUSIC_NOTES_SPACE, 15 - 9 / 2, TEXT_COLOR);
+        graphics.text(font, song, MUSIC_NOTES_SPACE, 15 - 9 / 2, TEXT_COLOR);
     }
 
     @Override

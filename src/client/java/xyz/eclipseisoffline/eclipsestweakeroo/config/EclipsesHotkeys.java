@@ -58,7 +58,7 @@ public class EclipsesHotkeys {
             if (key == INSERT_FORMATTING_CODE.getKeybind()) {
                 Screen openScreen = Minecraft.getInstance().screen;
                 if (openScreen != null) {
-                    openScreen.charTyped(new CharacterEvent(ChatFormatting.PREFIX_CODE, 0));
+                    openScreen.charTyped(new CharacterEvent(ChatFormatting.PREFIX_CODE));
                 }
                 return true;
             }

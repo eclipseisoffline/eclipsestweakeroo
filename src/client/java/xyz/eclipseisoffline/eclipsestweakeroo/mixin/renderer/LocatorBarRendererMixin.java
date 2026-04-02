@@ -5,8 +5,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.PlayerFaceRenderer;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.PlayerFaceExtractor;
 import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
 import net.minecraft.client.gui.contextualbar.LocatorBarRenderer;
 import net.minecraft.client.multiplayer.PlayerInfo;
@@ -35,8 +35,8 @@ public abstract class LocatorBarRendererMixin implements ContextualBarRenderer {
     @Final
     private Minecraft minecraft;
 
-    @WrapOperation(method = "method_70870", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIII)V"))
-    public void usePlayerIcon(GuiGraphics instance, RenderPipeline pipeline, Identifier texture, int x, int y, int width, int height, int color, Operation<Void> original,
+    @WrapOperation(method = "lambda$extractRenderState$1", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIII)V"))
+    public void usePlayerIcon(GuiGraphicsExtractor instance, RenderPipeline pipeline, Identifier texture, int x, int y, int width, int height, int color, Operation<Void> original,
                               @Local(argsOnly = true) TrackedWaypoint waypoint, @Local float distance) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_LOCATOR_BAR) && waypoint.id().left().isPresent()) {
             PlayerInfo player = minecraft.getConnection().getPlayerInfo(waypoint.id().left().orElseThrow());
@@ -46,8 +46,7 @@ public abstract class LocatorBarRendererMixin implements ContextualBarRenderer {
                     size = MIN_FACE_SIZE;
                 }
 
-                PlayerFaceRenderer.draw(instance, player.getSkin().body().texturePath(), x + (int) ((width - size) / 2), y + (int) ((height - size) / 2), (int) size,
-                        player.showHat(), false, -1);
+                PlayerFaceExtractor.extractRenderState(instance, player.getSkin().body().texturePath(), x + (int) ((width - size) / 2), y + (int) ((height - size) / 2), (int) size, player.showHat(), false, -1);
                 return;
             }
         }

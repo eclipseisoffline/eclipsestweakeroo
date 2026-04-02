@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractTextAreaWidget;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.components.MultilineTextField;
@@ -39,8 +39,8 @@ public abstract class MultiLineEditBoxMixin extends AbstractTextAreaWidget imple
     @Final
     private boolean textShadow;
 
-    public MultiLineEditBoxMixin(int x, int y, int width, int height, Component message) {
-        super(x, y, width, height, message);
+    public MultiLineEditBoxMixin(int x, int y, int width, int height, Component narration, ScrollbarSettings scrollbarSettings) {
+        super(x, y, width, height, narration, scrollbarSettings);
     }
 
     @Override
@@ -48,8 +48,8 @@ public abstract class MultiLineEditBoxMixin extends AbstractTextAreaWidget imple
         return textField;
     }
 
-    @WrapOperation(method = "renderContents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/MultilineTextField;iterateLines()Ljava/lang/Iterable;", ordinal = 0))
-    public Iterable customTextRenderer(MultilineTextField instance, Operation<Iterable> original, @Local(argsOnly = true) GuiGraphics graphics,
+    @WrapOperation(method = "extractContents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/MultilineTextField;iterateLines()Ljava/lang/Iterable;", ordinal = 0))
+    public Iterable customTextRenderer(MultilineTextField instance, Operation<Iterable> original, @Local(argsOnly = true) GuiGraphicsExtractor graphics,
                                        @Local(ordinal = 3) LocalIntRef j, @Local(ordinal = 4) LocalIntRef k) {
         if (eclipsestweakeroo$renderTextFormatting()) {
             List<FormattedCharSequence> pageComponents = font.split(FormattedText.of(textField.value()), ((MultilineTextFieldAccessor) textField).getWidth());
@@ -61,7 +61,7 @@ public abstract class MultiLineEditBoxMixin extends AbstractTextAreaWidget imple
                 FormattedCharSequence sequence = pageComponents.get(i);
 
                 int y = startY + i * 9;
-                graphics.drawString(font, sequence, startX, y, textColor, textShadow);
+                graphics.text(font, sequence, startX, y, textColor, textShadow);
                 j.set(startX + font.width(sequence) - 1);
             }
             k.set(startY + (pageComponents.size() - 1) * 9);
