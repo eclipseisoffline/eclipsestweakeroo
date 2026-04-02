@@ -1,4 +1,1 @@
-- Update to 26.1.x.
-- Add `rightControlFix` fix.
-- Add `nextHotbarSlot` and `previousHotbarSlot` hotkeys.
-- Add `disableEndFlashes` yeet.
+- Some code cleanups, move texts to translation file to allow internationalisation.
