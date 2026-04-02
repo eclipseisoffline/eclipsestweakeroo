@@ -124,5 +124,11 @@
   "message.eclipsestweakeroo.player_info_listed": "%1$s is now listed",
   "message.eclipsestweakeroo.player_info_unlisted": "%1$s is now unlisted",
   "message.eclipsestweakeroo.player_info_display_name": "%1$s's display name is now %2$s",
-  "message.eclipsestweakeroo.player_info_display_name_unset": "%1$s's display name is now unset"
+  "message.eclipsestweakeroo.player_info_display_name_unset": "%1$s's display name is now unset",
+  "message.eclipsestweakeroo.player_has_chat_key": "KEY",
+  "message.eclipsestweakeroo.player_has_no_chat_key": "NO KEY",
+  "message.eclipsestweakeroo.features_disabled_by_server": "The following features of %1$s have been disabled by the server: %2$s",
+  "message.eclipsestweakeroo.features_disabled_no_opt_in": "The following features of %1$s have been disabled because they require a server-side opt-in: %2$s",
+  "message.eclipsestweakeroo.request_administrator_for_features": "Ask the server administrator to install the %1$s mod on the server to allow using these features",
+  "message.eclipsestweakeroo.enabled_features_toggle": "Toggle this message using the %1$s option in the mod's config menu"
 }

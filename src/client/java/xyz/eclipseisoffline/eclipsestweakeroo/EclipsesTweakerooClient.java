@@ -12,11 +12,13 @@ import xyz.eclipseisoffline.eclipsestweakeroo.hotkeys.EclipsesKeybindProvider;
 import xyz.eclipseisoffline.eclipsestweakeroo.network.EclipsesTweakerooClientNetworking;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.StatusEffectCharacterLoader;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 public class EclipsesTweakerooClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        ToggleManager.bootstrap();
         ConfigManager.getInstance().registerConfigHandler(EclipsesTweakeroo.MOD_ID, new EclipsesConfigs());
         Registry.CONFIG_SCREEN.registerConfigScreenFactory(new ModInfo(EclipsesTweakeroo.MOD_ID, EclipsesTweakeroo.MOD_NAME_SHORT, () -> new EclipsesTweakerooConfig(null)));
 

@@ -13,8 +13,8 @@ public class EclipsesTweakerooClientNetworking {
         ClientConfigurationNetworking.registerGlobalReceiver(ClientboundEnabledTogglesPacket.TYPE,
                 (packet, context) -> ToggleManager.enableToggles(packet.toggles(), true));
 
-        ClientConfigurationConnectionEvents.INIT.register((listener, client) -> ToggleManager.resetEnabledToggles());
-        ClientConfigurationConnectionEvents.COMPLETE.register((listener, client) -> {
+        ClientConfigurationConnectionEvents.INIT.register((_, _) -> ToggleManager.resetEnabledToggles());
+        ClientConfigurationConnectionEvents.COMPLETE.register((_, _) -> {
             if (!ToggleManager.receivedEnabledToggles()) {
                 ToggleManager.enableToggles(List.of(), false);
             }

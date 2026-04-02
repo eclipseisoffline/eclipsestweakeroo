@@ -9,6 +9,8 @@ import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.criterion.DamageSourcePredicate;
 import net.minecraft.advancements.criterion.TagPredicate;
@@ -106,6 +108,7 @@ public class EclipsesTweakerooUtil {
     );
     private static final Int2ReferenceMap<ResourceKey<MobEffect>> STATUS_EFFECT_PARTICLE_COLORS = new Int2ReferenceOpenHashMap<>();
     private static final Object2BooleanMap<DamageSourcePredicate> EMPTY_DAMAGE_SOURCE_PREDICATES = new Object2BooleanOpenHashMap<>();
+    private static final Object2ObjectMap<String, String> DESCRIPTION_ID_CACHE = new Object2ObjectOpenHashMap<>();
 
     private EclipsesTweakerooUtil() {}
 
@@ -114,7 +117,7 @@ public class EclipsesTweakerooUtil {
     }
 
     public static String getMessageDescriptionId(String message) {
-        return Util.makeDescriptionId("message", EclipsesTweakeroo.getModdedIdentifier(message));
+        return DESCRIPTION_ID_CACHE.computeIfAbsent(message, key -> Util.makeDescriptionId("message", EclipsesTweakeroo.getModdedIdentifier((String) key)));
     }
 
     public static boolean shouldWarnDurability(ItemStack itemStack) {

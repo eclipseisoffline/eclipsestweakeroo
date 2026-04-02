@@ -75,8 +75,8 @@ public class FancyName {
                 return null;
             }),
             Map.entry("key", (livingEntity, playerInfo) -> playerInfo.hasVerifiableChat()
-                    ? Component.literal("KEY").withStyle(ChatFormatting.GREEN)
-                    : Component.literal("NO KEY").withStyle(ChatFormatting.RED)),
+                    ? Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("player_has_chat_key")).withStyle(ChatFormatting.GREEN)
+                    : Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("player_has_no_chat_key")).withStyle(ChatFormatting.RED)),
             Map.entry("attack", (livingEntity, playerInfo) -> EclipsesTweakerooUtil.getAttackDamageText(livingEntity, EclipsesGenericConfig.ATTACK_PLACEHOLDER_CRITICAL.getBooleanValue())),
             Map.entry("armor", (livingEntity, playerInfo) -> EclipsesTweakerooUtil.getArmorText(livingEntity)),
             Map.entry("distance", (livingEntity, playerInfo) -> {
