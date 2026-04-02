@@ -2,6 +2,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.config;
 
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import fi.dy.masa.malilib.gui.GuiBase;
+import fi.dy.masa.malilib.util.StringUtils;
 
 public class ServerSideOptInConfigOption extends ConfigBooleanHotkeyed {
 
@@ -20,7 +21,7 @@ public class ServerSideOptInConfigOption extends ConfigBooleanHotkeyed {
 
     @Override
     public String getComment() {
-        return super.getComment() + "\n" + GuiBase.TXT_RED + "Note: On multiplayer servers, this feature," + GuiBase.TXT_RST +
+        return StringUtils.translate(super.getComment()) + "\n" + GuiBase.TXT_RED + "Note: On multiplayer servers, this feature," + GuiBase.TXT_RST +
                 "\n" + GuiBase.TXT_RED + "or a subset of it, requires a server-side opt-in" + GuiBase.TXT_RST;
     }
 }

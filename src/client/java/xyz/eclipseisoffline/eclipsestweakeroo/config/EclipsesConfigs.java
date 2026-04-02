@@ -4,8 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigHandler;
+import fi.dy.masa.malilib.util.StringUtils;
 import fi.dy.masa.malilib.util.data.json.JsonUtils;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.Util;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 
 import java.io.IOException;
@@ -78,5 +80,9 @@ public class EclipsesConfigs implements IConfigHandler {
         ConfigUtils.writeHotkeyToggleOptions(root, "tweak_hotkeys", "tweaks", EclipsesTweaksConfig.hotkeys());
 
         JsonUtils.writeJsonToFile(root, CONFIG_FILE);
+    }
+
+    public static String getCommentTranslationKey(String name) {
+        return Util.makeDescriptionId("config", EclipsesTweakeroo.getModdedIdentifier(StringUtils.splitCamelCase(name).toLowerCase().replaceAll(" ", "_")));
     }
 }

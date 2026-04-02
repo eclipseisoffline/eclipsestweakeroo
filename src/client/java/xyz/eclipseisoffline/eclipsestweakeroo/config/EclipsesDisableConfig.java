@@ -11,43 +11,43 @@ public class EclipsesDisableConfig {
 
     private static final List<IConfigBase> CONFIGS = new ArrayList<>();
 
-    public static final ConfigBooleanHotkeyed DISABLE_ENTITY_COLLISIONS = createWithServerSideOptIn("disableEntityCollisions", "Disables entity collisions");
-    public static final ConfigBooleanHotkeyed DISABLE_KNOCKBACK = createWithServerSideOptIn("disableKnockback", "Disables taking knockback");
-    public static final ConfigBooleanHotkeyed DISABLE_FOG_MODIFIER = create("disableFogModifiers", "Disables all fog modifiers (darkness, blindness, water, etc..)");
-    public static final ConfigBooleanHotkeyed DISABLE_EQUIPMENT_RESTRICTION = createClient("disableArmorRestriction", "Disables the restriction armor slots have");
-    public static final ConfigBooleanHotkeyed DISABLE_BINDING_CURSE = createClient("disableBindingCurse", "Disables curse of binding");
-    public static final ConfigBooleanHotkeyed DISABLE_ITEM_COOLDOWN = createClient("disableItemCooldown", "Disables all item cooldowns (for items such as ender pearls, chorus fruits, etc.)");
-    public static final ConfigBooleanHotkeyed DISABLE_ILLEGAL_CHARACTER_CHECK = createClient("disableIllegalCharacterCheck", "Disables the check for section characters in all text boxes");
-    public static final ConfigBooleanHotkeyed DISABLE_BOW_DRAW_TIME = createClient("disableBowDrawTime", "Disables the draw time for (cross)bows");
-    public static final ConfigBooleanHotkeyed DISABLE_WORLD_BORDER = create("disableWorldBorder", "Removes all world border restrictions");
-    public static final ConfigBooleanHotkeyed DISABLE_BED_EXPLOSION = create("disableBedExplosions", "Disables bed explosions in dimensions where beds explode, by cancelling bed clicks.");
-    public static final ConfigBooleanHotkeyed DISABLE_ALLAY_USE = create("disableAllayItemUse", "Disables giving items to allays");
-    public static final ConfigBooleanHotkeyed DISABLE_OFFHAND_USE = create("disableOffhandUse", "Disables using items in your offhand");
-    public static final ConfigBooleanHotkeyed DISABLE_HORSE_JUMP_CHARGE = createWithServerSideOptIn("disableHorseJumpCharge", "Disables (always maximises) the jump charge and cooldown on horses and similar entities");
-    public static final ConfigBooleanHotkeyed DISABLE_OVERLAY_RENDER = create("disableOverlayRender", "Disables rendering the vignette, spyglass, carved pumpkin, powder snow, and other overlays");
-    public static final ConfigBooleanHotkeyed DISABLE_ALL_NAMES_IN_F1 = create("disableAllNamesInF1", "Disables rendering all name tags in F1\n(vanilla Minecraft still renders the names of entities in teams)");
-    public static final ConfigBooleanHotkeyed DISABLE_BLOCK_USE = create("disableBlockUse", "Disables using items on blocks");
-    public static final ConfigBooleanHotkeyed DISABLE_USE_ITEM_SLOWDOWN = createWithServerSideOptIn("disableUseItemSlowdown", "Disables slowing down when using items, like eating food");
-    public static final ConfigBooleanHotkeyed DISABLE_SWIFT_SNEAK = create("disableSwiftSneak", "Disables sneak speed modifiers like swift sneak,\nbecause sometimes slow sneaking is nice");
-    public static final ConfigBooleanHotkeyed DISABLE_JUMP_DELAY = createWithServerSideOptIn("disableJumpDelay", "Disables the 10-tick delay between jumps");
-    public static final ConfigBooleanHotkeyed DISABLE_BOOK_LINE_LIMIT = create("disableBookLineLimit", "Disables the line limit of books,\nallowing you to write until the full limit of\n1024 characters");
-    public static final ConfigBooleanHotkeyed DISABLE_BABY_FEEDING = create("disableBabyFeeding", "Disables feeding of baby animals,\nmaking breeding animals easier when\nthere are a lot of animals in a small space");
-    public static final ConfigBooleanHotkeyed DISABLE_END_FLASHES = create("disableEndFlashes", "Disables end flashes completely,\nincluding the flashing of the sky\nand the flash textures in the sky");
+    public static final ConfigBooleanHotkeyed DISABLE_ENTITY_COLLISIONS = createWithServerSideOptIn("disableEntityCollisions");
+    public static final ConfigBooleanHotkeyed DISABLE_KNOCKBACK = createWithServerSideOptIn("disableKnockback");
+    public static final ConfigBooleanHotkeyed DISABLE_FOG_MODIFIER = create("disableFogModifiers");
+    public static final ConfigBooleanHotkeyed DISABLE_EQUIPMENT_RESTRICTION = createClient("disableArmorRestriction");
+    public static final ConfigBooleanHotkeyed DISABLE_BINDING_CURSE = createClient("disableBindingCurse");
+    public static final ConfigBooleanHotkeyed DISABLE_ITEM_COOLDOWN = createClient("disableItemCooldown");
+    public static final ConfigBooleanHotkeyed DISABLE_ILLEGAL_CHARACTER_CHECK = createClient("disableIllegalCharacterCheck");
+    public static final ConfigBooleanHotkeyed DISABLE_BOW_DRAW_TIME = createClient("disableBowDrawTime");
+    public static final ConfigBooleanHotkeyed DISABLE_WORLD_BORDER = create("disableWorldBorder");
+    public static final ConfigBooleanHotkeyed DISABLE_BED_EXPLOSION = create("disableBedExplosions");
+    public static final ConfigBooleanHotkeyed DISABLE_ALLAY_USE = create("disableAllayItemUse");
+    public static final ConfigBooleanHotkeyed DISABLE_OFFHAND_USE = create("disableOffhandUse");
+    public static final ConfigBooleanHotkeyed DISABLE_HORSE_JUMP_CHARGE = createWithServerSideOptIn("disableHorseJumpCharge");
+    public static final ConfigBooleanHotkeyed DISABLE_OVERLAY_RENDER = create("disableOverlayRender");
+    public static final ConfigBooleanHotkeyed DISABLE_ALL_NAMES_IN_F1 = create("disableAllNamesInF1");
+    public static final ConfigBooleanHotkeyed DISABLE_BLOCK_USE = create("disableBlockUse");
+    public static final ConfigBooleanHotkeyed DISABLE_USE_ITEM_SLOWDOWN = createWithServerSideOptIn("disableUseItemSlowdown");
+    public static final ConfigBooleanHotkeyed DISABLE_SWIFT_SNEAK = create("disableSwiftSneak");
+    public static final ConfigBooleanHotkeyed DISABLE_JUMP_DELAY = createWithServerSideOptIn("disableJumpDelay");
+    public static final ConfigBooleanHotkeyed DISABLE_BOOK_LINE_LIMIT = create("disableBookLineLimit");
+    public static final ConfigBooleanHotkeyed DISABLE_BABY_FEEDING = create("disableBabyFeeding");
+    public static final ConfigBooleanHotkeyed DISABLE_END_FLASHES = create("disableEndFlashes");
 
-    private static ClientConfigOption createClient(String name, String comment) {
-        ClientConfigOption config = new ClientConfigOption(name, false, "", comment);
+    private static ClientConfigOption createClient(String name) {
+        ClientConfigOption config = new ClientConfigOption(name, false, "", EclipsesConfigs.getCommentTranslationKey(name));
         CONFIGS.add(config);
         return config;
     }
 
-    private static ConfigBooleanHotkeyed createWithServerSideOptIn(String name, String comment) {
-        ServerSideOptInConfigOption config = new ServerSideOptInConfigOption(name, false, "", comment);
+    private static ConfigBooleanHotkeyed createWithServerSideOptIn(String name) {
+        ServerSideOptInConfigOption config = new ServerSideOptInConfigOption(name, false, "", EclipsesConfigs.getCommentTranslationKey(name));
         CONFIGS.add(config);
         return config;
     }
 
-    private static ConfigBooleanHotkeyed create(String name, String comment) {
-        ConfigBooleanHotkeyed config = new ConfigBooleanHotkeyed(name, false, "", comment);
+    private static ConfigBooleanHotkeyed create(String name) {
+        ConfigBooleanHotkeyed config = new ConfigBooleanHotkeyed(name, false, "", EclipsesConfigs.getCommentTranslationKey(name));
         CONFIGS.add(config);
         return config;
     }

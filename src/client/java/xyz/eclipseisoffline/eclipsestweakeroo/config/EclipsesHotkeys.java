@@ -20,19 +20,19 @@ public class EclipsesHotkeys {
 
     private static final List<IConfigBase> CONFIGS = new ArrayList<>();
 
-    public static final ConfigHotkey OPEN_CONFIG_GUI = create("openConfigGui", "C,E", "Open the in-game config GUI");
-    public static final ConfigHotkey INSERT_FORMATTING_CODE = createGui("insertFormattingCode", "", "Inserts a formatting code on the open screen");
-    public static final ConfigHotkey NEXT_HOTBAR_SLOT = create("nextHotbarSlot", "", "Selects the next hotbar slot");
-    public static final ConfigHotkey PREVIOUS_HOTBAR_SLOT = create("previousHotbarSlot", "", "Selects the previous hotbar slot");
+    public static final ConfigHotkey OPEN_CONFIG_GUI = create("openConfigGui", "C,E");
+    public static final ConfigHotkey INSERT_FORMATTING_CODE = createGui("insertFormattingCode", "");
+    public static final ConfigHotkey NEXT_HOTBAR_SLOT = create("nextHotbarSlot", "");
+    public static final ConfigHotkey PREVIOUS_HOTBAR_SLOT = create("previousHotbarSlot", "");
 
-    private static ConfigHotkey create(String name, String defaultHotkey, String comment) {
-        ConfigHotkey hotkey = new ConfigHotkey(name, defaultHotkey, comment);
+    private static ConfigHotkey create(String name, String defaultHotkey) {
+        ConfigHotkey hotkey = new ConfigHotkey(name, defaultHotkey, EclipsesConfigs.getCommentTranslationKey(name));
         CONFIGS.add(hotkey);
         return hotkey;
     }
 
-    private static ConfigHotkey createGui(String name, String defaultHotkey, String comment) {
-        ConfigHotkey hotkey = new ConfigHotkey(name, defaultHotkey, comment);
+    private static ConfigHotkey createGui(String name, String defaultHotkey) {
+        ConfigHotkey hotkey = new ConfigHotkey(name, defaultHotkey, EclipsesConfigs.getCommentTranslationKey(name));
         hotkey.getKeybind().setSettings(KeybindSettings.GUI);
         CONFIGS.add(hotkey);
         return hotkey;

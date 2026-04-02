@@ -2,6 +2,7 @@ package xyz.eclipseisoffline.eclipsestweakeroo.config;
 
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import fi.dy.masa.malilib.gui.GuiBase;
+import fi.dy.masa.malilib.util.StringUtils;
 
 public class ClientConfigOption extends ConfigBooleanHotkeyed {
 
@@ -16,7 +17,7 @@ public class ClientConfigOption extends ConfigBooleanHotkeyed {
 
     @Override
     public String getComment() {
-        return super.getComment() + "\n" + GuiBase.TXT_GOLD + "Note: This feature works either at all or" + GuiBase.TXT_RST +
+        return StringUtils.translate(super.getComment()) + "\n" + GuiBase.TXT_GOLD + "Note: This feature works either at all or" + GuiBase.TXT_RST +
                 "\n" + GuiBase.TXT_GOLD + "at least fully only in single player" + GuiBase.TXT_RST;
     }
 }

@@ -12,11 +12,11 @@ public class EclipsesListsConfig {
     private static final List<IConfigBase> CONFIGS = new ArrayList<>();
 
     public static final ConfigStringList CHAT_MESSAGE_SEPARATORS = create("chatMessageSeparators",
-            ImmutableList.of("» ", ": ", "> "),
-            "A list of chat player name-message separators, used by tweakChatMessages to detect when a message body starts.");
+            ImmutableList.of("» ", ": ", "> ")
+    );
 
-    private static ConfigStringList create(String name, ImmutableList<String> values, String comment) {
-        ConfigStringList config = new ConfigStringList(name, values, comment);
+    private static ConfigStringList create(String name, ImmutableList<String> values) {
+        ConfigStringList config = new ConfigStringList(name, values, EclipsesConfigs.getCommentTranslationKey(name));
         CONFIGS.add(config);
         return config;
     }
