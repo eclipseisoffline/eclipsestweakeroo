@@ -12,11 +12,8 @@ public class ToolSwitchManager {
         assert minecraft.player != null;
         int currentSlot = minecraft.player.getInventory().getSelectedSlot();
         if (newSlot != currentSlot) {
-            System.out.println("reverting and caching");
             revertCache(minecraft);
             lastHotbarSlot = currentSlot;
-        } else {
-            System.out.println("not caching because it's the same");
         }
     }
 

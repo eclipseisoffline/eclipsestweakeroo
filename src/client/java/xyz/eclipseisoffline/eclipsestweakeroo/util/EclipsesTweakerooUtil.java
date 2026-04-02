@@ -126,14 +126,12 @@ public class EclipsesTweakerooUtil {
 
     public static void showLowDurabilityWarning(ItemStack itemStack, boolean actionBar) {
         if (actionBar) {
-            InfoUtils.showGuiOrActionBarMessage(MessageType.WARNING,
-                    itemStack.getHoverName().getString() + " is at low durability! "
-                            + (itemStack.getMaxDamage() - itemStack.getDamageValue()) + "/" + itemStack.getMaxDamage());
+            InfoUtils.showGuiOrActionBarMessage(MessageType.WARNING, EclipsesTweakerooUtil.getMessageDescriptionId("item_low_durability"),
+                    itemStack.getHoverName().getString(), itemStack.getMaxDamage() - itemStack.getDamageValue(), itemStack.getMaxDamage());
             return;
         }
-        InfoUtils.showGuiOrInGameMessage(MessageType.WARNING,
-                itemStack.getHoverName().getString() + " is at low durability! "
-                        + (itemStack.getMaxDamage() - itemStack.getDamageValue()) + "/" + itemStack.getMaxDamage());
+        InfoUtils.showGuiOrInGameMessage(MessageType.WARNING, EclipsesTweakerooUtil.getMessageDescriptionId("item_low_durability"),
+                itemStack.getHoverName().getString(), itemStack.getMaxDamage() - itemStack.getDamageValue(), itemStack.getMaxDamage());
     }
 
     public static Component getDurationTextWithStyle(MobEffectInstance effect) {
