@@ -1,4 +1,11 @@
 {
+  "config_category.eclipsestweakeroo.generic": "Generic",
+  "config_category.eclipsestweakeroo.fixes": "Fixes",
+  "config_category.eclipsestweakeroo.lists": "Lists",
+  "config_category.eclipsestweakeroo.tweaks": "Tweaks",
+  "config_category.eclipsestweakeroo.hotkeys": "Hotkeys",
+  "config_category.eclipsestweakeroo.disables": "Yeets",
+
   "config.eclipsestweakeroo.server_disabled_message": "Whether to broadcast in chat which features of the mod the server has disabled (if any) when joining",
   "config.eclipsestweakeroo.hand_restock_unstackable": "Whether to restock unstackable items",
   "config.eclipsestweakeroo.player_list_hide_header": "Hides the player list header when the player list tweak is enabled",
@@ -98,5 +105,24 @@
   "config.eclipsestweakeroo.disable_jump_delay": "Disables the 10-tick delay between jumps",
   "config.eclipsestweakeroo.disable_book_line_limit": "Disables the line limit of books,\nallowing you to write until the full limit of\n1024 characters",
   "config.eclipsestweakeroo.disable_baby_feeding": "Disables feeding of baby animals,\nmaking breeding animals easier when\nthere are a lot of animals in a small space",
-  "config.eclipsestweakeroo.disable_end_flashes": "Disables end flashes completely,\nincluding the flashing of the sky\nand the flash textures in the sky"
+  "config.eclipsestweakeroo.disable_end_flashes": "Disables end flashes completely,\nincluding the flashing of the sky\nand the flash textures in the sky",
+
+  "config.eclipsestweakeroo.client_only_warning": "Note: This feature works either at all or\nat least fully only in single player",
+  "config.eclipsestweakeroo.server_side_opt_in_warning": "Note: On multiplayer servers, this feature,\nor a subset of it, requires a server-side opt-in",
+
+  "config.player_list_order.eclipsestweakeroo.default": "Default",
+  "config.player_list_order.eclipsestweakeroo.ping": "Ping",
+  "config.player_list_order.eclipsestweakeroo.gamemode": "Gamemode",
+  "config.player_list_order.eclipsestweakeroo.name": "Name",
+
+  "message.eclipsestweakeroo.reconnecting_in": "(reconnecting in %1$s)",
+  "message.eclipsestweakeroo.lodestone_compass_position": "%1$s has %2$s in %3$s as set position",
+  "message.eclipsestweakeroo.lodestone_compass_no_position": "%1$s has no tracked position",
+  "message.eclipsestweakeroo.player_info_added": "Player info entry %1$s was added",
+  "message.eclipsestweakeroo.player_info_removed": "Player info entry %1$s was removed",
+  "message.eclipsestweakeroo.player_info_update_gamemode": "%1$s changed gamemode to %2$s",
+  "message.eclipsestweakeroo.player_info_listed": "%1$s is now listed",
+  "message.eclipsestweakeroo.player_info_unlisted": "%1$s is now unlisted",
+  "message.eclipsestweakeroo.player_info_display_name": "%1$s's display name is now %2$s",
+  "message.eclipsestweakeroo.player_info_display_name_unset": "%1$s's display name is now unset"
 }

@@ -17,7 +17,9 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
@@ -122,10 +124,10 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
                             false, null);
                 }
                 backButton.setMessage(TO_SERVER_LIST.copy()
-                        .append(Component.literal(" (reconnecting in "))
-                        .append(Component.literal((wait - passed) + "ms")
-                                .withStyle(ChatFormatting.GREEN))
-                        .append(Component.literal(")")));
+                        .append(CommonComponents.SPACE)
+                        .append(Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("reconnecting_in"),
+                                Component.literal((wait - passed) + "ms")
+                                        .withStyle(ChatFormatting.GREEN))));
             }));
         }
     }
@@ -181,11 +183,13 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
             LodestoneTracker tracker = usedStack.get(DataComponents.LODESTONE_TRACKER);
             assert tracker != null;
 
-            MutableComponent info = Component.empty().append(usedStack.getHoverName()).append(" has ");
+            Component info;
             if (tracker.target().isPresent()) {
-                info.append(tracker.target().orElseThrow().pos().toShortString() + " in " + tracker.target().orElseThrow().dimension().identifier() + " as set position");
+                GlobalPos target = tracker.target().get();
+                info = Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("lodestone_compass_position"), usedStack.getHoverName(),
+                        target.pos().toShortString(), target.dimension().identifier());
             } else {
-                info.append("no tracked position");
+                info = Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("lodestone_compass_no_position"), usedStack.getHoverName());
             }
 
             Minecraft.getInstance().gui.getChat().addClientSystemMessage(info);

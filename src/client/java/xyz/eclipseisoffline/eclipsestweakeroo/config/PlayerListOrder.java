@@ -4,34 +4,36 @@ import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import fi.dy.masa.malilib.util.StringUtils;
 import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.util.Util;
+import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 
 public enum PlayerListOrder implements IConfigOptionListEntry {
-    DEFAULT("default", "Default", null),
-    PING("ping", "Ping", Comparator.comparingInt(PlayerInfo::getLatency)),
-    GAMEMODE("gamemode", "Gamemode", Comparator.comparingInt(entry -> entry.getGameMode().getId())),
-    NAME("name", "Name",
+    DEFAULT("default", null),
+    PING("ping", Comparator.comparingInt(PlayerInfo::getLatency)),
+    GAMEMODE("gamemode", Comparator.comparingInt(entry -> entry.getGameMode().getId())),
+    NAME("name",
             Comparator.comparing(entry -> entry.getProfile().name(), String::compareTo));
 
-    private final String stringName;
+    private final String name;
     private final String displayName;
     private final Comparator<PlayerInfo> comparator;
 
-    PlayerListOrder(String stringName, String displayName,
-            Comparator<PlayerInfo> comparator) {
-        this.stringName = stringName;
-        this.displayName = displayName;
+    PlayerListOrder(String name, Comparator<PlayerInfo> comparator) {
+        this.name = name;
+        this.displayName = Util.makeDescriptionId("config.player_list_order", EclipsesTweakeroo.getModdedIdentifier(name));
         this.comparator = comparator;
     }
 
     @Override
     public String getStringValue() {
-        return stringName;
+        return name;
     }
 
     @Override
     public String getDisplayName() {
-        return displayName;
+        return StringUtils.translate(displayName);
     }
 
     public Comparator<PlayerInfo> getComparator() {
@@ -58,7 +60,7 @@ public enum PlayerListOrder implements IConfigOptionListEntry {
 
     @Override
     public IConfigOptionListEntry fromString(String name) {
-        return Arrays.stream(values()).filter(orderType -> orderType.stringName.equals(name))
+        return Arrays.stream(values()).filter(orderType -> orderType.name.equals(name))
                 .findFirst().orElse(null);
     }
 }

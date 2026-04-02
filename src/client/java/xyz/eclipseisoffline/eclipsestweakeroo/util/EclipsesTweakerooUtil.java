@@ -1,5 +1,6 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.util;
 
+import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.Message.MessageType;
 import fi.dy.masa.malilib.util.InfoUtils;
 import fi.dy.masa.tweakeroo.config.Configs;
@@ -23,6 +24,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Util;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.TickRateManager;
 import net.minecraft.world.damagesource.DamageType;
@@ -46,6 +48,7 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
 import org.apache.commons.lang3.mutable.MutableFloat;
+import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
@@ -105,6 +108,14 @@ public class EclipsesTweakerooUtil {
     private static final Object2BooleanMap<DamageSourcePredicate> EMPTY_DAMAGE_SOURCE_PREDICATES = new Object2BooleanOpenHashMap<>();
 
     private EclipsesTweakerooUtil() {}
+
+    public static String legacyFormat(String string, String format) {
+        return format + string.replaceAll("\n", "\n" + format) + GuiBase.TXT_RST;
+    }
+
+    public static String getMessageDescriptionId(String message) {
+        return Util.makeDescriptionId("message", EclipsesTweakeroo.getModdedIdentifier(message));
+    }
 
     public static boolean shouldWarnDurability(ItemStack itemStack) {
         return itemStack.isDamageableItem() && itemStack.getDamageValue() >= (DURABILITY_WARNING * itemStack.getMaxDamage());

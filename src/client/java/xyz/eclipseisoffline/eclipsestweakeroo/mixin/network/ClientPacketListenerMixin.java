@@ -25,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.util.EclipsesTweakerooUtil;
 import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 
 import java.util.Set;
@@ -65,7 +66,10 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
 
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_INFO_NOTIFICATIONS)
                 && EclipsesGenericConfig.PLAYER_ADD_REMOVE_NOTIFICATION.getBooleanValue()) {
-            Minecraft.getInstance().gui.getChat().addClientSystemMessage(Component.literal("Player info entry " + entry.getProfile().name() + " was removed").withStyle(ChatFormatting.GOLD));
+            Minecraft.getInstance().gui.getChat().addClientSystemMessage(
+                    Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("player_info_removed"), entry.getProfile().name())
+                            .withStyle(ChatFormatting.GOLD)
+            );
         }
 
         return instance.remove(entry);
@@ -87,25 +91,30 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
         switch (action) {
             case ADD_PLAYER -> {
                 if (EclipsesGenericConfig.PLAYER_ADD_REMOVE_NOTIFICATION.getBooleanValue()) {
-                    notification = Component.literal(
-                            "Player info entry " + gameProfile.name() + " was added");
+                    notification = Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("player_info_added"), gameProfile.name());
                 }
             }
             case UPDATE_GAME_MODE -> {
                 if (EclipsesGenericConfig.PLAYER_GAMEMODE_NOTIFICATION.getBooleanValue()) {
-                    notification = Component.literal(gameProfile.name() + " changed gamemode to " + received.gameMode().getName());
+                    notification = Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("player_info_update_gamemode"), gameProfile.name(), received.gameMode().getName());
                 }
             }
             case UPDATE_LISTED -> {
                 if (EclipsesGenericConfig.PLAYER_LISTED_NOTIFICATION.getBooleanValue()) {
-                    notification = Component.literal(
-                            gameProfile.name() + " is now " + (received.listed() ? "listed" : "unlisted"));
+                    if (received.listed()) {
+                        notification = Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("player_info_listed"), gameProfile.name());
+                    } else {
+                        notification = Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("player_info_unlisted"), gameProfile.name());
+                    }
                 }
             }
             case UPDATE_DISPLAY_NAME -> {
                 if (EclipsesGenericConfig.PLAYER_DISPLAY_NAME_NOTIFICATION.getBooleanValue()) {
-                    notification = Component.literal(gameProfile.name() + "'s display name is now ")
-                            .append(received.displayName() == null ? Component.literal("unset") : received.displayName());
+                    if (received.displayName() != null) {
+                        notification = Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("player_info_display_name"), gameProfile.name(), received.displayName());
+                    } else {
+                        notification = Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("player_info_display_name_unset"), gameProfile.name());
+                    }
                 }
             }
         }

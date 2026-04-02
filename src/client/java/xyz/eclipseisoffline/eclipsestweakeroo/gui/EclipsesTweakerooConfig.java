@@ -5,7 +5,9 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.button.IButtonActionListener;
+import fi.dy.masa.malilib.util.StringUtils;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.util.Util;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesHotkeys;
@@ -98,22 +100,21 @@ public class EclipsesTweakerooConfig extends GuiConfigsBase {
     }
 
     private enum ConfigTab {
-        GENERIC("Generic"),
-        FIXES("Fixes"),
-        LISTS("Lists"),
-        TWEAKS("Tweaks"),
-        HOTKEYS("Hotkeys"),
-        DISABLES("Yeets");
+        GENERIC("generic"),
+        FIXES("fixes"),
+        LISTS("lists"),
+        TWEAKS("tweaks"),
+        HOTKEYS("hotkeys"),
+        DISABLES("disables");
 
-        private final String name;
+        private final String descriptionId;
 
-        ConfigTab(String name)
-        {
-            this.name = name;
+        ConfigTab(String name) {
+            this.descriptionId = Util.makeDescriptionId("config_category", EclipsesTweakeroo.getModdedIdentifier(name));
         }
 
         public String getName() {
-            return name;
+            return StringUtils.translate(descriptionId);
         }
     }
 }
