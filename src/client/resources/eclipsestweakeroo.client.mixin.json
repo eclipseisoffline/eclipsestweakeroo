@@ -52,7 +52,6 @@
     "tweakeroo.mod.TweakerooInventoryUtilsMixin",
     "tweakeroo.mod.TweakerooMiscUtilsMixin",
     "tweakeroo.mod.TweakerooPlacementTweaksMixin",
-    "tweakeroo.renderer.GameRendererMixin",
     "util.StringDecomposerMixin"
   ],
   "injectors": {
