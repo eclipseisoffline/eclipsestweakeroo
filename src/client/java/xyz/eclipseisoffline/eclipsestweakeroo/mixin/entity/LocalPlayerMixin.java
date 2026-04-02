@@ -101,14 +101,14 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
     }
 
     @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;canStartSprinting()Z"))
-    public void dismountHappyGhastWhenDoubleTapJump(CallbackInfo callbackInfo, @Local(ordinal = 0) boolean wasJumping, @Local(ordinal = 3) boolean didAutoJump) {
+    public void dismountHappyGhastWhenDoubleTapJump(CallbackInfo callbackInfo, @Local(name = "wasJumping") boolean wasJumping, @Local(name = "wasAutoJump") boolean wasAutoJump) {
         if (ghastJumpTime > 0) {
             ghastJumpTime--;
         }
 
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_HAPPY_GHAST)
                 && getControlledVehicle() instanceof HappyGhast
-                && !wasJumping && input.keyPresses.jump() && !didAutoJump) {
+                && !wasJumping && input.keyPresses.jump() && !wasAutoJump) {
             if (ghastJumpTime == 0) {
                 ghastJumpTime = 7;
             } else {

@@ -34,8 +34,8 @@ public abstract class TweakerooPlacementTweaksMixin {
                                                    PositionUtils.HitPart hitPart,
                                                    boolean isFirstClick, CallbackInfoReturnable<InteractionResult> cir,
                                                    @Local(ordinal = 1, argsOnly = true) LocalRef<Direction> sideRotatedInLocal,
-                                                   @Local(ordinal = 2) boolean flexible,
-                                                   @Local(ordinal = 7) boolean rotation) {
+                                                   @Local(name = "flexible") boolean flexible,
+                                                   @Local(name = "rotation") boolean rotation) {
         if (!EclipsesFixesConfig.PISTON_FLEXIBLE_PLACEMENT_FIX.getBooleanValue()) {
             return;
         }

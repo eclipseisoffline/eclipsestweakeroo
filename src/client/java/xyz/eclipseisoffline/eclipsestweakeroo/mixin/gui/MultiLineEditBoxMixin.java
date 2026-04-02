@@ -50,7 +50,7 @@ public abstract class MultiLineEditBoxMixin extends AbstractTextAreaWidget imple
 
     @WrapOperation(method = "extractContents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/MultilineTextField;iterateLines()Ljava/lang/Iterable;", ordinal = 0))
     public Iterable customTextRenderer(MultilineTextField instance, Operation<Iterable> original, @Local(argsOnly = true) GuiGraphicsExtractor graphics,
-                                       @Local(ordinal = 3) LocalIntRef j, @Local(ordinal = 4) LocalIntRef k) {
+                                       @Local(name = "cursorX") LocalIntRef cursorX, @Local(name = "cursorY") LocalIntRef cursorY) {
         if (eclipsestweakeroo$renderTextFormatting()) {
             List<FormattedCharSequence> pageComponents = font.split(FormattedText.of(textField.value()), ((MultilineTextFieldAccessor) textField).getWidth());
 
@@ -62,9 +62,9 @@ public abstract class MultiLineEditBoxMixin extends AbstractTextAreaWidget imple
 
                 int y = startY + i * 9;
                 graphics.text(font, sequence, startX, y, textColor, textShadow);
-                j.set(startX + font.width(sequence) - 1);
+                cursorX.set(startX + font.width(sequence) - 1);
             }
-            k.set(startY + (pageComponents.size() - 1) * 9);
+            cursorY.set(startY + (pageComponents.size() - 1) * 9);
 
             return List.of();
         }

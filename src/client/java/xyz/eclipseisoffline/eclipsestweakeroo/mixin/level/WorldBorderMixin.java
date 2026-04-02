@@ -11,28 +11,28 @@ import xyz.eclipseisoffline.eclipsestweakeroo.util.ToggleManager;
 @Mixin(WorldBorder.class)
 public abstract class WorldBorderMixin {
 
-    @Inject(method = "getMinX", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getMinX(F)D", at = @At("HEAD"), cancellable = true)
     public void disableWestBound(CallbackInfoReturnable<Double> callbackInfoReturnable) {
         if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_WORLD_BORDER)) {
             callbackInfoReturnable.setReturnValue(-Double.MAX_VALUE);
         }
     }
 
-    @Inject(method = "getMaxX", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getMaxX(F)D", at = @At("HEAD"), cancellable = true)
     public void disableEastBound(CallbackInfoReturnable<Double> callbackInfoReturnable) {
         if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_WORLD_BORDER)) {
             callbackInfoReturnable.setReturnValue(Double.MAX_VALUE);
         }
     }
 
-    @Inject(method = "getMinZ", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getMinZ(F)D", at = @At("HEAD"), cancellable = true)
     public void disableNorthBound(CallbackInfoReturnable<Double> callbackInfoReturnable) {
         if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_WORLD_BORDER)) {
             callbackInfoReturnable.setReturnValue(-Double.MAX_VALUE);
         }
     }
 
-    @Inject(method = "getMaxZ", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getMaxZ(F)D", at = @At("HEAD"), cancellable = true)
     public void disableSouthBound(CallbackInfoReturnable<Double> callbackInfoReturnable) {
         if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_WORLD_BORDER)) {
             callbackInfoReturnable.setReturnValue(Double.MAX_VALUE);

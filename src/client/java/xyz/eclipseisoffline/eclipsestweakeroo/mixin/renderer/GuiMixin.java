@@ -73,18 +73,18 @@ public abstract class GuiMixin {
 
     @Inject(method = "extractEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectInstance;isAmbient()Z"))
     public void drawStatusText(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo callbackInfo,
-                               @Local MobEffectInstance mobEffectInstance, @Local(ordinal = 2) int k, @Local(ordinal = 3) LocalIntRef l) {
+                               @Local(name = "instance") MobEffectInstance mobEffectInstance, @Local(name = "x") int x, @Local(name = "y") LocalIntRef y) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_STATUS_EFFECT)) {
             // Second row
-            if (l.get() > 20) {
-                l.set(l.get() + STATUS_EFFECT_SPACE + getFont().lineHeight);
+            if (y.get() > 20) {
+                y.set(y.get() + STATUS_EFFECT_SPACE + getFont().lineHeight);
             }
 
             Component durationText = EclipsesTweakerooUtil.getDurationTextWithStyle(mobEffectInstance);
             int textWidth = getFont().width(durationText);
             graphics.text(getFont(), durationText,
-                    k + (STATUS_EFFECT_SPRITE_SIZE / 2) - (textWidth / 2),
-                    l.get() + STATUS_EFFECT_SPRITE_SIZE + STATUS_EFFECT_SPACE, TEXT_COLOUR);
+                    x + (STATUS_EFFECT_SPRITE_SIZE / 2) - (textWidth / 2),
+                    y.get() + STATUS_EFFECT_SPRITE_SIZE + STATUS_EFFECT_SPACE, TEXT_COLOUR);
         }
     }
 

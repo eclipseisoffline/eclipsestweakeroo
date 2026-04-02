@@ -12,7 +12,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.config.EclipsesFixesConfig;
 @Mixin(KeyboardHandler.class)
 public abstract class KeyboardHandlerMixin {
 
-    @WrapOperation(method = "method_22676", at = @At(value = "NEW", target = "net/minecraft/client/input/KeyEvent"))
+    @WrapOperation(method = "lambda$setup$0", at = @At(value = "NEW", target = "net/minecraft/client/input/KeyEvent"))
     public KeyEvent alternativeControlModifier(int key, int scancode, int modifiers, Operation<KeyEvent> original) {
         if (Minecraft.getInstance().hasControlDown() && EclipsesFixesConfig.ALTERNATIVE_CONTROL_FIX.getBooleanValue()) {
             modifiers |= 0b10;

@@ -29,7 +29,7 @@ public abstract class TweakerooInventoryUtilsMixin {
         original.call(instance, slot);
     }
 
-    @WrapOperation(method = "swapToolToHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;handleInventoryMouseClick(IIILnet/minecraft/world/inventory/ClickType;Lnet/minecraft/world/entity/player/Player;)V"))
+    @WrapOperation(method = "swapToolToHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;handleContainerInput(IIILnet/minecraft/world/inventory/ContainerInput;Lnet/minecraft/world/entity/player/Player;)V"))
     private static void cacheSwappedSlots(MultiPlayerGameMode instance, int containerId, int slotId, int mouseButton, ContainerInput clickType, Player player, Operation<Void> original) {
         if (EclipsesGenericConfig.TOOL_SWITCH_BACK.getBooleanValue()) {
             ToolSwitchManager.cacheSwappedSlots(slotId, mouseButton);

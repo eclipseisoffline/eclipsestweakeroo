@@ -18,11 +18,11 @@ public abstract class StringDecomposerMixin {
     @Inject(method = "iterateFormatted(Ljava/lang/String;ILnet/minecraft/network/chat/Style;Lnet/minecraft/network/chat/Style;Lnet/minecraft/util/FormattedCharSink;)Z",
             at = @At(value = "CONSTANT", args = "intValue=1", ordinal = 0))
     private static void acceptDebugFormattingCodes(String text, int skip, Style currentStyle, Style defaultStyle, FormattedCharSink sink,
-                                                   CallbackInfoReturnable<Boolean> callbackInfoReturnable, @Local(ordinal = 2) int j) {
+                                                   CallbackInfoReturnable<Boolean> callbackInfoReturnable, @Local(name = "i") int i) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_SHOW_FORMATTING_CODES)) {
-            sink.accept(j, Style.EMPTY.withColor(0xAAAAAA), ChatFormatting.PREFIX_CODE);
-            if (j + 1 < text.length()) {
-                sink.accept(j + 1, Style.EMPTY.withColor(0xAAAAAA), text.charAt(j + 1));
+            sink.accept(i, Style.EMPTY.withColor(0xAAAAAA), ChatFormatting.PREFIX_CODE);
+            if (i + 1 < text.length()) {
+                sink.accept(i + 1, Style.EMPTY.withColor(0xAAAAAA), text.charAt(i + 1));
             }
         }
     }

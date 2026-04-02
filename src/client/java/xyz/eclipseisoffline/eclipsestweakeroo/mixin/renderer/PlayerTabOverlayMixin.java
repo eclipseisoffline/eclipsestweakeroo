@@ -108,7 +108,7 @@ public abstract class PlayerTabOverlayMixin {
 
     @Inject(method = "extractRenderState", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;header:Lnet/minecraft/network/chat/Component;", opcode = Opcodes.GETFIELD, ordinal = 0))
     public void moveBelowBossbar(GuiGraphicsExtractor graphics, int screenWidth, Scoreboard scoreboard, Objective displayObjective,
-                                 CallbackInfo callbackInfo, @Local(ordinal = 10) LocalIntRef renderYStart) {
+                                 CallbackInfo callbackInfo, @Local(name = "yyo") LocalIntRef renderYStart) {
         if (!ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST)
                 || !EclipsesGenericConfig.TWEAK_PLAYER_LIST_BOSSBAR.getBooleanValue()
                 || EclipsesTweakerooUtil.bossBarDisabled()) {
