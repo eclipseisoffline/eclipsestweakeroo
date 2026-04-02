@@ -8,6 +8,7 @@ import fi.dy.masa.malilib.gui.button.IButtonActionListener;
 import fi.dy.masa.malilib.util.StringUtils;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.util.Util;
+import org.jspecify.annotations.Nullable;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.config.EclipsesHotkeys;
@@ -23,7 +24,7 @@ public class EclipsesTweakerooConfig extends GuiConfigsBase {
 
     private static ConfigTab tab = ConfigTab.TWEAKS;
 
-    public EclipsesTweakerooConfig(Screen parent) {
+    public EclipsesTweakerooConfig(@Nullable Screen parent) {
         super(10, 50, EclipsesTweakeroo.MOD_ID, parent, EclipsesTweakeroo.MOD_NAME_SHORT + " Configs - " + EclipsesTweakeroo.MOD_VERSION);
         setParent(parent); // super constructor doesn't do anything with parent...
     }

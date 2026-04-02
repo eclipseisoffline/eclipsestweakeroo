@@ -50,6 +50,7 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
 import org.apache.commons.lang3.mutable.MutableFloat;
+import org.jspecify.annotations.Nullable;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.config.EclipsesGenericConfig;
@@ -150,12 +151,12 @@ public class EclipsesTweakerooUtil {
         return durationText;
     }
 
-    public static Component getAttackDamageText(LivingEntity entity, boolean critical) {
+    public static @Nullable Component getAttackDamageText(LivingEntity entity, boolean critical) {
         // TODO cache?
         if (entity.getAttribute(Attributes.ATTACK_DAMAGE) == null) {
             return null;
         }
-        AttributeInstance temporaryInstance = new AttributeInstance(Attributes.ATTACK_DAMAGE, (instance) -> {});
+        AttributeInstance temporaryInstance = new AttributeInstance(Attributes.ATTACK_DAMAGE, _ -> {});
 
         temporaryInstance.setBaseValue(entity.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
 
@@ -186,7 +187,7 @@ public class EclipsesTweakerooUtil {
             List<ConditionalEffect<EnchantmentValueEffect>> damageEffects = enchantment.value().getEffects(EnchantmentEffectComponents.DAMAGE);
             for (ConditionalEffect<EnchantmentValueEffect> damageEffect : damageEffects) {
                 if (damageEffect.requirements().isEmpty()) {
-                    attackDamage.setValue(damageEffect.effect().process(level, entity.getRandom(), attackDamage.getValue()));
+                    attackDamage.setValue(damageEffect.effect().process(level, entity.getRandom(), attackDamage.get().floatValue()));
                 }
             }
         });
@@ -200,7 +201,7 @@ public class EclipsesTweakerooUtil {
         return component;
     }
 
-    public static Component getArmorText(LivingEntity entity) {
+    public static @Nullable Component getArmorText(LivingEntity entity) {
         int baseArmor = entity.getArmorValue();
         if (baseArmor <= 0) {
             return null;
@@ -245,7 +246,7 @@ public class EclipsesTweakerooUtil {
                 }
 
                 if (emptyRequirements) {
-                    mutableProtectionFactor.setValue(effect.effect().process(level, entity.getRandom(), mutableProtectionFactor.getValue()));
+                    mutableProtectionFactor.setValue(effect.effect().process(level, entity.getRandom(), mutableProtectionFactor.get().floatValue()));
                 }
             }
         });
@@ -277,7 +278,7 @@ public class EclipsesTweakerooUtil {
         return List.copyOf(statusEffects);
     }
 
-    public static ResourceKey<MobEffect> getStatusEffectFromParticle(ParticleOptions particle) {
+    public static @Nullable ResourceKey<MobEffect> getStatusEffectFromParticle(ParticleOptions particle) {
         ParticleType<?> type = particle.getType();
 
         if (type == ParticleTypes.TRIAL_OMEN) {

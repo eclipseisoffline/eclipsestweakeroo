@@ -3,10 +3,11 @@ package xyz.eclipseisoffline.eclipsestweakeroo.client.util;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.inventory.ContainerInput;
+import org.jspecify.annotations.Nullable;
 
 public class ToolSwitchManager {
     private static int lastHotbarSlot = -1;
-    private static Pair<Integer, Integer> swappedSlots = null;
+    private static @Nullable Pair<Integer, Integer> swappedSlots = null;
 
     public static void cacheHotbarSlot(Minecraft minecraft, int newSlot) {
         assert minecraft.player != null;

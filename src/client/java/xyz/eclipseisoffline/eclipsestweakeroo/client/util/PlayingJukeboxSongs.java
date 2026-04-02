@@ -1,6 +1,5 @@
 package xyz.eclipseisoffline.eclipsestweakeroo.client.util;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.JukeboxSong;

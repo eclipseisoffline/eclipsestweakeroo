@@ -37,7 +37,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.config.EclipsesDisableConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.config.EclipsesGenericConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.config.EclipsesTweaksConfig;
@@ -57,8 +57,8 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
 
     private final Map<EquipmentSlot, Item> durabilityItems = new HashMap<>();
     private final Map<EquipmentSlot, Long> durabilityWarningTimes = new HashMap<>();
-    private ServerAddress lastConnection = null;
-    private ServerData lastConnectionInfo = null;
+    private @Nullable ServerAddress lastConnection = null;
+    private @Nullable ServerData lastConnectionInfo = null;
     
     @Override
     public void onStartTick(ClientLevel level) {

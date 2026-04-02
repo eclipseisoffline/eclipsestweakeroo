@@ -148,6 +148,7 @@ public abstract class GuiMixin {
         }
 
         Component attackDamageText = EclipsesTweakerooUtil.getAttackDamageText(player, true);
+        assert attackDamageText != null;
         graphics.text(getFont(), attackDamageText,
                 calculateHudLineX(graphics, attackDamageText, true),
                 calculateHudLineY(graphics, 1), TEXT_COLOUR);

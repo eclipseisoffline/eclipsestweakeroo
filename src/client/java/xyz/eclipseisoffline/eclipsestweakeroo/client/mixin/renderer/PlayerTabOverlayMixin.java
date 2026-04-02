@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.Scoreboard;
+import org.jspecify.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -65,8 +66,7 @@ public abstract class PlayerTabOverlayMixin {
     @Inject(method = "getPlayerInfos", at = @At("HEAD"), cancellable = true)
     public void getCustomOrder(CallbackInfoReturnable<List<PlayerInfo>> callbackInfoReturnable) {
         PlayerListOrder order = (PlayerListOrder) EclipsesGenericConfig.TWEAK_PLAYER_LIST_ORDER.getOptionListValue();
-        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST)
-                && order.getComparator() != null) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && order.getComparator() != null) {
             assert minecraft.getConnection() != null;
             callbackInfoReturnable.setReturnValue(
                     minecraft.getConnection().getListedOnlinePlayers()
@@ -75,9 +75,8 @@ public abstract class PlayerTabOverlayMixin {
         }
     }
 
-    @WrapOperation(method = "extractRenderState",
-            at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;header:Lnet/minecraft/network/chat/Component;"))
-    private Component hideHeader(PlayerTabOverlay instance, Operation<Component> original) {
+    @WrapOperation(method = "extractRenderState", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;header:Lnet/minecraft/network/chat/Component;"))
+    private @Nullable Component hideHeader(PlayerTabOverlay instance, Operation<Component> original) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_HEADER.getBooleanValue()) {
             return null;
         }
@@ -87,7 +86,7 @@ public abstract class PlayerTabOverlayMixin {
 
     @WrapOperation(method = "extractRenderState",
             at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;footer:Lnet/minecraft/network/chat/Component;"))
-    private Component hideFooter(PlayerTabOverlay instance, Operation<Component> original) {
+    private @Nullable Component hideFooter(PlayerTabOverlay instance, Operation<Component> original) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_FOOTER.getBooleanValue()) {
             return null;
         }
@@ -129,7 +128,7 @@ public abstract class PlayerTabOverlayMixin {
     }
 
     @ModifyVariable(method = "extractRenderState", at = @At("HEAD"), ordinal = 0, argsOnly = true)
-    private Objective hideScoreboardObjective(Objective scoreboardObjective) {
+    private @Nullable Objective hideScoreboardObjective(Objective scoreboardObjective) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_OBJECTIVE.getBooleanValue()) {
             return null;
         }

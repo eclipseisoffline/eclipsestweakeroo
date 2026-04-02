@@ -2,32 +2,26 @@ package xyz.eclipseisoffline.eclipsestweakeroo.client.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.effect.MobEffect;
-import org.jetbrains.annotations.NotNull;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StatusEffectCharacterLoader implements SimpleSynchronousResourceReloadListener{
+public class StatusEffectCharacterLoader implements ResourceManagerReloadListener {
     public static final Map<ResourceKey<MobEffect>, String> MAP = new HashMap<>();
 
     @Override
-    public Identifier getFabricId() {
-        return EclipsesTweakeroo.getModdedIdentifier("status_effect_character_loader");
-    }
-
-    @Override
-    public void onResourceManagerReload(@NotNull ResourceManager manager) {
+    public void onResourceManagerReload(ResourceManager manager) {
         MAP.clear();
         try {
             Resource effectMapResource = manager.getResourceOrThrow(EclipsesTweakeroo.getModdedIdentifier("fancyname/effect_map.json"));
@@ -46,6 +40,6 @@ public class StatusEffectCharacterLoader implements SimpleSynchronousResourceRel
     }
 
     public static void bootstrap() {
-        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new StatusEffectCharacterLoader());
+        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(EclipsesTweakeroo.getModdedIdentifier("status_effect_character_loader"), new StatusEffectCharacterLoader());
     }
 }

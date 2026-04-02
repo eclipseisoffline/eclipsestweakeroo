@@ -7,6 +7,7 @@ import java.util.Comparator;
 import fi.dy.masa.malilib.util.StringUtils;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.util.Util;
+import org.jspecify.annotations.Nullable;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 
 public enum PlayerListOrder implements IConfigOptionListEntry {
@@ -18,9 +19,9 @@ public enum PlayerListOrder implements IConfigOptionListEntry {
 
     private final String name;
     private final String displayName;
-    private final Comparator<PlayerInfo> comparator;
+    private final @Nullable Comparator<PlayerInfo> comparator;
 
-    PlayerListOrder(String name, Comparator<PlayerInfo> comparator) {
+    PlayerListOrder(String name, @Nullable Comparator<PlayerInfo> comparator) {
         this.name = name;
         this.displayName = Util.makeDescriptionId("config.player_list_order", EclipsesTweakeroo.getModdedIdentifier(name));
         this.comparator = comparator;
@@ -36,7 +37,7 @@ public enum PlayerListOrder implements IConfigOptionListEntry {
         return StringUtils.translate(displayName);
     }
 
-    public Comparator<PlayerInfo> getComparator() {
+    public @Nullable Comparator<PlayerInfo> getComparator() {
         return comparator;
     }
 

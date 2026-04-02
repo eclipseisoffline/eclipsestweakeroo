@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.BiFunction;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -22,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.PlayerTeam;
+import org.jspecify.annotations.Nullable;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.config.EclipsesGenericConfig;
 
 public class FancyName {
@@ -33,7 +33,7 @@ public class FancyName {
             GameType.SPECTATOR, Component.literal("SP").withStyle(ChatFormatting.BLUE)
     );
 
-    private static final Map<String, BiFunction<LivingEntity, PlayerInfo, Component>> PLACEHOLDERS = Map.ofEntries(
+    private static final Map<String, FancyNameComputer> PLACEHOLDERS = Map.ofEntries(
             Map.entry("name", (livingEntity, playerInfo) -> {
                 if (playerInfo != null && playerInfo.getTabListDisplayName() != null) {
                     return playerInfo.getTabListDisplayName();
@@ -74,7 +74,7 @@ public class FancyName {
                 }
                 return null;
             }),
-            Map.entry("key", (livingEntity, playerInfo) -> playerInfo.hasVerifiableChat()
+            Map.entry("key", (_, playerInfo) -> playerInfo.hasVerifiableChat()
                     ? Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("player_has_chat_key")).withStyle(ChatFormatting.GREEN)
                     : Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("player_has_no_chat_key")).withStyle(ChatFormatting.RED)),
             Map.entry("attack", (livingEntity, playerInfo) -> EclipsesTweakerooUtil.getAttackDamageText(livingEntity, EclipsesGenericConfig.ATTACK_PLACEHOLDER_CRITICAL.getBooleanValue())),
@@ -132,7 +132,7 @@ public class FancyName {
             })
     );
 
-    public static Component applyFancyName(LivingEntity entity, PlayerInfo player) {
+    public static Component applyFancyName(@Nullable LivingEntity entity, @Nullable PlayerInfo player) {
         MutableComponent fancyName = Component.empty();
         List<Component> elements = new ArrayList<>();
 
@@ -144,7 +144,7 @@ public class FancyName {
             if (element.startsWith("{")) {
                 String placeholder = element.replace("{", "").replace("}", "");
                 try {
-                    elementValue = PLACEHOLDERS.get(placeholder).apply(entity, player);
+                    elementValue = PLACEHOLDERS.get(placeholder).getPlaceholder(entity, player);
                     if (elementValue == null) {
                         continue;
                     }
@@ -183,5 +183,11 @@ public class FancyName {
         }
 
         return ChatFormatting.DARK_RED;
+    }
+
+    @FunctionalInterface
+    private interface FancyNameComputer {
+
+        @Nullable Component getPlaceholder(@Nullable LivingEntity living, @Nullable PlayerInfo info) throws NullPointerException;
     }
 }

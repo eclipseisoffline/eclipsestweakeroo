@@ -5,7 +5,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.NotNull;
 import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 
 import java.util.Arrays;
@@ -54,7 +53,7 @@ public enum ServerSideToggle implements StringRepresentable {
     }
 
     @Override
-    public @NotNull String getSerializedName() {
+    public String getSerializedName() {
         return name;
     }
 

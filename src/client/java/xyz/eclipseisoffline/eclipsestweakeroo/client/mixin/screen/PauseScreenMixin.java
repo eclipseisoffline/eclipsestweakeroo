@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,9 +32,9 @@ public abstract class PauseScreenMixin extends Screen {
     @Unique
     private final List<NowPlayingToastInstance> musicToasts = new ArrayList<>();
     @Unique
-    private Collection<PlayingJukeboxSongs.PlayingJukeboxSong> cachedSongs;
+    private @Nullable Collection<PlayingJukeboxSongs.PlayingJukeboxSong> cachedSongs;
     @Unique
-    private String cachedMusic;
+    private @Nullable String cachedMusic;
 
     protected PauseScreenMixin(Component title) {
         super(title);
@@ -68,7 +69,7 @@ public abstract class PauseScreenMixin extends Screen {
 
     @Unique
     private void updateMusicToastsIfNecessary() {
-        if (minecraft != null) {
+        if (minecraft.level != null) {
             PlayingJukeboxSongs.tick(minecraft.level);
 
             if (EclipsesGenericConfig.MUSIC_TOAST_RECORDS.getBooleanValue() && (cachedSongs == null || PlayingJukeboxSongs.getPlaying().size() != cachedSongs.size())

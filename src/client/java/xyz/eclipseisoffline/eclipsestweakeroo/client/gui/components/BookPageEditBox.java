@@ -4,7 +4,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.mixin.gui.MultiLineEditBoxBuilderAccessor;
 
 public class BookPageEditBox extends MultiLineEditBox implements MultiLineEditBoxAdditions {
@@ -21,7 +20,7 @@ public class BookPageEditBox extends MultiLineEditBox implements MultiLineEditBo
     }
 
     @Override
-    public boolean charTyped(@NotNull CharacterEvent event) {
+    public boolean charTyped(CharacterEvent event) {
         if (visible && isFocused() && event.isAllowedChatCharacter()) {
             eclipsestweakeroo$getTextField().insertText(event.codepointAsString());
             return true;

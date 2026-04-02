@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.storage.WritableLevelData;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,7 +24,7 @@ public abstract class ClientLevelMixin extends Level {
     }
 
     @Inject(method = "getMarkerParticleTarget", at = @At("HEAD"), cancellable = true)
-    public void noBlockParticles(CallbackInfoReturnable<Block> callbackInfoReturnable) {
+    public void noBlockParticles(CallbackInfoReturnable<@Nullable Block> callbackInfoReturnable) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_RENDER_OPERATOR_BLOCKS)) {
             callbackInfoReturnable.setReturnValue(null);
         }

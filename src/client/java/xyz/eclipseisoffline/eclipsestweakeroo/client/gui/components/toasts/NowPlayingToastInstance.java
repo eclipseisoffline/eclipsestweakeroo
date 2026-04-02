@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 // Same as NowPlayingToast, but allows showing any text component and is instanced, instead of using static variables to store music notes and the current song
@@ -42,7 +41,7 @@ public class NowPlayingToastInstance implements Toast {
     }
 
     @Override
-    public @NotNull Visibility getWantedVisibility() {
+    public Visibility getWantedVisibility() {
         return wantedVisibility;
     }
 
