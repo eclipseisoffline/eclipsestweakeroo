@@ -1,0 +1,152 @@
+package xyz.eclipseisoffline.eclipsestweakeroo.client.mixin.renderer;
+
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.BossHealthOverlay;
+import net.minecraft.client.gui.components.LerpingBossEvent;
+import net.minecraft.client.gui.components.PlayerTabOverlay;
+import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.scores.Objective;
+import net.minecraft.world.scores.Scoreboard;
+import org.objectweb.asm.Opcodes;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import xyz.eclipseisoffline.eclipsestweakeroo.client.config.EclipsesGenericConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.client.config.EclipsesTweaksConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.client.config.PlayerListOrder;
+import xyz.eclipseisoffline.eclipsestweakeroo.client.util.EclipsesTweakerooUtil;
+import xyz.eclipseisoffline.eclipsestweakeroo.client.util.FancyName;
+import xyz.eclipseisoffline.eclipsestweakeroo.client.util.ToggleManager;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+@Mixin(PlayerTabOverlay.class)
+public abstract class PlayerTabOverlayMixin {
+
+    @Unique
+    private static final int BOSSBAR_START = 12;
+    @Unique
+    private static final int BOSSBAR_HEIGHT = 19;
+
+    @Shadow
+    @Final
+    private Minecraft minecraft;
+
+    @Inject(method = "getNameForDisplay", at = @At("HEAD"), cancellable = true)
+    public void getFancyPlayerName(PlayerInfo playerInfo, CallbackInfoReturnable<Component> callbackInfoReturnable) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST)
+                && EclipsesGenericConfig.TWEAK_PLAYER_LIST_NAMES.getBooleanValue()) {
+            assert minecraft.level != null;
+            Player entity = minecraft.level.getPlayerByUUID(playerInfo.getProfile().id());
+            Component playerName = FancyName.applyFancyName(entity, playerInfo);
+            callbackInfoReturnable.setReturnValue(playerName);
+        }
+    }
+
+    @Inject(method = "getPlayerInfos", at = @At("HEAD"), cancellable = true)
+    public void getCustomOrder(CallbackInfoReturnable<List<PlayerInfo>> callbackInfoReturnable) {
+        PlayerListOrder order = (PlayerListOrder) EclipsesGenericConfig.TWEAK_PLAYER_LIST_ORDER.getOptionListValue();
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST)
+                && order.getComparator() != null) {
+            assert minecraft.getConnection() != null;
+            callbackInfoReturnable.setReturnValue(
+                    minecraft.getConnection().getListedOnlinePlayers()
+                            .stream().sorted(order.getComparator()
+                                    .thenComparing(entry -> entry.getProfile().name(), String::compareTo)).toList());
+        }
+    }
+
+    @WrapOperation(method = "extractRenderState",
+            at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;header:Lnet/minecraft/network/chat/Component;"))
+    private Component hideHeader(PlayerTabOverlay instance, Operation<Component> original) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_HEADER.getBooleanValue()) {
+            return null;
+        }
+
+        return original.call(instance);
+    }
+
+    @WrapOperation(method = "extractRenderState",
+            at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;footer:Lnet/minecraft/network/chat/Component;"))
+    private Component hideFooter(PlayerTabOverlay instance, Operation<Component> original) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_FOOTER.getBooleanValue()) {
+            return null;
+        }
+
+        return original.call(instance);
+    }
+
+    @WrapOperation(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerInfo;getGameMode()Lnet/minecraft/world/level/GameType;"))
+    private GameType disableSpectatorGameModeFormatting(PlayerInfo instance, Operation<GameType> original) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST)
+                && EclipsesGenericConfig.TWEAK_PLAYER_LIST_NAMES.getBooleanValue()
+                && instance.getGameMode() == GameType.SPECTATOR) {
+            return GameType.CREATIVE;
+        }
+
+        return original.call(instance);
+    }
+
+    @Inject(method = "extractRenderState", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;header:Lnet/minecraft/network/chat/Component;", opcode = Opcodes.GETFIELD, ordinal = 0))
+    public void moveBelowBossbar(GuiGraphicsExtractor graphics, int screenWidth, Scoreboard scoreboard, Objective displayObjective,
+                                 CallbackInfo callbackInfo, @Local(name = "yyo") LocalIntRef renderYStart) {
+        if (!ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST)
+                || !EclipsesGenericConfig.TWEAK_PLAYER_LIST_BOSSBAR.getBooleanValue()
+                || EclipsesTweakerooUtil.bossBarDisabled()) {
+            return;
+        }
+
+        BossHealthOverlay bossBarHud = minecraft.gui.getBossOverlay();
+        Map<UUID, LerpingBossEvent> bossBars = ((BossHealthOverlayAccessor) bossBarHud).getEvents();
+        if (bossBars.isEmpty()) {
+            return;
+        }
+
+        int bossBarHeight = BOSSBAR_START + BOSSBAR_HEIGHT * (bossBars.size() - 1);
+        if (bossBarHeight > graphics.guiHeight() / 3) {
+            bossBarHeight = graphics.guiHeight() / 3;
+        }
+        renderYStart.set(renderYStart.get() + bossBarHeight);
+    }
+
+    @ModifyVariable(method = "extractRenderState", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+    private Objective hideScoreboardObjective(Objective scoreboardObjective) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_OBJECTIVE.getBooleanValue()) {
+            return null;
+        }
+
+        return scoreboardObjective;
+    }
+
+    @ModifyConstant(method = "extractRenderState", constant = @Constant(intValue = 13))
+    public int changePlayerListWidth(int constant) {
+        if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) && EclipsesGenericConfig.TWEAK_PLAYER_LIST_PING.getBooleanValue()) {
+            return constant - 12; // Ping icon is 10 in width, margin is 3. We're keeping 1 pixel for margin
+        }
+        return constant;
+    }
+
+    @WrapWithCondition(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/PlayerTabOverlay;extractPingIcon(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIILnet/minecraft/client/multiplayer/PlayerInfo;)V"))
+    public boolean checkPingSetting(PlayerTabOverlay instance, GuiGraphicsExtractor guiGraphics, int width, int x, int y, PlayerInfo playerInfo) {
+        return !ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_LIST) || !EclipsesGenericConfig.TWEAK_PLAYER_LIST_PING.getBooleanValue();
+    }
+}

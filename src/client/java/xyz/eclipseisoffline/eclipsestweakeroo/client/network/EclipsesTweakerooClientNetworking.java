@@ -1,0 +1,23 @@
+package xyz.eclipseisoffline.eclipsestweakeroo.client.network;
+
+import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationConnectionEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
+import xyz.eclipseisoffline.eclipsestweakeroo.network.protocol.ClientboundEnabledTogglesPacket;
+import xyz.eclipseisoffline.eclipsestweakeroo.client.util.ToggleManager;
+
+import java.util.List;
+
+public class EclipsesTweakerooClientNetworking {
+
+    public static void bootstrap() {
+        ClientConfigurationNetworking.registerGlobalReceiver(ClientboundEnabledTogglesPacket.TYPE,
+                (packet, context) -> ToggleManager.enableToggles(packet.toggles(), true));
+
+        ClientConfigurationConnectionEvents.INIT.register((_, _) -> ToggleManager.resetEnabledToggles());
+        ClientConfigurationConnectionEvents.COMPLETE.register((_, _) -> {
+            if (!ToggleManager.receivedEnabledToggles()) {
+                ToggleManager.enableToggles(List.of(), false);
+            }
+        });
+    }
+}

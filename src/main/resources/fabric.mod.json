@@ -22,7 +22,7 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakerooClient"
+      "xyz.eclipseisoffline.eclipsestweakeroo.client.EclipsesTweakerooClient"
     ],
     "main": [
       "xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo"
@@ -31,7 +31,7 @@
       "xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo"
     ],
     "modmenu": [
-      "xyz.eclipseisoffline.eclipsestweakeroo.compat.ModMenuCompat"
+      "xyz.eclipseisoffline.eclipsestweakeroo.client.compat.ModMenuCompat"
     ]
   },
   "mixins": [
