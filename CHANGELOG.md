@@ -1,1 +1,4 @@
-- Fix crash when `tweakMusicToast` is enabled and the pause menu is opened.
+- Update to 26.1.x.
+- Add `rightControlFix` fix.
+- Add `nextHotbarSlot` and `previousHotbarSlot` hotkeys.
+- Add `disableEndFlashes` yeet.

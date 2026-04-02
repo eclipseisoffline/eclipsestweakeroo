@@ -63,7 +63,8 @@ The mod doesn't require MaLiLib or Tweakeroo server-side. You'll still be able t
 
 | Minecraft Version | Status          |
 |-------------------|-----------------|
-| 1.21.11           | ✅ Current       |
+| 26.1              | ✅ Current       |
+| 1.21.11           | ✔️ Available    |
 | 1.21.9+10         | ✔️ Available    |
 | 1.21.6+7+8        | ✔️ Available    |
 | 1.21.5            | 🚫️ Unavailable |
@@ -75,7 +76,7 @@ The mod doesn't require MaLiLib or Tweakeroo server-side. You'll still be able t
 | 1.20+1            | ❄️ LTS          |
 | 1.19.4            | ✔️ Available    |
 
-I try to keep support up as much as possible for the latest release of Minecraft. This release usually has all modules.
+I try to keep support up as much as possible for the latest drop of Minecraft. This release usually has all modules.
 LTS versions (currently 1.20+1, 1.21+1, and 1.21.4) usually also receive newly added features, however it may take some time
 for these to be backported.
 
