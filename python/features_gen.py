@@ -89,6 +89,7 @@ def generate_fixes() -> Category:
     fixes.add("handRestockCreativeFix", "Disables `tweakHandRestock` when the player is in creative mode.", requires_tweakeroo=True)
     fixes.add("writableBookFormattingFix", "Fixes [MC-297501](https://bugs.mojang.com/browse/MC/issues/MC-297501), allowing you to use formatting codes in books again, and making them display as they would before 1.21.6. Breaks the editing cursor when placed mid-text.", MC_TWENTY_SIX_ONE)
     fixes.add("rightControlFix", "Fixes the right control key not functioning as control modifier in some places, like inventory screens, resulting in dropping whole stacks not working with the\nright control key.", MC_TWENTY_SIX_ONE)
+    fixes.add("fastPlacementRotationFix", "Fixes rotated block placement (through Tweakeroo's `flexibleBlockPlacement` or `accurateBlockPlacement`) breaking Tweakeroo's `fastBlockPlacement` mode.", MC_TWENTY_SIX_ONE, requires_tweakeroo=True)
 
     return fixes
 

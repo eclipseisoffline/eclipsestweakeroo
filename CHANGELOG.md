@@ -1,1 +1,1 @@
-- Some code cleanups, move texts to translation file to allow internationalisation.
+- Added `fastPlacementRotationFix` - fixes rotated block placement (through Tweakeroo's `flexibleBlockPlacement` or `accurateBlockPlacement`) breaking Tweakeroo's `fastBlockPlacement` mode.

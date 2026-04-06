@@ -53,6 +53,7 @@
   "config.eclipsestweakeroo.hand_restock_creative_fix": "Disables tweakHandRestock in creative mode",
   "config.eclipsestweakeroo.writable_book_formatting_fix": "Fixes MC-297501, allowing you to use formatting codes in books again,\nand making them display as they would before 1.21.6.\nBreaks the editing cursor when placed mid-text",
   "config.eclipsestweakeroo.right_control_fix": "Fixes the right control key not functioning\nas control modifier in some places, like inventory screens,\nresulting in dropping whole stacks not working with the\nright control key",
+  "config.eclipsestweakeroo.fast_placement_rotation_fix": "Fixes rotated block placement (through Tweakeroo's flexibleBlockPlacement\nor accurateBlockPlacement) breaking Tweakeroo's fastBlockPlacement mode",
 
   "config.eclipsestweakeroo.chat_message_separators": "A list of chat player name-message separators,\nused by tweakChatMessages to detect when a message body starts",
 

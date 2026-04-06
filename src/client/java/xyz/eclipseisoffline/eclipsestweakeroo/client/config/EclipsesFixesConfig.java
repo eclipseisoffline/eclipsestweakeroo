@@ -14,6 +14,7 @@ public class EclipsesFixesConfig {
     public static final ConfigBoolean HAND_RESTOCK_CREATIVE_FIX = create("handRestockCreativeFix");
     public static final ConfigBoolean WRITABLE_BOOK_FIX = create("writableBookFormattingFix");
     public static final ConfigBoolean ALTERNATIVE_CONTROL_FIX = create("rightControlFix");
+    public static final ConfigBoolean FAST_PLACEMENT_ROTATION_FIX = create("fastPlacementRotationFix");
 
     private static ConfigBoolean create(String name) {
         ConfigBoolean config = new ConfigBoolean(name, false, EclipsesConfigs.getCommentTranslationKey(name));

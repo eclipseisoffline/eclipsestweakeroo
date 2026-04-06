@@ -145,6 +145,22 @@ right control key.
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
 
+### `fastPlacementRotationFix`
+
+> [!NOTE]
+> This feature depends on Tweakeroo functionality. It will only be functional when Tweakeroo is also installed.
+
+Fixes rotated block placement (through Tweakeroo's `flexibleBlockPlacement` or `accurateBlockPlacement`) breaking Tweakeroo's `fastBlockPlacement` mode.
+
+#### Availability
+
+| Minecraft Version | Supported |
+|-------------------|-----------|
+| 26.1 | ✔️ Yes |
+| 1.21.4 | ❌ No |
+| 1.21+1 | ❌ No |
+| 1.20+1 | ❌ No |
+
 ## `Tweaks`
 
 ### `tweakPlayerList`
