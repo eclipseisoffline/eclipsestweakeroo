@@ -1,1 +1,1 @@
-- Added `fastPlacementRotationFix` - fixes rotated block placement (through Tweakeroo's `flexibleBlockPlacement` or `accurateBlockPlacement`) breaking Tweakeroo's `fastBlockPlacement` mode.
+- Added `fastBlockPlacementInitialDelay` - configures an initial delay, starting after the player has started to place blocks, before Tweakeroo's `tweakFastBlockPlacement` is enabled.

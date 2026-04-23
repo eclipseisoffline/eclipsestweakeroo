@@ -73,7 +73,23 @@ Toggles whether `tweakPermanentSneak` should work while using `tweakFreeCamera`.
 > [!NOTE]
 > This feature depends on Tweakeroo functionality. It will only be functional when Tweakeroo is also installed.
 
-Whether to switch back to the original hotbar slot and item after breaking blocks with tweakToolSwitch enabled
+Whether to switch back to the original hotbar slot and item after breaking blocks with `tweakToolSwitch` enabled.
+
+#### Availability
+
+| Minecraft Version | Supported |
+|-------------------|-----------|
+| 26.1 | ✔️ Yes |
+| 1.21.4 | ❌ No |
+| 1.21+1 | ❌ No |
+| 1.20+1 | ❌ No |
+
+### `fastBlockPlacementInitialDelay`
+
+> [!NOTE]
+> This feature depends on Tweakeroo functionality. It will only be functional when Tweakeroo is also installed.
+
+The initial delay after starting to place blocks before Tweakeroo's `tweakFastBlockPlacement` is enabled.
 
 #### Availability
 

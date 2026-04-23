@@ -59,6 +59,7 @@ public class EclipsesGenericConfig {
     public static final ConfigBoolean MUSIC_TOAST_RECORDS = createBoolean("musicToastRecords", true);
     public static final ConfigBoolean MUSIC_TOAST_PAUSE_MENU = createBoolean("musicToastPauseMenu", true);
     public static final ConfigBoolean TOOL_SWITCH_BACK = createBoolean("toolSwitchBack");
+    public static final ConfigInteger FAST_BLOCK_PLACEMENT_INITIAL_DELAY = createInteger("fastBlockPlacementInitialDelay", 0, 0, 256);
 
     private static ConfigBoolean createBoolean(String name) {
         return createBoolean(name, false);

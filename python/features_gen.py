@@ -77,7 +77,8 @@ def generate_generic() -> Category:
     generic.add("commandOnlyAdultPets", "Toggles whether to only select adult pets with `sitDownNearbyPets` and `standUpNearbyPets` hotkeys.", requires_tweakeroo=True)
     generic.add("fakeSneakingLadder", "Toggles whether `tweakFakeSneaking` should stop you from falling down ladders.", requires_tweakeroo=True)
     generic.add("permanentSneakFreeCamera", "Toggles whether `tweakPermanentSneak` should work while using `tweakFreeCamera`.", requires_tweakeroo=True)
-    generic.add("toolSwitchBack", "Whether to switch back to the original hotbar slot and item after breaking blocks with tweakToolSwitch enabled", MC_TWENTY_SIX_ONE, requires_tweakeroo=True)
+    generic.add("toolSwitchBack", "Whether to switch back to the original hotbar slot and item after breaking blocks with `tweakToolSwitch` enabled.", MC_TWENTY_SIX_ONE, requires_tweakeroo=True)
+    generic.add("fastBlockPlacementInitialDelay", "The initial delay after starting to place blocks before Tweakeroo's `tweakFastBlockPlacement` is enabled.", MC_TWENTY_SIX_ONE, requires_tweakeroo=True)
 
     return generic
 

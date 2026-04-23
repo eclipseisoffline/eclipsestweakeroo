@@ -57,5 +57,8 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "plugin": "xyz.eclipseisoffline.eclipsestweakeroo.client.EclipsesTweakerooMixins"
+  "plugin": "xyz.eclipseisoffline.eclipsestweakeroo.client.EclipsesTweakerooMixins",
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  }
 }
