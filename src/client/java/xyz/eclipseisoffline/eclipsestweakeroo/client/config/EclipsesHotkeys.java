@@ -11,7 +11,10 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.MerchantMenu;
+import net.minecraft.world.item.Items;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.gui.EclipsesTweakerooConfig;
+import xyz.eclipseisoffline.eclipsestweakeroo.client.inventory.MerchantMenuQuickSell;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,8 @@ public class EclipsesHotkeys {
     public static final ConfigHotkey INSERT_FORMATTING_CODE = createGui("insertFormattingCode", "");
     public static final ConfigHotkey NEXT_HOTBAR_SLOT = create("nextHotbarSlot", "");
     public static final ConfigHotkey PREVIOUS_HOTBAR_SLOT = create("previousHotbarSlot", "");
+    public static final ConfigHotkey TRADE_SELL_ALL = createGui("tradeSellAll", "");
+    public static final ConfigHotkey TRADE_BUY_ALL = createGui("tradeBuyAll", "");
 
     private static ConfigHotkey create(String name, String defaultHotkey) {
         ConfigHotkey hotkey = new ConfigHotkey(name, defaultHotkey, EclipsesConfigs.getCommentTranslationKey(name));
@@ -47,14 +52,14 @@ public class EclipsesHotkeys {
     }
 
     public static void bootstrap() {
-        OPEN_CONFIG_GUI.getKeybind().setCallback((action, key) -> {
+        OPEN_CONFIG_GUI.getKeybind().setCallback((_, key) -> {
             if (key == OPEN_CONFIG_GUI.getKeybind()) {
                 Minecraft.getInstance().setScreen(new EclipsesTweakerooConfig(Minecraft.getInstance().screen));
                 return true;
             }
             return false;
         });
-        INSERT_FORMATTING_CODE.getKeybind().setCallback((action, key) -> {
+        INSERT_FORMATTING_CODE.getKeybind().setCallback((_, key) -> {
             if (key == INSERT_FORMATTING_CODE.getKeybind()) {
                 Screen openScreen = Minecraft.getInstance().screen;
                 if (openScreen != null) {
@@ -64,7 +69,7 @@ public class EclipsesHotkeys {
             }
             return false;
         });
-        NEXT_HOTBAR_SLOT.getKeybind().setCallback((action, key) -> {
+        NEXT_HOTBAR_SLOT.getKeybind().setCallback((_, key) -> {
             LocalPlayer player = Minecraft.getInstance().player;
             if (key == NEXT_HOTBAR_SLOT.getKeybind() && player != null) {
                 player.getInventory().setSelectedSlot(ScrollWheelHandler.getNextScrollWheelSelection(-1.0,
@@ -73,7 +78,7 @@ public class EclipsesHotkeys {
             }
             return false;
         });
-        PREVIOUS_HOTBAR_SLOT.getKeybind().setCallback((action, key) -> {
+        PREVIOUS_HOTBAR_SLOT.getKeybind().setCallback((_, key) -> {
             LocalPlayer player = Minecraft.getInstance().player;
             if (key == PREVIOUS_HOTBAR_SLOT.getKeybind() && player != null) {
                 player.getInventory().setSelectedSlot(ScrollWheelHandler.getNextScrollWheelSelection(1.0,
@@ -81,6 +86,20 @@ public class EclipsesHotkeys {
                 return true;
             }
             return false;
+        });
+        TRADE_SELL_ALL.getKeybind().setCallback((_, _) -> {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player != null && player.containerMenu instanceof MerchantMenu menu) {
+                ((MerchantMenuQuickSell) menu).eclipsestweakeroo$tradeAll(offer -> offer.getResult().is(Items.EMERALD));
+            }
+            return true;
+        });
+        TRADE_BUY_ALL.getKeybind().setCallback((_, _) -> {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player != null && player.containerMenu instanceof MerchantMenu menu) {
+                ((MerchantMenuQuickSell) menu).eclipsestweakeroo$tradeAll(offer -> offer.getBaseCostA().is(Items.EMERALD));
+            }
+            return true;
         });
     }
 }

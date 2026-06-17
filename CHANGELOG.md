@@ -1,1 +1,2 @@
-- Added `fastBlockPlacementInitialDelay` - configures an initial delay, starting after the player has started to place blocks, before Tweakeroo's `tweakFastBlockPlacement` is enabled.
+- Added `tradeSellAll` and `tradeBuyAll` hotkeys for selling and buying quickly in village GUIs.
+- Fixed `fastBlockPlacementInitialDelay` option changing behaviour when set to default value of 0.

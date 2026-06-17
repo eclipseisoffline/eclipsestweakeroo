@@ -78,7 +78,7 @@ def generate_generic() -> Category:
     generic.add("fakeSneakingLadder", "Toggles whether `tweakFakeSneaking` should stop you from falling down ladders.", requires_tweakeroo=True)
     generic.add("permanentSneakFreeCamera", "Toggles whether `tweakPermanentSneak` should work while using `tweakFreeCamera`.", requires_tweakeroo=True)
     generic.add("toolSwitchBack", "Whether to switch back to the original hotbar slot and item after breaking blocks with `tweakToolSwitch` enabled.", MC_TWENTY_SIX_ONE, requires_tweakeroo=True)
-    generic.add("fastBlockPlacementInitialDelay", "The initial delay after starting to place blocks before Tweakeroo's `tweakFastBlockPlacement` is enabled.", MC_TWENTY_SIX_ONE, requires_tweakeroo=True)
+    generic.add("fastBlockPlacementInitialDelay", "The initial delay (in game ticks) after starting to place blocks before Tweakeroo's `tweakFastBlockPlacement` is enabled.", MC_TWENTY_SIX_ONE, requires_tweakeroo=True)
 
     return generic
 
@@ -182,6 +182,8 @@ def generate_hotkeys() -> Category:
     hotkeys.add("insertFormattingCode", "Inserts a formatting code symbol (§) on the open screen. Useful when writing formatting codes in books.")
     hotkeys.add("nextHotbarSlot", "Selects the next hotbar slot.")
     hotkeys.add("previousHotbarSlot", "Selects the previous hotbar slot.")
+    hotkeys.add("tradeSellAll", "Sells all possible items in the inventory for emeralds, when in a villager GUI.", MC_TWENTY_SIX_ONE)
+    hotkeys.add("tradeBuyAll", "Buys all possible items with emeralds in the inventory, when in a villager GUI.", MC_TWENTY_SIX_ONE)
 
     return hotkeys
 

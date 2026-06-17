@@ -48,7 +48,7 @@
   "config.eclipsestweakeroo.music_toast_records": "Shows the music toast for jukebox records when\ntweakMusicToast is enabled.\nWhen disabled, shows an actionbar text instead,\nlike is normally done",
   "config.eclipsestweakeroo.music_toast_pause_menu": "Whether to show music toasts in the pause menu when\nenabled for music or jukebox records,\nand tweakMusicToast is enabled",
   "config.eclipsestweakeroo.tool_switch_back": "Whether to switch back to the original hotbar slot\nand item after breaking blocks with Tweakeroo's tweakToolSwitch enabled",
-  "config.eclipsestweakeroo.fast_block_placement_initial_delay": "The initial delay after starting to place blocks\nbefore Tweakeroo's tweakFastBlockPlacement is enabled",
+  "config.eclipsestweakeroo.fast_block_placement_initial_delay": "The initial delay (in game ticks) after starting to place blocks\nbefore Tweakeroo's tweakFastBlockPlacement is enabled",
 
   "config.eclipsestweakeroo.piston_flexible_placement_fix": "Fixes inverse rotation placement of pistons, dispensers,\ndroppers and crafters with tweakFlexibleBlockPlacement\n(Allows placing these blocks facing away from you)",
   "config.eclipsestweakeroo.hand_restock_creative_fix": "Disables tweakHandRestock in creative mode",
@@ -85,6 +85,8 @@
   "config.eclipsestweakeroo.insert_formatting_code": "Inserts a formatting code on the open screen",
   "config.eclipsestweakeroo.next_hotbar_slot": "Selects the next hotbar slot",
   "config.eclipsestweakeroo.previous_hotbar_slot": "Selects the previous hotbar slot",
+  "config.eclipsestweakeroo.trade_sell_all": "Sells all possible items in the inventory for emeralds,\nwhen in a villager GUI",
+  "config.eclipsestweakeroo.trade_buy_all": "Buys all possible items with emeralds in the inventory,\nwhen in a villager GUI",
 
   "config.eclipsestweakeroo.disable_entity_collisions": "Disables entity collisions",
   "config.eclipsestweakeroo.disable_knockback": "Disables taking knockback",

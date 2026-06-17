@@ -22,6 +22,7 @@
     "gui.MultilineTextFieldMixin",
     "input.KeyboardHandlerMixin",
     "inventory.ArmorSlotMixin",
+    "inventory.MerchantMenuMixin",
     "item.BowItemMixin",
     "item.CrossbowItemMixin",
     "item.ItemCooldownsMixin",

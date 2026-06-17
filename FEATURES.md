@@ -89,7 +89,7 @@ Whether to switch back to the original hotbar slot and item after breaking block
 > [!NOTE]
 > This feature depends on Tweakeroo functionality. It will only be functional when Tweakeroo is also installed.
 
-The initial delay after starting to place blocks before Tweakeroo's `tweakFastBlockPlacement` is enabled.
+The initial delay (in game ticks) after starting to place blocks before Tweakeroo's `tweakFastBlockPlacement` is enabled.
 
 #### Availability
 
@@ -582,6 +582,32 @@ Selects the previous hotbar slot.
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
+
+### `tradeSellAll`
+
+Sells all possible items in the inventory for emeralds, when in a villager GUI.
+
+#### Availability
+
+| Minecraft Version | Supported |
+|-------------------|-----------|
+| 26.1 | ✔️ Yes |
+| 1.21.4 | ❌ No |
+| 1.21+1 | ❌ No |
+| 1.20+1 | ❌ No |
+
+### `tradeBuyAll`
+
+Buys all possible items with emeralds in the inventory, when in a villager GUI.
+
+#### Availability
+
+| Minecraft Version | Supported |
+|-------------------|-----------|
+| 26.1 | ✔️ Yes |
+| 1.21.4 | ❌ No |
+| 1.21+1 | ❌ No |
+| 1.20+1 | ❌ No |
 
 ## `Yeets`
 
