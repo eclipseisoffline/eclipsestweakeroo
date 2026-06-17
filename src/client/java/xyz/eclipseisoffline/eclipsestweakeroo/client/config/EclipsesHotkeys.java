@@ -54,14 +54,14 @@ public class EclipsesHotkeys {
     public static void bootstrap() {
         OPEN_CONFIG_GUI.getKeybind().setCallback((_, key) -> {
             if (key == OPEN_CONFIG_GUI.getKeybind()) {
-                Minecraft.getInstance().setScreen(new EclipsesTweakerooConfig(Minecraft.getInstance().screen));
+                Minecraft.getInstance().gui.setScreen(new EclipsesTweakerooConfig(Minecraft.getInstance().gui.screen()));
                 return true;
             }
             return false;
         });
         INSERT_FORMATTING_CODE.getKeybind().setCallback((_, key) -> {
             if (key == INSERT_FORMATTING_CODE.getKeybind()) {
-                Screen openScreen = Minecraft.getInstance().screen;
+                Screen openScreen = Minecraft.getInstance().gui.screen();
                 if (openScreen != null) {
                     openScreen.charTyped(new CharacterEvent(ChatFormatting.PREFIX_CODE));
                 }

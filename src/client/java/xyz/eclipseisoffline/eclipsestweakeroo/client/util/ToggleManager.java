@@ -95,15 +95,15 @@ public class ToggleManager {
                                 .withStyle(ChatFormatting.GREEN);
                     }
 
-                    Minecraft.getInstance().getChatListener().handleSystemMessage(disabledMessage, false);
+                    Minecraft.getInstance().gui.chatListener().handleSystemMessage(disabledMessage, false);
 
                     if (!installedOnServer) {
-                        Minecraft.getInstance().getChatListener().handleSystemMessage(
+                        Minecraft.getInstance().gui.chatListener().handleSystemMessage(
                                 Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("request_administrator_for_features"), EclipsesTweakeroo.MOD_NAME_SHORT)
                                         .withStyle(ChatFormatting.GREEN), false);
                     }
 
-                    Minecraft.getInstance().getChatListener().handleSystemMessage(
+                    Minecraft.getInstance().gui.chatListener().handleSystemMessage(
                             Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("enabled_features_toggle"), Component.literal("serverDisabledMessage")
                                             .withStyle(ChatFormatting.BLUE))
                                     .withStyle(ChatFormatting.GREEN), false);

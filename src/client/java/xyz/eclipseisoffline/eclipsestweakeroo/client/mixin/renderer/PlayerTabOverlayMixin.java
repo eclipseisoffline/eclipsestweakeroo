@@ -114,7 +114,7 @@ public abstract class PlayerTabOverlayMixin {
             return;
         }
 
-        BossHealthOverlay bossBarHud = minecraft.gui.getBossOverlay();
+        BossHealthOverlay bossBarHud = minecraft.gui.hud.getBossOverlay();
         Map<UUID, LerpingBossEvent> bossBars = ((BossHealthOverlayAccessor) bossBarHud).getEvents();
         if (bossBars.isEmpty()) {
             return;

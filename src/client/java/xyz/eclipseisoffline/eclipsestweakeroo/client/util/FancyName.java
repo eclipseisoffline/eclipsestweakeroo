@@ -84,7 +84,7 @@ public class FancyName {
                 if (player == null || player.equals(livingEntity)) {
                     return null;
                 }
-                Vec3 cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().position();
+                Vec3 cameraPos = Minecraft.getInstance().gameRenderer.mainCamera().position();
                 return Component.literal(EclipsesTweakerooUtil.roundToOneDecimal((float) cameraPos.distanceTo(livingEntity.position())))
                         .withStyle(ChatFormatting.BLUE);
             }),

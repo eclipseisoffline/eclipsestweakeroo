@@ -4,7 +4,6 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IHotkeyTogglable;
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LevelRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,9 +69,6 @@ public class EclipsesTweaksConfig {
             }
         });
 
-        TWEAK_RENDER_OPERATOR_BLOCKS.setValueChangeCallback(_ -> {
-            LevelRenderer levelRenderer = minecraft.levelRenderer;
-            levelRenderer.allChanged();
-        });
+        TWEAK_RENDER_OPERATOR_BLOCKS.setValueChangeCallback(_ -> minecraft.levelExtractor.allChanged());
     }
 }

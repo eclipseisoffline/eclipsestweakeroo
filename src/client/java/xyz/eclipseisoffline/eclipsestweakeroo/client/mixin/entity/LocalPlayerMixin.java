@@ -12,7 +12,7 @@ import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.network.protocol.game.ServerboundPlayerInputPacket;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.animal.happyghast.HappyGhast;
@@ -137,7 +137,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
     @WrapOperation(method = "modifyInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;getAttributeValue(Lnet/minecraft/core/Holder;)D"))
     public double useDefaultAttributeValue(LocalPlayer instance, Holder<Attribute> holder, Operation<Double> original) {
         if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_SWIFT_SNEAK)) {
-            return DefaultAttributes.getSupplier(EntityType.PLAYER).getValue(holder);
+            return DefaultAttributes.getSupplier(EntityTypes.PLAYER).getValue(holder);
         }
         return original.call(instance, holder);
     }

@@ -35,7 +35,7 @@ public abstract class MusicManagerMixin {
                 if (EclipsesGenericConfig.MUSIC_TOAST_MUSIC.getBooleanValue()) {
                     instance.addToast(new NowPlayingToastInstance(minecraft, song));
                 } else {
-                    minecraft.gui.setNowPlaying(song);
+                    minecraft.gui.hud.setNowPlaying(song);
                 }
             }
             return;

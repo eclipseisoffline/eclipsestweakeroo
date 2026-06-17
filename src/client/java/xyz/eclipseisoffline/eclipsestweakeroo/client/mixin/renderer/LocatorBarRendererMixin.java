@@ -7,8 +7,8 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.PlayerFaceExtractor;
-import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
-import net.minecraft.client.gui.contextualbar.LocatorBarRenderer;
+import net.minecraft.client.gui.contextualbar.ContextualBar;
+import net.minecraft.client.gui.contextualbar.LocatorBar;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.waypoints.TrackedWaypoint;
@@ -21,8 +21,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.config.EclipsesTweaksConfig;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.util.ToggleManager;
 
-@Mixin(LocatorBarRenderer.class)
-public abstract class LocatorBarRendererMixin implements ContextualBarRenderer {
+@Mixin(LocatorBar.class)
+public abstract class LocatorBarRendererMixin implements ContextualBar {
 
     @Unique
     private static final int MIN_FACE_SIZE = 5;
@@ -37,7 +37,7 @@ public abstract class LocatorBarRendererMixin implements ContextualBarRenderer {
 
     @WrapOperation(method = "lambda$extractRenderState$1", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIII)V"))
     public void usePlayerIcon(GuiGraphicsExtractor instance, RenderPipeline pipeline, Identifier texture, int x, int y, int width, int height, int color, Operation<Void> original,
-                              @Local(argsOnly = true) TrackedWaypoint waypoint, @Local(name = "distance") float distance) {
+                              @Local(argsOnly = true, name = "waypoint") TrackedWaypoint waypoint, @Local(name = "distance") float distance) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_LOCATOR_BAR) && waypoint.id().left().isPresent()) {
             PlayerInfo player = minecraft.getConnection().getPlayerInfo(waypoint.id().left().orElseThrow());
             if (player != null) {

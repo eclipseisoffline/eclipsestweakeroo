@@ -66,7 +66,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
 
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_PLAYER_INFO_NOTIFICATIONS)
                 && EclipsesGenericConfig.PLAYER_ADD_REMOVE_NOTIFICATION.getBooleanValue()) {
-            Minecraft.getInstance().gui.getChat().addClientSystemMessage(
+            Minecraft.getInstance().gui.hud.getChat().addClientSystemMessage(
                     Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("player_info_removed"), entry.getProfile().name())
                             .withStyle(ChatFormatting.GOLD)
             );
@@ -120,7 +120,7 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
         }
 
         if (notification != null) {
-            Minecraft.getInstance().gui.getChat().addClientSystemMessage(notification.withStyle(ChatFormatting.GOLD));
+            Minecraft.getInstance().gui.hud.getChat().addClientSystemMessage(notification.withStyle(ChatFormatting.GOLD));
         }
     }
 }

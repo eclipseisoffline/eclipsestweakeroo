@@ -190,7 +190,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
                 info = Component.translatable(EclipsesTweakerooUtil.getMessageDescriptionId("lodestone_compass_no_position"), usedStack.getHoverName());
             }
 
-            Minecraft.getInstance().gui.getChat().addClientSystemMessage(info);
+            Minecraft.getInstance().gui.hud.getChat().addClientSystemMessage(info);
             return InteractionResult.CONSUME;
         }
 

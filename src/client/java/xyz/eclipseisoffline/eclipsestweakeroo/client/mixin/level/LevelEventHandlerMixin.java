@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelEventHandler;
 import net.minecraft.core.BlockPos;
@@ -34,16 +34,15 @@ public abstract class LevelEventHandlerMixin {
     @Final
     private ClientLevel level;
 
-    @WrapOperation(method = "playJukeboxSong", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;setNowPlaying(Lnet/minecraft/network/chat/Component;)V"))
-    public void useMusicToastAndStartSong(Gui instance, Component displayName, Operation<Void> original, @Local(argsOnly = true) BlockPos pos,
-                                          @Local(argsOnly = true) Holder<JukeboxSong> song) {
+    @WrapOperation(method = "playJukeboxSong", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Hud;setNowPlaying(Lnet/minecraft/network/chat/Component;)V"))
+    public void useMusicToastAndStartSong(Hud instance, Component string, Operation<Void> original, @Local(argsOnly = true, name = "pos") BlockPos pos, @Local(argsOnly = true, name = "songHolder") Holder<JukeboxSong> song) {
         PlayingJukeboxSongs.playSong(pos, song, level);
 
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_MUSIC_TOAST) && EclipsesGenericConfig.MUSIC_TOAST_RECORDS.getBooleanValue()) {
-            minecraft.getToastManager().addToast(new NowPlayingToastInstance(minecraft, displayName));
+            minecraft.gui.toastManager().addToast(new NowPlayingToastInstance(minecraft, string));
             return;
         }
-        original.call(instance, displayName);
+        original.call(instance, string);
     }
 
     @Inject(method = "stopJukeboxSong", at = @At("HEAD"))
