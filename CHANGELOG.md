@@ -1,2 +1,1 @@
-- Added `tradeSellAll` and `tradeBuyAll` hotkeys for selling and buying quickly in village GUIs.
-- Fixed `fastBlockPlacementInitialDelay` option changing behaviour when set to default value of 0.
+- Update to 26.2.

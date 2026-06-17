@@ -15,7 +15,7 @@ Toggles whether to restock unstackable items when `tweakHandRestock` is enabled.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -31,7 +31,7 @@ Toggles whether to only select adult pets with `sitDownNearbyPets` and `standUpN
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -47,7 +47,7 @@ Toggles whether `tweakFakeSneaking` should stop you from falling down ladders.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -63,7 +63,7 @@ Toggles whether `tweakPermanentSneak` should work while using `tweakFreeCamera`.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -79,7 +79,7 @@ Whether to switch back to the original hotbar slot and item after breaking block
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
@@ -95,7 +95,7 @@ The initial delay (in game ticks) after starting to place blocks before Tweakero
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
@@ -113,7 +113,7 @@ Fixes inverse rotation placement of pistons, dispensers, droppers and crafters w
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -129,7 +129,7 @@ Disables `tweakHandRestock` when the player is in creative mode.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -142,7 +142,7 @@ Fixes [MC-297501](https://bugs.mojang.com/browse/MC/issues/MC-297501), allowing 
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
@@ -156,7 +156,7 @@ right control key.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
@@ -172,7 +172,7 @@ Fixes rotated block placement (through Tweakeroo's `flexibleBlockPlacement` or `
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
@@ -195,7 +195,7 @@ Modifies the player (tab) list in various ways, depending on how configured in t
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -208,7 +208,7 @@ Enables using fancy names for the names rendered above players.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -221,7 +221,7 @@ Enables using fancy names for the names rendered above mobs, and makes these alw
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -234,7 +234,7 @@ Tries to turn custom formatted chat messages into vanilla ones. It is a bit bugg
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -254,7 +254,7 @@ Mostly for fun, overrides the slipperiness of every block, can be configured usi
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -273,7 +273,7 @@ Mostly for fun, overrides the jump velocity setting of every block. Can be confi
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -289,7 +289,7 @@ Displays a message when an item you're using, or a piece of armour you're wearin
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -302,7 +302,7 @@ Modifies the way status effect icons are rendered to include duration time.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -315,7 +315,7 @@ Automatically reconnects to a server after being disconnected from it (with a sm
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -333,7 +333,7 @@ Posts notifications in chat when the client receives a [Player Info Update](http
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -355,7 +355,7 @@ The boat jumping and spider boat features require a server-side opt-in, other fe
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -372,7 +372,7 @@ Allows creative elytra flight in survival while using an elytra.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -385,7 +385,7 @@ Makes operator blocks (barrier, light and structure void blocks) have a texture.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -403,7 +403,7 @@ Replaces parts of the HUD with a number-based design. Can be further configured 
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -416,7 +416,7 @@ Allows you to see the exact position of a lodestone compass by right-clicking it
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -433,7 +433,7 @@ Allows you to override your gravity attribute. Can be configured using the `grav
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -450,7 +450,7 @@ Allows you to override your step height attribute. Can be configured using the `
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -468,7 +468,7 @@ Doesn't do anything by default, but has various settings in `Generic` to configu
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
@@ -481,7 +481,7 @@ Displays faces of players on the locator bar when applicable.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
@@ -494,7 +494,7 @@ Keeps past chat messages across server/world switches.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -507,7 +507,7 @@ Renders legacy text formatting codes with a grey colour instead of hiding them. 
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -524,7 +524,7 @@ Makes a few tweaks to the music toasts added in 1.21.6, depending on how configu
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
@@ -539,7 +539,7 @@ Opens the in-game config GUI of the mod. Defaults to `C + E`.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -552,7 +552,7 @@ Inserts a formatting code symbol (§) on the open screen. Useful when writing fo
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -565,7 +565,7 @@ Selects the next hotbar slot.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -578,7 +578,7 @@ Selects the previous hotbar slot.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -591,7 +591,7 @@ Sells all possible items in the inventory for emeralds, when in a villager GUI.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
@@ -604,7 +604,7 @@ Buys all possible items with emeralds in the inventory, when in a villager GUI.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
@@ -623,7 +623,7 @@ Disables entity collisions. You can still push other entities, but they can't pu
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -642,7 +642,7 @@ Disables taking knockback.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -655,7 +655,7 @@ Disables all fog modifiers (water, lava, powdered snow, darkness, etc.).
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -668,7 +668,7 @@ Disables the restriction of armour slots in the inventory. May not work on serve
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -681,7 +681,7 @@ Disables Curse of Binding. May not work on servers.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -694,7 +694,7 @@ Disables the cooldown on ender pearls, goat horns, and more. May not work on ser
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -707,7 +707,7 @@ Allows using special characters as U+00A7 (§), U+007F and more in all text boxe
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -720,7 +720,7 @@ Disables all world border restrictions.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -733,7 +733,7 @@ Disables bed explosions in dimensions where beds don't work, by disabling clicki
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -748,7 +748,7 @@ Disables giving items to allays.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -761,7 +761,7 @@ Disables being able to use items in the offhand.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -778,7 +778,7 @@ Disables the horse jump charge and cooldown (pressing space once immediately use
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -791,7 +791,7 @@ Disables rendering various overlays, such as the vignette, spyglass, carved pump
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -804,7 +804,7 @@ Hides all entity names when the HUD is disabled (vanilla Minecraft still renders
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -821,7 +821,7 @@ Disables slowing down when using items, like eating food.
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -834,7 +834,7 @@ Disables sneak speed modifiers like swift sneak, because sometimes slow sneaking
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -851,7 +851,7 @@ Disables the 10-tick delay between jumps. Allows you to jump very fast when in a
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ✔️ Yes |
 | 1.21+1 | ✔️ Yes |
 | 1.20+1 | ✔️ Yes |
@@ -864,7 +864,7 @@ Disables the line limit of books, allowing you to write until the full limit of 
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
@@ -877,7 +877,7 @@ Disables feeding of baby animals, making breeding animals easier when there are 
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |
@@ -890,7 +890,7 @@ Disables end flashes completely, including the flashing of the sky and the flash
 
 | Minecraft Version | Supported |
 |-------------------|-----------|
-| 26.1 | ✔️ Yes |
+| 26.2 | ✔️ Yes |
 | 1.21.4 | ❌ No |
 | 1.21+1 | ❌ No |
 | 1.20+1 | ❌ No |

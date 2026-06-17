@@ -3,9 +3,8 @@ package xyz.eclipseisoffline.eclipsestweakeroo.client.mixin.renderer;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.extract.LevelExtractor;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.happyghast.HappyGhast;
@@ -18,24 +17,16 @@ import xyz.eclipseisoffline.eclipsestweakeroo.client.util.ToggleManager;
 
 import java.util.Objects;
 
-@Mixin(LevelRenderer.class)
-public abstract class LevelRendererMixin implements ResourceManagerReloadListener, AutoCloseable {
+@Mixin(LevelExtractor.class)
+public abstract class LevelExtractorMixin implements ResourceManagerReloadListener, AutoCloseable {
 
 
-    @WrapOperation(method = "extractVisibleEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderDispatcher;shouldRender(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/client/renderer/culling/Frustum;DDD)Z"))
-    public boolean noRenderIfHappyGhastTweak(EntityRenderDispatcher instance, Entity entity, Frustum frustum, double camX, double camY, double camZ, Operation<Boolean> original) {
+    @WrapOperation(method = "extractVisibleEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/extract/LevelExtractor;isEntityVisible(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/client/renderer/culling/Frustum;DDD)Z"))
+    public boolean noRenderIfHappyGhastTweak(LevelExtractor instance, Entity entity, Frustum frustum, double camX, double camY, double camZ, Operation<Boolean> original) {
         if (shouldHideHappyGhast(entity)) {
             return false;
         }
         return original.call(instance, entity, frustum, camX, camY, camZ);
-    }
-
-    @WrapOperation(method = "extractVisibleEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hasIndirectPassenger(Lnet/minecraft/world/entity/Entity;)Z"))
-    public boolean noRenderIfHappyGhastTweak(Entity instance, Entity entity, Operation<Boolean> original) {
-        if (shouldHideHappyGhast(instance)) {
-            return false;
-        }
-        return original.call(instance, entity);
     }
 
     @Unique

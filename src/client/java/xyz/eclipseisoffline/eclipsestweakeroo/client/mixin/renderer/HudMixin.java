@@ -6,8 +6,8 @@ import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -30,8 +30,8 @@ import xyz.eclipseisoffline.eclipsestweakeroo.client.config.EclipsesTweaksConfig
 import xyz.eclipseisoffline.eclipsestweakeroo.client.util.EclipsesTweakerooUtil;
 import xyz.eclipseisoffline.eclipsestweakeroo.client.util.ToggleManager;
 
-@Mixin(Gui.class)
-public abstract class GuiMixin {
+@Mixin(Hud.class)
+public abstract class HudMixin {
 
     @Unique
     private static final int TEXT_COLOUR = 0xFFFFFFFF;

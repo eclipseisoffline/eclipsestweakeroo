@@ -49,13 +49,13 @@ dependencies {
     /*compileOnly("com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}") {
         exclude(group: "me.fallenbreath", module: "conditional-mixin-fabric")
     }*/ // uncomment when Tweakeroo publishes correctly to Jitpack
-    compileOnly("maven.modrinth:tweakeroo:0.28.0")
+    compileOnly("maven.modrinth:tweakeroo:0.29.0")
     compileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
 
     // Used during testing
     runtimeOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
     // Comment me to test without Tweakeroo
-    runtimeOnly("maven.modrinth:tweakeroo:0.28.0")
+    runtimeOnly("maven.modrinth:tweakeroo:0.29.0")
     /*runtimeOnly("com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}") {
         exclude(group: "me.fallenbreath", module: "conditional-mixin-fabric")
     }*/
