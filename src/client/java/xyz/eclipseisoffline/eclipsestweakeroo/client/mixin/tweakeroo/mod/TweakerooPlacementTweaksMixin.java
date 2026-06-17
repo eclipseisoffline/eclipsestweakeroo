@@ -117,7 +117,9 @@ public abstract class TweakerooPlacementTweaksMixin {
 
     @Unique
     private static boolean canUseFastBlockPlacementAfterInitialDelay(Minecraft minecraft, boolean original) {
-        if (!original || useStartGameTick < 0) {
+        if (EclipsesGenericConfig.FAST_BLOCK_PLACEMENT_INITIAL_DELAY.getIntegerValue() == 0) {
+            return original;
+        } else if (!original || useStartGameTick < 0) {
             return false;
         }
         assert minecraft.player != null;
