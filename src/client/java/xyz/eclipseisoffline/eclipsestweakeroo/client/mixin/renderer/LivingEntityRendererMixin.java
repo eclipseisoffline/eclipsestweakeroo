@@ -25,7 +25,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extend
 
     @Inject(method = "shouldShowName(Lnet/minecraft/world/entity/LivingEntity;D)Z", at = @At("HEAD"), cancellable = true)
     public void noLabelIfNoHud(T livingEntity, double d, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        if (!Minecraft.getInstance().gui.hud.isHidden() && ToggleManager.enabled(EclipsesDisableConfig.DISABLE_ALL_NAMES_IN_F1)) {
+        if (Minecraft.getInstance().gui.hud.isHidden() && ToggleManager.enabled(EclipsesDisableConfig.DISABLE_ALL_NAMES_IN_F1)) {
             callbackInfoReturnable.setReturnValue(false);
         }
     }
