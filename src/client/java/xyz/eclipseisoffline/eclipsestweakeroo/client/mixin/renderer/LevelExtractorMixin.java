@@ -20,13 +20,12 @@ import java.util.Objects;
 @Mixin(LevelExtractor.class)
 public abstract class LevelExtractorMixin implements ResourceManagerReloadListener, AutoCloseable {
 
-
-    @WrapOperation(method = "extractVisibleEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/extract/LevelExtractor;isEntityVisible(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/client/renderer/culling/Frustum;DDD)Z"))
-    public boolean noRenderIfHappyGhastTweak(LevelExtractor instance, Entity entity, Frustum frustum, double camX, double camY, double camZ, Operation<Boolean> original) {
+    @WrapOperation(method = "extractVisibleEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/extract/LevelExtractor;isEntityVisible(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/client/renderer/culling/Frustum;DDDFJ)Z"))
+    public boolean noRenderIfHappyGhastTweak(LevelExtractor instance, Entity entity, Frustum frustum, double camX, double camY, double camZ, float partialTicks, long chunkFadeDuration, Operation<Boolean> original) {
         if (shouldHideHappyGhast(entity)) {
             return false;
         }
-        return original.call(instance, entity, frustum, camX, camY, camZ);
+        return original.call(instance, entity, frustum, camX, camY, camZ, partialTicks, chunkFadeDuration);
     }
 
     @Unique

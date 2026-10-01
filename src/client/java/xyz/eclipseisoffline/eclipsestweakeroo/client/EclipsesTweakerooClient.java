@@ -30,10 +30,5 @@ public class EclipsesTweakerooClient implements ClientModInitializer {
         StatusEffectCharacterLoader.bootstrap();
         EclipsesTweakerooClientNetworking.bootstrap();
         EclipsesTweakerooUtil.populateStatusEffectColorMap();
-
-        /*
-        BlockRenderLayerMap.putBlock(Blocks.BARRIER, ChunkSectionLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(Blocks.LIGHT, ChunkSectionLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(Blocks.STRUCTURE_VOID, ChunkSectionLayer.TRANSLUCENT);*/ // FIXME
     }
 }

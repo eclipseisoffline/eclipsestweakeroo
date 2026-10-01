@@ -2,7 +2,7 @@ import me.modmuss50.mpp.ReleaseType
 
 plugins {
     id "me.modmuss50.mod-publish-plugin" version "2.0.0"
-    id "net.fabricmc.fabric-loom" version "1.17-SNAPSHOT"
+    id "net.fabricmc.fabric-loom" version "1.18-SNAPSHOT"
     id "maven-publish"
 }
 
@@ -43,22 +43,14 @@ dependencies {
     implementation("net.fabricmc:fabric-loader:${project.loader_version}")
     implementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
 
-    implementation("com.github.sakura-ryoko:malilib:${malilib_build_version}") {
-        exclude(group: "me.fallenbreath", module: "conditional-mixin-fabric")
-    }
-    /*compileOnly("com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}") {
-        exclude(group: "me.fallenbreath", module: "conditional-mixin-fabric")
-    }*/ // uncomment when Tweakeroo publishes correctly to Jitpack
-    compileOnly("maven.modrinth:tweakeroo:0.29.0")
+    implementation("maven.modrinth:GcWjdA9I:JX9bESec")
+    compileOnly("maven.modrinth:t5wuYk45:fWxKATn6")
     compileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
 
     // Used during testing
     runtimeOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
     // Comment me to test without Tweakeroo
-    runtimeOnly("maven.modrinth:tweakeroo:0.29.0")
-    /*runtimeOnly("com.github.sakura-ryoko:tweakeroo:${tweakeroo_build_version}") {
-        exclude(group: "me.fallenbreath", module: "conditional-mixin-fabric")
-    }*/
+    runtimeOnly("maven.modrinth:t5wuYk45:fWxKATn6")
 }
 
 loom {

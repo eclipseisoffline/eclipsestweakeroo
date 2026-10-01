@@ -84,7 +84,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
         return super.maxUpStep();
     }
 
-    @WrapOperation(method = "tick", at = @At(value = "NEW", target = "net/minecraft/network/protocol/game/ServerboundPlayerInputPacket"))
+    @WrapOperation(method = "sendChanges", at = @At(value = "NEW", target = "net/minecraft/network/protocol/game/ServerboundPlayerInputPacket"))
     public ServerboundPlayerInputPacket noSneakSendWhenHappyGhastTweak(Input input, Operation<ServerboundPlayerInputPacket> original) {
         if (ToggleManager.enabled(EclipsesTweaksConfig.TWEAK_HAPPY_GHAST)
                 && getControlledVehicle() instanceof HappyGhast && input.shift()) {

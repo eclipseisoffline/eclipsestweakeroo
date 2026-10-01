@@ -16,6 +16,7 @@ import net.minecraft.advancements.predicates.DamageSourcePredicate;
 import net.minecraft.advancements.predicates.TagPredicate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -217,7 +218,7 @@ public class EclipsesTweakerooUtil {
                 // In vanilla Minecraft, only the Protection enchantment matches these requirements
                 boolean emptyRequirements = effect.requirements().isEmpty();
 
-                if (!emptyRequirements && effect.requirements().get() instanceof DamageSourceCondition(Optional<DamageSourcePredicate> predicate)) {
+                if (!emptyRequirements && effect.requirements().get().value() instanceof DamageSourceCondition(Optional<DamageSourcePredicate> predicate)) {
                     if (predicate.isEmpty() || EMPTY_DAMAGE_SOURCE_PREDICATES.containsKey(predicate.get())) {
                         emptyRequirements = true;
                     } else {
@@ -229,7 +230,8 @@ public class EclipsesTweakerooUtil {
                             } else {
                                 boolean onlyInvulnerable = true;
                                 for (TagPredicate<DamageType> tag : tags) {
-                                    if (tag.tag() != DamageTypeTags.BYPASSES_INVULNERABILITY) {
+                                    if (tag.tag() instanceof HolderSet.Named<DamageType> namedSet
+                                            && namedSet.key() != DamageTypeTags.BYPASSES_INVULNERABILITY) {
                                         onlyInvulnerable = false;
                                         break;
                                     }

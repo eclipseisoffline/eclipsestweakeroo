@@ -1,3 +1,2 @@
-- Fixed `disableAllNamesInF1` hiding all names normally and showing them in F1, instead of doing the opposite.
-
-stop
+- Update to 26.3.
+- Fix `tweakRenderOperatorBlocks` showing missing textures.

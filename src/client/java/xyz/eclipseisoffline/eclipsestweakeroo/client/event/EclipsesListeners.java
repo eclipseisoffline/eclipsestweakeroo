@@ -142,7 +142,7 @@ public class EclipsesListeners implements ClientLifecycleEvents.ClientStarted,
         } else if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_BLOCK_USE)) {
             return InteractionResult.FAIL;
         } else if (ToggleManager.enabled(EclipsesDisableConfig.DISABLE_BED_EXPLOSION)
-                && level.environmentAttributes().getValue(EnvironmentAttributes.BED_RULE, hitResult.getBlockPos()).explodes()
+                && level.environmentAttributes().getValue(EnvironmentAttributes.BED_RULE, hitResult.getBlockPos()).destroyOnUse()
                 && level.getBlockState(hitResult.getBlockPos()).getBlock() instanceof BedBlock) {
             return InteractionResult.FAIL;
         }

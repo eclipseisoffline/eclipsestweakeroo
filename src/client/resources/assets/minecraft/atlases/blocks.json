@@ -1,0 +1,94 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/barrier",
+      "sprite": "minecraft:block/barrier"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_00",
+      "sprite": "minecraft:block/light_00"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_01",
+      "sprite": "minecraft:block/light_01"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_02",
+      "sprite": "minecraft:block/light_02"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_03",
+      "sprite": "minecraft:block/light_03"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_04",
+      "sprite": "minecraft:block/light_04"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_05",
+      "sprite": "minecraft:block/light_05"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_06",
+      "sprite": "minecraft:block/light_06"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_07",
+      "sprite": "minecraft:block/light_07"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_08",
+      "sprite": "minecraft:block/light_08"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_09",
+      "sprite": "minecraft:block/light_09"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_10",
+      "sprite": "minecraft:block/light_10"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_11",
+      "sprite": "minecraft:block/light_11"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_12",
+      "sprite": "minecraft:block/light_12"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_13",
+      "sprite": "minecraft:block/light_13"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_14",
+      "sprite": "minecraft:block/light_14"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/light_15",
+      "sprite": "minecraft:block/light_15"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:item/structure_void",
+      "sprite": "minecraft:block/structure_void"
+    }
+  ]
+}

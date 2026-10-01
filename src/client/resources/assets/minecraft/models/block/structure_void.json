@@ -1,7 +1,7 @@
 {
   "parent": "block/block",
   "textures": {
-    "all": "minecraft:item/structure_void"
+    "all": "minecraft:block/structure_void"
   },
   "elements": [
     {

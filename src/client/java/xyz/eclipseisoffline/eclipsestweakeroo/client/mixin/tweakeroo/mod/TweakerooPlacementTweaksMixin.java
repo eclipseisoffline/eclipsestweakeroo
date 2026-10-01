@@ -11,6 +11,7 @@ import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import fi.dy.masa.malilib.util.position.PositionUtils;
 import fi.dy.masa.tweakeroo.config.Configs;
 import fi.dy.masa.tweakeroo.tweaks.PlacementTweaks;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -47,14 +48,14 @@ public abstract class TweakerooPlacementTweaksMixin {
     @Unique
     private static int useStartGameTick = -1;
 
-    @Definition(id = "use", local = @Local(type = boolean.class, name = "use"))
+    @Definition(id = "use", local = @Local(type = KeyMapping.class, name = "use"))
     @Expression("use = ?")
     @Inject(method = "onTick", at = @At(value = "MIXINEXTRAS:EXPRESSION", shift = At.Shift.AFTER))
-    private static void updateUseStartGameTick(Minecraft mc, CallbackInfo callbackInfo, @Local(name = "use") boolean use) {
+    private static void updateUseStartGameTick(Minecraft mc, CallbackInfo callbackInfo, @Local(name = "use") KeyMapping use) {
         if (mc.player != null) {
-            if (use && useStartGameTick < 0) {
+            if (use.isDown() && useStartGameTick < 0) {
                 useStartGameTick = mc.player.tickCount;
-            } else if (!use && useStartGameTick >= 0) {
+            } else if (!use.isDown() && useStartGameTick >= 0) {
                 useStartGameTick = -1;
             }
         }
@@ -80,12 +81,12 @@ public abstract class TweakerooPlacementTweaksMixin {
     }
 
     @Inject(method = "tryPlaceBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;getItemInHand(Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/item/ItemStack;", ordinal = 0))
-    private static void fixPistonFlexiblePlacement(MultiPlayerGameMode controller, LocalPlayer player, ClientLevel world, BlockPos posIn, Direction sideIn, Direction sideRotatedIn, float playerYaw, Vec3 hitVec, InteractionHand hand,
-                                                   PositionUtils.HitPart hitPart,
-                                                   boolean isFirstClick, CallbackInfoReturnable<InteractionResult> cir,
-                                                   @Local(ordinal = 1, argsOnly = true) LocalRef<Direction> sideRotatedInLocal,
-                                                   @Local(name = "flexible") boolean flexible,
-                                                   @Local(name = "rotation") boolean rotation) {
+    private static void fixPistonFlexiblePlacement(MultiPlayerGameMode controller, LocalPlayer player, ClientLevel world, BlockPos posIn,
+                                                   Direction sideIn, Direction sideRotatedIn, float playerYaw, Vec3 hitVec, InteractionHand hand,
+                                                   PositionUtils.HitPart hitPart, boolean isFirstClick, boolean hitInside,
+                                                   CallbackInfoReturnable<InteractionResult> callbackInfoReturnable,
+                                                   @Local(argsOnly = true, name = "sideRotatedIn") LocalRef<Direction> sideRotatedInLocal,
+                                                   @Local(name = "flexible") boolean flexible, @Local(name = "rotation") boolean rotation) {
         if (!EclipsesFixesConfig.PISTON_FLEXIBLE_PLACEMENT_FIX.getBooleanValue()) {
             return;
         }
@@ -97,14 +98,16 @@ public abstract class TweakerooPlacementTweaksMixin {
     }
 
     @WrapMethod(method = "tryPlaceBlock")
-    private static InteractionResult setScopedValues(MultiPlayerGameMode controller, LocalPlayer player, ClientLevel world, BlockPos posIn, Direction sideIn, Direction sideRotatedIn,
-                                                     float playerYaw, Vec3 hitVec, InteractionHand hand, PositionUtils.HitPart hitPart, boolean isFirstClick, Operation<InteractionResult> original) {
+    private static InteractionResult setScopedValues(MultiPlayerGameMode controller, LocalPlayer player, ClientLevel world, BlockPos posIn,
+                                                     Direction sideIn, Direction sideRotatedIn, float playerYaw, Vec3 hitVec, InteractionHand hand,
+                                                     PositionUtils.HitPart hitPart, boolean isFirstClick, boolean hitInside,
+                                                     Operation<InteractionResult> original) {
         if (EclipsesFixesConfig.FAST_PLACEMENT_ROTATION_FIX.getBooleanValue()) {
             return ScopedValue.where(ORIGINAL_BLOCK_PLACE_POS, posIn)
                     .where(ORIGINAL_BLOCK_PLACE_SIDE, sideIn)
                     .call(() -> original.call(controller, player, world, posIn, sideIn, sideRotatedIn, playerYaw, hitVec, hand, hitPart, isFirstClick));
         }
-        return original.call(controller, player, world, posIn, sideIn, sideRotatedIn, playerYaw, hitVec, hand, hitPart, isFirstClick);
+        return original.call(controller, player, world, posIn, sideIn, sideRotatedIn, playerYaw, hitVec, hand, hitPart, isFirstClick, hitInside);
     }
 
     @WrapOperation(method = "processRightClickBlockWrapper", at = @At(value = "INVOKE", target = "Lfi/dy/masa/tweakeroo/tweaks/PlacementTweaks;isPositionAllowedByPlacementRestriction(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)Z"))
