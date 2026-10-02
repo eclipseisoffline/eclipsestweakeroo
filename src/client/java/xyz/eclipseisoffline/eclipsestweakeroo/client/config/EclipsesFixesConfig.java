@@ -17,7 +17,8 @@ public class EclipsesFixesConfig {
     public static final ConfigBoolean FAST_PLACEMENT_ROTATION_FIX = create("fastPlacementRotationFix");
 
     private static ConfigBoolean create(String name) {
-        ConfigBoolean config = new ConfigBoolean(name, false, EclipsesConfigs.getCommentTranslationKey(name));
+        ConfigBoolean config = new ConfigBoolean(name, false, EclipsesConfigs.getCommentTranslationKey(name),
+                name, EclipsesConfigs.getNameTranslationKey(name));
         CONFIGS.add(config);
         return config;
     }

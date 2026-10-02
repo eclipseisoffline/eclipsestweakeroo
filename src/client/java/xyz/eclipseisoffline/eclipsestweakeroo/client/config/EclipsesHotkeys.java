@@ -31,13 +31,15 @@ public class EclipsesHotkeys {
     public static final ConfigHotkey TRADE_BUY_ALL = createGui("tradeBuyAll", "");
 
     private static ConfigHotkey create(String name, String defaultHotkey) {
-        ConfigHotkey hotkey = new ConfigHotkey(name, defaultHotkey, EclipsesConfigs.getCommentTranslationKey(name));
+        ConfigHotkey hotkey = new ConfigHotkey(name, defaultHotkey, EclipsesConfigs.getCommentTranslationKey(name),
+                name, EclipsesConfigs.getNameTranslationKey(name));
         CONFIGS.add(hotkey);
         return hotkey;
     }
 
     private static ConfigHotkey createGui(String name, String defaultHotkey) {
-        ConfigHotkey hotkey = new ConfigHotkey(name, defaultHotkey, EclipsesConfigs.getCommentTranslationKey(name));
+        ConfigHotkey hotkey = new ConfigHotkey(name, defaultHotkey, EclipsesConfigs.getCommentTranslationKey(name),
+                name, EclipsesConfigs.getNameTranslationKey(name));
         hotkey.getKeybind().setSettings(KeybindSettings.GUI);
         CONFIGS.add(hotkey);
         return hotkey;

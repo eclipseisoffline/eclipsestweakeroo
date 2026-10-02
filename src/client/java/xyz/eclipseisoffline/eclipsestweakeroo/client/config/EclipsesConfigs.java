@@ -82,7 +82,11 @@ public class EclipsesConfigs implements IConfigHandler {
         JsonUtils.writeJsonToFile(root, CONFIG_FILE);
     }
 
+    public static String getNameTranslationKey(String name) {
+        return Util.makeDescriptionId("config_name", EclipsesTweakeroo.getModdedIdentifier(StringUtils.splitCamelCase(name).toLowerCase().replace(" ", "_")));
+    }
+
     public static String getCommentTranslationKey(String name) {
-        return Util.makeDescriptionId("config", EclipsesTweakeroo.getModdedIdentifier(StringUtils.splitCamelCase(name).toLowerCase().replaceAll(" ", "_")));
+        return Util.makeDescriptionId("config", EclipsesTweakeroo.getModdedIdentifier(StringUtils.splitCamelCase(name).toLowerCase().replace(" ", "_")));
     }
 }

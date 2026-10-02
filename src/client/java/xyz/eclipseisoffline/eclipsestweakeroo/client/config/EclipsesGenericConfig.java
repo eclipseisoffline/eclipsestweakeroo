@@ -66,31 +66,36 @@ public class EclipsesGenericConfig {
     }
     
     private static ConfigBoolean createBoolean(String name, boolean defaultValue) {
-        ConfigBoolean config = new ConfigBoolean(name, defaultValue, EclipsesConfigs.getCommentTranslationKey(name));
+        ConfigBoolean config = new ConfigBoolean(name, defaultValue, EclipsesConfigs.getCommentTranslationKey(name),
+                name, EclipsesConfigs.getNameTranslationKey(name));
         CONFIGS.add(config);
         return config;
     }
 
     private static ConfigOptionList createOptionList(String name, IConfigOptionListEntry defaultEntry) {
-        ConfigOptionList config = new ConfigOptionList(name, defaultEntry, EclipsesConfigs.getCommentTranslationKey(name));
+        ConfigOptionList config = new ConfigOptionList(name, defaultEntry, EclipsesConfigs.getCommentTranslationKey(name),
+                name, EclipsesConfigs.getNameTranslationKey(name));
         CONFIGS.add(config);
         return config;
     }
 
     private static ConfigDouble createDouble(String name, double defaultValue, double min, double max) {
-        ConfigDouble config = new ConfigDouble(name, defaultValue, min, max, EclipsesConfigs.getCommentTranslationKey(name));
+        ConfigDouble config = new ConfigDouble(name, defaultValue, min, max, EclipsesConfigs.getCommentTranslationKey(name),
+                name, EclipsesConfigs.getNameTranslationKey(name));
         CONFIGS.add(config);
         return config;
     }
 
     private static ConfigStringList createStringList(String name, ImmutableList<String> values) {
-        ConfigStringList config = new ConfigStringList(name, values, EclipsesConfigs.getCommentTranslationKey(name));
+        ConfigStringList config = new ConfigStringList(name, values, EclipsesConfigs.getCommentTranslationKey(name),
+                name, EclipsesConfigs.getNameTranslationKey(name));
         CONFIGS.add(config);
         return config;
     }
 
     private static ConfigInteger createInteger(String name, int defaultValue, int min, int max) {
-        ConfigInteger config = new ConfigInteger(name, defaultValue, min, max, EclipsesConfigs.getCommentTranslationKey(name));
+        ConfigInteger config = new ConfigInteger(name, defaultValue, min, max, EclipsesConfigs.getCommentTranslationKey(name),
+                name, EclipsesConfigs.getNameTranslationKey(name));
         CONFIGS.add(config);
         return config;
     }

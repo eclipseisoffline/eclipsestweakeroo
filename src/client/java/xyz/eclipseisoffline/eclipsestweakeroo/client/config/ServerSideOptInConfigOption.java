@@ -8,12 +8,9 @@ import xyz.eclipseisoffline.eclipsestweakeroo.client.util.EclipsesTweakerooUtil;
 public class ServerSideOptInConfigOption extends ConfigBooleanHotkeyed {
     private static final String WARNING_TRANSLATION_KEY = "config.eclipsestweakeroo.server_side_opt_in_warning";
 
-    public ServerSideOptInConfigOption(String name, boolean defaultValue, String defaultHotkey, String comment, String prettyName) {
-        super(name, defaultValue, defaultHotkey, comment, prettyName);
-    }
-
-    public ServerSideOptInConfigOption(String name, boolean defaultValue, String defaultHotkey, String comment) {
-        super(name, defaultValue, defaultHotkey, comment);
+    public ServerSideOptInConfigOption(String name, boolean defaultValue, String defaultHotkey) {
+        super(name, defaultValue, defaultHotkey, EclipsesConfigs.getCommentTranslationKey(name), name,
+                EclipsesConfigs.getNameTranslationKey(name));
     }
 
     @Override

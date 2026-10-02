@@ -36,13 +36,14 @@ public class EclipsesTweaksConfig {
     public static final ConfigBooleanHotkeyed TWEAK_MUSIC_TOAST = create("tweakMusicToast");
 
     private static ConfigBooleanHotkeyed create(String name) {
-        ConfigBooleanHotkeyed config = new ConfigBooleanHotkeyed(name, false, "", EclipsesConfigs.getCommentTranslationKey(name));
+        ConfigBooleanHotkeyed config = new ConfigBooleanHotkeyed(name, false, "", EclipsesConfigs.getCommentTranslationKey(name),
+                name, EclipsesConfigs.getNameTranslationKey(name));
         CONFIGS.add(config);
         return config;
     }
 
     private static ConfigBooleanHotkeyed createWithServerSideOptIn(String name) {
-        ServerSideOptInConfigOption config = new ServerSideOptInConfigOption(name, false, "", EclipsesConfigs.getCommentTranslationKey(name));
+        ServerSideOptInConfigOption config = new ServerSideOptInConfigOption(name, false, "");
         CONFIGS.add(config);
         return config;
     }

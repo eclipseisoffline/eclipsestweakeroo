@@ -8,8 +8,9 @@ import xyz.eclipseisoffline.eclipsestweakeroo.client.util.EclipsesTweakerooUtil;
 public class ClientConfigOption extends ConfigBooleanHotkeyed {
     private static final String WARNING_TRANSLATION_KEY = "config.eclipsestweakeroo.client_only_warning";
 
-    public ClientConfigOption(String name, boolean defaultValue, String defaultHotkey, String comment) {
-        super(name, defaultValue, defaultHotkey, comment);
+    public ClientConfigOption(String name, boolean defaultValue, String defaultHotkey) {
+        super(name, defaultValue, defaultHotkey, EclipsesConfigs.getCommentTranslationKey(name),
+                name, EclipsesConfigs.getNameTranslationKey(name));
     }
 
     @Override

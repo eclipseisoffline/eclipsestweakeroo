@@ -1,2 +1,4 @@
 - Update to 26.3.
+- Add `zh_cn` (Simplified Chinese) translation (thanks @tlwsy!).
 - Fix `tweakRenderOperatorBlocks` showing missing textures.
+- Fix running without Tweakeroo.

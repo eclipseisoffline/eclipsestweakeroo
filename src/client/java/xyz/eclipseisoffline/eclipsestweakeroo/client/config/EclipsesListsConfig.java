@@ -16,7 +16,8 @@ public class EclipsesListsConfig {
     );
 
     private static ConfigStringList create(String name, ImmutableList<String> values) {
-        ConfigStringList config = new ConfigStringList(name, values, EclipsesConfigs.getCommentTranslationKey(name));
+        ConfigStringList config = new ConfigStringList(name, values, EclipsesConfigs.getCommentTranslationKey(name),
+                name, EclipsesConfigs.getNameTranslationKey(name));
         CONFIGS.add(config);
         return config;
     }
