@@ -13,6 +13,7 @@ import xyz.eclipseisoffline.eclipsestweakeroo.EclipsesTweakeroo;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
 
 public class EclipsesConfigs implements IConfigHandler {
 
@@ -83,10 +84,10 @@ public class EclipsesConfigs implements IConfigHandler {
     }
 
     public static String getNameTranslationKey(String name) {
-        return Util.makeDescriptionId("config_name", EclipsesTweakeroo.getModdedIdentifier(StringUtils.splitCamelCase(name).toLowerCase().replace(" ", "_")));
+        return Util.makeDescriptionId("config_name", EclipsesTweakeroo.getModdedIdentifier(StringUtils.splitCamelCase(name).toLowerCase(Locale.ROOT).replace(" ", "_")));
     }
 
     public static String getCommentTranslationKey(String name) {
-        return Util.makeDescriptionId("config", EclipsesTweakeroo.getModdedIdentifier(StringUtils.splitCamelCase(name).toLowerCase().replace(" ", "_")));
+        return Util.makeDescriptionId("config", EclipsesTweakeroo.getModdedIdentifier(StringUtils.splitCamelCase(name).toLowerCase(Locale.ROOT).replace(" ", "_")));
     }
 }
